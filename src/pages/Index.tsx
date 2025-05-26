@@ -1,28 +1,36 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Sun, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { Search, Sun, CheckCircle, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activePhase, setActivePhase] = useState("construction");
+  const [activePhase, setActivePhase] = useState("Phase 1");
+  
+  // Legacy hardcoded playbook ID - this will be replaced when we have proper data seeding
+  const legacyPlaybookId = "legacy-solar-execution";
 
   const projectPhases = [
     {
-      id: "construction",
-      name: "Construction & Erection Inspection",
-      description: "Physical completion verification through joint inspections"
+      id: "Phase 1",
+      name: "Phase 1: Project Initiation",
+      description: "Initial project setup and planning"
     },
     {
-      id: "precommissioning",
-      name: "Pre-commissioning Testing",
-      description: "Functionality and safety validation through structured testing"
+      id: "Phase 2", 
+      name: "Phase 2: Design & Engineering",
+      description: "System design and engineering phase"
+    },
+    {
+      id: "Phase 3",
+      name: "Phase 3: Implementation",
+      description: "Project implementation and execution"
     }
   ];
 
@@ -33,12 +41,15 @@ const Index = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
+              <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
+                <ArrowLeft className="h-5 w-5 text-gray-600" />
+              </Link>
               <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
                 <Sun className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Solar Project Execution Tracker</h1>
-                <p className="text-sm text-gray-600">Pre-Commissioning Playbook - Interactive Edition</p>
+                <h1 className="text-2xl font-bold text-gray-900">Solar Project Execution</h1>
+                <p className="text-sm text-gray-600">Legacy Interactive Playbook Edition</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -60,7 +71,7 @@ const Index = () => {
         {/* Phase Selection */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Project Phases</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projectPhases.map((phase) => (
               <Card 
                 key={phase.id}
@@ -82,10 +93,13 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="processes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-sm">
             <TabsTrigger value="processes" className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
               Process Steps
+            </TabsTrigger>
+            <TabsTrigger value="inputs" className="flex items-center gap-2">
+              Inputs
             </TabsTrigger>
             <TabsTrigger value="raci" className="flex items-center gap-2">
               RACI Matrix
@@ -96,15 +110,19 @@ const Index = () => {
           </TabsList>
 
           <TabsContent value="processes">
-            <ProcessSteps activePhase={activePhase} searchQuery={searchQuery} />
+            <ProcessSteps playbookId={legacyPlaybookId} activePhase={activePhase} searchQuery={searchQuery} />
+          </TabsContent>
+
+          <TabsContent value="inputs">
+            <ProcessSteps playbookId={legacyPlaybookId} activePhase={activePhase} searchQuery={searchQuery} showInputsOnly={true} />
           </TabsContent>
 
           <TabsContent value="raci">
-            <RACIMatrix activePhase={activePhase} searchQuery={searchQuery} />
+            <RACIMatrix playbookId={legacyPlaybookId} activePhase={activePhase} searchQuery={searchQuery} />
           </TabsContent>
 
           <TabsContent value="process-map">
-            <ProcessMap activePhase={activePhase} />
+            <ProcessMap playbookId={legacyPlaybookId} activePhase={activePhase} />
           </TabsContent>
         </Tabs>
       </div>
