@@ -1,46 +1,50 @@
 
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Map, ArrowRight, Circle, Square, Diamond, Hexagon } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface ProcessMapStep {
+  id: string;
+  step_id: string;
+  step_type: string;
+  title: string;
+  description: string;
+  order_index: number;
+}
 
 interface ProcessMapProps {
+  playbookId: string;
   activePhase: string;
 }
 
-export const ProcessMap = ({ activePhase }: ProcessMapProps) => {
-  const constructionFlow = [
-    { id: "S", type: "start", title: "OEM Completion Notice", description: "WTG & BOP Complete" },
-    { id: "P1", type: "process", title: "PM Notification", description: "Request CPOC Appointment" },
-    { id: "P2", type: "process", title: "Inspection Direction", description: "SQH & CPOC Assignment" },
-    { id: "P3", type: "process", title: "Engineer Request", description: "OEM Engineer Assignment" },
-    { id: "P4", type: "process", title: "Engineer Appointment", description: "Mechanical, Civil, Electrical" },
-    { id: "P5", type: "process", title: "Team Assembly", description: "Site Heads & CPOC" },
-    { id: "P6", type: "process", title: "Inspection Execution", description: "Punch Point Logging" },
-    { id: "P7", type: "approval", title: "Signature Collection", description: "OEM & Site Head Sign-off" },
-    { id: "P8", type: "process", title: "Punch Point Closure", description: "Compliance Report" },
-    { id: "P9", type: "process", title: "Report Submission", description: "SQH Review Request" },
-    { id: "P10", type: "process", title: "Feedback Loop", description: "Review & Corrections" },
-    { id: "P11", type: "approval", title: "MCC Issuance", description: "Final Clearance" },
-    { id: "E", type: "end", title: "PM Notification", description: "MCC Issued" }
-  ];
+export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
+  const [processFlow, setProcessFlow] = useState<ProcessMapStep[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const precommissioningFlow = [
-    { id: "S", type: "start", title: "MCC Notification", description: "Ready for Testing" },
-    { id: "P1", type: "process", title: "Test Initiation", description: "OEM & CPOC Notification" },
-    { id: "P2", type: "process", title: "Checklist Preparation", description: "Pre-commissioning Plan" },
-    { id: "P3", type: "approval", title: "SEL Review", description: "Checklist Approval" },
-    { id: "P4", type: "process", title: "CPOC Submission", description: "Document Sharing" },
-    { id: "P5", type: "approval", title: "CPOC Review", description: "Final Checklist Approval" },
-    { id: "P6", type: "process", title: "Document Distribution", description: "OEM Notification" },
-    { id: "P7", type: "process", title: "Test Execution", description: "Comprehensive Testing" },
-    { id: "P8", type: "process", title: "Results Documentation", description: "CPOC Submission" },
-    { id: "P9", type: "approval", title: "CPOC Review", description: "Results Validation" },
-    { id: "P10", type: "process", title: "SEL Submission", description: "Final Review Stage" },
-    { id: "P11", type: "approval", title: "SEL Approval", description: "Test Sign-off" },
-    { id: "E", type: "end", title: "PM Notification", description: "Testing Complete" }
-  ];
+  useEffect(() => {
+    if (playbookId && activePhase) {
+      fetchProcessMap();
+    }
+  }, [playbookId, activePhase]);
 
-  const currentFlow = activePhase === "construction" ? constructionFlow : precommissioningFlow;
+  const fetchProcessMap = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('process_map')
+        .select('*')
+        .eq('playbook_id', playbookId)
+        .eq('phase_id', activePhase)
+        .order('order_index');
+
+      if (error) throw error;
+      setProcessFlow(data || []);
+    } catch (error) {
+      console.error('Error fetching process map:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStepIcon = (type: string) => {
     switch (type) {
@@ -70,13 +74,31 @@ export const ProcessMap = ({ activePhase }: ProcessMapProps) => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-600">Loading process map...</p>
+      </div>
+    );
+  }
+
+  if (!activePhase) {
+    return (
+      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+        <CardContent className="p-8 text-center">
+          <p className="text-gray-600">Please select a project phase to view process map.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Map className="h-5 w-5 text-orange-500" />
-            Process Map - {activePhase === "construction" ? "Construction & Erection" : "Pre-commissioning Testing"}
+            Process Map - {activePhase}
           </CardTitle>
           <CardDescription>
             Visual representation of the complete process flow from start to finish
@@ -100,28 +122,34 @@ export const ProcessMap = ({ activePhase }: ProcessMapProps) => {
 
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-6">
-          <div className="space-y-6">
-            {currentFlow.map((step, index) => (
-              <div key={step.id} className="flex items-center gap-6">
-                <div className={`p-4 rounded-lg border-2 ${getStepColor(step.type)} min-w-[300px]`}>
-                  <div className="flex items-center gap-3 mb-2">
-                    {getStepIcon(step.type)}
-                    <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
-                      {step.id}
+          {processFlow.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No process map data found for this phase.</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {processFlow.map((step, index) => (
+                <div key={step.id} className="flex items-center gap-6">
+                  <div className={`p-4 rounded-lg border-2 ${getStepColor(step.step_type)} min-w-[300px]`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      {getStepIcon(step.step_type)}
+                      <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
+                        {step.step_id}
+                      </div>
                     </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">{step.title}</h3>
+                    <p className="text-sm text-gray-600">{step.description}</p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{step.title}</h3>
-                  <p className="text-sm text-gray-600">{step.description}</p>
+                  
+                  {index < processFlow.length - 1 && (
+                    <div className="flex-1 flex justify-center">
+                      <ArrowRight className="h-6 w-6 text-gray-400" />
+                    </div>
+                  )}
                 </div>
-                
-                {index < currentFlow.length - 1 && (
-                  <div className="flex-1 flex justify-center">
-                    <ArrowRight className="h-6 w-6 text-gray-400" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

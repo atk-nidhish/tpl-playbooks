@@ -9,7 +9,180 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      playbooks: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_path: string | null
+          id: string
+          name: string
+          phases: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          name: string
+          phases?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          name?: string
+          phases?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      process_map: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number
+          phase_id: string
+          playbook_id: string | null
+          step_id: string
+          step_type: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index: number
+          phase_id: string
+          playbook_id?: string | null
+          step_id: string
+          step_type: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          phase_id?: string
+          playbook_id?: string | null
+          step_id?: string
+          step_type?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "process_map_playbook_id_fkey"
+            columns: ["playbook_id"]
+            isOneToOne: false
+            referencedRelation: "playbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      process_steps: {
+        Row: {
+          activity: string
+          comments: string | null
+          created_at: string
+          id: string
+          inputs: string[] | null
+          outputs: string[] | null
+          phase_id: string
+          playbook_id: string | null
+          responsible: string | null
+          step_id: string
+          timeline: string | null
+        }
+        Insert: {
+          activity: string
+          comments?: string | null
+          created_at?: string
+          id?: string
+          inputs?: string[] | null
+          outputs?: string[] | null
+          phase_id: string
+          playbook_id?: string | null
+          responsible?: string | null
+          step_id: string
+          timeline?: string | null
+        }
+        Update: {
+          activity?: string
+          comments?: string | null
+          created_at?: string
+          id?: string
+          inputs?: string[] | null
+          outputs?: string[] | null
+          phase_id?: string
+          playbook_id?: string | null
+          responsible?: string | null
+          step_id?: string
+          timeline?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "process_steps_playbook_id_fkey"
+            columns: ["playbook_id"]
+            isOneToOne: false
+            referencedRelation: "playbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      raci_matrix: {
+        Row: {
+          accountable: string | null
+          consulted: string | null
+          created_at: string
+          id: string
+          informed: string | null
+          phase_id: string
+          playbook_id: string | null
+          responsible: string | null
+          step_id: string
+          task: string
+        }
+        Insert: {
+          accountable?: string | null
+          consulted?: string | null
+          created_at?: string
+          id?: string
+          informed?: string | null
+          phase_id: string
+          playbook_id?: string | null
+          responsible?: string | null
+          step_id: string
+          task: string
+        }
+        Update: {
+          accountable?: string | null
+          consulted?: string | null
+          created_at?: string
+          id?: string
+          informed?: string | null
+          phase_id?: string
+          playbook_id?: string | null
+          responsible?: string | null
+          step_id?: string
+          task?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raci_matrix_playbook_id_fkey"
+            columns: ["playbook_id"]
+            isOneToOne: false
+            referencedRelation: "playbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
