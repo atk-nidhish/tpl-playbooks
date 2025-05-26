@@ -20,10 +20,9 @@ interface ProcessStepsProps {
   playbookId: string;
   activePhase: string;
   searchQuery: string;
-  showInputsOnly?: boolean;
 }
 
-export const ProcessSteps = ({ playbookId, activePhase, searchQuery, showInputsOnly = false }: ProcessStepsProps) => {
+export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessStepsProps) => {
   const [steps, setSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -82,13 +81,10 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, showInputsO
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5 text-orange-500" />
-            {showInputsOnly ? "Process Inputs" : "Process Steps"} - {activePhase}
+            Process Steps - {activePhase}
           </CardTitle>
           <CardDescription>
-            {showInputsOnly 
-              ? "Input requirements and dependencies for each process step"
-              : "Track the process steps and their execution requirements"
-            }
+            Track the process steps with their inputs, outputs, and execution requirements
           </CardDescription>
         </CardHeader>
       </Card>
@@ -124,18 +120,18 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, showInputsO
                         <div className="text-gray-600 mt-1">{step.timeline}</div>
                       </div>
                       <div>
-                        <span className="font-medium text-gray-700">{showInputsOnly ? "Inputs:" : "Outputs:"}</span>
+                        <span className="font-medium text-gray-700">Outputs:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {(showInputsOnly ? step.inputs : step.outputs)?.map((item, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              {item}
+                          {step.outputs?.map((output, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                              {output}
                             </Badge>
                           ))}
                         </div>
                       </div>
                     </div>
 
-                    {!showInputsOnly && step.inputs && step.inputs.length > 0 && (
+                    {step.inputs && step.inputs.length > 0 && (
                       <div className="mb-4">
                         <span className="font-medium text-gray-700 text-sm">Inputs:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
