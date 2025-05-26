@@ -12,12 +12,12 @@ export interface ParsedPlaybookData {
 
 export const processUploadedPlaybook = async (fileName: string) => {
   try {
-    console.log(`Processing uploaded playbook with AI: ${fileName}`);
+    console.log(`Processing uploaded playbook with Groq AI: ${fileName}`);
     
     // Check if playbook already exists
     const { data: existingPlaybook, error: checkError } = await supabase
       .from('playbooks')
-      .select('id')
+      .select('id, name')
       .eq('name', fileName.replace('.pdf', ''))
       .single();
 
@@ -27,21 +27,30 @@ export const processUploadedPlaybook = async (fileName: string) => {
     }
 
     if (existingPlaybook) {
-      console.log('Playbook already exists, returning existing:', existingPlaybook.id);
+      console.log('Playbook already exists, skipping:', existingPlaybook.name);
       return existingPlaybook;
     }
 
-    // Use AI to parse the PDF content
+    console.log(`Calling Groq AI parser for: ${fileName}`);
+    
+    // Use Groq AI to parse the PDF content
     const { data, error } = await supabase.functions.invoke('parse-pdf-with-ai', {
       body: { fileName }
     });
 
     if (error) {
-      console.error('Error calling AI parser:', error);
+      console.error('Error calling Groq AI parser:', error);
       throw error;
     }
 
-    console.log(`Successfully processed playbook with AI: ${fileName}`);
+    if (!data.success) {
+      console.error('AI parsing failed:', data.error);
+      throw new Error(data.error || 'AI parsing failed');
+    }
+
+    console.log(`Successfully processed playbook with Groq AI: ${fileName}`);
+    console.log('Processing stats:', data.stats);
+    
     return data.playbook;
 
   } catch (error) {
@@ -52,7 +61,7 @@ export const processUploadedPlaybook = async (fileName: string) => {
 
 export const scanAndProcessPlaybooks = async () => {
   try {
-    console.log('Scanning for new playbooks to process with AI...');
+    console.log('Scanning for new playbooks to process with Groq AI...');
     
     // List all files in the playbooks bucket
     const { data: files, error } = await supabase.storage
@@ -67,12 +76,23 @@ export const scanAndProcessPlaybooks = async () => {
     const pdfFiles = files?.filter(file => file.name.endsWith('.pdf')) || [];
     console.log(`Found ${pdfFiles.length} PDF files to process:`, pdfFiles.map(f => f.name));
     
+    let processedCount = 0;
+    
     for (const file of pdfFiles) {
-      console.log(`Processing file with AI: ${file.name}`);
-      await processUploadedPlaybook(file.name);
+      try {
+        console.log(`Processing file with Groq AI: ${file.name}`);
+        const result = await processUploadedPlaybook(file.name);
+        if (result) {
+          processedCount++;
+          console.log(`Successfully processed: ${file.name}`);
+        }
+      } catch (error) {
+        console.error(`Failed to process ${file.name}:`, error);
+        // Continue with other files even if one fails
+      }
     }
 
-    console.log(`Completed AI processing of ${pdfFiles.length} PDF files`);
+    console.log(`Completed Groq AI processing: ${processedCount}/${pdfFiles.length} files processed successfully`);
     
   } catch (error) {
     console.error('Error scanning playbooks:', error);
