@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export const scanAndProcessPlaybooks = async () => {
   try {
-    console.log('Scanning for new playbooks to process with Groq AI...');
+    console.log('Scanning for new playbooks to process...');
     
     // List all files in the storage bucket
     const { data: files, error: listError } = await supabase.storage
@@ -34,7 +34,7 @@ export const scanAndProcessPlaybooks = async () => {
 
     for (const file of supportedFiles) {
       try {
-        console.log(`Processing file with Groq AI: ${file.name}`);
+        console.log(`Processing file: ${file.name}`);
         await processUploadedPlaybook(file.name);
         successCount++;
         console.log(`Successfully processed: ${file.name}`);
@@ -43,7 +43,7 @@ export const scanAndProcessPlaybooks = async () => {
       }
     }
 
-    console.log(`Completed Groq AI processing: ${successCount}/${totalFiles} files processed successfully`);
+    console.log(`Completed processing: ${successCount}/${totalFiles} files processed successfully`);
   } catch (error) {
     console.error('Error in scanAndProcessPlaybooks:', error);
   }
@@ -51,7 +51,7 @@ export const scanAndProcessPlaybooks = async () => {
 
 export const processUploadedPlaybook = async (fileName: string) => {
   try {
-    console.log(`Processing uploaded playbook with Groq AI: ${fileName}`);
+    console.log(`Processing uploaded playbook: ${fileName}`);
     
     // Extract playbook name from filename (remove extension)
     const playbookName = fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, '').replace(/\s+/g, '_').toLowerCase();
@@ -68,19 +68,23 @@ export const processUploadedPlaybook = async (fileName: string) => {
       return;
     }
 
-    console.log(`Calling Groq AI parser for: ${fileName}`);
+    // Determine which parser to use based on file type
+    const isWordDoc = fileName.toLowerCase().endsWith('.docx') || fileName.toLowerCase().endsWith('.doc');
+    const functionName = isWordDoc ? 'parse-word-document' : 'parse-pdf-with-ai';
     
-    // Call the Groq AI edge function
-    const { data, error } = await supabase.functions.invoke('parse-pdf-with-ai', {
+    console.log(`Using ${isWordDoc ? 'specialized Word document parser' : 'PDF parser'} for: ${fileName}`);
+    
+    // Call the appropriate edge function
+    const { data, error } = await supabase.functions.invoke(functionName, {
       body: { fileName }
     });
 
     if (error) {
-      console.error('Error calling Groq AI parser:', error);
+      console.error(`Error calling ${functionName}:`, error);
       throw error;
     }
 
-    console.log(`Groq AI parsing completed for: ${fileName}`, data);
+    console.log(`Processing completed for: ${fileName}`, data);
     
   } catch (error) {
     console.error('Error processing uploaded playbook:', error);
