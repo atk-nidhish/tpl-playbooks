@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { Search, Sun, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
@@ -18,48 +17,14 @@ const Index = () => {
     {
       id: "construction",
       name: "Construction & Erection Inspection",
-      description: "Physical completion verification through joint inspections",
-      progress: 85,
-      status: "in-progress",
-      steps: 11,
-      completedSteps: 9
+      description: "Physical completion verification through joint inspections"
     },
     {
       id: "precommissioning",
       name: "Pre-commissioning Testing",
-      description: "Functionality and safety validation through structured testing",
-      progress: 60,
-      status: "in-progress",
-      steps: 11,
-      completedSteps: 7
+      description: "Functionality and safety validation through structured testing"
     }
   ];
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case "in-progress":
-        return <Clock className="h-4 w-4 text-blue-500" />;
-      case "pending":
-        return <AlertCircle className="h-4 w-4 text-orange-500" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-400" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "in-progress":
-        return "bg-blue-100 text-blue-800";
-      case "pending":
-        return "bg-orange-100 text-orange-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
@@ -107,29 +72,9 @@ const Index = () => {
                 onClick={() => setActivePhase(phase.id)}
               >
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{phase.name}</CardTitle>
-                    <div className="flex items-center gap-2">
-                      {getStatusIcon(phase.status)}
-                      <Badge className={getStatusColor(phase.status)}>
-                        {phase.status}
-                      </Badge>
-                    </div>
-                  </div>
+                  <CardTitle className="text-lg">{phase.name}</CardTitle>
                   <CardDescription>{phase.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Progress</span>
-                      <span>{phase.progress}%</span>
-                    </div>
-                    <Progress value={phase.progress} />
-                    <div className="flex justify-between text-xs text-gray-600">
-                      <span>{phase.completedSteps} of {phase.steps} steps completed</span>
-                    </div>
-                  </div>
-                </CardContent>
               </Card>
             ))}
           </div>
