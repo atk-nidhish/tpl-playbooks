@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, MessageSquare, Settings, ArrowRight } from "lucide-react";
+import { User, MessageSquare, Settings, ArrowRight, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProcessStep {
@@ -84,7 +84,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
             Process Steps - {activePhase}
           </CardTitle>
           <CardDescription>
-            Track the process steps with their inputs, outputs, and execution requirements
+            Complete process steps with inputs, outputs, and execution requirements
           </CardDescription>
         </CardHeader>
       </Card>
@@ -106,6 +106,28 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 mb-3">{step.activity}</h3>
+                    
+                    {/* Inputs Section */}
+                    {step.inputs && step.inputs.length > 0 && (
+                      <div className="mb-4">
+                        <span className="font-medium text-gray-700 text-sm flex items-center gap-1 mb-2">
+                          <ArrowRight className="h-3 w-3 text-blue-500" />
+                          Inputs:
+                        </span>
+                        <div className="flex flex-wrap gap-1">
+                          {step.inputs.map((input, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                              {input}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Process Flow Arrow */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="h-6 w-6 text-gray-400" />
+                    </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
                       <div>
@@ -130,20 +152,6 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                         </div>
                       </div>
                     </div>
-
-                    {step.inputs && step.inputs.length > 0 && (
-                      <div className="mb-4">
-                        <span className="font-medium text-gray-700 text-sm">Inputs:</span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {step.inputs.map((input, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                              <ArrowRight className="h-2 w-2 mr-1" />
-                              {input}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     {step.comments && (
                       <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
