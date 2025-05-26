@@ -30,6 +30,8 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
 
   const fetchProcessMap = async () => {
     try {
+      console.log(`Fetching process map for playbook: ${playbookId}, phase: ${activePhase}`);
+      
       const { data, error } = await supabase
         .from('process_map')
         .select('*')
@@ -37,7 +39,12 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
         .eq('phase_id', activePhase)
         .order('order_index');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching process map:', error);
+        throw error;
+      }
+
+      console.log(`Found ${data?.length || 0} process map steps:`, data);
       setProcessFlow(data || []);
     } catch (error) {
       console.error('Error fetching process map:', error);
@@ -53,8 +60,10 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
         return <Circle className="h-8 w-8 fill-purple-500 text-white" />;
       case "process":
         return <Hexagon className="h-8 w-8 fill-blue-300 text-blue-800" />;
-      case "approval":
+      case "decision":
         return <Diamond className="h-8 w-8 fill-green-300 text-green-800" />;
+      case "milestone":
+        return <Square className="h-8 w-8 fill-yellow-300 text-yellow-800" />;
       default:
         return <Square className="h-8 w-8 fill-gray-300 text-gray-600" />;
     }
@@ -67,8 +76,10 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
         return "bg-purple-50 border-purple-200";
       case "process":
         return "bg-blue-50 border-blue-200";
-      case "approval":
+      case "decision":
         return "bg-green-50 border-green-200";
+      case "milestone":
+        return "bg-yellow-50 border-yellow-200";
       default:
         return "bg-gray-50 border-gray-200";
     }
@@ -114,8 +125,15 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
             </div>
             <div className="flex items-center gap-2">
               <Diamond className="h-6 w-6 fill-green-300 text-green-600" />
-              <span className="text-sm">Approval</span>
+              <span className="text-sm">Decision</span>
             </div>
+            <div className="flex items-center gap-2">
+              <Square className="h-6 w-6 fill-yellow-300 text-yellow-600" />
+              <span className="text-sm">Milestone</span>
+            </div>
+          </div>
+          <div className="text-sm text-gray-500 mt-2">
+            Found {processFlow.length} process map steps
           </div>
         </CardHeader>
       </Card>
@@ -124,7 +142,14 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
         <CardContent className="p-6">
           {processFlow.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No process map data found for this phase.</p>
+              <p className="text-gray-600">
+                No process map data found for this phase. The AI may still be processing the PDF or the phase ID might not match.
+              </p>
+              <div className="mt-4 text-sm text-gray-500">
+                <p>Debugging info:</p>
+                <p>Playbook ID: {playbookId}</p>
+                <p>Active Phase: {activePhase}</p>
+              </div>
             </div>
           ) : (
             <div className="space-y-6">

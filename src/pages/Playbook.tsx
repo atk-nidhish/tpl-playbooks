@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Sun, CheckCircle, ArrowLeft } from "lucide-react";
+import { Search, Sun, CheckCircle, ArrowLeft, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
@@ -34,25 +35,38 @@ const Playbook = () => {
 
   const fetchPlaybook = async () => {
     try {
+      console.log(`Fetching playbook with ID: ${id}`);
+      
       const { data, error } = await supabase
         .from('playbooks')
         .select('*')
         .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching playbook:', error);
+        throw error;
+      }
       
+      console.log('Fetched playbook data:', data);
       setPlaybook(data);
       
       // Set the first phase as active by default
       if (data.phases && Object.keys(data.phases).length > 0) {
-        setActivePhase(Object.keys(data.phases)[0]);
+        const firstPhase = Object.keys(data.phases)[0];
+        console.log('Setting active phase to:', firstPhase);
+        setActivePhase(firstPhase);
       }
     } catch (error) {
       console.error('Error fetching playbook:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const refreshData = () => {
+    setLoading(true);
+    fetchPlaybook();
   };
 
   if (loading) {
@@ -78,9 +92,12 @@ const Playbook = () => {
 
   const projectPhases = playbook.phases ? Object.entries(playbook.phases).map(([key, value]: [string, any]) => ({
     id: key,
-    name: value.name,
-    description: value.description
+    name: value.name || key,
+    description: value.description || "Phase description"
   })) : [];
+
+  console.log('Available phases:', projectPhases);
+  console.log('Current active phase:', activePhase);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
@@ -101,6 +118,15 @@ const Playbook = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Button 
+                onClick={refreshData} 
+                variant="outline"
+                size="sm"
+                className="bg-white/90"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
@@ -129,17 +155,30 @@ const Playbook = () => {
                       ? 'ring-2 ring-orange-400 bg-white' 
                       : 'bg-white/90 backdrop-blur-sm border-orange-200'
                   }`}
-                  onClick={() => setActivePhase(phase.id)}
+                  onClick={() => {
+                    console.log('Setting active phase to:', phase.id);
+                    setActivePhase(phase.id);
+                  }}
                 >
                   <CardHeader>
                     <CardTitle className="text-lg">{phase.name}</CardTitle>
                     <CardDescription>{phase.description}</CardDescription>
+                    <div className="text-xs text-gray-500">Phase ID: {phase.id}</div>
                   </CardHeader>
                 </Card>
               ))}
             </div>
           </div>
         )}
+
+        {/* Debug Information */}
+        <div className="mb-6 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
+          <h3 className="font-semibold mb-2">Debug Information:</h3>
+          <p>Playbook ID: {playbook.id}</p>
+          <p>Playbook Name: {playbook.name}</p>
+          <p>Active Phase: {activePhase}</p>
+          <p>Available Phases: {projectPhases.map(p => p.id).join(', ')}</p>
+        </div>
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="processes" className="space-y-6">

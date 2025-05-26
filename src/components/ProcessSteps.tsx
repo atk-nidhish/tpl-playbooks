@@ -34,6 +34,8 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
 
   const fetchSteps = async () => {
     try {
+      console.log(`Fetching process steps for playbook: ${playbookId}, phase: ${activePhase}`);
+      
       const { data, error } = await supabase
         .from('process_steps')
         .select('*')
@@ -41,7 +43,12 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
         .eq('phase_id', activePhase)
         .order('step_id');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching process steps:', error);
+        throw error;
+      }
+
+      console.log(`Found ${data?.length || 0} process steps:`, data);
       setSteps(data || []);
     } catch (error) {
       console.error('Error fetching process steps:', error);
@@ -52,7 +59,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
 
   const filteredSteps = steps.filter(step =>
     step.activity.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    step.responsible.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    step.responsible?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     step.inputs?.some(input => input.toLowerCase().includes(searchQuery.toLowerCase())) ||
     step.outputs?.some(output => output.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -86,13 +93,28 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
           <CardDescription>
             Complete process steps with inputs, outputs, and execution requirements
           </CardDescription>
+          <div className="text-sm text-gray-500">
+            Found {steps.length} total steps, showing {filteredSteps.length} matching steps
+          </div>
         </CardHeader>
       </Card>
 
       {filteredSteps.length === 0 ? (
         <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
           <CardContent className="p-8 text-center">
-            <p className="text-gray-600">No process steps found for this phase.</p>
+            <p className="text-gray-600">
+              {steps.length === 0 
+                ? "No process steps found for this phase. The AI may still be processing the PDF or the phase ID might not match."
+                : "No process steps match your search criteria."
+              }
+            </p>
+            {steps.length === 0 && (
+              <div className="mt-4 text-sm text-gray-500">
+                <p>Debugging info:</p>
+                <p>Playbook ID: {playbookId}</p>
+                <p>Active Phase: {activePhase}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -134,21 +156,25 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                         <span className="font-medium text-gray-700">Responsible:</span>
                         <div className="flex items-center gap-1 mt-1">
                           <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-gray-600">{step.responsible}</span>
+                          <span className="text-gray-600">{step.responsible || "Not specified"}</span>
                         </div>
                       </div>
                       <div>
                         <span className="font-medium text-gray-700">Timeline:</span>
-                        <div className="text-gray-600 mt-1">{step.timeline}</div>
+                        <div className="text-gray-600 mt-1">{step.timeline || "Not specified"}</div>
                       </div>
                       <div>
                         <span className="font-medium text-gray-700">Outputs:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {step.outputs?.map((output, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                              {output}
-                            </Badge>
-                          ))}
+                          {step.outputs && step.outputs.length > 0 ? (
+                            step.outputs.map((output, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                {output}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-gray-500 text-xs">No outputs specified</span>
+                          )}
                         </div>
                       </div>
                     </div>

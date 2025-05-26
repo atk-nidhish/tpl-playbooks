@@ -34,6 +34,8 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
 
   const fetchRACIData = async () => {
     try {
+      console.log(`Fetching RACI data for playbook: ${playbookId}, phase: ${activePhase}`);
+      
       const { data, error } = await supabase
         .from('raci_matrix')
         .select('*')
@@ -41,7 +43,12 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
         .eq('phase_id', activePhase)
         .order('step_id');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching RACI data:', error);
+        throw error;
+      }
+
+      console.log(`Found ${data?.length || 0} RACI entries:`, data);
       setRaciData(data || []);
     } catch (error) {
       console.error('Error fetching RACI data:', error);
@@ -52,14 +59,14 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
 
   const filteredData = raciData.filter(item =>
     item.task.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.responsible.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.accountable.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.consulted.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.informed.toLowerCase().includes(searchQuery.toLowerCase())
+    item.responsible?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.accountable?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.consulted?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.informed?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getRoleBadge = (text: string, role: string) => {
-    if (!text) return null;
+    if (!text) return <span className="text-gray-400 text-xs">Not assigned</span>;
     
     const colorMap = {
       R: "bg-blue-100 text-blue-800",
@@ -125,6 +132,9 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
               <span className="text-sm">Informed</span>
             </div>
           </div>
+          <div className="text-sm text-gray-500 mt-2">
+            Found {raciData.length} total entries, showing {filteredData.length} matching entries
+          </div>
         </CardHeader>
       </Card>
 
@@ -132,7 +142,19 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
         <CardContent className="p-6">
           {filteredData.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No RACI data found for this phase.</p>
+              <p className="text-gray-600">
+                {raciData.length === 0 
+                  ? "No RACI data found for this phase. The AI may still be processing the PDF or the phase ID might not match."
+                  : "No RACI entries match your search criteria."
+                }
+              </p>
+              {raciData.length === 0 && (
+                <div className="mt-4 text-sm text-gray-500">
+                  <p>Debugging info:</p>
+                  <p>Playbook ID: {playbookId}</p>
+                  <p>Active Phase: {activePhase}</p>
+                </div>
+              )}
             </div>
           ) : (
             <Table>
