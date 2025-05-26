@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, User } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Users } from "lucide-react";
 
 interface RACIMatrixProps {
   activePhase: string;
@@ -177,19 +178,24 @@ export const RACIMatrix = ({ activePhase, searchQuery }: RACIMatrixProps) => {
     item.informed.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-      case "R":
-        return "bg-blue-100 text-blue-800 border-blue-300";
-      case "A":
-        return "bg-green-100 text-green-800 border-green-300";
-      case "C":
-        return "bg-orange-100 text-orange-800 border-orange-300";
-      case "I":
-        return "bg-purple-100 text-purple-800 border-purple-300";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300";
-    }
+  const getRoleBadge = (text: string, role: string) => {
+    if (!text) return null;
+    
+    const colorMap = {
+      R: "bg-blue-100 text-blue-800",
+      A: "bg-green-100 text-green-800",
+      C: "bg-orange-100 text-orange-800",
+      I: "bg-purple-100 text-purple-800"
+    };
+
+    return (
+      <div className="flex items-center gap-1">
+        <Badge className={`${colorMap[role as keyof typeof colorMap]} text-xs`}>
+          {role}
+        </Badge>
+        <span className="text-sm">{text}</span>
+      </div>
+    );
   };
 
   return (
@@ -205,91 +211,57 @@ export const RACIMatrix = ({ activePhase, searchQuery }: RACIMatrixProps) => {
           </CardDescription>
           <div className="flex gap-4 mt-4">
             <div className="flex items-center gap-2">
-              <Badge className={getRoleBadgeColor("R")}>R</Badge>
+              <Badge className="bg-blue-100 text-blue-800">R</Badge>
               <span className="text-sm">Responsible</span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className={getRoleBadgeColor("A")}>A</Badge>
+              <Badge className="bg-green-100 text-green-800">A</Badge>
               <span className="text-sm">Accountable</span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className={getRoleBadgeColor("C")}>C</Badge>
+              <Badge className="bg-orange-100 text-orange-800">C</Badge>
               <span className="text-sm">Consulted</span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className={getRoleBadgeColor("I")}>I</Badge>
+              <Badge className="bg-purple-100 text-purple-800">I</Badge>
               <span className="text-sm">Informed</span>
             </div>
           </div>
         </CardHeader>
       </Card>
 
-      <div className="space-y-4">
-        {filteredData.map((item) => (
-          <Card key={item.id} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-md transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
-                  {item.id}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-3">{item.task}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className={getRoleBadgeColor("R")}>R</Badge>
-                        <span className="text-sm font-medium">Responsible</span>
-                      </div>
-                      {item.responsible && (
-                        <div className="flex items-center gap-1">
-                          <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-sm text-gray-600">{item.responsible}</span>
-                        </div>
-                      )}
+      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+        <CardContent className="p-6">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[80px]">Step</TableHead>
+                <TableHead className="min-w-[300px]">Task</TableHead>
+                <TableHead className="w-[200px]">Responsible</TableHead>
+                <TableHead className="w-[200px]">Accountable</TableHead>
+                <TableHead className="w-[200px]">Consulted</TableHead>
+                <TableHead className="w-[200px]">Informed</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredData.map((item) => (
+                <TableRow key={item.id} className="hover:bg-gray-50">
+                  <TableCell>
+                    <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
+                      {item.id}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className={getRoleBadgeColor("A")}>A</Badge>
-                        <span className="text-sm font-medium">Accountable</span>
-                      </div>
-                      {item.accountable && (
-                        <div className="flex items-center gap-1">
-                          <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-sm text-gray-600">{item.accountable}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className={getRoleBadgeColor("C")}>C</Badge>
-                        <span className="text-sm font-medium">Consulted</span>
-                      </div>
-                      {item.consulted && (
-                        <div className="flex items-center gap-1">
-                          <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-sm text-gray-600">{item.consulted}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className={getRoleBadgeColor("I")}>I</Badge>
-                        <span className="text-sm font-medium">Informed</span>
-                      </div>
-                      {item.informed && (
-                        <div className="flex items-center gap-1">
-                          <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-sm text-gray-600">{item.informed}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+                  </TableCell>
+                  <TableCell className="font-medium">{item.task}</TableCell>
+                  <TableCell>{getRoleBadge(item.responsible, "R")}</TableCell>
+                  <TableCell>{getRoleBadge(item.accountable, "A")}</TableCell>
+                  <TableCell>{getRoleBadge(item.consulted, "C")}</TableCell>
+                  <TableCell>{getRoleBadge(item.informed, "I")}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 };

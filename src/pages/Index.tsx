@@ -2,17 +2,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Search, Sun, Users, Map, BookOpen, BarChart3, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { Search, Sun, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
-import { Glossary } from "@/components/Glossary";
-import { KPIMetrics } from "@/components/KPIMetrics";
-import { ProjectTeams } from "@/components/ProjectTeams";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -84,7 +80,7 @@ const Index = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search processes, teams, KPIs..."
+                  placeholder="Search processes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 w-80 bg-white/90"
@@ -96,69 +92,6 @@ const Index = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
-        {/* Project Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Sun className="h-5 w-5 text-orange-500" />
-                Project Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900 mb-1">72%</div>
-              <div className="text-sm text-gray-600">Overall Progress</div>
-              <Progress value={72} className="mt-2" />
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-500" />
-                Active Teams
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900 mb-1">5</div>
-              <div className="text-sm text-gray-600">Teams Engaged</div>
-              <div className="flex gap-1 mt-2">
-                <Badge variant="secondary" className="text-xs">Project</Badge>
-                <Badge variant="secondary" className="text-xs">OEM</Badge>
-                <Badge variant="secondary" className="text-xs">O&M</Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                Completed Steps
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900 mb-1">16</div>
-              <div className="text-sm text-gray-600">of 22 Total Steps</div>
-              <div className="text-xs text-green-600 mt-1">6 remaining</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-purple-500" />
-                KPI Score
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900 mb-1">8.7</div>
-              <div className="text-sm text-gray-600">Performance Rating</div>
-              <div className="text-xs text-green-600 mt-1">Above target</div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Phase Selection */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Project Phases</h2>
@@ -204,30 +137,16 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="processes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-white/90 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-sm">
             <TabsTrigger value="processes" className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
               Process Steps
             </TabsTrigger>
             <TabsTrigger value="raci" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
               RACI Matrix
             </TabsTrigger>
             <TabsTrigger value="process-map" className="flex items-center gap-2">
-              <Map className="h-4 w-4" />
               Process Map
-            </TabsTrigger>
-            <TabsTrigger value="teams" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Teams
-            </TabsTrigger>
-            <TabsTrigger value="kpis" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              KPIs
-            </TabsTrigger>
-            <TabsTrigger value="glossary" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Glossary
             </TabsTrigger>
           </TabsList>
 
@@ -241,18 +160,6 @@ const Index = () => {
 
           <TabsContent value="process-map">
             <ProcessMap activePhase={activePhase} />
-          </TabsContent>
-
-          <TabsContent value="teams">
-            <ProjectTeams searchQuery={searchQuery} />
-          </TabsContent>
-
-          <TabsContent value="kpis">
-            <KPIMetrics />
-          </TabsContent>
-
-          <TabsContent value="glossary">
-            <Glossary searchQuery={searchQuery} />
           </TabsContent>
         </Tabs>
       </div>
