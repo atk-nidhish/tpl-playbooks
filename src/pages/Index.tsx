@@ -93,13 +93,10 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="processes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-sm">
             <TabsTrigger value="processes" className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
               Process Steps
-            </TabsTrigger>
-            <TabsTrigger value="inputs" className="flex items-center gap-2">
-              Inputs
             </TabsTrigger>
             <TabsTrigger value="raci" className="flex items-center gap-2">
               RACI Matrix
@@ -111,10 +108,6 @@ const Index = () => {
 
           <TabsContent value="processes">
             <ProcessSteps playbookId={legacyPlaybookId} activePhase={activePhase} searchQuery={searchQuery} />
-          </TabsContent>
-
-          <TabsContent value="inputs">
-            <ProcessSteps playbookId={legacyPlaybookId} activePhase={activePhase} searchQuery={searchQuery} showInputsOnly={true} />
           </TabsContent>
 
           <TabsContent value="raci">

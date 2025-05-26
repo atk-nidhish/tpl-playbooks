@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 export interface ParsedPlaybookData {
@@ -14,6 +15,7 @@ export const parsePDFContent = async (fileName: string): Promise<ParsedPlaybookD
   console.log(`Processing structured PDF: ${fileName}`);
   
   if (fileName.includes('draft_comm_playbook')) {
+    console.log('Detected draft_comm_playbook - using enhanced structure');
     // Enhanced structure based on actual playbook format with chapters
     return {
       title: 'Draft Commercial Playbook',
@@ -390,6 +392,7 @@ export const parsePDFContent = async (fileName: string): Promise<ParsedPlaybookD
     };
   }
   
+  console.log('Using default structure for file:', fileName);
   // Enhanced default structure for other PDFs following the same chapter-based format
   return {
     title: fileName.replace('.pdf', '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
@@ -449,19 +452,31 @@ export const processUploadedPlaybook = async (fileName: string) => {
     console.log(`Processing uploaded playbook: ${fileName}`);
     
     // Check if playbook already exists
-    const { data: existingPlaybook } = await supabase
+    const { data: existingPlaybook, error: checkError } = await supabase
       .from('playbooks')
       .select('id')
       .eq('name', fileName.replace('.pdf', ''))
       .single();
 
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Error checking existing playbook:', checkError);
+      throw checkError;
+    }
+
     if (existingPlaybook) {
-      console.log('Playbook already exists, skipping processing');
+      console.log('Playbook already exists, returning existing:', existingPlaybook.id);
       return existingPlaybook;
     }
 
     // Parse the PDF content with enhanced structure
     const parsedData = await parsePDFContent(fileName);
+    console.log('Parsed data for', fileName, ':', {
+      title: parsedData.title,
+      phaseCount: Object.keys(parsedData.phases).length,
+      stepCount: parsedData.processSteps.length,
+      raciCount: parsedData.raciMatrix.length,
+      mapCount: parsedData.processMap.length
+    });
     
     // Create the playbook entry
     const { data: playbook, error: playbookError } = await supabase
@@ -476,7 +491,12 @@ export const processUploadedPlaybook = async (fileName: string) => {
       .select()
       .single();
 
-    if (playbookError) throw playbookError;
+    if (playbookError) {
+      console.error('Error creating playbook:', playbookError);
+      throw playbookError;
+    }
+
+    console.log('Created playbook:', playbook.id);
 
     // Insert process steps
     if (parsedData.processSteps.length > 0) {
@@ -489,7 +509,11 @@ export const processUploadedPlaybook = async (fileName: string) => {
         .from('process_steps')
         .insert(processStepsWithPlaybookId);
 
-      if (stepsError) throw stepsError;
+      if (stepsError) {
+        console.error('Error inserting process steps:', stepsError);
+        throw stepsError;
+      }
+      console.log(`Inserted ${processStepsWithPlaybookId.length} process steps`);
     }
 
     // Insert RACI matrix data
@@ -503,7 +527,11 @@ export const processUploadedPlaybook = async (fileName: string) => {
         .from('raci_matrix')
         .insert(raciWithPlaybookId);
 
-      if (raciError) throw raciError;
+      if (raciError) {
+        console.error('Error inserting RACI matrix:', raciError);
+        throw raciError;
+      }
+      console.log(`Inserted ${raciWithPlaybookId.length} RACI entries`);
     }
 
     // Insert process map data
@@ -517,7 +545,11 @@ export const processUploadedPlaybook = async (fileName: string) => {
         .from('process_map')
         .insert(mapWithPlaybookId);
 
-      if (mapError) throw mapError;
+      if (mapError) {
+        console.error('Error inserting process map:', mapError);
+        throw mapError;
+      }
+      console.log(`Inserted ${mapWithPlaybookId.length} process map entries`);
     }
 
     console.log(`Successfully processed structured playbook: ${fileName}`);
@@ -538,10 +570,13 @@ export const scanAndProcessPlaybooks = async () => {
       .from('playbooks')
       .list();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error listing storage files:', error);
+      throw error;
+    }
 
     const pdfFiles = files?.filter(file => file.name.endsWith('.pdf')) || [];
-    console.log(`Found ${pdfFiles.length} PDF files to process`);
+    console.log(`Found ${pdfFiles.length} PDF files to process:`, pdfFiles.map(f => f.name));
     
     for (const file of pdfFiles) {
       console.log(`Processing file: ${file.name}`);
