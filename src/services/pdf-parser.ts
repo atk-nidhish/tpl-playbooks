@@ -20,7 +20,7 @@ export const scanAndProcessPlaybooks = async () => {
       return;
     }
 
-    // Filter for PDF and Word files
+    // Filter for supported files
     const supportedFiles = files.filter(file => 
       file.name.toLowerCase().endsWith('.pdf') || 
       file.name.toLowerCase().endsWith('.docx') ||
@@ -53,7 +53,7 @@ export const processUploadedPlaybook = async (fileName: string) => {
   try {
     console.log(`Processing uploaded playbook: ${fileName}`);
     
-    // Extract playbook name from filename (remove extension)
+    // Extract playbook name from filename
     const playbookName = fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, '').replace(/\s+/g, '_').toLowerCase();
     
     // Check if playbook already exists
@@ -61,22 +61,25 @@ export const processUploadedPlaybook = async (fileName: string) => {
       .from('playbooks')
       .select('id')
       .eq('name', playbookName)
-      .single();
+      .maybeSingle();
 
     if (existingPlaybook) {
       console.log(`Playbook already exists, skipping: ${playbookName}`);
       return;
     }
 
-    // Determine which parser to use based on file type
+    // Determine parser based on file type
     const isWordDoc = fileName.toLowerCase().endsWith('.docx') || fileName.toLowerCase().endsWith('.doc');
     const functionName = isWordDoc ? 'parse-word-document' : 'parse-pdf-with-ai';
     
-    console.log(`Using ${isWordDoc ? 'specialized Word document parser' : 'PDF parser'} for: ${fileName}`);
+    console.log(`Using ${functionName} for: ${fileName}`);
     
-    // Call the appropriate edge function
+    // Call the appropriate edge function with timeout handling
     const { data, error } = await supabase.functions.invoke(functionName, {
-      body: { fileName }
+      body: { fileName },
+      headers: {
+        'Content-Type': 'application/json',
+      }
     });
 
     if (error) {
@@ -84,7 +87,7 @@ export const processUploadedPlaybook = async (fileName: string) => {
       throw error;
     }
 
-    console.log(`Processing completed for: ${fileName}`, data);
+    console.log(`Successfully processed: ${fileName}`, data);
     
   } catch (error) {
     console.error('Error processing uploaded playbook:', error);
