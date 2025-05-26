@@ -1,261 +1,277 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import "https://deno.land/x/xhr@0.1.0/mod.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { fileName } = await req.json()
-    console.log(`Processing PDF with Groq AI: ${fileName}`)
-    
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const { fileName } = await req.json();
+    console.log(`Processing document with Groq AI: ${fileName}`);
 
-    // Download the PDF from storage
-    const { data: fileData, error: downloadError } = await supabase.storage
-      .from('playbooks')
-      .download(fileName)
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
 
-    if (downloadError) {
-      throw new Error(`Failed to download PDF: ${downloadError.message}`)
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY not found in environment variables');
     }
 
-    // Convert PDF to base64 for AI processing
-    const arrayBuffer = await fileData.arrayBuffer()
-    const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Use Groq to extract structured content
+    // Download the file from storage
+    const { data: fileData, error: downloadError } = await supabase.storage
+      .from('playbooks')
+      .download(fileName);
+
+    if (downloadError) {
+      console.error('Error downloading file:', downloadError);
+      throw downloadError;
+    }
+
+    // Convert file to base64 for processing
+    const arrayBuffer = await fileData.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+    // Determine file type
+    const isWordDoc = fileName.toLowerCase().endsWith('.docx') || fileName.toLowerCase().endsWith('.doc');
+    const fileType = isWordDoc ? 'Word document' : 'PDF';
+
+    // Call Groq AI to process the document
     const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('GROQ_API_KEY')}`,
+        'Authorization': `Bearer ${groqApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama-3.2-90b-vision-preview',
-        messages: [
-          {
-            role: 'system',
-            content: `You are an expert PDF content extractor specializing in business playbooks. Extract structured content from playbooks and organize by chapters/phases.
+        model: 'llama-3.1-70b-versatile',
+        messages: [{
+          role: 'user',
+          content: `You are an expert at extracting structured data from ${fileType} playbooks. 
 
-CRITICAL INSTRUCTIONS:
-1. Identify all chapters from the table of contents (usually page 2)
-2. For each chapter, extract detailed information for process steps, RACI matrix, and process map
-3. Focus on operational content - ignore cover pages, KPIs, and glossaries
-4. Be comprehensive - extract ALL process steps, not just summaries
+Please analyze this ${fileType} file and extract:
 
-Return JSON in this EXACT format:
+1. **General Information:**
+   - Title/Name of the playbook
+   - Description
+   - Project phases (if mentioned)
+
+2. **Process Steps** for each phase:
+   - Step ID/Number
+   - Activity description
+   - Inputs required
+   - Outputs produced
+   - Timeline/Duration
+   - Responsible person/role
+   - Additional comments
+
+3. **RACI Matrix** for each phase:
+   - Step ID
+   - Task description
+   - Responsible (who does the work)
+   - Accountable (who signs off)
+   - Consulted (who provides input)
+   - Informed (who needs to know)
+
+4. **Process Map** for each phase:
+   - Step ID
+   - Step type (start, process, decision, milestone, end)
+   - Title
+   - Description
+   - Order/sequence
+
+Please return the data in this exact JSON format:
 {
-  "title": "Playbook Title",
-  "description": "Brief description of the playbook",
+  "title": "string",
+  "description": "string", 
   "phases": {
-    "Chapter 1": {"name": "Chapter 1: Full Name", "description": "Chapter description"},
-    "Chapter 2": {"name": "Chapter 2: Full Name", "description": "Chapter description"}
+    "phase_1": {"name": "string", "description": "string"},
+    "phase_2": {"name": "string", "description": "string"}
   },
-  "processSteps": [
+  "process_steps": [
     {
-      "phase_id": "Chapter 1",
-      "step_id": "1.1",
-      "activity": "Detailed activity description",
-      "inputs": ["Specific input 1", "Specific input 2"],
-      "outputs": ["Specific output 1", "Specific output 2"],
-      "timeline": "Timeline information (e.g., Week 1, Day 1-3)",
-      "responsible": "Role/person responsible",
-      "comments": "Additional notes or details"
+      "phase_id": "string",
+      "step_id": "string", 
+      "activity": "string",
+      "inputs": ["string"],
+      "outputs": ["string"],
+      "timeline": "string",
+      "responsible": "string",
+      "comments": "string"
     }
   ],
-  "raciMatrix": [
+  "raci_matrix": [
     {
-      "phase_id": "Chapter 1",
-      "step_id": "1.1",
-      "task": "Specific task name",
-      "responsible": "Role who executes",
-      "accountable": "Role who owns outcome",
-      "consulted": "Role who provides input",
-      "informed": "Role who receives updates"
+      "phase_id": "string",
+      "step_id": "string",
+      "task": "string", 
+      "responsible": "string",
+      "accountable": "string",
+      "consulted": "string",
+      "informed": "string"
     }
   ],
-  "processMap": [
+  "process_map": [
     {
-      "phase_id": "Chapter 1",
-      "step_id": "1.1",
-      "step_type": "start",
-      "title": "Step title",
-      "description": "Step description",
-      "order_index": 1
+      "phase_id": "string",
+      "step_id": "string",
+      "step_type": "string",
+      "title": "string", 
+      "description": "string",
+      "order_index": number
     }
   ]
 }
 
-Step types: "start", "process", "decision", "milestone", "end"`
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Extract ALL structured content from this PDF playbook: ${fileName}. 
-
-REQUIREMENTS:
-- Extract EVERY process step mentioned in each chapter
-- Create comprehensive RACI matrices for all identified tasks
-- Map out complete process flows with proper sequencing
-- Ensure phase_id matches the chapter identifiers exactly
-- Include realistic timelines and responsible parties
-- Be thorough - this is for operational use`
-              },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: `data:application/pdf;base64,${base64Pdf}`
-                }
-              }
-            ]
-          }
-        ],
-        max_tokens: 8000,
-        temperature: 0.1
+The ${fileType} content is base64 encoded: ${base64}`
+        }],
+        temperature: 0.1,
+        max_tokens: 4000
       }),
-    })
+    });
 
     if (!groqResponse.ok) {
-      const errorText = await groqResponse.text()
-      console.error('Groq API error:', errorText)
-      throw new Error(`Groq API error: ${groqResponse.status} ${groqResponse.statusText}`)
+      const errorText = await groqResponse.text();
+      console.error('Groq AI API error:', errorText);
+      throw new Error(`Groq AI API error: ${groqResponse.status} - ${errorText}`);
     }
 
-    const aiResult = await groqResponse.json()
-    console.log('Groq response:', JSON.stringify(aiResult, null, 2))
+    const groqData = await groqResponse.json();
+    const content = groqData.choices[0].message.content;
 
-    if (!aiResult.choices || !aiResult.choices[0]) {
-      throw new Error('Invalid response from Groq API')
+    // Extract JSON from the response
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON found in Groq response');
     }
 
-    let extractedContent
-    try {
-      extractedContent = JSON.parse(aiResult.choices[0].message.content)
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', aiResult.choices[0].message.content)
-      throw new Error('Failed to parse structured content from AI response')
-    }
+    const extractedData = JSON.parse(jsonMatch[0]);
+    console.log('Extracted data:', extractedData);
 
-    console.log('Extracted content:', JSON.stringify(extractedContent, null, 2))
+    // Generate playbook name from filename
+    const playbookName = fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, '').replace(/\s+/g, '_').toLowerCase();
 
-    // Validate extracted content structure
-    if (!extractedContent.title || !extractedContent.phases) {
-      throw new Error('Invalid extracted content structure')
-    }
-
-    // Store the extracted content in database
+    // Insert playbook data
     const { data: playbook, error: playbookError } = await supabase
       .from('playbooks')
       .insert({
-        name: fileName.replace('.pdf', ''),
-        title: extractedContent.title,
-        description: extractedContent.description || 'AI-extracted playbook',
-        file_path: `playbooks/${fileName}`,
-        phases: extractedContent.phases
+        name: playbookName,
+        title: extractedData.title || fileName,
+        description: extractedData.description || 'Playbook processed from uploaded document',
+        phases: extractedData.phases || {},
+        file_path: fileName
       })
       .select()
-      .single()
+      .single();
 
     if (playbookError) {
-      console.error('Error inserting playbook:', playbookError)
-      throw playbookError
+      console.error('Error inserting playbook:', playbookError);
+      throw playbookError;
     }
 
-    console.log('Created playbook:', playbook.id)
+    console.log('Inserted playbook:', playbook);
 
     // Insert process steps
-    if (extractedContent.processSteps?.length > 0) {
-      const processStepsWithPlaybookId = extractedContent.processSteps.map(step => ({
-        ...step,
+    if (extractedData.process_steps?.length > 0) {
+      const processStepsData = extractedData.process_steps.map((step: any) => ({
         playbook_id: playbook.id,
+        phase_id: step.phase_id,
+        step_id: step.step_id,
+        activity: step.activity,
         inputs: step.inputs || [],
-        outputs: step.outputs || []
-      }))
+        outputs: step.outputs || [],
+        timeline: step.timeline,
+        responsible: step.responsible,
+        comments: step.comments
+      }));
 
       const { error: stepsError } = await supabase
         .from('process_steps')
-        .insert(processStepsWithPlaybookId)
+        .insert(processStepsData);
 
       if (stepsError) {
-        console.error('Error inserting process steps:', stepsError)
-        throw stepsError
+        console.error('Error inserting process steps:', stepsError);
+      } else {
+        console.log(`Inserted ${processStepsData.length} process steps`);
       }
-
-      console.log(`Inserted ${processStepsWithPlaybookId.length} process steps`)
     }
 
     // Insert RACI matrix
-    if (extractedContent.raciMatrix?.length > 0) {
-      const raciWithPlaybookId = extractedContent.raciMatrix.map(raci => ({
-        ...raci,
-        playbook_id: playbook.id
-      }))
+    if (extractedData.raci_matrix?.length > 0) {
+      const raciData = extractedData.raci_matrix.map((item: any) => ({
+        playbook_id: playbook.id,
+        phase_id: item.phase_id,
+        step_id: item.step_id,
+        task: item.task,
+        responsible: item.responsible,
+        accountable: item.accountable,
+        consulted: item.consulted,
+        informed: item.informed
+      }));
 
       const { error: raciError } = await supabase
         .from('raci_matrix')
-        .insert(raciWithPlaybookId)
+        .insert(raciData);
 
       if (raciError) {
-        console.error('Error inserting RACI matrix:', raciError)
-        throw raciError
+        console.error('Error inserting RACI matrix:', raciError);
+      } else {
+        console.log(`Inserted ${raciData.length} RACI entries`);
       }
-
-      console.log(`Inserted ${raciWithPlaybookId.length} RACI matrix entries`)
     }
 
     // Insert process map
-    if (extractedContent.processMap?.length > 0) {
-      const mapWithPlaybookId = extractedContent.processMap.map(map => ({
-        ...map,
-        playbook_id: playbook.id
-      }))
+    if (extractedData.process_map?.length > 0) {
+      const processMapData = extractedData.process_map.map((item: any) => ({
+        playbook_id: playbook.id,
+        phase_id: item.phase_id,
+        step_id: item.step_id,
+        step_type: item.step_type,
+        title: item.title,
+        description: item.description,
+        order_index: item.order_index
+      }));
 
       const { error: mapError } = await supabase
         .from('process_map')
-        .insert(mapWithPlaybookId)
+        .insert(processMapData);
 
       if (mapError) {
-        console.error('Error inserting process map:', mapError)
-        throw mapError
+        console.error('Error inserting process map:', mapError);
+      } else {
+        console.log(`Inserted ${processMapData.length} process map entries`);
       }
-
-      console.log(`Inserted ${mapWithPlaybookId.length} process map entries`)
     }
 
-    return new Response(JSON.stringify({ 
-      success: true, 
-      playbook,
-      stats: {
-        processSteps: extractedContent.processSteps?.length || 0,
-        raciEntries: extractedContent.raciMatrix?.length || 0,
-        processMapEntries: extractedContent.processMap?.length || 0
-      }
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: `Successfully processed ${fileType}: ${fileName}`,
+        playbookId: playbook.id
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
 
   } catch (error) {
-    console.error('Error processing PDF:', error)
-    return new Response(JSON.stringify({ 
-      error: error.message,
-      stack: error.stack 
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    console.error('Error processing document:', error);
+    return new Response(
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Failed to process document with Groq AI'
+      }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
   }
-})
+});
