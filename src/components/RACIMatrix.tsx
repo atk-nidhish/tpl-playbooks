@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -48,7 +47,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
         .select('*')
         .eq('playbook_id', playbookId)
         .eq('phase_id', activePhase)
-        .order('step_id');
+        .order('step_id', { ascending: true });
 
       if (error) {
         console.error('Error fetching RACI data:', error);
@@ -137,6 +136,14 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
     );
   }
 
+  // Sort filtered data by step_id to ensure proper sequence
+  const sortedFilteredData = filteredData.sort((a, b) => {
+    // Convert step_id to numbers for proper sorting (e.g., "1", "2", "10")
+    const aStepNum = parseInt(a.step_id) || 0;
+    const bStepNum = parseInt(b.step_id) || 0;
+    return aStepNum - bStepNum;
+  });
+
   return (
     <div className="space-y-6">
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
@@ -167,14 +174,14 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
             </div>
           </div>
           <div className="text-sm text-gray-500 mt-2">
-            Found {raciData.length} total entries, showing {filteredData.length} matching entries
+            Found {raciData.length} total entries, showing {sortedFilteredData.length} matching entries
           </div>
         </CardHeader>
       </Card>
 
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-6">
-          {filteredData.length === 0 ? (
+          {sortedFilteredData.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-600">
                 {raciData.length === 0 
@@ -192,7 +199,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredData.map((item) => {
+              {sortedFilteredData.map((item) => {
                 const outputs = getStepOutputs(item.step_id);
                 return (
                   <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">

@@ -31,7 +31,7 @@ const Home = () => {
     },
     {
       id: "wind-cp",
-      title: "Wind - C&P",
+      title: "Wind - C&P (Contracting & Procurement)",
       description: "Contracting & Procurement playbook covering cost estimation, vendor empanelment, contract awards, and contractor management processes.",
       icon: Settings,
       route: "/wind-cp",
