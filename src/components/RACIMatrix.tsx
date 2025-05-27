@@ -66,7 +66,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
   );
 
   const getRoleBadge = (text: string, role: string) => {
-    if (!text) return <span className="text-gray-400 text-xs">Not assigned</span>;
+    if (!text) return null;
     
     const colorMap = {
       R: "bg-blue-100 text-blue-800",
