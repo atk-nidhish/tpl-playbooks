@@ -136,6 +136,44 @@ const Home = () => {
           </p>
         </div>
 
+        {/* Dashboard Cards Section */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Project Dashboards</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {dashboards.map((dashboard) => {
+              const IconComponent = dashboard.icon;
+              return (
+                <Link key={dashboard.id} to={dashboard.route}>
+                  <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group">
+                    <CardHeader>
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className={`bg-gradient-to-r ${dashboard.gradient} p-2 rounded-lg group-hover:scale-110 transition-transform`}>
+                          <IconComponent className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg">{dashboard.title}</CardTitle>
+                        </div>
+                      </div>
+                      <CardDescription className="text-sm">
+                        {dashboard.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          Interactive Dashboard
+                        </span>
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
