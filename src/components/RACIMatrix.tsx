@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users } from "lucide-react";
+import { Users, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface RACIData {
@@ -16,6 +16,11 @@ interface RACIData {
   informed: string;
 }
 
+interface ProcessStep {
+  step_id: string;
+  outputs: string[];
+}
+
 interface RACIMatrixProps {
   playbookId: string;
   activePhase: string;
@@ -24,11 +29,13 @@ interface RACIMatrixProps {
 
 export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixProps) => {
   const [raciData, setRaciData] = useState<RACIData[]>([]);
+  const [processSteps, setProcessSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (playbookId && activePhase) {
       fetchRACIData();
+      fetchProcessSteps();
     }
   }, [playbookId, activePhase]);
 
@@ -52,6 +59,28 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
       setRaciData(data || []);
     } catch (error) {
       console.error('Error fetching RACI data:', error);
+    }
+  };
+
+  const fetchProcessSteps = async () => {
+    try {
+      console.log(`Fetching process steps for outputs: ${playbookId}, phase: ${activePhase}`);
+      
+      const { data, error } = await supabase
+        .from('process_steps')
+        .select('step_id, outputs')
+        .eq('playbook_id', playbookId)
+        .eq('phase_id', activePhase);
+
+      if (error) {
+        console.error('Error fetching process steps:', error);
+        throw error;
+      }
+
+      console.log(`Found ${data?.length || 0} process steps for outputs:`, data);
+      setProcessSteps(data || []);
+    } catch (error) {
+      console.error('Error fetching process steps:', error);
     } finally {
       setLoading(false);
     }
@@ -83,6 +112,11 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
         <span className="text-sm">{text}</span>
       </div>
     );
+  };
+
+  const getStepOutputs = (stepId: string) => {
+    const step = processSteps.find(s => s.step_id === stepId);
+    return step?.outputs || [];
   };
 
   if (loading) {
@@ -157,34 +191,58 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
               )}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[80px]">Step</TableHead>
-                  <TableHead className="min-w-[300px]">Task</TableHead>
-                  <TableHead className="w-[200px]">Responsible</TableHead>
-                  <TableHead className="w-[200px]">Accountable</TableHead>
-                  <TableHead className="w-[200px]">Consulted</TableHead>
-                  <TableHead className="w-[200px]">Informed</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredData.map((item) => (
-                  <TableRow key={item.id} className="hover:bg-gray-50">
-                    <TableCell>
-                      <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
-                        {item.step_id}
+            <div className="space-y-4">
+              {filteredData.map((item) => {
+                const outputs = getStepOutputs(item.step_id);
+                return (
+                  <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[80px]">Step</TableHead>
+                          <TableHead className="min-w-[300px]">Task</TableHead>
+                          <TableHead className="w-[200px]">Responsible</TableHead>
+                          <TableHead className="w-[200px]">Accountable</TableHead>
+                          <TableHead className="w-[200px]">Consulted</TableHead>
+                          <TableHead className="w-[200px]">Informed</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow className="hover:bg-gray-50">
+                          <TableCell>
+                            <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
+                              {item.step_id}
+                            </div>
+                          </TableCell>
+                          <TableCell className="font-medium">{item.task}</TableCell>
+                          <TableCell>{getRoleBadge(item.responsible, "R")}</TableCell>
+                          <TableCell>{getRoleBadge(item.accountable, "A")}</TableCell>
+                          <TableCell>{getRoleBadge(item.consulted, "C")}</TableCell>
+                          <TableCell>{getRoleBadge(item.informed, "I")}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                    {outputs.length > 0 && (
+                      <div className="bg-green-50 border-t border-green-200 p-3">
+                        <div className="flex items-start gap-2">
+                          <Package className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="font-medium text-green-800 text-sm">Step Outputs:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {outputs.map((output, idx) => (
+                                <Badge key={idx} variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
+                                  {output}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </TableCell>
-                    <TableCell className="font-medium">{item.task}</TableCell>
-                    <TableCell>{getRoleBadge(item.responsible, "R")}</TableCell>
-                    <TableCell>{getRoleBadge(item.accountable, "A")}</TableCell>
-                    <TableCell>{getRoleBadge(item.consulted, "C")}</TableCell>
-                    <TableCell>{getRoleBadge(item.informed, "I")}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           )}
         </CardContent>
       </Card>
