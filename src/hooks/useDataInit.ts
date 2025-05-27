@@ -1,6 +1,5 @@
 
 import { useEffect, useState } from 'react';
-import { seedOriginalPlaybook } from '@/services/playbook-seeder';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useDataInit = () => {
@@ -9,16 +8,8 @@ export const useDataInit = () => {
   useEffect(() => {
     const initializeData = async () => {
       try {
-        // Check if we already have playbooks
-        const { data: existingPlaybooks } = await supabase
-          .from('playbooks')
-          .select('id')
-          .eq('name', 'solar-execution-original');
-
-        if (!existingPlaybooks || existingPlaybooks.length === 0) {
-          await seedOriginalPlaybook();
-        }
-        
+        // Just mark as initialized since we're ready for image-based content
+        console.log('System ready for image analysis and dashboard creation');
         setIsInitialized(true);
       } catch (error) {
         console.error('Error initializing data:', error);
