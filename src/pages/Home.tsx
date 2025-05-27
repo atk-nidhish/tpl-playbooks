@@ -18,6 +18,36 @@ interface Playbook {
 }
 
 const Home = () => {
+  const dashboards = [
+    {
+      id: "commissioning",
+      title: "Wind Commissioning",
+      description: "Complete commissioning playbook for wind power projects including RLDC registration, CEIG approval, and performance testing procedures.",
+      icon: Wind,
+      route: "/commissioning",
+      gradient: "from-orange-400 to-yellow-400",
+      bgGradient: "from-orange-50 via-yellow-50 to-blue-50"
+    },
+    {
+      id: "wind-cp",
+      title: "Wind - C&P",
+      description: "Contracting & Procurement playbook covering cost estimation, vendor empanelment, contract awards, and contractor management processes.",
+      icon: Settings,
+      route: "/wind-cp",
+      gradient: "from-blue-500 to-indigo-600",
+      bgGradient: "from-blue-50 via-indigo-50 to-purple-50"
+    },
+    {
+      id: "legacy",
+      title: "Solar Project Execution",
+      description: "Legacy interactive playbook edition for solar project execution with comprehensive process mapping and team coordination.",
+      icon: Sun,
+      route: "/legacy",
+      gradient: "from-yellow-400 to-orange-500",
+      bgGradient: "from-yellow-50 via-orange-50 to-red-50"
+    }
+  ];
+
   const [searchQuery, setSearchQuery] = useState("");
   const [playbooks, setPlaybooks] = useState<Playbook[]>([]);
   const [loading, setLoading] = useState(true);
