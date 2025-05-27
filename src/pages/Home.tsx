@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +48,13 @@ const Home = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPlaybooks(data || []);
+      
+      // Remove duplicates based on title, keeping the first occurrence
+      const uniquePlaybooks = data?.filter((playbook, index, self) => 
+        index === self.findIndex(p => p.title === playbook.title)
+      ) || [];
+      
+      setPlaybooks(uniquePlaybooks);
     } catch (error) {
       console.error('Error fetching playbooks:', error);
     } finally {

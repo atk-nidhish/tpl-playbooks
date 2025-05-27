@@ -135,27 +135,54 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                       <ArrowDown className="h-6 w-6 text-gray-400" />
                     </div>
 
-                    {/* Required Inputs Section */}
-                    {step.inputs && step.inputs.length > 0 && (
-                      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    {/* Input and Output Sections with Same Size */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      {/* Required Inputs Section */}
+                      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg min-h-[120px]">
                         <div className="flex items-center gap-2 mb-3">
                           <FileInput className="h-4 w-4 text-blue-500" />
                           <span className="font-medium text-blue-800">Required Inputs:</span>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {step.inputs.map((input, idx) => (
-                            <div key={idx} className="p-3 bg-blue-100 border border-blue-300 rounded-lg">
-                              <Badge variant="outline" className="text-xs bg-blue-200 text-blue-700 border-blue-400 mb-1">
-                                Input {idx + 1}
-                              </Badge>
-                              <p className="text-sm text-blue-800">{input}</p>
-                            </div>
-                          ))}
-                        </div>
+                        {step.inputs && step.inputs.length > 0 ? (
+                          <div className="space-y-2">
+                            {step.inputs.map((input, idx) => (
+                              <div key={idx} className="p-2 bg-blue-100 border border-blue-300 rounded">
+                                <Badge variant="outline" className="text-xs bg-blue-200 text-blue-700 border-blue-400 mb-1">
+                                  Input {idx + 1}
+                                </Badge>
+                                <p className="text-sm text-blue-800">{input}</p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-blue-600">No inputs specified</p>
+                        )}
                       </div>
-                    )}
+
+                      {/* Outputs Section */}
+                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg min-h-[120px]">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Package className="h-4 w-4 text-green-500" />
+                          <span className="font-medium text-green-800">Step Outputs:</span>
+                        </div>
+                        {step.outputs && step.outputs.length > 0 ? (
+                          <div className="space-y-2">
+                            {step.outputs.map((output, idx) => (
+                              <div key={idx} className="p-2 bg-green-100 border border-green-300 rounded">
+                                <Badge variant="outline" className="text-xs bg-green-200 text-green-700 border-green-400 mb-1">
+                                  Output {idx + 1}
+                                </Badge>
+                                <p className="text-sm text-green-800">{output}</p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-green-600">No outputs specified</p>
+                        )}
+                      </div>
+                    </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
                       <div>
                         <span className="font-medium text-gray-700">Responsible:</span>
                         <div className="flex items-center gap-1 mt-1">
@@ -166,20 +193,6 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                       <div>
                         <span className="font-medium text-gray-700">Timeline:</span>
                         <div className="text-gray-600 mt-1">{step.timeline || "Not specified"}</div>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-700">Outputs:</span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {step.outputs && step.outputs.length > 0 ? (
-                            step.outputs.map((output, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                                {output}
-                              </Badge>
-                            ))
-                          ) : (
-                            <span className="text-gray-500 text-xs">No outputs specified</span>
-                          )}
-                        </div>
                       </div>
                     </div>
 
