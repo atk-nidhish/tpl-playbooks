@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { createWindCommissioningPlaybook } from '@/services/playbook-seeder';
-import { addWindCommissioningAdditionalData } from '@/services/wind-commissioning-additional-data';
-import { addWindCommissioningCompleteData } from '@/services/wind-commissioning-complete-data';
+import { resetAndRecreateChapters } from '@/services/chapter-data-reset';
 
 export const useDataInit = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -26,20 +25,8 @@ export const useDataInit = () => {
           playbookId = existingPlaybooks[0].id;
         }
 
-        // Check if additional data has already been added
-        const { data: existingAdditionalSteps } = await supabase
-          .from('process_steps')
-          .select('id')
-          .eq('playbook_id', playbookId)
-          .eq('phase_id', 'Chapter 4')
-          .eq('step_id', 'P13');
-
-        if (!existingAdditionalSteps || existingAdditionalSteps.length === 0) {
-          await addWindCommissioningAdditionalData(playbookId);
-        }
-
-        // Add complete data for chapters 3.1, 3.2, and 5
-        await addWindCommissioningCompleteData(playbookId);
+        // Reset and recreate chapters 3.1, 3.2, and 5 with fresh data
+        await resetAndRecreateChapters(playbookId);
         
         console.log('System ready with complete Wind Commissioning Playbook');
         setIsInitialized(true);
