@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { createWindCommissioningPlaybook } from '@/services/playbook-seeder';
 import { addWindCommissioningAdditionalData } from '@/services/wind-commissioning-additional-data';
+import { addWindCommissioningMissingData } from '@/services/wind-commissioning-missing-data';
 
 export const useDataInit = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -35,6 +36,18 @@ export const useDataInit = () => {
 
         if (!existingAdditionalSteps || existingAdditionalSteps.length === 0) {
           await addWindCommissioningAdditionalData(playbookId);
+        }
+
+        // Check if missing data has already been added
+        const { data: existingMissingSteps } = await supabase
+          .from('process_steps')
+          .select('id')
+          .eq('playbook_id', playbookId)
+          .eq('phase_id', 'chapter-3-1')
+          .eq('step_id', 'S');
+
+        if (!existingMissingSteps || existingMissingSteps.length === 0) {
+          await addWindCommissioningMissingData(playbookId);
         }
         
         console.log('System ready with complete Wind Commissioning Playbook');
