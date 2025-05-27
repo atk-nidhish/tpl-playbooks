@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
@@ -113,6 +113,48 @@ const Home = () => {
               Last scanned for new playbooks: {lastScan.toLocaleTimeString()}
             </p>
           )}
+        </div>
+
+        {/* Commissioning Dashboard Highlight */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-orange-100 to-yellow-100 border-orange-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
+                    <Zap className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Commissioning Playbook Dashboard</CardTitle>
+                    <CardDescription className="text-gray-700">
+                      Interactive dashboard created from your uploaded commissioning playbook images
+                    </CardDescription>
+                  </div>
+                </div>
+                <Link to="/commissioning">
+                  <Button className="bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white">
+                    View Dashboard <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-orange-600" />
+                  <span className="text-sm text-gray-700">Comprehensive process steps</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-orange-600" />
+                  <span className="text-sm text-gray-700">RACI responsibility matrices</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sun className="h-4 w-4 text-orange-600" />
+                  <span className="text-sm text-gray-700">Visual process maps</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Stats Cards */}
