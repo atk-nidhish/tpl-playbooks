@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, MessageSquare, Settings, ArrowRight, ArrowDown, FileInput } from "lucide-react";
+import { User, MessageSquare, Settings, ArrowRight, ArrowDown, FileInput, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProcessStep {
@@ -129,88 +130,70 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 mb-3">{step.activity}</h3>
                     
-                    <Tabs defaultValue="process" className="w-full">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="process">Process Details</TabsTrigger>
-                        <TabsTrigger value="inputs" className="flex items-center gap-2">
-                          <FileInput className="h-3 w-3" />
-                          Inputs
-                        </TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="process" className="space-y-4 mt-4">
-                        {/* Process Flow Arrow */}
-                        <div className="flex justify-center mb-4">
-                          <ArrowDown className="h-6 w-6 text-gray-400" />
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
-                          <div>
-                            <span className="font-medium text-gray-700">Responsible:</span>
-                            <div className="flex items-center gap-1 mt-1">
-                              <User className="h-3 w-3 text-gray-500" />
-                              <span className="text-gray-600">{step.responsible || "Not specified"}</span>
-                            </div>
-                          </div>
-                          <div>
-                            <span className="font-medium text-gray-700">Timeline:</span>
-                            <div className="text-gray-600 mt-1">{step.timeline || "Not specified"}</div>
-                          </div>
-                          <div>
-                            <span className="font-medium text-gray-700">Outputs:</span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {step.outputs && step.outputs.length > 0 ? (
-                                step.outputs.map((output, idx) => (
-                                  <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                                    {output}
-                                  </Badge>
-                                ))
-                              ) : (
-                                <span className="text-gray-500 text-xs">No outputs specified</span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                    {/* Process Flow Arrow */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="h-6 w-6 text-gray-400" />
+                    </div>
 
-                        {step.comments && (
-                          <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-                            <div className="flex items-start gap-2">
-                              <MessageSquare className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <span className="font-medium text-blue-800 text-sm">Additional Comments:</span>
-                                <p className="text-blue-700 text-sm mt-1">{step.comments}</p>
-                              </div>
+                    {/* Required Inputs Section */}
+                    {step.inputs && step.inputs.length > 0 && (
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-3">
+                          <FileInput className="h-4 w-4 text-blue-500" />
+                          <span className="font-medium text-blue-800">Required Inputs:</span>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {step.inputs.map((input, idx) => (
+                            <div key={idx} className="p-3 bg-blue-100 border border-blue-300 rounded-lg">
+                              <Badge variant="outline" className="text-xs bg-blue-200 text-blue-700 border-blue-400 mb-1">
+                                Input {idx + 1}
+                              </Badge>
+                              <p className="text-sm text-blue-800">{input}</p>
                             </div>
-                          </div>
-                        )}
-                      </TabsContent>
-                      
-                      <TabsContent value="inputs" className="mt-4">
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2 mb-3">
-                            <ArrowRight className="h-4 w-4 text-blue-500" />
-                            <span className="font-medium text-gray-700">Required Inputs:</span>
-                          </div>
-                          {step.inputs && step.inputs.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              {step.inputs.map((input, idx) => (
-                                <div key={idx} className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                  <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700 border-blue-300 mb-1">
-                                    Input {idx + 1}
-                                  </Badge>
-                                  <p className="text-sm text-blue-800">{input}</p>
-                                </div>
-                              ))}
-                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
+                      <div>
+                        <span className="font-medium text-gray-700">Responsible:</span>
+                        <div className="flex items-center gap-1 mt-1">
+                          <User className="h-3 w-3 text-gray-500" />
+                          <span className="text-gray-600">{step.responsible || "Not specified"}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-700">Timeline:</span>
+                        <div className="text-gray-600 mt-1">{step.timeline || "Not specified"}</div>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-700">Outputs:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {step.outputs && step.outputs.length > 0 ? (
+                            step.outputs.map((output, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                {output}
+                              </Badge>
+                            ))
                           ) : (
-                            <div className="text-center py-6 text-gray-500">
-                              <FileInput className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                              <p>No inputs specified for this step</p>
-                            </div>
+                            <span className="text-gray-500 text-xs">No outputs specified</span>
                           )}
                         </div>
-                      </TabsContent>
-                    </Tabs>
+                      </div>
+                    </div>
+
+                    {step.comments && (
+                      <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                        <div className="flex items-start gap-2">
+                          <MessageSquare className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="font-medium text-blue-800 text-sm">Additional Comments:</span>
+                            <p className="text-blue-700 text-sm mt-1">{step.comments}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </CardHeader>

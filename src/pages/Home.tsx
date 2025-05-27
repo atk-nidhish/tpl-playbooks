@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind, Settings } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
@@ -19,39 +19,11 @@ interface Playbook {
 }
 
 const Home = () => {
-  const dashboards = [
-    {
-      id: "commissioning",
-      title: "Wind Commissioning",
-      description: "Complete commissioning playbook for wind power projects including RLDC registration, CEIG approval, and performance testing procedures.",
-      icon: Wind,
-      route: "/commissioning",
-      gradient: "from-orange-400 to-yellow-400",
-      bgGradient: "from-orange-50 via-yellow-50 to-blue-50"
-    },
-    {
-      id: "wind-cp",
-      title: "Wind - C&P (Contracting & Procurement)",
-      description: "Contracting & Procurement playbook covering cost estimation, vendor empanelment, contract awards, and contractor management processes.",
-      icon: Settings,
-      route: "/wind-cp",
-      gradient: "from-blue-500 to-indigo-600",
-      bgGradient: "from-blue-50 via-indigo-50 to-purple-50"
-    },
-    {
-      id: "legacy",
-      title: "Solar Project Execution",
-      description: "Legacy interactive playbook edition for solar project execution with comprehensive process mapping and team coordination.",
-      icon: Sun,
-      route: "/legacy",
-      gradient: "from-yellow-400 to-orange-500",
-      bgGradient: "from-yellow-50 via-orange-50 to-red-50"
-    }
-  ];
-
   const [searchQuery, setSearchQuery] = useState("");
   const [playbooks, setPlaybooks] = useState<Playbook[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const { isInitialized } = useDataInit();
 
   useEffect(() => {
@@ -59,6 +31,15 @@ const Home = () => {
       fetchPlaybooks();
     }
   }, [isInitialized]);
+
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      performGlobalSearch();
+    } else {
+      setSearchResults([]);
+      setIsSearching(false);
+    }
+  }, [searchQuery]);
 
   const fetchPlaybooks = async () => {
     try {
@@ -73,6 +54,51 @@ const Home = () => {
       console.error('Error fetching playbooks:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const performGlobalSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
+    setIsSearching(true);
+    try {
+      const searchTerm = searchQuery.toLowerCase();
+      
+      // Search across all tables
+      const [playbooksResult, processStepsResult, raciResult, processMapResult] = await Promise.all([
+        supabase
+          .from('playbooks')
+          .select('*')
+          .or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,name.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('process_steps')
+          .select('*, playbooks!inner(title, name)')
+          .or(`activity.ilike.%${searchTerm}%,responsible.ilike.%${searchTerm}%,comments.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('raci_matrix')
+          .select('*, playbooks!inner(title, name)')
+          .or(`task.ilike.%${searchTerm}%,responsible.ilike.%${searchTerm}%,accountable.ilike.%${searchTerm}%,consulted.ilike.%${searchTerm}%,informed.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('process_map')
+          .select('*, playbooks!inner(title, name)')
+          .or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
+      ]);
+
+      const results = [
+        ...(playbooksResult.data || []).map(item => ({ ...item, type: 'playbook' })),
+        ...(processStepsResult.data || []).map(item => ({ ...item, type: 'process_step' })),
+        ...(raciResult.data || []).map(item => ({ ...item, type: 'raci' })),
+        ...(processMapResult.data || []).map(item => ({ ...item, type: 'process_map' }))
+      ];
+
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error performing global search:', error);
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -91,10 +117,37 @@ const Home = () => {
     }
   };
 
-  const filteredPlaybooks = playbooks.filter(playbook =>
-    playbook.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    playbook.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPlaybooks = searchQuery.trim() ? [] : playbooks;
+
+  const getResultTypeIcon = (type: string) => {
+    switch (type) {
+      case 'playbook':
+        return <BookOpen className="h-4 w-4" />;
+      case 'process_step':
+        return <Zap className="h-4 w-4" />;
+      case 'raci':
+        return <FileText className="h-4 w-4" />;
+      case 'process_map':
+        return <ArrowRight className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getResultTypeName = (type: string) => {
+    switch (type) {
+      case 'playbook':
+        return 'Playbook';
+      case 'process_step':
+        return 'Process Step';
+      case 'raci':
+        return 'RACI Matrix';
+      case 'process_map':
+        return 'Process Map';
+      default:
+        return 'Result';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
@@ -115,11 +168,16 @@ const Home = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search playbooks..."
+                  placeholder="Search across all playbooks..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 w-80 bg-white/90"
                 />
+                {isSearching && (
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <RefreshCw className="h-4 w-4 animate-spin text-gray-400" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -136,43 +194,59 @@ const Home = () => {
           </p>
         </div>
 
-        {/* Dashboard Cards Section */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Project Dashboards</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {dashboards.map((dashboard) => {
-              const IconComponent = dashboard.icon;
-              return (
-                <Link key={dashboard.id} to={dashboard.route}>
-                  <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group">
+        {/* Search Results */}
+        {searchQuery.trim() && (
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Search Results for "{searchQuery}" ({searchResults.length} found)
+            </h3>
+            {searchResults.length === 0 ? (
+              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+                <CardContent className="p-8 text-center">
+                  <p className="text-gray-600">No results found for your search.</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {searchResults.map((result, index) => (
+                  <Card key={`${result.type}-${result.id || index}`} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 transition-all">
                     <CardHeader>
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className={`bg-gradient-to-r ${dashboard.gradient} p-2 rounded-lg group-hover:scale-110 transition-transform`}>
-                          <IconComponent className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg">{dashboard.title}</CardTitle>
-                        </div>
+                      <div className="flex items-center space-x-2 mb-2">
+                        {getResultTypeIcon(result.type)}
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                          {getResultTypeName(result.type)}
+                        </Badge>
                       </div>
+                      <CardTitle className="text-lg">
+                        {result.title || result.activity || result.task || result.name}
+                      </CardTitle>
                       <CardDescription className="text-sm">
-                        {dashboard.description}
+                        {result.description || result.comments || 'Found in playbook search'}
                       </CardDescription>
+                      {result.playbooks && (
+                        <div className="text-xs text-gray-500">
+                          From: {result.playbooks.title}
+                        </div>
+                      )}
                     </CardHeader>
                     <CardContent>
-                      <div className="flex items-center justify-between text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          Interactive Dashboard
-                        </span>
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
+                      {result.type === 'playbook' ? (
+                        <Link to={`/playbook/${result.id}`} className="text-orange-600 hover:text-orange-700 text-sm flex items-center gap-1">
+                          Open Playbook <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      ) : (
+                        <div className="text-sm text-gray-600">
+                          {result.phase_id && `Phase: ${result.phase_id}`}
+                          {result.step_id && ` | Step: ${result.step_id}`}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
-                </Link>
-              );
-            })}
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -201,52 +275,57 @@ const Home = () => {
         </div>
 
         {/* Playbooks Grid */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Available Playbooks</h3>
-          {loading ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">Loading playbooks...</p>
-            </div>
-          ) : filteredPlaybooks.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">No playbooks found. Upload images to create your first playbook.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPlaybooks.map((playbook) => (
-                <Card 
-                  key={playbook.id}
-                  className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300"
-                >
-                  <Link to={`/playbook/${playbook.id}`}>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">{playbook.title}</CardTitle>
-                        <div className="flex gap-2">
-                          <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                            {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
-                          </Badge>
+        {!searchQuery.trim() && (
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Available Playbooks</h3>
+            {loading ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">Loading playbooks...</p>
+              </div>
+            ) : filteredPlaybooks.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No playbooks found. Upload images to create your first playbook.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPlaybooks.map((playbook) => (
+                  <Card 
+                    key={playbook.id}
+                    className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group"
+                  >
+                    <Link to={`/playbook/${playbook.id}`}>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
+                            {playbook.title}
+                          </CardTitle>
+                          <div className="flex gap-2">
+                            <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                              {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
+                            </Badge>
+                          </div>
                         </div>
-                      </div>
-                      <CardDescription className="text-sm">
-                        {playbook.description || "Detailed process execution playbook"}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between text-sm text-gray-600">
-                        <span>ID: {playbook.name}</span>
-                        <span className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          Interactive
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Link>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
+                        <CardDescription className="text-sm">
+                          {playbook.description || "Detailed process execution playbook"}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-sm text-gray-600">
+                          <span>ID: {playbook.name}</span>
+                          <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
+                            <FileText className="h-3 w-3" />
+                            Interactive
+                            <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
