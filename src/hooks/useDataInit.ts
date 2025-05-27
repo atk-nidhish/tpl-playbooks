@@ -31,7 +31,7 @@ export const useDataInit = () => {
           .from('process_steps')
           .select('id')
           .eq('playbook_id', playbookId)
-          .eq('phase_id', 'chapter-4')
+          .eq('phase_id', 'Chapter 4')
           .eq('step_id', 'P13');
 
         if (!existingAdditionalSteps || existingAdditionalSteps.length === 0) {

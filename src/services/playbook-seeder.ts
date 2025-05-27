@@ -10,35 +10,35 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     title: 'Wind Commissioning',
     description: 'Comprehensive wind project commissioning and approvals playbook',
     phases: {
-      'chapter-1': {
+      'Chapter 1': {
         name: 'Chapter 1 - Project Initialization',
         description: 'Initial project setup and planning phase'
       },
-      'chapter-2': {
+      'Chapter 2': {
         name: 'Chapter 2 - Pre-Commissioning',
         description: 'Pre-commissioning activities and preparations'
       },
-      'chapter-3': {
+      'Chapter 3': {
         name: 'Chapter 3 - Approvals for First Time Charging',
         description: 'This chapter covers the approvals required for first-time charging of the blocks'
       },
-      'chapter-3-1': {
+      'Chapter 3.1': {
         name: 'Chapter 3.1 - RLDC User Registration',
         description: 'This chapter covers the process for RLDC user registration',
-        parent: 'chapter-3'
+        parent: 'Chapter 3'
       },
-      'chapter-3-2': {
+      'Chapter 3.2': {
         name: 'Chapter 3.2 - CEIG Approval & FTC Intimation to RLDC',
         description: 'This chapter covers the process for intimating the RLDC for FTC and receiving approval for the same',
-        parent: 'chapter-3'
+        parent: 'Chapter 3'
       },
-      'chapter-4': {
+      'Chapter 4': {
         name: 'Chapter 4 - First Time Charging (FTC) & Commercial Operation',
         description: 'This chapter covers the first-time charging process, trial run and initiation of commercial operations'
       },
-      'chapter-5': {
-        name: 'Chapter 5 - Final Documentation',
-        description: 'Final project documentation and handover'
+      'Chapter 5': {
+        name: 'Chapter 5 - Performance Testing & HOTO',
+        description: 'Performance testing and handover to O&M team'
       }
     }
   };
@@ -61,7 +61,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
   const processSteps = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'S',
       activity: 'Chief Regulatory directs Regulatory Approvals Head (RAH) to initiate the RLDC approval process for First Time Charging (FTC)',
       inputs: [],
@@ -72,7 +72,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P1',
       activity: 'RAH initiates collection of documents required for RLDC User Registration. RLDC User Registration requires (i) grid compliance report and (ii) technical and modelling data',
       inputs: [],
@@ -83,7 +83,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P2',
       activity: 'RAH requests the OEM SPOC to prepare the grid code compliance report',
       inputs: [],
@@ -94,7 +94,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P3',
       activity: 'OEM SPOC selects and onboards a third-party consultant to prepare the grid code compliance report',
       inputs: [],
@@ -105,7 +105,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P4',
       activity: 'OEM SPOC ensures the consultant conducts the required simulations. OEM SPOC receives the grid code compliance report from the consultant',
       inputs: [],
@@ -116,7 +116,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P5',
       activity: 'OEM SPOC shares the Grid Code Compliance Report with the RAH',
       inputs: [],
@@ -127,7 +127,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P6',
       activity: 'RAH reviews the report and seeks clarifications if any',
       inputs: [],
@@ -142,7 +142,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
   const raciMatrix = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'S',
       task: 'Direct Regulatory Approvals Head (RAH) to initiate the RLDC approval process for First Time Charging (FTC)',
       responsible: 'Chief Regulatory',
@@ -152,7 +152,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P1',
       task: 'Initiate collection of documents required for RLDC User Registration',
       responsible: 'Regulatory Approvals Head',
@@ -162,7 +162,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P2',
       task: 'Request the OEM SPOC to prepare the grid code compliance report',
       responsible: 'Regulatory Approvals Head',
@@ -172,7 +172,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P3',
       task: 'Select and onboard a third-party consultant to prepare the grid code compliance report',
       responsible: 'OEM SPOC',
@@ -182,7 +182,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P4',
       task: 'Ensure the consultant conducts the required simulations and receives the grid code compliance report',
       responsible: 'OEM SPOC',
@@ -192,7 +192,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P5',
       task: 'Share the Grid Code Compliance Report with the RAH',
       responsible: 'OEM SPOC',
@@ -202,7 +202,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P6',
       task: 'Review the report and seek clarifications, if any',
       responsible: 'Regulatory Approvals Head',
@@ -212,7 +212,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P7',
       task: 'Provide answers to any clarifications from the RAH',
       responsible: 'OEM SPOC',
@@ -222,7 +222,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P8',
       task: 'Request Wind Engineering Head (WEH) to provide the necessary technical and modelling data, and share the relevant annexure templates containing data requirements',
       responsible: 'Regulatory Approvals Head',
@@ -232,7 +232,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P9',
       task: 'Receive the requisite data from WEH and prepare the annexures required for user registration',
       responsible: 'Regulatory Approvals Head',
@@ -246,7 +246,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
   const processMap = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'S',
       step_type: 'start',
       title: 'Direct Regulatory Approvals Head',
@@ -255,7 +255,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P2',
       step_type: 'process',
       title: 'Request the OEM SPOC to prepare grid code compliance report',
@@ -264,7 +264,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P4',
       step_type: 'process',
       title: 'Ensure consultant conducts simulations and receives report',
@@ -273,7 +273,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P5',
       step_type: 'process',
       title: 'Share the Grid Code Compliance Report with the RAH',
@@ -282,7 +282,7 @@ export const createWindCommissioningPlaybook = async (): Promise<string> => {
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'Chapter 3.1',
       step_id: 'P6',
       step_type: 'decision',
       title: 'Review the report and seek clarifications if any',
