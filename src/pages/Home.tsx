@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -82,14 +81,6 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button 
-                onClick={deleteAllPlaybooks}
-                variant="destructive"
-                size="sm"
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Clear All Data
-              </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
