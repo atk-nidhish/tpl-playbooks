@@ -8,7 +8,6 @@ import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "luc
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
-import { usePlaybookScanner } from "@/hooks/usePlaybookScanner";
 
 interface Playbook {
   id: string;
@@ -24,20 +23,12 @@ const Home = () => {
   const [playbooks, setPlaybooks] = useState<Playbook[]>([]);
   const [loading, setLoading] = useState(true);
   const { isInitialized } = useDataInit();
-  const { isScanning, lastScan, scanPlaybooks } = usePlaybookScanner();
 
   useEffect(() => {
     if (isInitialized) {
       fetchPlaybooks();
     }
   }, [isInitialized]);
-
-  // Refetch playbooks when scanning completes
-  useEffect(() => {
-    if (lastScan) {
-      fetchPlaybooks();
-    }
-  }, [lastScan]);
 
   const fetchPlaybooks = async () => {
     try {
@@ -52,6 +43,21 @@ const Home = () => {
       console.error('Error fetching playbooks:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteAllPlaybooks = async () => {
+    try {
+      // Delete all data from related tables first
+      await supabase.from('process_steps').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('raci_matrix').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('process_map').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('playbooks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      console.log('All playbooks and related data deleted');
+      fetchPlaybooks();
+    } catch (error) {
+      console.error('Error deleting playbooks:', error);
     }
   };
 
@@ -77,14 +83,12 @@ const Home = () => {
             </div>
             <div className="flex items-center space-x-4">
               <Button 
-                onClick={scanPlaybooks} 
-                disabled={isScanning}
-                variant="outline"
+                onClick={deleteAllPlaybooks}
+                variant="destructive"
                 size="sm"
-                className="bg-white/90"
               >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isScanning ? 'animate-spin' : ''}`} />
-                {isScanning ? 'Scanning...' : 'Scan for New'}
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Clear All Data
               </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -108,57 +112,10 @@ const Home = () => {
             Access and manage all your solar project execution playbooks in one centralized location. 
             Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
           </p>
-          {lastScan && (
-            <p className="text-sm text-gray-500">
-              Last scanned for new playbooks: {lastScan.toLocaleTimeString()}
-            </p>
-          )}
-        </div>
-
-        {/* Commissioning Dashboard Highlight */}
-        <div className="mb-8">
-          <Card className="bg-gradient-to-r from-orange-100 to-yellow-100 border-orange-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl">Commissioning Playbook Dashboard</CardTitle>
-                    <CardDescription className="text-gray-700">
-                      Interactive dashboard created from your uploaded commissioning playbook images
-                    </CardDescription>
-                  </div>
-                </div>
-                <Link to="/commissioning">
-                  <Button className="bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white">
-                    View Dashboard <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm text-gray-700">Comprehensive process steps</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm text-gray-700">RACI responsibility matrices</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Sun className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm text-gray-700">Visual process maps</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Playbooks</CardTitle>
@@ -181,16 +138,6 @@ const Home = () => {
               <p className="text-xs text-muted-foreground">Across all playbooks</p>
             </CardContent>
           </Card>
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Search Results</CardTitle>
-              <Search className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{filteredPlaybooks.length}</div>
-              <p className="text-xs text-muted-foreground">Matching your search</p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Playbooks Grid */}
@@ -202,7 +149,7 @@ const Home = () => {
             </div>
           ) : filteredPlaybooks.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No playbooks found. Upload your first playbook to get started.</p>
+              <p className="text-gray-600">No playbooks found. Upload images to create your first playbook.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -219,11 +166,6 @@ const Home = () => {
                           <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
                             {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
                           </Badge>
-                          {playbook.file_path && (
-                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                              PDF
-                            </Badge>
-                          )}
                         </div>
                       </div>
                       <CardDescription className="text-sm">

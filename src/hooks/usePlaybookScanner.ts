@@ -1,6 +1,4 @@
-
-import { useEffect, useState } from 'react';
-import { scanAndProcessPlaybooks } from '@/services/pdf-parser';
+import { useState } from 'react';
 
 export const usePlaybookScanner = () => {
   const [isScanning, setIsScanning] = useState(false);
@@ -11,24 +9,15 @@ export const usePlaybookScanner = () => {
     
     setIsScanning(true);
     try {
-      await scanAndProcessPlaybooks();
+      // Placeholder for future image analysis functionality
+      console.log('Ready to analyze images...');
       setLastScan(new Date());
     } catch (error) {
-      console.error('Error scanning playbooks:', error);
+      console.error('Error in scanner:', error);
     } finally {
       setIsScanning(false);
     }
   };
-
-  useEffect(() => {
-    // Scan for playbooks when the hook is first used
-    scanPlaybooks();
-    
-    // Set up periodic scanning every 30 seconds
-    const interval = setInterval(scanPlaybooks, 30000);
-    
-    return () => clearInterval(interval);
-  }, []);
 
   return {
     isScanning,
