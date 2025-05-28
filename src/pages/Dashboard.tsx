@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wind, Zap, FileText, Award, Download, LogOut, User, Building } from "lucide-react";
+import { Wind, FileText, Award, Download, LogOut, User, Building } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -11,19 +11,77 @@ const Dashboard = () => {
   const { user, signOut } = useAuth();
   const [downloadingCert, setDownloadingCert] = useState(false);
 
+  const generateCertificate = (userName: string, department: string) => {
+    // Create a canvas to generate the certificate image
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size
+    canvas.width = 800;
+    canvas.height = 600;
+    
+    // Background
+    ctx!.fillStyle = '#f8fafc';
+    ctx!.fillRect(0, 0, 800, 600);
+    
+    // Border
+    ctx!.strokeStyle = '#fb923c';
+    ctx!.lineWidth = 8;
+    ctx!.strokeRect(20, 20, 760, 560);
+    
+    // Title
+    ctx!.fillStyle = '#1f2937';
+    ctx!.font = 'bold 48px Arial';
+    ctx!.textAlign = 'center';
+    ctx!.fillText('Certificate of Completion', 400, 120);
+    
+    // Subtitle
+    ctx!.font = 'bold 24px Arial';
+    ctx!.fillStyle = '#fb923c';
+    ctx!.fillText('Wind C&P Playbook', 400, 160);
+    
+    // User name
+    ctx!.font = 'bold 36px Arial';
+    ctx!.fillStyle = '#1f2937';
+    ctx!.fillText(`${userName}`, 400, 280);
+    
+    // Department
+    ctx!.font = '20px Arial';
+    ctx!.fillStyle = '#6b7280';
+    ctx!.fillText(`Department: ${department}`, 400, 320);
+    
+    // Completion text
+    ctx!.font = '18px Arial';
+    ctx!.fillText('has successfully completed the', 400, 380);
+    ctx!.fillText('Wind Contracting & Procurement Playbook', 400, 410);
+    
+    // Date
+    const currentDate = new Date().toLocaleDateString();
+    ctx!.fillText(`Date: ${currentDate}`, 400, 480);
+    
+    return canvas.toDataURL('image/png');
+  };
+
   const handleDownloadCertificate = async () => {
     setDownloadingCert(true);
-    // Simulate certificate generation
+    
     setTimeout(() => {
-      // Create a dummy certificate download
+      const userName = user?.user_metadata?.full_name || user?.email || 'Participant';
+      const department = user?.user_metadata?.department || 'Wind Energy';
+      
+      // Generate certificate
+      const certificateDataUrl = generateCertificate(userName, department);
+      
+      // Create a download link
       const link = document.createElement('a');
-      link.href = 'data:text/plain,Certificate of Completion - Wind C&P Playbook';
-      link.download = 'Wind-CP-Certificate.txt';
+      link.href = certificateDataUrl;
+      link.download = 'Wind-CP-Certificate.png';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      
       setDownloadingCert(false);
-    }, 2000);
+    }, 1000);
   };
 
   const playbooks = [
@@ -35,15 +93,6 @@ const Dashboard = () => {
       color: "from-orange-400 to-yellow-500",
       status: "Available",
       route: "/wind-cp"
-    },
-    {
-      id: "commissioning",
-      title: "Commissioning",
-      description: "Asset Commissioning Process",
-      icon: Zap,
-      color: "from-blue-400 to-purple-500",
-      status: "Available",
-      route: "/commissioning"
     }
   ];
 
@@ -71,7 +120,6 @@ const Dashboard = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Playbook Portal</h1>
-                <p className="text-sm text-gray-600">Process Excellence Hub</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">

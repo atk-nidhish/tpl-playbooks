@@ -64,6 +64,7 @@ const AuthPage = () => {
         email: registerEmail,
         password: registerPassword,
         options: {
+          emailRedirectTo: undefined, // Disable email verification
           data: {
             full_name: registerName,
             department: registerDepartment,
@@ -76,9 +77,9 @@ const AuthPage = () => {
       if (data.user) {
         toast({
           title: "Registration successful",
-          description: "Your account has been created. You can now login.",
+          description: "You can now login with your credentials.",
         });
-        // Switch to login tab after successful registration
+        // Switch to login tab and prefill email
         setLoginEmail(registerEmail);
         setRegisterName("");
         setRegisterDepartment("");

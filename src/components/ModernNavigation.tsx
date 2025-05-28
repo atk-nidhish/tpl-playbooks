@@ -65,7 +65,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                       ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400 shadow-lg' 
                       : 'bg-white/90 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 text-gray-700 border-orange-200 hover:border-orange-300 hover:shadow-md'
                     }
-                    transition-all duration-300 font-bold text-sm px-3 py-2 rounded-xl
+                    transition-all duration-300 font-bold text-xs px-3 py-2 rounded-xl
                     ${hasSubChapters ? 'pr-6' : ''}
                     transform hover:scale-105 hover:-translate-y-0.5 whitespace-nowrap
                   `}
@@ -84,7 +84,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[400px] max-w-[500px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[400px] max-w-[600px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => (
                       <Button
                         key={subChapter.id}
@@ -101,7 +101,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         `}
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-2 flex-shrink-0 mt-1" />
-                        <span className="text-wrap break-words">{subChapter.shortName}</span>
+                        <span className="text-wrap break-words">{subChapter.name}</span>
                       </Button>
                     ))}
                   </div>
