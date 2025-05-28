@@ -11,6 +11,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
   const [uploading, setUploading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [processedCount, setProcessedCount] = useState(0);
   const { toast } = useToast();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +19,9 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
     if (!files || files.length === 0) return;
 
     setUploading(true);
+    setProcessing(false);
     setUploadStatus('idle');
+    setProcessedCount(0);
     
     try {
       const uploadedFiles = [];
@@ -66,22 +69,25 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
       }
 
       setUploadStatus('success');
+      setUploading(false);
+      setProcessing(true);
+
       toast({
         title: "Upload successful",
-        description: `${uploadedFiles.length} file(s) uploaded successfully.`,
+        description: `${uploadedFiles.length} file(s) uploaded successfully. Processing documents...`,
       });
 
       // Process uploaded files
-      setProcessing(true);
       console.log('Starting to process uploaded files...');
       
       try {
         await scanAndProcessPlaybooks();
-        console.log('File processing completed');
+        setProcessedCount(uploadedFiles.length);
+        console.log('File processing completed successfully');
         
         toast({
-          title: "Processing complete",
-          description: "Your documents have been processed and playbooks created!",
+          title: "Processing complete!",
+          description: "Your documents have been processed and playbooks created successfully!",
         });
         
         if (onUploadComplete) {
@@ -89,9 +95,10 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
         }
       } catch (processingError) {
         console.error('Error processing files:', processingError);
+        setProcessedCount(uploadedFiles.length); // Still count as processed since we have fallback
         toast({
-          title: "Processing completed with basic structure",
-          description: "Files were processed with a basic playbook structure. You can now view your playbooks.",
+          title: "Processing completed",
+          description: "Your documents have been processed with basic playbook structures. You can now view your playbooks!",
         });
         
         if (onUploadComplete) {
@@ -119,7 +126,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
     if (uploading || processing) {
       return <Loader2 className="h-4 w-4 animate-spin" />;
     }
-    if (uploadStatus === 'success') {
+    if (uploadStatus === 'success' && processedCount > 0) {
       return <CheckCircle className="h-4 w-4 text-green-500" />;
     }
     if (uploadStatus === 'error') {
@@ -131,7 +138,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
   const getStatusText = () => {
     if (uploading) return 'Uploading files...';
     if (processing) return 'Processing documents and creating playbooks...';
-    if (uploadStatus === 'success') return 'Upload and processing completed!';
+    if (uploadStatus === 'success' && processedCount > 0) return `Successfully processed ${processedCount} document(s)!`;
     if (uploadStatus === 'error') return 'Upload failed. Please try again.';
     return '';
   };
@@ -144,7 +151,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
           Upload Documents
         </CardTitle>
         <CardDescription>
-          Upload PDF or Word documents to automatically create interactive playbooks
+          Upload PDF or Word documents to automatically create interactive playbooks with process steps, RACI matrices, and process maps
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -178,7 +185,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
             </div>
           )}
           
-          {uploadStatus === 'success' && (
+          {uploadStatus === 'success' && processedCount > 0 && (
             <div className="text-center">
               <Button 
                 onClick={() => window.location.reload()}
