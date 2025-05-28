@@ -40,7 +40,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   }, []);
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm">
+    <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm relative z-40">
       <div className="container mx-auto px-6">
         <div className="flex items-center gap-1 py-4 flex-wrap">
           {chapters.map((chapter) => {
@@ -84,7 +84,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[400px] max-w-[600px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white border border-orange-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => (
                       <Button
                         key={subChapter.id}
@@ -92,16 +92,16 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         size="sm"
                         onClick={() => onPhaseChange(subChapter.id)}
                         className={`
-                          w-full justify-start text-left px-3 py-3 text-xs rounded-none border-b border-orange-50 last:border-b-0
+                          w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-orange-50 last:border-b-0
                           ${activePhase === subChapter.id 
                             ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-semibold' 
                             : 'text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-700'
                           }
-                          transition-all duration-200 h-auto min-h-[50px] leading-tight
+                          transition-all duration-200 h-auto min-h-[60px] leading-tight
                         `}
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-2 flex-shrink-0 mt-1" />
-                        <span className="text-wrap break-words">{subChapter.name}</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-3 flex-shrink-0 mt-1" />
+                        <span className="text-wrap break-words whitespace-normal">{subChapter.name}</span>
                       </Button>
                     ))}
                   </div>
