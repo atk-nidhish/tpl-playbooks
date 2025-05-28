@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
 import Playbook from "./pages/Playbook";
+import CommissioningDashboard from "./pages/CommissioningDashboard";
+import WindCPDashboard from "./pages/WindCPDashboard";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/legacy" element={<Index />} />
+          <Route path="/commissioning" element={<CommissioningDashboard />} />
+          <Route path="/wind-cp" element={<WindCPDashboard />} />
           <Route path="/playbook/:id" element={<Playbook />} />
         </Routes>
       </BrowserRouter>
