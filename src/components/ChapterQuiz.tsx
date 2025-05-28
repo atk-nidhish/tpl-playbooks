@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,46 +22,143 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [currentQuestions, setCurrentQuestions] = useState<QuizQuestion[]>([]);
 
-  // Sample quiz questions - in a real app, these would come from your database
-  const quizQuestions: QuizQuestion[] = [
-    {
-      id: 1,
-      question: "What is the primary purpose of cost estimation in PPA bid submission?",
-      options: [
-        "To maximize profit margins",
-        "To provide competitive and accurate pricing for project bids",
-        "To reduce project scope",
-        "To delay project timelines"
-      ],
-      correctAnswer: 1,
-      explanation: "Cost estimation in PPA bid submission ensures competitive and accurate pricing to win contracts while maintaining profitability."
-    },
-    {
-      id: 2,
-      question: "Which stakeholder is typically accountable for vendor empanelment decisions?",
-      options: [
-        "Project Manager",
-        "Procurement Team",
-        "Senior Management",
-        "Legal Department"
-      ],
-      correctAnswer: 2,
-      explanation: "Senior Management is typically accountable for strategic vendor empanelment decisions as they impact long-term business relationships."
-    },
-    {
-      id: 3,
-      question: "What is the key difference between project-specific and framework agreements?",
-      options: [
-        "Project-specific agreements are more expensive",
-        "Framework agreements cover multiple projects over time",
-        "Project-specific agreements require more documentation",
-        "Framework agreements are always preferred"
-      ],
-      correctAnswer: 1,
-      explanation: "Framework agreements establish terms for multiple projects over a period, while project-specific agreements are tailored for individual projects."
-    }
-  ];
+  // Question pools for each chapter
+  const questionPools: { [key: string]: QuizQuestion[] } = {
+    "chapter-1": [
+      {
+        id: 1,
+        question: "What is the main purpose of cost estimation in PPA bids?",
+        options: [
+          "To ensure competitive pricing for project bids",
+          "To maximize company profits only",
+          "To reduce project timeline",
+          "To eliminate competition"
+        ],
+        correctAnswer: 0,
+        explanation: "Cost estimation ensures competitive and accurate pricing to win contracts while maintaining profitability."
+      },
+      {
+        id: 2,
+        question: "Which factors are most important in PPA cost estimation?",
+        options: [
+          "Only material costs",
+          "Labor, materials, equipment, and overheads",
+          "Only equipment costs",
+          "Only overhead costs"
+        ],
+        correctAnswer: 1,
+        explanation: "Comprehensive cost estimation includes all project components: labor, materials, equipment, and overhead costs."
+      },
+      {
+        id: 3,
+        question: "How often should cost estimates be updated during bidding?",
+        options: [
+          "Never after initial calculation",
+          "Only at project completion",
+          "Regularly as market conditions change",
+          "Only when requested by client"
+        ],
+        correctAnswer: 2,
+        explanation: "Cost estimates should be updated regularly to reflect current market conditions and ensure accuracy."
+      },
+      {
+        id: 4,
+        question: "What is the typical contingency percentage in wind project estimates?",
+        options: [
+          "1-2%",
+          "5-15%",
+          "25-30%",
+          "50%"
+        ],
+        correctAnswer: 1,
+        explanation: "Industry standard contingency for wind projects typically ranges from 5-15% depending on project complexity."
+      },
+      {
+        id: 5,
+        question: "Which document is essential for accurate cost estimation?",
+        options: [
+          "Company brochure",
+          "Project specifications and requirements",
+          "Previous year's budget",
+          "Marketing materials"
+        ],
+        correctAnswer: 1,
+        explanation: "Project specifications and requirements are crucial for accurate cost estimation as they define the scope of work."
+      }
+    ],
+    "chapter-2": [
+      {
+        id: 1,
+        question: "What is vendor empanelment?",
+        options: [
+          "Firing vendors",
+          "Process of selecting and approving vendors",
+          "Paying vendors",
+          "Training vendors"
+        ],
+        correctAnswer: 1,
+        explanation: "Vendor empanelment is the systematic process of evaluating, selecting, and approving vendors for business partnerships."
+      },
+      {
+        id: 2,
+        question: "Which criteria is most important for vendor selection?",
+        options: [
+          "Lowest price only",
+          "Technical capability and financial stability",
+          "Company size only",
+          "Location proximity only"
+        ],
+        correctAnswer: 1,
+        explanation: "Technical capability and financial stability are crucial for ensuring reliable vendor performance."
+      },
+      {
+        id: 3,
+        question: "How often should vendor performance be reviewed?",
+        options: [
+          "Never",
+          "Once a year",
+          "Regularly throughout the project",
+          "Only at project end"
+        ],
+        correctAnswer: 2,
+        explanation: "Regular vendor performance reviews ensure quality standards are maintained throughout the project lifecycle."
+      },
+      {
+        id: 4,
+        question: "What documentation is required for vendor empanelment?",
+        options: [
+          "Business registration and certificates only",
+          "Complete compliance and capability documents",
+          "Bank statements only",
+          "Reference letters only"
+        ],
+        correctAnswer: 1,
+        explanation: "Comprehensive documentation including compliance, capability, and financial documents is required for proper vendor assessment."
+      },
+      {
+        id: 5,
+        question: "Who typically approves vendor empanelment decisions?",
+        options: [
+          "Project manager only",
+          "Procurement committee or senior management",
+          "Financial team only",
+          "Technical team only"
+        ],
+        correctAnswer: 1,
+        explanation: "Vendor empanelment decisions typically require approval from a procurement committee or senior management for accountability."
+      }
+    ]
+  };
+
+  useEffect(() => {
+    // Select 3 random questions for the current chapter
+    const chapterQuestions = questionPools[activePhase] || questionPools["chapter-1"];
+    const shuffled = [...chapterQuestions].sort(() => 0.5 - Math.random());
+    setCurrentQuestions(shuffled.slice(0, 3));
+    resetQuiz();
+  }, [activePhase]);
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswers(prev => ({
@@ -71,7 +168,7 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestion < quizQuestions.length - 1) {
+    if (currentQuestion < currentQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       setQuizCompleted(true);
@@ -90,11 +187,15 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
     setSelectedAnswers({});
     setShowResults(false);
     setQuizCompleted(false);
+    // Shuffle questions again
+    const chapterQuestions = questionPools[activePhase] || questionPools["chapter-1"];
+    const shuffled = [...chapterQuestions].sort(() => 0.5 - Math.random());
+    setCurrentQuestions(shuffled.slice(0, 3));
   };
 
   const calculateScore = () => {
     let correct = 0;
-    quizQuestions.forEach((question, index) => {
+    currentQuestions.forEach((question, index) => {
       if (selectedAnswers[index] === question.correctAnswer) {
         correct++;
       }
@@ -109,11 +210,21 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
     return "text-red-600";
   };
 
-  if (!activePhase) {
+  if (!activePhase || activePhase === "certification") {
     return (
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-8 text-center">
           <p className="text-gray-600">Please select a chapter to view quiz.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (currentQuestions.length === 0) {
+    return (
+      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+        <CardContent className="p-8 text-center">
+          <p className="text-gray-600">Loading quiz questions...</p>
         </CardContent>
       </Card>
     );
@@ -128,7 +239,7 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
             Chapter Quiz - {activePhase}
           </CardTitle>
           <CardDescription>
-            Test your knowledge of the processes and concepts covered in this chapter
+            Test your knowledge with 3 questions from this chapter
           </CardDescription>
         </CardHeader>
       </Card>
@@ -140,12 +251,12 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
               {/* Progress Bar */}
               <div className="flex items-center justify-between mb-6">
                 <span className="text-sm font-medium text-gray-600">
-                  Question {currentQuestion + 1} of {quizQuestions.length}
+                  Question {currentQuestion + 1} of {currentQuestions.length}
                 </span>
                 <div className="w-64 bg-gray-200 rounded-full h-2">
                   <div 
                     className="bg-gradient-to-r from-orange-500 to-yellow-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                    style={{ width: `${((currentQuestion + 1) / currentQuestions.length) * 100}%` }}
                   ></div>
                 </div>
               </div>
@@ -153,11 +264,11 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
               {/* Question */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {quizQuestions[currentQuestion].question}
+                  {currentQuestions[currentQuestion]?.question}
                 </h3>
                 
                 <div className="space-y-3">
-                  {quizQuestions[currentQuestion].options.map((option, index) => (
+                  {currentQuestions[currentQuestion]?.options.map((option, index) => (
                     <button
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
@@ -199,7 +310,7 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
                   disabled={selectedAnswers[currentQuestion] === undefined}
                   className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
                 >
-                  {currentQuestion === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
+                  {currentQuestion === currentQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
                 </Button>
               </div>
             </div>
@@ -208,19 +319,19 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
             <div className="text-center space-y-6">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Completed!</h3>
-                <div className={`text-4xl font-bold ${getScoreColor(calculateScore(), quizQuestions.length)}`}>
-                  {calculateScore()} / {quizQuestions.length}
+                <div className={`text-4xl font-bold ${getScoreColor(calculateScore(), currentQuestions.length)}`}>
+                  {calculateScore()} / {currentQuestions.length}
                 </div>
                 <p className="text-gray-600 mt-2">
-                  {calculateScore() === quizQuestions.length ? 'Perfect score! 🎉' : 
-                   calculateScore() >= quizQuestions.length * 0.8 ? 'Great job! 👏' :
-                   calculateScore() >= quizQuestions.length * 0.6 ? 'Good effort! 👍' : 'Keep studying! 📚'}
+                  {calculateScore() === currentQuestions.length ? 'Perfect score! 🎉' : 
+                   calculateScore() >= currentQuestions.length * 0.67 ? 'Great job! 👏' :
+                   'Keep studying! 📚'}
                 </p>
               </div>
 
               {/* Detailed Results */}
               <div className="space-y-4 mb-6">
-                {quizQuestions.map((question, index) => {
+                {currentQuestions.map((question, index) => {
                   const userAnswer = selectedAnswers[index];
                   const isCorrect = userAnswer === question.correctAnswer;
                   

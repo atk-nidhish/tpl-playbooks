@@ -8,6 +8,7 @@ import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
+import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { createWindCPPlaybook, seedWindCPChapter1Data, seedWindCPChapter2Data } from "@/services/wind-cp-playbook-seeder";
@@ -41,56 +42,61 @@ const WindCPDashboard = () => {
     {
       id: "chapter-1",
       name: "Chapter 1: Cost Estimation for PPA Bid Submission",
-      shortName: "Ch 1: Cost Estimation"
+      shortName: "Cost Estimation"
     },
     {
       id: "chapter-2", 
       name: "Chapter 2: Vendor Empanelment",
-      shortName: "Ch 2: Vendor Empanelment"
+      shortName: "Vendor Empanelment"
     },
     {
       id: "chapter-3",
       name: "Chapter 3: Contract Award and PR Execution",
-      shortName: "Ch 3: Contract Award",
+      shortName: "Contract Award",
       subChapters: [
         {
           id: "chapter-3a1",
           name: "Chapter 3a.1: Contract Award for Project-specific Agreement",
-          shortName: "3a.1: Project-specific Award"
+          shortName: "Project-specific Award"
         },
         {
           id: "chapter-3a2",
           name: "Chapter 3a.2: Purchase Requisition Execution under Project-specific Agreement",
-          shortName: "3a.2: Project-specific PR"
+          shortName: "Project-specific PR"
         },
         {
           id: "chapter-3b1",
           name: "Chapter 3b.1: Contract Award for Framework Agreements",
-          shortName: "3b.1: Framework Award"
+          shortName: "Framework Award"
         },
         {
           id: "chapter-3b2",
           name: "Chapter 3b.2: Purchase Requisition Execution under Framework Agreements",
-          shortName: "3b.2: Framework PR"
+          shortName: "Framework PR"
         }
       ]
     },
     {
       id: "chapter-4",
       name: "Chapter 4: Contractor Management",
-      shortName: "Ch 4: Contractor Mgmt",
+      shortName: "Contractor Mgmt",
       subChapters: [
         {
           id: "chapter-4.1",
           name: "Chapter 4.1: Issue Escalation and Resolution",
-          shortName: "4.1: Issue Resolution"
+          shortName: "Issue Resolution"
         },
         {
           id: "chapter-4.2",
           name: "Chapter 4.2: Change of Scope Process",
-          shortName: "4.2: Scope Changes"
+          shortName: "Scope Changes"
         }
       ]
+    },
+    {
+      id: "certification",
+      name: "Playbook Certification",
+      shortName: "Certification"
     }
   ];
 
@@ -100,6 +106,44 @@ const WindCPDashboard = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-lg text-gray-600">Initializing Wind C&P Playbook...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle certification section
+  if (activePhase === "certification") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        {/* Header */}
+        <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+                  <ArrowLeft className="h-5 w-5 text-gray-600" />
+                </Link>
+                <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
+                  <Wind className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Wind - C&P</h1>
+                  <p className="text-sm text-gray-600">Contracting & Procurement Playbook</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Modern Navigation */}
+        <ModernNavigation 
+          chapters={chapters}
+          activePhase={activePhase}
+          onPhaseChange={setActivePhase}
+        />
+
+        <div className="container mx-auto px-6 py-8">
+          <PlaybookCertification />
         </div>
       </div>
     );

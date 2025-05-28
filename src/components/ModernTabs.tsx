@@ -9,36 +9,36 @@ interface ModernTabsProps {
 
 export const ModernTabs = ({ defaultValue, children }: ModernTabsProps) => {
   return (
-    <Tabs defaultValue={defaultValue} className="space-y-6">
+    <Tabs defaultValue={defaultValue} className="space-y-8">
       <div className="flex justify-center">
-        <TabsList className="bg-white/90 backdrop-blur-sm border border-orange-200 p-2 rounded-xl shadow-lg">
+        <TabsList className="bg-white/95 backdrop-blur-md border-2 border-orange-100 p-1.5 rounded-2xl shadow-lg">
           <TabsTrigger 
             value="processes" 
-            className="flex items-center gap-2 px-6 py-3 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white transition-all duration-300"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
           >
             <CheckCircle className="h-4 w-4" />
-            <span className="font-medium">Process Steps</span>
+            <span className="font-semibold">Process Steps</span>
           </TabsTrigger>
           <TabsTrigger 
             value="raci" 
-            className="flex items-center gap-2 px-6 py-3 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white transition-all duration-300"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
           >
             <Users className="h-4 w-4" />
-            <span className="font-medium">RACI Matrix</span>
+            <span className="font-semibold">RACI Matrix</span>
           </TabsTrigger>
           <TabsTrigger 
             value="process-map" 
-            className="flex items-center gap-2 px-6 py-3 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white transition-all duration-300"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
           >
             <Map className="h-4 w-4" />
-            <span className="font-medium">Process Map</span>
+            <span className="font-semibold">Process Map</span>
           </TabsTrigger>
           <TabsTrigger 
             value="quiz" 
-            className="flex items-center gap-2 px-6 py-3 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white transition-all duration-300"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
           >
             <Brain className="h-4 w-4" />
-            <span className="font-medium">Quiz</span>
+            <span className="font-semibold">Quiz</span>
           </TabsTrigger>
         </TabsList>
       </div>

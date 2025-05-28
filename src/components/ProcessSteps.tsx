@@ -42,7 +42,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
         .select('*')
         .eq('playbook_id', playbookId)
         .eq('phase_id', activePhase)
-        .order('step_id');
+        .order('step_id', { ascending: true }); // Changed to ascending to start from beginning
 
       if (error) {
         console.error('Error fetching process steps:', error);
@@ -124,7 +124,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
             <Card key={step.id} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-md transition-all duration-300">
               <CardHeader className="pb-3">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-lg">
                     {step.step_id}
                   </div>
                   <div className="flex-1">
