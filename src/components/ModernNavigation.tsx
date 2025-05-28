@@ -42,14 +42,14 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   return (
     <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm sticky top-0 z-40">
       <div className="container mx-auto px-6">
-        <div className="flex flex-wrap items-center gap-3 py-5">
+        <div className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide">
           {chapters.map((chapter) => {
             const hasSubChapters = chapter.subChapters && chapter.subChapters.length > 0;
             const isActive = activePhase === chapter.id || 
               (hasSubChapters && chapter.subChapters?.some(sub => sub.id === activePhase));
             
             return (
-              <div key={chapter.id} className="relative" onClick={(e) => e.stopPropagation()}>
+              <div key={chapter.id} className="relative flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant={isActive ? "default" : "outline"}
                   size="sm"
@@ -65,14 +65,14 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                       ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400 shadow-lg' 
                       : 'bg-white/90 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 text-gray-700 border-orange-200 hover:border-orange-300 hover:shadow-md'
                     }
-                    transition-all duration-300 font-bold text-base px-6 py-3 rounded-xl
-                    ${hasSubChapters ? 'pr-10' : ''}
-                    transform hover:scale-105 hover:-translate-y-0.5
+                    transition-all duration-300 font-bold text-lg px-4 py-3 rounded-xl
+                    ${hasSubChapters ? 'pr-8' : ''}
+                    transform hover:scale-105 hover:-translate-y-0.5 whitespace-nowrap
                   `}
                 >
                   {chapter.shortName}
                   {hasSubChapters && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                       {isExpanded(chapter.id) ? (
                         <ChevronDown className="h-4 w-4 transition-transform duration-200" />
                       ) : (
@@ -84,7 +84,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[320px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[280px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => (
                       <Button
                         key={subChapter.id}
@@ -92,7 +92,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         size="sm"
                         onClick={() => onPhaseChange(subChapter.id)}
                         className={`
-                          w-full justify-start text-left px-6 py-4 text-sm rounded-none border-b border-orange-50 last:border-b-0
+                          w-full justify-start text-left px-4 py-3 text-sm rounded-none border-b border-orange-50 last:border-b-0
                           ${activePhase === subChapter.id 
                             ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-semibold' 
                             : 'text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-700'
@@ -100,7 +100,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                           transition-all duration-200
                         `}
                       >
-                        <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-3 flex-shrink-0" />
+                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-3 flex-shrink-0" />
                         {subChapter.shortName}
                       </Button>
                     ))}

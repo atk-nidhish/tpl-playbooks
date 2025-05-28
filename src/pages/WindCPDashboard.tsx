@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Wind, ArrowLeft, Download } from "lucide-react";
+import { Search, Wind, ArrowLeft, Download, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
@@ -12,12 +12,22 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { createWindCPPlaybook, seedWindCPChapter1Data, seedWindCPChapter2Data } from "@/services/wind-cp-playbook-seeder";
+import { addWindCommissioningAdditionalData } from "@/services/wind-commissioning-additional-data";
 
 const WindCPDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activePhase, setActivePhase] = useState("chapter-1");
   const [playbookId, setPlaybookId] = useState<string>("");
   const [isInitialized, setIsInitialized] = useState(false);
+  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Load completed quizzes from localStorage
+    const saved = localStorage.getItem('completed_quizzes');
+    if (saved) {
+      setCompletedQuizzes(JSON.parse(saved));
+    }
+  }, []);
 
   useEffect(() => {
     const initializePlaybook = async () => {
@@ -26,6 +36,7 @@ const WindCPDashboard = () => {
         const newPlaybookId = await createWindCPPlaybook();
         await seedWindCPChapter1Data(newPlaybookId);
         await seedWindCPChapter2Data(newPlaybookId);
+        await addWindCommissioningAdditionalData(newPlaybookId);
         setPlaybookId(newPlaybookId);
         setIsInitialized(true);
         console.log('Wind C&P playbook initialized successfully');
@@ -100,12 +111,26 @@ const WindCPDashboard = () => {
     }
   ];
 
+  // Check if all quizzes are completed
+  const allQuizzesCompleted = chapters
+    .filter(ch => ch.id !== "certification")
+    .every(chapter => {
+      if (chapter.subChapters) {
+        return chapter.subChapters.every(sub => completedQuizzes.includes(sub.id));
+      }
+      return completedQuizzes.includes(chapter.id);
+    });
+
   const getProcessMapImage = (phaseId: string) => {
     switch (phaseId) {
       case "chapter-1":
         return "/lovable-uploads/cbd79a2a-4b4a-49e3-85a0-cdc01cf34da0.png";
       case "chapter-2":
         return "/lovable-uploads/95961d12-586b-4b67-aa1e-a53da8fed52e.png";
+      case "chapter-3a1":
+        return "/lovable-uploads/ba7bcb46-50f3-45af-b059-43ecec5d3bf4.png";
+      case "chapter-3a2":
+        return "/lovable-uploads/e3364575-a72a-4210-bd19-60a920fed4ac.png";
       default:
         return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
     }
@@ -134,6 +159,62 @@ const WindCPDashboard = () => {
 
   // Handle certification section
   if (activePhase === "certification") {
+    if (!allQuizzesCompleted) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+          {/* Header */}
+          <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+                    <ArrowLeft className="h-5 w-5 text-gray-600" />
+                  </Link>
+                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
+                    <Wind className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Wind - C&P</h1>
+                    <p className="text-sm text-gray-600">Contracting & Procurement Playbook</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          {/* Modern Navigation */}
+          <ModernNavigation 
+            chapters={chapters}
+            activePhase={activePhase}
+            onPhaseChange={setActivePhase}
+          />
+
+          <div className="container mx-auto px-6 py-8">
+            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <CardContent className="p-12 text-center">
+                <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Certification Locked</h2>
+                <p className="text-gray-600 text-lg mb-6">
+                  Complete all chapter quizzes to unlock the playbook certification exam.
+                </p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-200 rounded-full h-2 mb-4">
+                    <div 
+                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
+                      style={{ width: `${(completedQuizzes.length / 6) * 100}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Progress: {completedQuizzes.length} of 6 quizzes completed
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         {/* Header */}
@@ -257,7 +338,14 @@ const WindCPDashboard = () => {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <ChapterQuiz activePhase={activePhase} />
+            <ChapterQuiz 
+              activePhase={activePhase} 
+              onQuizComplete={(chapterId) => {
+                const updated = [...completedQuizzes, chapterId];
+                setCompletedQuizzes(updated);
+                localStorage.setItem('completed_quizzes', JSON.stringify(updated));
+              }}
+            />
           </TabsContent>
         </ModernTabs>
       </div>

@@ -16,6 +16,65 @@ const Dashboard = () => {
     }
   }, []);
 
+  const downloadCertificate = (cert: any) => {
+    // Create a simple certificate download
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = 800;
+    canvas.height = 600;
+    
+    if (ctx) {
+      // Background
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Border
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+      
+      // Title
+      ctx.fillStyle = '#1f2937';
+      ctx.font = 'bold 36px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Certificate of Achievement', canvas.width / 2, 120);
+      
+      // Subtitle
+      ctx.font = '20px Arial';
+      ctx.fillText('This certifies that', canvas.width / 2, 180);
+      
+      // Name (placeholder)
+      ctx.font = 'bold 28px Arial';
+      ctx.fillStyle = '#d97706';
+      ctx.fillText('Certificate Holder', canvas.width / 2, 230);
+      
+      // Achievement
+      ctx.font = '18px Arial';
+      ctx.fillStyle = '#1f2937';
+      ctx.fillText('has successfully completed', canvas.width / 2, 280);
+      
+      // Course name
+      ctx.font = 'bold 24px Arial';
+      ctx.fillStyle = '#059669';
+      ctx.fillText(cert.title, canvas.width / 2, 330);
+      
+      // Score
+      ctx.font = '16px Arial';
+      ctx.fillStyle = '#1f2937';
+      ctx.fillText(`with a score of ${cert.score}%`, canvas.width / 2, 380);
+      
+      // Date
+      ctx.fillText(`Date: ${cert.date}`, canvas.width / 2, 450);
+      
+      // Download
+      const link = document.createElement('a');
+      link.download = `${cert.title.replace(/\s+/g, '_')}_Certificate.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Header */}
@@ -50,7 +109,7 @@ const Dashboard = () => {
                   Your Achievements
                 </div>
                 <p className="text-gray-700 text-lg max-w-2xl mx-auto">
-                  Congratulations on your certified expertise! Your achievements demonstrate your commitment to excellence.
+                  Congratulations on your certified expertise! Download your certificates below.
                 </p>
               </div>
               
@@ -66,15 +125,19 @@ const Dashboard = () => {
                         Score: {cert.score}% • Earned: {cert.date}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="text-center">
+                    <CardContent className="text-center space-y-4">
                       <div className="flex justify-center gap-1 mb-4">
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} className="h-5 w-5 text-amber-400 fill-current" />
                         ))}
                       </div>
-                      <div className="bg-gradient-to-r from-amber-100 to-orange-100 px-4 py-2 rounded-full">
-                        <p className="text-sm font-semibold text-amber-800">Certified Professional</p>
-                      </div>
+                      <Button 
+                        onClick={() => downloadCertificate(cert)}
+                        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download Certificate
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -90,36 +153,11 @@ const Dashboard = () => {
                 Available Playbooks
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Streamline Your Project Execution
+                Wind - Contracting & Procurement
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Access comprehensive playbooks designed to guide your team through complex project workflows with clarity and efficiency.
+                Master the complete wind project contracting and procurement lifecycle with our comprehensive playbook.
               </p>
-            </div>
-
-            {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 text-center">
-                <div className="bg-gradient-to-r from-green-500 to-emerald-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-bold text-2xl text-gray-900">500+</h3>
-                <p className="text-gray-600">Teams Empowered</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 text-center">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <BookOpen className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-bold text-2xl text-gray-900">98%</h3>
-                <p className="text-gray-600">Success Rate</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 text-center">
-                <div className="bg-gradient-to-r from-amber-500 to-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Award className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-bold text-2xl text-gray-900">1,200+</h3>
-                <p className="text-gray-600">Certifications Issued</p>
-              </div>
             </div>
 
             {/* Playbook Card */}
@@ -138,11 +176,6 @@ const Dashboard = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center relative z-10 pb-8">
-                  <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-6 mb-6 border border-orange-200">
-                    <p className="text-gray-700 leading-relaxed">
-                      Comprehensive framework for wind project contracting, vendor management, and procurement processes from bid submission to contractor management.
-                    </p>
-                  </div>
                   <Link to="/wind-cp">
                     <Button className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold py-4 text-lg rounded-xl transition-all duration-300 group-hover:shadow-lg transform group-hover:-translate-y-1">
                       Explore Playbook

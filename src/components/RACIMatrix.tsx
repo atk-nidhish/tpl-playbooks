@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -136,12 +137,29 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
     );
   }
 
-  // Sort filtered data by step_id to ensure proper sequence
+  // Sort filtered data: S first, then numbered steps, then E last
   const sortedFilteredData = filteredData.sort((a, b) => {
-    // Convert step_id to numbers for proper sorting (e.g., "1", "2", "10")
-    const aStepNum = parseInt(a.step_id) || 0;
-    const bStepNum = parseInt(b.step_id) || 0;
-    return aStepNum - bStepNum;
+    const aId = a.step_id;
+    const bId = b.step_id;
+    
+    // Handle "S" step - should always be first
+    if (aId === "S") return -1;
+    if (bId === "S") return 1;
+    
+    // Handle "E" step - should always be last
+    if (aId === "E") return 1;
+    if (bId === "E") return -1;
+    
+    // For numbered steps, sort numerically
+    const aNum = parseInt(aId.replace(/^P/, ''));
+    const bNum = parseInt(bId.replace(/^P/, ''));
+    
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return aNum - bNum;
+    }
+    
+    // Fallback to string comparison
+    return aId.localeCompare(bId);
   });
 
   return (

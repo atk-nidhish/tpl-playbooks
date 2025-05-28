@@ -4,897 +4,614 @@ import { supabase } from '@/integrations/supabase/client';
 export const addWindCommissioningAdditionalData = async (playbookId: string) => {
   console.log(`Adding additional Wind Commissioning data to playbook: ${playbookId}`);
 
-  // Additional Process Steps for Chapter 3.1 RLDC User Registration
-  const additionalProcessSteps = [
-    // Chapter 3.1 - RLDC User Registration (continuing from existing data)
+  // Process Steps for Chapter 3a.1 - Contract Award for Project-specific Agreement
+  const chapter3a1ProcessSteps = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P7',
-      activity: 'OEM SPOC provides answers for any clarifications from the RAH',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'OEM SPOC',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P8',
-      activity: 'RAH requests Wind Engineering Head (WEH) to provide the necessary technical and modelling data, and shares the relevant annexure templates containing data requirements',
-      inputs: ['Data Requirement Annexures'],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P9',
-      activity: 'RAH receives the requisite data from WEH and prepares the annexures required for user registration',
-      inputs: ['Technical and Modelling Data'],
-      outputs: ['RLDC User Registration Document'],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P10',
-      activity: 'RAH shares the RLDC User Registration Document with Chief Regulatory for sign-off',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P11',
-      activity: 'Chief Regulatory signs-off on the RLDC User Registration Document and shares the signed copy with RAH',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Chief Regulatory',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P12',
-      activity: 'RAH submits the user registration documents with the RLDC',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P13',
-      activity: 'RAH receives queries, if any, from the RLDC and shares answers for the queries with the RLDC',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'E',
-      activity: 'RAH receives confirmation of User registration from the RLDC, and informs the Chief Regulatory and Project Manager',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-
-    // Chapter 3.2 - CEIG Approval & FTC Intimation to RLDC
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'S',
-      activity: 'Project Manager (PM) informs the Regulatory Approvals Head (RAH) that the pre-commissioning tests have been completed. CEIG Approval is required before requesting FTC and trial run approval from the RLDC',
+      activity: 'Technical Team raises a Purchase Requisition (PR) to a Procurement Lead',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Project Manager',
+      responsible: 'Technical Team',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P1',
-      activity: 'RAH notifies the CEIG (Chief Electrical Inspector to the Government) to approve the plant drawings and conduct an inspection and provide the Electrical Safety Approval (ESA) for first-time charging (FTC)',
-      inputs: ['Plant Drawings'],
+      activity: 'Procurement Lead reviews the PR and decides one of the following: Repeat order to a previously contracted vendor OR RFP for empaneled vendors',
+      inputs: ['Purchase Requisition (PR)'],
       outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
+      responsible: 'Procurement Lead',
+      comments: 'For repeat order, approval will be taken from WPH, and steps will continue from P9 onwards'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P2',
-      activity: 'RAH resolves any queries on the drawings and schedules the CEIG inspection and informs the PM of the same',
-      inputs: [],
-      outputs: [],
+      activity: 'Procurement Lead prepares the RFP and incorporates: Technical requirements from the Wind Engineering Head (WEH), Timeline that aligns with the Project Procurement Plan',
+      inputs: ['BoQ / BoS', 'RFP Template', 'Technical requirements', 'Project Procurement Plan'],
+      outputs: ['RFP'],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
+      responsible: 'Procurement Lead',
+      comments: 'RFP is prepared by modifying the RFP template'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P3',
-      activity: 'PM accompanies the CEIG during the ESA inspection',
+      activity: 'Procurement Lead floats the RFP to empaneled vendors and collates the responses',
       inputs: [],
-      outputs: [],
+      outputs: ['RFP responses'],
       timeline: '',
-      responsible: 'Project Manager',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P4',
-      activity: 'Post inspection, RAH receives the order for compliance from the CEIG',
+      activity: 'Procurement Lead shares the responses / proposals with the WEH for technical evaluation',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P5',
-      activity: 'RAH prepares the compliance report and shares it with CEIG',
-      inputs: ['Order for Compliance'],
-      outputs: ['Compliance Report'],
+      activity: 'WEH shortlists vendor proposals and shares the list with Procurement Lead',
+      inputs: ['RFP responses'],
+      outputs: ['Shortlisted Vendor Proposals'],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Wind Engineering Head',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P6',
-      activity: 'RAH receives the ESA certificate from the CEIG',
-      inputs: [],
-      outputs: ['ESA Certificate'],
+      activity: 'Procurement Lead reviews the quotations within these proposals, Procurement Lead selects 2-3 vendors based on appropriate assessment criteria, highlighting the order of selection preference',
+      inputs: ['Shortlisted Vendor Proposals'],
+      outputs: ['Shortlisted Vendor List'],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P7',
-      activity: 'RAH intimates the RLDC for pre-data validation of plant, as per approved single-line diagram of plant, atleast 10 days before the anticipated FTC date. RAH shares the ESA certificate and requisite data with the RLDC',
-      inputs: ['ESA Certificate', 'Validated data as per SLD'],
-      outputs: ['RLDC Intimation Notice'],
+      activity: 'Procurement Lead shares the selected vendors quotes with WPH for finalization and approval to initiate contract negotiations',
+      inputs: [],
+      outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
+      responsible: 'Procurement Lead',
+      comments: 'If the contract size > 10% of the procurement budget, approval of Chief Procurement is also required'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P8',
-      activity: 'RAH receives queries, if any, from the RLDC, and resolves them',
+      activity: 'WPH finalizes a vendor and directs the Procurement Lead to initiate contract negotiation',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Wind Procurement Head',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P9',
-      activity: 'RAH receives confirmation from the RLDC that all the documents are in order',
+      activity: 'Procurement Lead negotiates contract terms and finalizes them with the vendor, Procurement Lead prepares the contract basis negotiated terms',
       inputs: [],
-      outputs: [],
+      outputs: ['Vendor Contract'],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P10',
-      activity: 'RAH submits First-time Charging (FTC) request and trial run notice to the RLDC, atleast 7 working days before anticipated FTC date. RAH submits the requisite documents to the RLDC',
-      inputs: ['FTC Undertakings'],
-      outputs: ['FTC Request Notice'],
+      activity: 'Procurement Lead shares the Vendor Contract with WPH for approval',
+      inputs: [],
+      outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
+      responsible: 'Procurement Lead',
+      comments: 'If the contract size > 10% of the procurement budget, approval of Chief Procurement is also required'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P11',
-      activity: 'RAH receives queries, if any, from the RLDC and shares answers for the queries with the RLDC',
+      activity: 'Procurement Lead incorporates any feedback and re-shares for approval',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a1',
       step_id: 'P12',
-      activity: 'RAH receives the approval for trial run from the RLDC, along with the grid charging code, and shares it with the PM',
-      inputs: [],
-      outputs: ['Trial Run Approval', 'Grid Charge Code'],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'E',
-      activity: 'PM directs the OEM SPOC, Site Electrical Lead and Commissioning POC to prepare for FTC and trial run',
+      activity: 'Procurement Lead ensures No Deviation Certificate is received from the Vendor',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
-    },
-
-    // Chapter 4 - First Time Charging & Commercial Operation
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'S',
-      activity: 'Regulatory Approvals Head (RAH) shares the Grid charge code and approval for FTC with the Project Manager (PM)',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P1',
-      activity: 'PM directs the OEM SPOC, Site Electrical Lead and Commissioning POC (CPOC) to prepare for FTC, and shares the grid charge code with them',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P2',
-      activity: 'OEM SPOC back-charges the USS transformer through the 33 kV line, using power from the grid',
-      inputs: ['Grid Charge Code'],
-      outputs: [],
-      timeline: '',
-      responsible: 'OEM SPOC',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P3',
-      activity: 'PM requests the RLDC for the trial run charge code, 7 days after FTC',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P4',
-      activity: 'PM receives the trial run charge code and shares it with the OEM SPOC',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P5',
-      activity: 'OEM SPOC initiates the trial run',
-      inputs: ['Trial Run Charge Code'],
-      outputs: [],
-      timeline: '',
-      responsible: 'OEM SPOC',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P6',
-      activity: 'OEM SPOC collects operational data over the duration of the trial run',
-      inputs: [],
-      outputs: ['Trial Run Data'],
-      timeline: '',
-      responsible: 'OEM SPOC',
-      comments: 'SCADA values of active and reactive power flows, interface energy meter readings, numerical relay, disturbance recorder and station event logger, among others'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P7',
-      activity: 'OEM SPOC shares the trial run data with the Site Electrical Lead (SEL)',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'OEM SPOC',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P8',
-      activity: 'SEL reviews the trial run data, with CPOC, and seeks clarifications from the OEM SPOC',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Site Electrical Lead',
-      comments: 'Trial run may be conducted multiple times (as permitted by the RLDC) till satisfactory data values are observed'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P9',
-      activity: 'SEL shares the trial run data with the PM, once all clarifications have been received',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Site Electrical Lead',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P10',
-      activity: 'PM approves and shares the trial run data with the RAH',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P11',
-      activity: 'RAH prepares the trial run data in the requisite format and submits it to the RLDC',
-      inputs: ['Trial Run Data'],
-      outputs: ['Trial Run Data Report'],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P12',
-      activity: 'RAH receives queries, if any, from the RLDC and resolves them',
-      inputs: [],
-      outputs: [],
-      timeline: '',
-      responsible: 'Regulatory Approvals Head',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
+      phase_id: 'chapter-3a1',
       step_id: 'P13',
-      activity: 'RAH receives the successful trial run certificate and Commercial Operation Date (COD) certificate from the RLDC',
+      activity: 'Procurement Lead ensures signature of Vendor Contract by signatories from both sides',
       inputs: [],
-      outputs: ['Successful Trial Run Certificate', 'COD Certificate'],
+      outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-4',
+      phase_id: 'chapter-3a1',
       step_id: 'E',
-      activity: 'RAH notifies the PM, OEM SPOC, Commissioning POC and Chief Commercial Officer of the successful trial run certificate and COD certificate',
+      activity: 'Procurement Lead shares the signed Vendor Contract with WPH',
       inputs: [],
       outputs: [],
       timeline: '',
-      responsible: 'Regulatory Approvals Head',
+      responsible: 'Procurement Lead',
       comments: ''
     }
   ];
 
-  // Additional RACI Matrix entries
-  const additionalRaciEntries = [
-    // Chapter 3.1 RACI continuation
+  // Process Steps for Chapter 3a.2 - Purchase Requisition Execution under Project-specific Agreement
+  const chapter3a2ProcessSteps = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a2',
+      step_id: 'S',
+      activity: 'Procurement Lead shares the signed Vendor Contract with WPH',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Procurement Lead',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P1',
+      activity: 'Procurement Lead issues a Purchase Order (PO) to the vendor basis requirements outlined in the contract, Procurement Lead to serve as the Order Manager for the given PO',
+      inputs: ['Vendor Contract'],
+      outputs: ['Purchase Order (PO)'],
+      timeline: '',
+      responsible: 'Procurement Lead',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P2',
+      activity: 'Order Manager updates the PO tracker and informs the Project Manager',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Order Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P3',
+      activity: 'Vendor aligns the schedule with the Project Manager, Supply Chain Management (SCM) Chief and respective Technical Team',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P4',
+      activity: 'For goods in the TPI list, Chief SCM hires a third-party inspection (TPI) agency to inspect goods at manufacturing site',
+      inputs: [],
+      outputs: ['Inspection Checklist'],
+      timeline: '',
+      responsible: 'Chief SCM',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P5',
+      activity: 'Once inspection process is complete, Chief SCM grants approval for all components under evaluation and issues the Quality Release Note (QRN) to the vendor',
+      inputs: ['Inspection Checklist'],
+      outputs: ['Quality Release Note'],
+      timeline: '',
+      responsible: 'Chief SCM',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P6',
+      activity: 'Goods are dispatched to the project site, Delivery is tracked by the Chief SCM in the Delivery Tracker, If item is delayed, the PO gets added to the Delayed Items Tracker',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Chief SCM',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P7',
+      activity: 'Chief SCM receives the delivery on-site and issues the Goods Received Note (GRN) to the Vendor',
+      inputs: [],
+      outputs: ['Goods Received Note'],
+      timeline: '',
+      responsible: 'Chief SCM',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P8',
+      activity: 'Vendor prepares the payment invoice and shares it with the Order Manager, along with the GRN',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Vendor',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P9',
+      activity: 'Order Manager confirms the GRN with the Chief SCM',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Order Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'E',
+      activity: 'Order Manager releases payment to the Vendor and updates the PO tracker',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Order Manager',
+      comments: ''
+    }
+  ];
+
+  // RACI Matrix for Chapter 3a.1
+  const chapter3a1RaciEntries = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'S',
+      task: 'Raise a Purchase Requisition (PR) to the Procurement Lead',
+      responsible: 'Technical Team',
+      accountable: '',
+      consulted: '',
+      informed: 'Procurement Lead, Wind Procurement Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P1',
+      task: 'Reviews the PR and decides between repeat and new order',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P2',
+      task: 'Prepare the RFP',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: 'Wind Engineering Head',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P3',
+      task: 'Float the RFP to empaneled vendors and collate the responses',
+      responsible: 'Procurement Lead',
+      accountable: 'Procurement Lead',
+      consulted: '',
+      informed: 'Wind Procurement Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P4',
+      task: 'Share the RFP responses with the Wind Engineering Head (WEH) for technical evaluation',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: 'Wind Engineering Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P5',
+      task: 'Shortlist vendors and share the list with Procurement Lead',
+      responsible: 'Wind Engineering Head',
+      accountable: '',
+      consulted: '',
+      informed: 'Procurement Lead'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P6',
+      task: 'Choose vendors for contract negotiations based on appropriate assessment criteria',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P7',
+      task: 'Share the selected vendors proposals with Wind Procurement Head for finalization and approval to initiate contract negotiations',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: 'Wind Procurement Head',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P8',
+      task: 'Finalize a vendor and direct the Procurement Lead to initiate contract negotiation',
+      responsible: 'Wind Procurement Head',
+      accountable: '',
+      consulted: '',
+      informed: 'Procurement Lead'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
+      step_id: 'P9',
+      task: 'Prepare the contract basis negotiated terms with vendor',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
       step_id: 'P10',
-      task: 'Share the RLDC User Registration Document with Chief Regulatory for sign-off',
-      responsible: 'Regulatory Approvals Head',
+      task: 'Share the Vendor Contract with WPH for approval',
+      responsible: 'Procurement Lead',
       accountable: '',
-      consulted: 'Chief Regulatory',
+      consulted: 'Wind Procurement Head',
       informed: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a1',
       step_id: 'P11',
-      task: 'Sign-off on the RLDC User Registration Document and share the signed copy with RAH',
-      responsible: 'Chief Regulatory',
+      task: 'Incorporate any feedback and re-share for approval',
+      responsible: 'Procurement Lead',
       accountable: '',
-      consulted: '',
-      informed: 'Regulatory Approvals Head'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P12',
-      task: 'Submit the user registration documents with the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
+      consulted: 'Wind Procurement Head',
       informed: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a1',
+      step_id: 'P12',
+      task: 'Ensure No Deviation Certificate is received from the Vendor',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: 'Wind Procurement Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a1',
       step_id: 'P13',
-      task: 'Answer any queries from the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
+      task: 'Ensure signature of Vendor Contract by signatories from both sides',
+      responsible: 'Procurement Lead',
+      accountable: 'Procurement Lead',
       consulted: '',
-      informed: ''
+      informed: 'Wind Procurement Head'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a1',
       step_id: 'E',
-      task: 'Receive confirmation of User registration from the RLDC, and inform the Chief Regulatory and Project Manager',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
+      task: 'Share the signed Vendor Contract with WPH',
+      responsible: 'Procurement Lead',
+      accountable: 'Procurement Lead',
       consulted: '',
-      informed: 'Chief Regulatory, Project Manager'
-    },
-
-    // Chapter 3.2 RACI
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'S',
-      task: 'Inform the Regulatory Approvals Head (RAH) that pre-commissioning tests have been completed',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'Regulatory Approvals Head'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P1',
-      task: 'Notify the CEIG to approve plant drawings and conduct an inspection and provide the ESA',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P2',
-      task: 'Resolve any queries on the drawings and schedule the CEIG inspection',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: 'Project Manager'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P3',
-      task: 'Accompany the CEIG during the ESA inspection',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P4',
-      task: 'Receive the order for compliance from the CEIG',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: 'Project Manager',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P5',
-      task: 'Prepare the compliance report and share it with CEIG',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P6',
-      task: 'Receive the ESA certificate from the CEIG',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P7',
-      task: 'Intimate the RLDC for pre-data validation for FTC and share ESA certificate with requisite data',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P8',
-      task: 'Share answers to the queries from the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: 'Project Manager',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P9',
-      task: 'Receive confirmation from the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P10',
-      task: 'Submit FTC and trial run request to the RLDC, and share the requisite data',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P11',
-      task: 'Share answers to the queries from the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: 'Project Manager',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P12',
-      task: 'Receive the approval for trial run from the RLDC, along with the grid charging code',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: 'Project Manager'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'E',
-      task: 'Direct the OEM SPOC, Site Electrical Lead and CPOC to prepare for FTC and trial run',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'OEM SPOC, Site Electrical Lead, Commissioning POC'
-    },
-
-    // Chapter 4 RACI
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'S',
-      task: 'Share Grid charge code and approval for FTC with the PM',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: 'Project Manager'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P1',
-      task: 'Direct the OEM SPOC, Site Electrical Lead and CPOC to prepare for FTC',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'OEM SPOC, Site Electrical Lead, CPOC'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P2',
-      task: 'Back-charge the USS transformer through 33 kV line',
-      responsible: 'OEM SPOC',
-      accountable: '',
-      consulted: 'Site Electrical Lead, PM',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P3',
-      task: 'Request RLDC for trial run charge code',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P4',
-      task: 'Share trial run charge code with OEM SPOC',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'OEM SPOC'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P5',
-      task: 'Initiate the trial run',
-      responsible: 'OEM SPOC',
-      accountable: '',
-      consulted: 'Site Electrical Lead, PM',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P6',
-      task: 'Collect operational data over the duration of the trial run',
-      responsible: 'OEM SPOC',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P7',
-      task: 'Share the data with the Site Electrical Lead (SEL)',
-      responsible: 'OEM SPOC',
-      accountable: '',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P8',
-      task: 'Review the data and seek clarifications from OEM SPOC',
-      responsible: 'Site Electrical Lead',
-      accountable: '',
-      consulted: 'Commissioning POC, OEM SPOC',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P9',
-      task: 'Share the trial run data with the PM',
-      responsible: 'Site Electrical Lead',
-      accountable: '',
-      consulted: '',
-      informed: 'Project Manager'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P10',
-      task: 'Approve and share the data for submission to the RLDC',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'Regulatory Approvals Head'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-4',
-      step_id: 'P11',
-      task: 'Prepare the data in the requisite format and submit it to the RLDC',
-      responsible: 'Regulatory Approvals Head',
-      accountable: '',
-      consulted: '',
-      informed: ''
+      informed: 'Wind Procurement Head'
     }
   ];
 
-  // Additional Process Map entries
-  const additionalProcessMapEntries = [
-    // Chapter 3.1 Process Map
+  // RACI Matrix for Chapter 3a.2
+  const chapter3a2RaciEntries = [
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a2',
       step_id: 'S',
-      step_type: 'start',
-      title: 'Direct Regulatory Approvals Head to initiate RLDC approval process for First Time Charging',
-      description: 'Chief Regulatory directs RAH to initiate the RLDC approval process for First Time Charging (FTC)',
-      order_index: 1
+      task: 'Share the signed Vendor Contract with WPH',
+      responsible: 'Procurement Lead',
+      accountable: 'Procurement Lead',
+      consulted: '',
+      informed: 'Wind Procurement Head'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
+      phase_id: 'chapter-3a2',
       step_id: 'P1',
-      step_type: 'process',
-      title: 'Initiate collection of documents required for RLDC User Registration',
-      description: 'RAH initiates collection of documents required for RLDC User Registration',
-      order_index: 2
+      task: 'Issue a Purchase Order (PO) to the vendor basis requirements outlined in the contract',
+      responsible: 'Procurement Lead',
+      accountable: '',
+      consulted: '',
+      informed: 'Technical Team'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P8',
-      step_type: 'process',
-      title: 'Request Wind Engineering Head to provide technical data',
-      description: 'RAH requests WEH to provide necessary technical and modelling data, and shares the relevant annexure templates',
-      order_index: 9
+      phase_id: 'chapter-3a2',
+      step_id: 'P2',
+      task: 'Update the PO tracker',
+      responsible: 'Order Manager',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P9',
-      step_type: 'process',
-      title: 'Receive requisite data from WEH and prepare annexures for user registration',
-      description: 'RAH receives the requisite data from WEH and prepares the annexures required for user registration',
-      order_index: 10
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'P12',
-      step_type: 'process',
-      title: 'Submit the user registration documents with the RLDC',
-      description: 'RAH submits the user registration documents with the RLDC',
-      order_index: 13
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-1',
-      step_id: 'E',
-      step_type: 'end',
-      title: 'Receive confirmation of User registration from the RLDC',
-      description: 'RAH receives confirmation of User registration from the RLDC, and informs the Chief Regulatory and Project Manager',
-      order_index: 15
-    },
-
-    // Chapter 3.2 Process Map
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'S',
-      step_type: 'start',
-      title: 'Inform the Regulatory Approvals Head that pre-commissioning tests have been completed',
-      description: 'Project Manager informs the RAH that the pre-commissioning tests have been completed',
-      order_index: 1
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P1',
-      step_type: 'process',
-      title: 'Notify the CEIG to conduct an inspection and provide the Electrical Safety Approval',
-      description: 'RAH notifies the CEIG to approve the plant drawings and conduct an inspection',
-      order_index: 2
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a2',
       step_id: 'P3',
-      step_type: 'process',
-      title: 'Accompany the CEIG during the ESA inspection',
-      description: 'PM accompanies the CEIG during the ESA inspection',
-      order_index: 4
+      task: 'Request vendor for schedule confirmation; Inform Chief SCM',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief SCM'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a2',
+      step_id: 'P4',
+      task: 'Send a third-party inspection (TPI) agency to inspect goods at manufacturing site',
+      responsible: 'Chief SCM',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
+      step_id: 'P5',
+      task: 'Issue the Quality Release Note (QRN) to the vendor',
+      responsible: 'Chief SCM',
+      accountable: 'Chief SCM',
+      consulted: '',
+      informed: 'Project Manager'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
       step_id: 'P6',
-      step_type: 'process',
-      title: 'Receive the ESA certificate from the CEIG',
-      description: 'RAH receives the ESA certificate from the CEIG once all queries are resolved',
-      order_index: 7
+      task: 'Track deliveries and update delivery and delayed items tracker accordingly',
+      responsible: 'Chief SCM',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P10',
-      step_type: 'process',
-      title: 'Submit FTC and trial run request to the RLDC',
-      description: 'RAH submits FTC and trial run request to the RLDC, and share the requisite data',
-      order_index: 11
+      phase_id: 'chapter-3a2',
+      step_id: 'P7',
+      task: 'Issue the GRN on receiving delivery on site',
+      responsible: 'Chief SCM',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
-      step_id: 'P12',
-      step_type: 'milestone',
-      title: 'Receive the approval for trial run from the RLDC',
-      description: 'RAH receives the approval for trial run from the RLDC, along with the grid charging code',
-      order_index: 13
+      phase_id: 'chapter-3a2',
+      step_id: 'P8',
+      task: 'Receive payment invoice from the vendor',
+      responsible: 'Order Manager',
+      accountable: '',
+      consulted: '',
+      informed: ''
     },
     {
       playbook_id: playbookId,
-      phase_id: 'chapter-3-2',
+      phase_id: 'chapter-3a2',
+      step_id: 'P9',
+      task: 'Confirm GRN with Chief SCM',
+      responsible: 'Order Manager',
+      accountable: '',
+      consulted: 'Chief SCM',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'chapter-3a2',
       step_id: 'E',
-      step_type: 'end',
-      title: 'Direct the EPC SPOC, Site Electrical Lead and CPOC to prepare for FTC and trial run',
-      description: 'PM directs the OEM SPOC, Site Electrical Lead and Commissioning POC to prepare for FTC and trial run',
-      order_index: 14
+      task: 'Release payment to the Vendor and update the PO tracker',
+      responsible: 'Order Manager',
+      accountable: 'Order Manager',
+      consulted: '',
+      informed: 'Wind Procurement Head'
     }
   ];
+
+  // Add new process map images
+  await fetch('/lovable-uploads/ba7bcb46-50f3-45af-b059-43ecec5d3bf4.png');
+  await fetch('/lovable-uploads/e3364575-a72a-4210-bd19-60a920fed4ac.png');
 
   try {
-    // Insert additional process steps
-    const { error: stepsError } = await supabase
+    // Insert process steps for chapter 3a.1
+    const { error: steps3a1Error } = await supabase
       .from('process_steps')
-      .insert(additionalProcessSteps);
+      .insert(chapter3a1ProcessSteps);
 
-    if (stepsError) {
-      console.error('Error inserting additional process steps:', stepsError);
-      throw stepsError;
+    if (steps3a1Error) {
+      console.error('Error inserting chapter 3a.1 process steps:', steps3a1Error);
+      throw steps3a1Error;
     }
 
-    // Insert additional RACI entries
-    const { error: raciError } = await supabase
+    // Insert process steps for chapter 3a.2
+    const { error: steps3a2Error } = await supabase
+      .from('process_steps')
+      .insert(chapter3a2ProcessSteps);
+
+    if (steps3a2Error) {
+      console.error('Error inserting chapter 3a.2 process steps:', steps3a2Error);
+      throw steps3a2Error;
+    }
+
+    // Insert RACI entries for chapter 3a.1
+    const { error: raci3a1Error } = await supabase
       .from('raci_matrix')
-      .insert(additionalRaciEntries);
+      .insert(chapter3a1RaciEntries);
 
-    if (raciError) {
-      console.error('Error inserting additional RACI entries:', raciError);
-      throw raciError;
+    if (raci3a1Error) {
+      console.error('Error inserting chapter 3a.1 RACI entries:', raci3a1Error);
+      throw raci3a1Error;
     }
 
-    // Insert additional process map entries
-    const { error: mapError } = await supabase
-      .from('process_map')
-      .insert(additionalProcessMapEntries);
+    // Insert RACI entries for chapter 3a.2
+    const { error: raci3a2Error } = await supabase
+      .from('raci_matrix')
+      .insert(chapter3a2RaciEntries);
 
-    if (mapError) {
-      console.error('Error inserting additional process map entries:', mapError);
-      throw mapError;
+    if (raci3a2Error) {
+      console.error('Error inserting chapter 3a.2 RACI entries:', raci3a2Error);
+      throw raci3a2Error;
     }
 
-    console.log('Successfully added additional Wind Commissioning data');
+    console.log('Successfully added Wind Commissioning additional data for chapters 3a.1 and 3a.2');
   } catch (error) {
     console.error('Error adding additional Wind Commissioning data:', error);
     throw error;
