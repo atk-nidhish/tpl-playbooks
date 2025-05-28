@@ -1,128 +1,67 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Search, Sun, BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Wind, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 const Dashboard = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Original 3 playbook dashboards
-  const playbooks = [
-    {
-      id: "solar-execution",
-      title: "Solar Project Execution Playbook",
-      description: "Comprehensive playbook for solar project execution and management",
-      route: "/legacy",
-      phases: 3
-    },
-    {
-      id: "wind-commissioning",
-      title: "Wind Commissioning Playbook", 
-      description: "Wind turbine commissioning processes and procedures",
-      route: "/commissioning",
-      phases: 4
-    },
-    {
-      id: "wind-cp",
-      title: "Wind - C&P (Contracting & Procurement)",
-      description: "Wind contracting and procurement processes",
-      route: "/wind-cp",
-      phases: 10
-    }
-  ];
-
-  const filteredPlaybooks = playbooks.filter(playbook =>
-    playbook.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    playbook.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-orange-200 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
+      <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
+        <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
-                <Sun className="h-6 w-6 text-white" />
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-3 rounded-xl">
+                <BookOpen className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Playbook Dashboard</h1>
-                <p className="text-sm text-gray-600">Access your interactive playbooks</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search playbooks..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-80 bg-white/90"
-                />
+                <h1 className="text-3xl font-bold text-gray-900">Project Playbooks</h1>
+                <p className="text-gray-600">Enterprise process management platform</p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid gap-8">
-          {/* Playbooks Grid */}
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Your Playbooks ({filteredPlaybooks.length})
-              </h2>
-            </div>
+      {/* Main Content */}
+      <div className="container mx-auto px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Streamline Your Project Execution
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Access comprehensive playbooks designed to guide your team through complex project workflows with clarity and efficiency.
+            </p>
+          </div>
 
-            {filteredPlaybooks.length === 0 ? (
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-                <CardContent className="p-12 text-center">
-                  <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    No playbooks match your search
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Try adjusting your search terms
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredPlaybooks.map((playbook) => (
-                  <Link key={playbook.id} to={playbook.route}>
-                    <Card className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-300 cursor-pointer group">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
-                              {playbook.title}
-                            </CardTitle>
-                            <CardDescription className="mt-2">
-                              {playbook.description}
-                            </CardDescription>
-                          </div>
-                          <BookOpen className="h-5 w-5 text-orange-500 flex-shrink-0 ml-2" />
-                        </div>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                            {playbook.phases} phases
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            Interactive Playbook
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            )}
+          {/* Single Playbook Card */}
+          <div className="flex justify-center">
+            <Card className="w-full max-w-md bg-white/90 backdrop-blur-sm border-blue-200 hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-2xl w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Wind className="h-10 w-10 text-white" />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900">
+                  Wind - C&P
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Contracting & Procurement Playbook
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-sm text-gray-600 mb-6">
+                  Comprehensive framework for wind project contracting, vendor management, and procurement processes from bid submission to contractor management.
+                </p>
+                <Link to="/wind-cp">
+                  <Button className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-semibold py-3 rounded-lg transition-all duration-300 group-hover:shadow-lg">
+                    Explore Playbook
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
