@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, Clock, AlertCircle, Users, FileText, BarChart3 } from "lucide-react";
+import { CheckCircle, Clock, AlertCircle, Users, FileText, BarChart3, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const CommissioningDashboard = () => {
   const [activePhase, setActivePhase] = useState("phase-1");
@@ -82,8 +83,15 @@ export const CommissioningDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="container mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Wind Commissioning Playbook</h1>
-          <p className="text-gray-600">Track progress through wind turbine commissioning phases</p>
+          <div className="flex items-center space-x-3 mb-4">
+            <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+              <ArrowLeft className="h-5 w-5 text-gray-600" />
+            </Link>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Wind Commissioning Playbook</h1>
+              <p className="text-gray-600">Track progress through wind turbine commissioning phases</p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
