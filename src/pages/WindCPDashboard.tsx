@@ -13,6 +13,7 @@ import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { createWindCPPlaybook, seedWindCPChapter1Data, seedWindCPChapter2Data } from "@/services/wind-cp-playbook-seeder";
 import { addWindCommissioningAdditionalData } from "@/services/wind-commissioning-additional-data";
+import { addFrameworkChaptersData } from "@/services/wind-framework-chapters-data";
 
 const WindCPDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,6 +38,7 @@ const WindCPDashboard = () => {
         await seedWindCPChapter1Data(newPlaybookId);
         await seedWindCPChapter2Data(newPlaybookId);
         await addWindCommissioningAdditionalData(newPlaybookId);
+        await addFrameworkChaptersData(newPlaybookId);
         setPlaybookId(newPlaybookId);
         setIsInitialized(true);
         console.log('Wind C&P playbook initialized successfully');
@@ -68,22 +70,22 @@ const WindCPDashboard = () => {
         {
           id: "chapter-3a1",
           name: "Chapter 3a.1: Contract Award for Project-specific Agreement",
-          shortName: "Project-specific Award"
+          shortName: "Chapter 3a.1: Contract Award for Project-specific Agreement"
         },
         {
           id: "chapter-3a2",
           name: "Chapter 3a.2: Purchase Requisition Execution under Project-specific Agreement",
-          shortName: "Project-specific PR"
+          shortName: "Chapter 3a.2: Purchase Requisition Execution under Project-specific Agreement"
         },
         {
           id: "chapter-3b1",
           name: "Chapter 3b.1: Contract Award for Framework Agreements",
-          shortName: "Framework Award"
+          shortName: "Chapter 3b.1: Contract Award for Framework Agreements"
         },
         {
           id: "chapter-3b2",
           name: "Chapter 3b.2: Purchase Requisition Execution under Framework Agreements",
-          shortName: "Framework PR"
+          shortName: "Chapter 3b.2: Purchase Requisition Execution under Framework Agreements"
         }
       ]
     },
@@ -95,12 +97,12 @@ const WindCPDashboard = () => {
         {
           id: "chapter-4.1",
           name: "Chapter 4.1: Issue Escalation and Resolution",
-          shortName: "Issue Resolution"
+          shortName: "Chapter 4.1: Issue Escalation and Resolution"
         },
         {
           id: "chapter-4.2",
           name: "Chapter 4.2: Change of Scope Process",
-          shortName: "Scope Changes"
+          shortName: "Chapter 4.2: Change of Scope Process"
         }
       ]
     },
@@ -131,6 +133,10 @@ const WindCPDashboard = () => {
         return "/lovable-uploads/ba7bcb46-50f3-45af-b059-43ecec5d3bf4.png";
       case "chapter-3a2":
         return "/lovable-uploads/e3364575-a72a-4210-bd19-60a920fed4ac.png";
+      case "chapter-3b1":
+        return "/lovable-uploads/b93c0059-1f62-4468-924e-d11efd82d080.png";
+      case "chapter-3b2":
+        return "/lovable-uploads/3d9ebbef-27ff-4dc6-89d0-ec7cc752027e.png";
       default:
         return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
     }
@@ -201,11 +207,11 @@ const WindCPDashboard = () => {
                   <div className="bg-gray-200 rounded-full h-2 mb-4">
                     <div 
                       className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${(completedQuizzes.length / 6) * 100}%` }}
+                      style={{ width: `${(completedQuizzes.length / 8) * 100}%` }}
                     ></div>
                   </div>
                   <p className="text-sm text-gray-500">
-                    Progress: {completedQuizzes.length} of 6 quizzes completed
+                    Progress: {completedQuizzes.length} of 8 quizzes completed
                   </p>
                 </div>
               </CardContent>
@@ -284,7 +290,7 @@ const WindCPDashboard = () => {
         </div>
       </header>
 
-      {/* Modern Navigation */}
+      {/* Modern Navigation - not sticky */}
       <ModernNavigation 
         chapters={chapters}
         activePhase={activePhase}
@@ -338,14 +344,7 @@ const WindCPDashboard = () => {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <ChapterQuiz 
-              activePhase={activePhase} 
-              onQuizComplete={(chapterId) => {
-                const updated = [...completedQuizzes, chapterId];
-                setCompletedQuizzes(updated);
-                localStorage.setItem('completed_quizzes', JSON.stringify(updated));
-              }}
-            />
+            <ChapterQuiz activePhase={activePhase} />
           </TabsContent>
         </ModernTabs>
       </div>
