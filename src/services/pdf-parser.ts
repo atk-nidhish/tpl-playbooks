@@ -40,12 +40,19 @@ export const scanAndProcessPlaybooks = async () => {
         console.log(`Successfully processed: ${file.name}`);
       } catch (error) {
         console.error(`Failed to process ${file.name}:`, error);
+        // Continue processing other files even if one fails
       }
     }
 
     console.log(`Completed processing: ${successCount}/${totalFiles} files processed successfully`);
+    
+    if (successCount === 0 && totalFiles > 0) {
+      throw new Error('No files were processed successfully');
+    }
+    
   } catch (error) {
     console.error('Error in scanAndProcessPlaybooks:', error);
+    throw error;
   }
 };
 
@@ -74,7 +81,7 @@ export const processUploadedPlaybook = async (fileName: string) => {
     
     console.log(`Using ${functionName} for: ${fileName}`);
     
-    // Call the appropriate edge function with timeout handling
+    // Call the appropriate edge function
     const { data, error } = await supabase.functions.invoke(functionName, {
       body: { fileName },
       headers: {
