@@ -283,17 +283,19 @@ export const processUploadedPlaybook = async (fileName: string) => {
       console.log(`Attempting AI processing with ${functionName} for: ${fileName}`);
       
       // Call the appropriate edge function with timeout
-      const { data, error } = await Promise.race([
+      const result = await Promise.race([
         supabase.functions.invoke(functionName, {
           body: { fileName },
           headers: {
             'Content-Type': 'application/json',
           }
         }),
-        new Promise((_, reject) => 
+        new Promise<never>((_, reject) => 
           setTimeout(() => reject(new Error('Processing timeout')), 30000)
         )
       ]);
+
+      const { data, error } = result as { data: any; error: any };
 
       if (error) {
         console.warn(`AI processing failed for ${fileName}, creating basic playbook:`, error);
