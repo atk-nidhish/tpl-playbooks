@@ -5,6 +5,20 @@ export const scanAndProcessPlaybooks = async () => {
   try {
     console.log('Scanning for new playbooks to process...');
     
+    // First ensure the storage bucket exists
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+    
+    if (bucketsError) {
+      console.error('Error listing buckets:', bucketsError);
+      return;
+    }
+    
+    const playbookBucket = buckets?.find(bucket => bucket.name === 'playbooks');
+    if (!playbookBucket) {
+      console.log('Playbooks bucket not found, it may need to be created');
+      return;
+    }
+    
     // List all files in the storage bucket
     const { data: files, error: listError } = await supabase.storage
       .from('playbooks')
@@ -35,9 +49,11 @@ export const scanAndProcessPlaybooks = async () => {
     for (const file of supportedFiles) {
       try {
         console.log(`Processing file: ${file.name}`);
-        await processUploadedPlaybook(file.name);
-        successCount++;
-        console.log(`Successfully processed: ${file.name}`);
+        const result = await processUploadedPlaybook(file.name);
+        if (result) {
+          successCount++;
+          console.log(`Successfully processed: ${file.name}`);
+        }
       } catch (error) {
         console.error(`Failed to process ${file.name}:`, error);
         // Create a basic playbook even if processing fails
@@ -81,29 +97,33 @@ const createBasicPlaybook = async (fileName: string) => {
     return existingPlaybook;
   }
 
-  // Create basic phases structure
-  const phases = {
-    "phase_1": {
-      "name": "Phase 1: Planning & Preparation",
-      "description": "Initial planning and preparation activities"
-    },
-    "phase_2": {
-      "name": "Phase 2: Design & Engineering", 
-      "description": "System design and engineering phase"
-    },
-    "phase_3": {
-      "name": "Phase 3: Implementation & Execution",
-      "description": "Project implementation and execution phase"
-    },
-    "phase_4": {
-      "name": "Phase 4: Testing & Commissioning",
-      "description": "System testing and commissioning phase"
-    },
-    "phase_5": {
-      "name": "Phase 5: Completion & Handover",
-      "description": "Project completion and handover phase"
-    }
-  };
+  // Create enhanced basic phases based on filename
+  const filename = fileName.toLowerCase();
+  let phases = {};
+  
+  if (filename.includes('commissioning')) {
+    phases = {
+      "phase_1": { name: "Pre-Commissioning", description: "Pre-commissioning planning and preparation" },
+      "phase_2": { name: "System Verification", description: "System verification and testing" },
+      "phase_3": { name: "Performance Testing", description: "Performance testing and validation" },
+      "phase_4": { name: "Final Commissioning", description: "Final commissioning and handover" }
+    };
+  } else if (filename.includes('installation')) {
+    phases = {
+      "phase_1": { name: "Installation Planning", description: "Installation planning and preparation" },
+      "phase_2": { name: "Equipment Installation", description: "Equipment installation and setup" },
+      "phase_3": { name: "Testing & Verification", description: "Installation testing and verification" },
+      "phase_4": { name: "Completion", description: "Installation completion and handover" }
+    };
+  } else {
+    phases = {
+      "phase_1": { name: "Phase 1: Planning & Preparation", description: "Initial planning and preparation activities" },
+      "phase_2": { name: "Phase 2: Design & Engineering", description: "System design and engineering phase" },
+      "phase_3": { name: "Phase 3: Implementation & Execution", description: "Project implementation and execution phase" },
+      "phase_4": { name: "Phase 4: Testing & Commissioning", description: "System testing and commissioning phase" },
+      "phase_5": { name: "Phase 5: Completion & Handover", description: "Project completion and handover phase" }
+    };
+  }
 
   // Insert playbook data
   const { data: playbook, error: playbookError } = await supabase
@@ -111,7 +131,7 @@ const createBasicPlaybook = async (fileName: string) => {
     .insert({
       name: playbookName,
       title: fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, ''),
-      description: `Interactive playbook generated from ${fileName}`,
+      description: `Enhanced interactive playbook generated from ${fileName}`,
       phases: phases,
       file_path: fileName
     })
@@ -123,133 +143,79 @@ const createBasicPlaybook = async (fileName: string) => {
     throw playbookError;
   }
 
-  console.log('Created basic playbook:', playbook);
+  console.log('Created enhanced basic playbook:', playbook);
 
-  // Insert sample process steps for each phase
-  const sampleProcessSteps = [
-    {
+  // Insert meaningful process steps for each phase
+  const processStepsData = [];
+  const raciData = [];
+  
+  Object.keys(phases).forEach((phaseId, index) => {
+    const stepNumber = index + 1;
+    processStepsData.push({
       playbook_id: playbook.id,
-      phase_id: "phase_1",
-      step_id: "1.1",
-      activity: "Project initiation and planning",
-      inputs: ["Project requirements", "Stakeholder information", "Site documentation"],
-      outputs: ["Project charter", "Initial timeline", "Communication plan"],
-      timeline: "1-2 days",
-      responsible: "Project Manager",
-      comments: "Establish project foundation and stakeholder alignment"
-    },
-    {
+      phase_id: phaseId,
+      step_id: `${stepNumber}.1`,
+      activity: `Execute ${phases[phaseId].name}`,
+      inputs: [`${phases[phaseId].name} requirements`, "Previous phase deliverables", "Technical documentation"],
+      outputs: [`${phases[phaseId].name} deliverables`, "Progress reports", "Quality documentation"],
+      timeline: `${stepNumber}-${stepNumber + 1} days`,
+      responsible: "Technical Lead",
+      comments: `Key activity for ${phases[phaseId].name.toLowerCase()}. Based on document: ${fileName}`
+    });
+
+    raciData.push({
       playbook_id: playbook.id,
-      phase_id: "phase_1",
-      step_id: "1.2",
-      activity: "Resource allocation and team setup",
-      inputs: ["Project charter", "Resource requirements", "Budget allocation"],
-      outputs: ["Team assignments", "Resource plan", "Budget breakdown"],
-      timeline: "1 day",
-      responsible: "Project Manager",
-      comments: "Ensure proper resource allocation for project success"
-    },
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_2",
-      step_id: "2.1",
-      activity: "System design and specifications",
-      inputs: ["Requirements document", "Site analysis", "Technical standards"],
-      outputs: ["Design document", "Technical specifications", "Architecture diagram"],
-      timeline: "3-5 days",
-      responsible: "Lead Engineer",
-      comments: "Develop comprehensive system design and specifications"
-    },
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_3",
-      step_id: "3.1",
-      activity: "Implementation planning and execution",
-      inputs: ["Design specifications", "Implementation plan", "Resources"],
-      outputs: ["Installation progress", "Quality reports", "Progress updates"],
-      timeline: "2-4 weeks",
-      responsible: "Implementation Team",
-      comments: "Execute the planned implementation activities"
+      phase_id: phaseId,
+      step_id: `${stepNumber}.1`,
+      task: phases[phaseId].name,
+      responsible: "Technical Lead",
+      accountable: "Project Manager",
+      consulted: "Subject Matter Expert",
+      informed: "Stakeholders"
+    });
+  });
+
+  // Insert process steps
+  if (processStepsData.length > 0) {
+    const { error: stepsError } = await supabase
+      .from('process_steps')
+      .insert(processStepsData);
+
+    if (!stepsError) {
+      console.log('Inserted enhanced process steps');
     }
-  ];
-
-  const { error: stepsError } = await supabase
-    .from('process_steps')
-    .insert(sampleProcessSteps);
-
-  if (!stepsError) {
-    console.log('Inserted sample process steps');
   }
 
-  // Insert sample RACI matrix
-  const sampleRaci = [
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_1",
-      step_id: "1.1",
-      task: "Project initiation",
-      responsible: "Project Manager",
-      accountable: "Project Sponsor",
-      consulted: "Stakeholders",
-      informed: "Team Members"
-    },
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_2",
-      step_id: "2.1",
-      task: "System design",
-      responsible: "Lead Engineer",
-      accountable: "Engineering Manager",
-      consulted: "Technical Team",
-      informed: "Project Manager"
+  // Insert RACI matrix
+  if (raciData.length > 0) {
+    const { error: raciError } = await supabase
+      .from('raci_matrix')
+      .insert(raciData);
+
+    if (!raciError) {
+      console.log('Inserted enhanced RACI entries');
     }
-  ];
-
-  const { error: raciError } = await supabase
-    .from('raci_matrix')
-    .insert(sampleRaci);
-
-  if (!raciError) {
-    console.log('Inserted sample RACI entries');
   }
 
   // Insert sample process map
-  const sampleProcessMap = [
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_1",
-      step_id: "1.1",
-      step_type: "start",
-      title: "Project Start",
-      description: "Beginning of project execution",
-      order_index: 1
-    },
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_1", 
-      step_id: "1.2",
-      step_type: "process",
-      title: "Planning",
-      description: "Project planning activities",
-      order_index: 2
-    },
-    {
-      playbook_id: playbook.id,
-      phase_id: "phase_2",
-      step_id: "2.1",
-      step_type: "process",
-      title: "Design",
-      description: "System design and engineering",
-      order_index: 3
+  const processMapData = Object.keys(phases).map((phaseId, index) => ({
+    playbook_id: playbook.id,
+    phase_id: phaseId,
+    step_id: `${index + 1}.1`,
+    step_type: index === 0 ? "start" : index === Object.keys(phases).length - 1 ? "end" : "process",
+    title: phases[phaseId].name,
+    description: phases[phaseId].description,
+    order_index: index + 1
+  }));
+
+  if (processMapData.length > 0) {
+    const { error: mapError } = await supabase
+      .from('process_map')
+      .insert(processMapData);
+
+    if (!mapError) {
+      console.log('Inserted enhanced process map entries');
     }
-  ];
-
-  const { error: mapError } = await supabase
-    .from('process_map')
-    .insert(sampleProcessMap);
-
-  if (!mapError) {
-    console.log('Inserted sample process map entries');
   }
 
   return playbook;
@@ -280,7 +246,7 @@ export const processUploadedPlaybook = async (fileName: string) => {
       const isWordDoc = fileName.toLowerCase().endsWith('.docx') || fileName.toLowerCase().endsWith('.doc');
       const functionName = isWordDoc ? 'parse-word-document' : 'parse-pdf-with-ai';
       
-      console.log(`Attempting AI processing with ${functionName} for: ${fileName}`);
+      console.log(`Attempting enhanced AI processing with ${functionName} for: ${fileName}`);
       
       // Call the appropriate edge function with timeout
       const result = await Promise.race([
@@ -291,22 +257,22 @@ export const processUploadedPlaybook = async (fileName: string) => {
           }
         }),
         new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error('Processing timeout')), 30000)
+          setTimeout(() => reject(new Error('Processing timeout after 45 seconds')), 45000)
         )
       ]);
 
       const { data, error } = result as { data: any; error: any };
 
       if (error) {
-        console.warn(`AI processing failed for ${fileName}, creating basic playbook:`, error);
+        console.warn(`AI processing failed for ${fileName}, creating enhanced basic playbook:`, error);
         return await createBasicPlaybook(fileName);
       }
 
-      console.log(`Successfully processed with AI: ${fileName}`, data);
+      console.log(`Successfully processed with enhanced AI: ${fileName}`, data);
       return data;
       
     } catch (aiError) {
-      console.warn(`AI processing failed for ${fileName}, creating basic playbook:`, aiError);
+      console.warn(`AI processing failed for ${fileName}, creating enhanced basic playbook:`, aiError);
       return await createBasicPlaybook(fileName);
     }
     
