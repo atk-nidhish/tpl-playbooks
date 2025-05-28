@@ -14,6 +14,7 @@ import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { createWindCPPlaybook, seedWindCPChapter1Data, seedWindCPChapter2Data } from "@/services/wind-cp-playbook-seeder";
 import { addWindCommissioningAdditionalData } from "@/services/wind-commissioning-additional-data";
 import { addFrameworkChaptersData } from "@/services/wind-framework-chapters-data";
+import { addChapter4Data } from "@/services/wind-chapter4-data";
 
 const WindCPDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,6 +40,7 @@ const WindCPDashboard = () => {
         await seedWindCPChapter2Data(newPlaybookId);
         await addWindCommissioningAdditionalData(newPlaybookId);
         await addFrameworkChaptersData(newPlaybookId);
+        await addChapter4Data(newPlaybookId);
         setPlaybookId(newPlaybookId);
         setIsInitialized(true);
         console.log('Wind C&P playbook initialized successfully');
@@ -137,6 +139,10 @@ const WindCPDashboard = () => {
         return "/lovable-uploads/b93c0059-1f62-4468-924e-d11efd82d080.png";
       case "chapter-3b2":
         return "/lovable-uploads/3d9ebbef-27ff-4dc6-89d0-ec7cc752027e.png";
+      case "chapter-4.1":
+        return "/lovable-uploads/050162e5-0a3c-4691-847b-19b5cce63ca2.png";
+      case "chapter-4.2":
+        return "/lovable-uploads/8f6e6013-6885-4e46-89e7-f9a555395ef5.png";
       default:
         return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
     }
@@ -290,7 +296,7 @@ const WindCPDashboard = () => {
         </div>
       </header>
 
-      {/* Modern Navigation - not sticky */}
+      {/* Modern Navigation */}
       <ModernNavigation 
         chapters={chapters}
         activePhase={activePhase}
@@ -344,7 +350,19 @@ const WindCPDashboard = () => {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <ChapterQuiz activePhase={activePhase} />
+            {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
+              <ChapterQuiz activePhase={activePhase} />
+            ) : (
+              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+                <CardContent className="p-12 text-center">
+                  <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>
+                  <p className="text-gray-600 text-lg">
+                    Complete all chapter quizzes to unlock this feature.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </ModernTabs>
       </div>

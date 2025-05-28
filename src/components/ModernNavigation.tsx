@@ -42,7 +42,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   return (
     <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm">
       <div className="container mx-auto px-6">
-        <div className="flex items-center gap-1 py-4 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-1 py-4 flex-wrap">
           {chapters.map((chapter) => {
             const hasSubChapters = chapter.subChapters && chapter.subChapters.length > 0;
             const isActive = activePhase === chapter.id || 
@@ -65,7 +65,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                       ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400 shadow-lg' 
                       : 'bg-white/90 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 text-gray-700 border-orange-200 hover:border-orange-300 hover:shadow-md'
                     }
-                    transition-all duration-300 font-bold text-base px-3 py-2 rounded-xl
+                    transition-all duration-300 font-bold text-sm px-3 py-2 rounded-xl
                     ${hasSubChapters ? 'pr-6' : ''}
                     transform hover:scale-105 hover:-translate-y-0.5 whitespace-nowrap
                   `}
@@ -84,7 +84,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[350px] max-w-[400px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[400px] max-w-[500px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => (
                       <Button
                         key={subChapter.id}
@@ -92,12 +92,12 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         size="sm"
                         onClick={() => onPhaseChange(subChapter.id)}
                         className={`
-                          w-full justify-start text-left px-3 py-2 text-xs rounded-none border-b border-orange-50 last:border-b-0
+                          w-full justify-start text-left px-3 py-3 text-xs rounded-none border-b border-orange-50 last:border-b-0
                           ${activePhase === subChapter.id 
                             ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-semibold' 
                             : 'text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-700'
                           }
-                          transition-all duration-200 h-auto min-h-[40px] leading-tight
+                          transition-all duration-200 h-auto min-h-[50px] leading-tight
                         `}
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-2 flex-shrink-0 mt-1" />
