@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,14 +20,24 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   const [expandedChapters, setExpandedChapters] = useState<string[]>([]);
 
   const toggleChapter = (chapterId: string) => {
-    setExpandedChapters(prev => 
-      prev.includes(chapterId) 
-        ? prev.filter(id => id !== chapterId)
-        : [...prev, chapterId]
-    );
+    setExpandedChapters(prev => {
+      // Close all other dropdowns and toggle current one
+      const isCurrentlyExpanded = prev.includes(chapterId);
+      return isCurrentlyExpanded ? [] : [chapterId];
+    });
   };
 
   const isExpanded = (chapterId: string) => expandedChapters.includes(chapterId);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setExpandedChapters([]);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   return (
     <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm sticky top-0 z-40">
@@ -39,7 +49,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
               (hasSubChapters && chapter.subChapters?.some(sub => sub.id === activePhase));
             
             return (
-              <div key={chapter.id} className="relative">
+              <div key={chapter.id} className="relative" onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant={isActive ? "default" : "outline"}
                   size="sm"
@@ -55,18 +65,18 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                       ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400 shadow-lg' 
                       : 'bg-white/90 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 text-gray-700 border-orange-200 hover:border-orange-300 hover:shadow-md'
                     }
-                    transition-all duration-300 font-medium text-sm px-5 py-2.5 rounded-xl
-                    ${hasSubChapters ? 'pr-9' : ''}
+                    transition-all duration-300 font-bold text-base px-6 py-3 rounded-xl
+                    ${hasSubChapters ? 'pr-10' : ''}
                     transform hover:scale-105 hover:-translate-y-0.5
                   `}
                 >
                   {chapter.shortName}
                   {hasSubChapters && (
-                    <div className="absolute right-2.5 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                       {isExpanded(chapter.id) ? (
-                        <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200" />
+                        <ChevronDown className="h-4 w-4 transition-transform duration-200" />
                       ) : (
-                        <ChevronRight className="h-3.5 w-3.5 transition-transform duration-200" />
+                        <ChevronRight className="h-4 w-4 transition-transform duration-200" />
                       )}
                     </div>
                   )}
@@ -74,7 +84,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[280px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md border border-orange-200 rounded-xl shadow-xl z-50 min-w-[320px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => (
                       <Button
                         key={subChapter.id}
@@ -82,9 +92,9 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         size="sm"
                         onClick={() => onPhaseChange(subChapter.id)}
                         className={`
-                          w-full justify-start text-left px-5 py-3 text-sm rounded-none border-b border-orange-50 last:border-b-0
+                          w-full justify-start text-left px-6 py-4 text-sm rounded-none border-b border-orange-50 last:border-b-0
                           ${activePhase === subChapter.id 
-                            ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-medium' 
+                            ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-semibold' 
                             : 'text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-700'
                           }
                           transition-all duration-200

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,8 +40,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
         .from('process_steps')
         .select('*')
         .eq('playbook_id', playbookId)
-        .eq('phase_id', activePhase)
-        .order('step_id', { ascending: true }); // Changed to ascending to start from beginning
+        .eq('phase_id', activePhase);
 
       if (error) {
         console.error('Error fetching process steps:', error);
@@ -50,7 +48,33 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
       }
 
       console.log(`Found ${data?.length || 0} process steps:`, data);
-      setSteps(data || []);
+      
+      // Sort steps to ensure S comes first, then numbered steps, then E at the end
+      const sortedSteps = (data || []).sort((a, b) => {
+        const aId = a.step_id;
+        const bId = b.step_id;
+        
+        // Handle "S" step - should always be first
+        if (aId === "S") return -1;
+        if (bId === "S") return 1;
+        
+        // Handle "E" step - should always be last
+        if (aId === "E") return 1;
+        if (bId === "E") return -1;
+        
+        // For numbered steps, sort numerically
+        const aNum = parseInt(aId);
+        const bNum = parseInt(bId);
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return aNum - bNum;
+        }
+        
+        // Fallback to string comparison
+        return aId.localeCompare(bId);
+      });
+      
+      setSteps(sortedSteps);
     } catch (error) {
       console.error('Error fetching process steps:', error);
     } finally {

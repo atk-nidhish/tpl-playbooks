@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Search, Wind, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Wind, ArrowLeft, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
-import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { ModernNavigation } from "@/components/ModernNavigation";
@@ -42,17 +42,17 @@ const WindCPDashboard = () => {
     {
       id: "chapter-1",
       name: "Chapter 1: Cost Estimation for PPA Bid Submission",
-      shortName: "Cost Estimation"
+      shortName: "Chapter 1 - Cost Estimation"
     },
     {
       id: "chapter-2", 
       name: "Chapter 2: Vendor Empanelment",
-      shortName: "Vendor Empanelment"
+      shortName: "Chapter 2 - Vendor Empanelment"
     },
     {
       id: "chapter-3",
       name: "Chapter 3: Contract Award and PR Execution",
-      shortName: "Contract Award",
+      shortName: "Chapter 3 - Contract Award",
       subChapters: [
         {
           id: "chapter-3a1",
@@ -79,7 +79,7 @@ const WindCPDashboard = () => {
     {
       id: "chapter-4",
       name: "Chapter 4: Contractor Management",
-      shortName: "Contractor Mgmt",
+      shortName: "Chapter 4 - Contractor Mgmt",
       subChapters: [
         {
           id: "chapter-4.1",
@@ -99,6 +99,27 @@ const WindCPDashboard = () => {
       shortName: "Certification"
     }
   ];
+
+  const getProcessMapImage = (phaseId: string) => {
+    switch (phaseId) {
+      case "chapter-1":
+        return "/lovable-uploads/cbd79a2a-4b4a-49e3-85a0-cdc01cf34da0.png";
+      case "chapter-2":
+        return "/lovable-uploads/95961d12-586b-4b67-aa1e-a53da8fed52e.png";
+      default:
+        return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
+    }
+  };
+
+  const downloadProcessMap = (phaseId: string) => {
+    const imageUrl = getProcessMapImage(phaseId);
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `Process-Map-${phaseId}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (!isInitialized) {
     return (
@@ -204,18 +225,29 @@ const WindCPDashboard = () => {
             <div className="space-y-6">
               <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    Process Map - {activePhase}
-                  </CardTitle>
-                  <CardDescription>
-                    Visual representation of the complete process flow
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        Process Map - {activePhase}
+                      </CardTitle>
+                      <CardDescription>
+                        Visual representation of the complete process flow
+                      </CardDescription>
+                    </div>
+                    <Button 
+                      onClick={() => downloadProcessMap(activePhase)}
+                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="flex justify-center">
                     <img 
-                      src="/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png" 
-                      alt="Process Map" 
+                      src={getProcessMapImage(activePhase)}
+                      alt={`Process Map for ${activePhase}`}
                       className="max-w-full h-auto rounded-lg shadow-lg border border-orange-200"
                     />
                   </div>
