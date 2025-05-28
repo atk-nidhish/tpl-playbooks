@@ -28,10 +28,6 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
 
-    if (!groqApiKey) {
-      throw new Error('GROQ_API_KEY not found in environment variables');
-    }
-
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Check if playbook already exists
@@ -64,37 +60,231 @@ serve(async (req) => {
       throw downloadError;
     }
 
-    // For now, create a basic playbook structure without AI processing
-    // This ensures the system works while we can debug AI processing separately
-    console.log('Creating basic playbook structure for:', fileName);
+    console.log('File downloaded successfully, size:', fileData.size);
+
+    let extractedText = '';
     
-    const basicPlaybookData = {
-      title: fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, ''),
-      description: `Playbook created from ${fileName}`,
-      phases: {
-        "phase_1": {
-          "name": "Phase 1: Project Initiation",
-          "description": "Initial project setup and planning"
-        },
-        "phase_2": {
-          "name": "Phase 2: Design & Engineering", 
-          "description": "System design and engineering phase"
-        },
-        "phase_3": {
-          "name": "Phase 3: Implementation",
-          "description": "Project implementation and execution"
+    try {
+      // Try to extract text using a simple PDF text extraction approach
+      const arrayBuffer = await fileData.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+      
+      // Convert to string and try to extract readable text
+      const decoder = new TextDecoder('utf-8', { fatal: false });
+      const rawText = decoder.decode(uint8Array);
+      
+      // Extract text between common PDF text markers
+      const textMatches = rawText.match(/\(([^)]+)\)/g);
+      if (textMatches) {
+        extractedText = textMatches
+          .map(match => match.slice(1, -1))
+          .filter(text => text.length > 2 && /[a-zA-Z]/.test(text))
+          .join(' ');
+      }
+      
+      // Fallback: try to find readable text patterns
+      if (!extractedText || extractedText.length < 100) {
+        const readableTextPattern = /[A-Za-z][A-Za-z0-9\s\.,!?:;-]{10,}/g;
+        const matches = rawText.match(readableTextPattern);
+        if (matches) {
+          extractedText = matches.slice(0, 20).join(' ');
         }
       }
-    };
+      
+      console.log('Extracted text length:', extractedText.length);
+      console.log('Extracted text preview:', extractedText.substring(0, 500));
+      
+    } catch (textError) {
+      console.warn('Text extraction failed:', textError);
+      extractedText = 'Document content extraction failed - using basic structure';
+    }
 
-    // Insert playbook data
+    // Process with AI if we have both extracted text and API key
+    if (groqApiKey && extractedText && extractedText.length > 50) {
+      try {
+        console.log('Processing with AI...');
+        
+        const aiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${groqApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'llama3-8b-8192',
+            messages: [
+              {
+                role: 'system',
+                content: `You are an expert at analyzing technical documents and creating structured playbooks. Extract key information from the document and organize it into phases, process steps, and responsibilities.
+
+Please analyze the document and return a JSON object with this structure:
+{
+  "title": "Document Title",
+  "description": "Brief description",
+  "phases": {
+    "phase_1": {"name": "Phase Name", "description": "Phase description"},
+    "phase_2": {"name": "Phase Name", "description": "Phase description"}
+  },
+  "processSteps": [
+    {
+      "phase_id": "phase_1",
+      "step_id": "1.1",
+      "activity": "Activity description",
+      "inputs": ["input1", "input2"],
+      "outputs": ["output1", "output2"],
+      "timeline": "timeline",
+      "responsible": "role",
+      "comments": "additional info"
+    }
+  ],
+  "raciMatrix": [
+    {
+      "phase_id": "phase_1",
+      "step_id": "1.1",
+      "task": "task description",
+      "responsible": "role",
+      "accountable": "role",
+      "consulted": "role",
+      "informed": "role"
+    }
+  ]
+}`
+              },
+              {
+                role: 'user',
+                content: `Please analyze this document content and create a structured playbook:\n\n${extractedText.substring(0, 4000)}`
+              }
+            ],
+            temperature: 0.3,
+            max_tokens: 2000
+          })
+        });
+
+        if (aiResponse.ok) {
+          const aiData = await aiResponse.json();
+          const aiContent = aiData.choices[0].message.content;
+          
+          console.log('AI Response:', aiContent);
+          
+          // Try to parse AI response as JSON
+          let parsedData;
+          try {
+            // Extract JSON from the response
+            const jsonMatch = aiContent.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              parsedData = JSON.parse(jsonMatch[0]);
+            }
+          } catch (parseError) {
+            console.warn('Failed to parse AI response as JSON:', parseError);
+          }
+          
+          if (parsedData && parsedData.phases) {
+            console.log('Successfully parsed AI data, creating enhanced playbook');
+            
+            // Create playbook with AI-extracted data
+            const { data: playbook, error: playbookError } = await supabase
+              .from('playbooks')
+              .insert({
+                name: playbookName,
+                title: parsedData.title || fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, ''),
+                description: parsedData.description || `Playbook created from ${fileName}`,
+                phases: parsedData.phases,
+                file_path: fileName
+              })
+              .select()
+              .single();
+
+            if (playbookError) {
+              console.error('Error inserting playbook:', playbookError);
+              throw playbookError;
+            }
+
+            // Insert process steps if available
+            if (parsedData.processSteps && Array.isArray(parsedData.processSteps)) {
+              const processStepsWithPlaybookId = parsedData.processSteps.map(step => ({
+                ...step,
+                playbook_id: playbook.id
+              }));
+              
+              const { error: stepsError } = await supabase
+                .from('process_steps')
+                .insert(processStepsWithPlaybookId);
+
+              if (stepsError) {
+                console.error('Error inserting process steps:', stepsError);
+              } else {
+                console.log(`Inserted ${processStepsWithPlaybookId.length} AI-generated process steps`);
+              }
+            }
+
+            // Insert RACI matrix if available
+            if (parsedData.raciMatrix && Array.isArray(parsedData.raciMatrix)) {
+              const raciWithPlaybookId = parsedData.raciMatrix.map(raci => ({
+                ...raci,
+                playbook_id: playbook.id
+              }));
+              
+              const { error: raciError } = await supabase
+                .from('raci_matrix')
+                .insert(raciWithPlaybookId);
+
+              if (raciError) {
+                console.error('Error inserting RACI matrix:', raciError);
+              } else {
+                console.log(`Inserted ${raciWithPlaybookId.length} AI-generated RACI entries`);
+              }
+            }
+
+            return new Response(
+              JSON.stringify({ 
+                success: true, 
+                message: `Successfully processed document with AI: ${fileName}`,
+                playbookId: playbook.id,
+                extractedTextLength: extractedText.length,
+                aiProcessed: true
+              }),
+              { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+        }
+      } catch (aiError) {
+        console.warn('AI processing failed, falling back to basic structure:', aiError);
+      }
+    }
+
+    // Fallback: Create enhanced basic playbook with extracted text context
+    console.log('Creating enhanced basic playbook with extracted content context');
+    
+    // Analyze extracted text to create more relevant phases
+    const phases = {};
+    const processSteps = [];
+    const raciMatrix = [];
+    
+    // Try to detect common document sections/chapters
+    const lowerText = extractedText.toLowerCase();
+    
+    if (lowerText.includes('commissioning') || lowerText.includes('testing')) {
+      phases['phase_1'] = { name: 'Pre-Commissioning', description: 'Preparation and setup phase' };
+      phases['phase_2'] = { name: 'Testing & Commissioning', description: 'System testing and validation' };
+      phases['phase_3'] = { name: 'Final Commissioning', description: 'Final validation and handover' };
+    } else if (lowerText.includes('installation') || lowerText.includes('setup')) {
+      phases['phase_1'] = { name: 'Planning & Design', description: 'Project planning and design phase' };
+      phases['phase_2'] = { name: 'Installation', description: 'System installation and setup' };
+      phases['phase_3'] = { name: 'Testing & Validation', description: 'System testing and validation' };
+    } else {
+      // Generic phases based on document type
+      phases['phase_1'] = { name: 'Phase 1: Initiation', description: 'Project initiation and planning' };
+      phases['phase_2'] = { name: 'Phase 2: Execution', description: 'Main execution phase' };
+      phases['phase_3'] = { name: 'Phase 3: Completion', description: 'Project completion and handover' };
+    }
+
     const { data: playbook, error: playbookError } = await supabase
       .from('playbooks')
       .insert({
         name: playbookName,
-        title: basicPlaybookData.title,
-        description: basicPlaybookData.description,
-        phases: basicPlaybookData.phases,
+        title: fileName.replace(/\.(pdf|docx?|PDF|DOCX?)$/i, ''),
+        description: `Playbook created from ${fileName}. Document contains ${extractedText.length} characters of content.`,
+        phases: phases,
         file_path: fileName
       })
       .select()
@@ -105,98 +295,52 @@ serve(async (req) => {
       throw playbookError;
     }
 
-    console.log('Created basic playbook:', playbook);
+    // Create sample data for each phase
+    Object.keys(phases).forEach((phaseId, index) => {
+      processSteps.push({
+        playbook_id: playbook.id,
+        phase_id: phaseId,
+        step_id: `${index + 1}.1`,
+        activity: `Key activity from ${phases[phaseId].name}`,
+        inputs: ['Document requirements', 'Previous phase outputs'],
+        outputs: ['Phase deliverables', 'Progress reports'],
+        timeline: `${index + 1}-${index + 2} days`,
+        responsible: 'Project Team',
+        comments: `Based on document analysis: ${extractedText.substring(0, 100)}...`
+      });
 
-    // Insert some sample process steps
-    const sampleProcessSteps = [
-      {
+      raciMatrix.push({
         playbook_id: playbook.id,
-        phase_id: "phase_1",
-        step_id: "1.1",
-        activity: "Project kick-off meeting",
-        inputs: ["Project requirements", "Stakeholder list"],
-        outputs: ["Project charter", "Communication plan"],
-        timeline: "1 day",
-        responsible: "Project Manager",
-        comments: "Initial project setup"
-      },
-      {
-        playbook_id: playbook.id,
-        phase_id: "phase_2", 
-        step_id: "2.1",
-        activity: "System design review",
-        inputs: ["Requirements document", "Technical specifications"],
-        outputs: ["Design document", "Architecture diagram"],
-        timeline: "3 days",
-        responsible: "Lead Engineer",
-        comments: "Technical design phase"
+        phase_id: phaseId,
+        step_id: `${index + 1}.1`,
+        task: phases[phaseId].name,
+        responsible: 'Project Manager',
+        accountable: 'Project Sponsor',
+        consulted: 'Technical Team',
+        informed: 'Stakeholders'
+      });
+    });
+
+    // Insert process steps
+    if (processSteps.length > 0) {
+      const { error: stepsError } = await supabase
+        .from('process_steps')
+        .insert(processSteps);
+
+      if (!stepsError) {
+        console.log(`Inserted ${processSteps.length} enhanced process steps`);
       }
-    ];
-
-    const { error: stepsError } = await supabase
-      .from('process_steps')
-      .insert(sampleProcessSteps);
-
-    if (stepsError) {
-      console.error('Error inserting process steps:', stepsError);
-    } else {
-      console.log('Inserted sample process steps');
     }
 
-    // Insert sample RACI matrix
-    const sampleRaci = [
-      {
-        playbook_id: playbook.id,
-        phase_id: "phase_1",
-        step_id: "1.1",
-        task: "Project initiation",
-        responsible: "Project Manager",
-        accountable: "Project Sponsor",
-        consulted: "Stakeholders",
-        informed: "Team Members"
+    // Insert RACI matrix
+    if (raciMatrix.length > 0) {
+      const { error: raciError } = await supabase
+        .from('raci_matrix')
+        .insert(raciMatrix);
+
+      if (!raciError) {
+        console.log(`Inserted ${raciMatrix.length} RACI entries`);
       }
-    ];
-
-    const { error: raciError } = await supabase
-      .from('raci_matrix')
-      .insert(sampleRaci);
-
-    if (raciError) {
-      console.error('Error inserting RACI matrix:', raciError);
-    } else {
-      console.log('Inserted sample RACI entries');
-    }
-
-    // Insert sample process map
-    const sampleProcessMap = [
-      {
-        playbook_id: playbook.id,
-        phase_id: "phase_1",
-        step_id: "1.1",
-        step_type: "start",
-        title: "Project Start",
-        description: "Beginning of project execution",
-        order_index: 1
-      },
-      {
-        playbook_id: playbook.id,
-        phase_id: "phase_1", 
-        step_id: "1.2",
-        step_type: "process",
-        title: "Planning",
-        description: "Project planning activities",
-        order_index: 2
-      }
-    ];
-
-    const { error: mapError } = await supabase
-      .from('process_map')
-      .insert(sampleProcessMap);
-
-    if (mapError) {
-      console.error('Error inserting process map:', mapError);
-    } else {
-      console.log('Inserted sample process map entries');
     }
 
     return new Response(
@@ -204,7 +348,9 @@ serve(async (req) => {
         success: true, 
         message: `Successfully processed document: ${fileName}`,
         playbookId: playbook.id,
-        note: "Basic structure created. AI processing can be enhanced separately."
+        extractedTextLength: extractedText.length,
+        aiProcessed: false,
+        note: "Enhanced basic structure created from document content analysis"
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
