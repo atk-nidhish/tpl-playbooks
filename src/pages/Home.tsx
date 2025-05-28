@@ -7,6 +7,7 @@ import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "luc
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
+import { FileUpload } from "@/components/FileUpload";
 
 interface Playbook {
   id: string;
@@ -199,6 +200,11 @@ const Home = () => {
           </p>
         </div>
 
+        {/* File Upload Section */}
+        <div className="mb-8">
+          <FileUpload onUploadComplete={fetchPlaybooks} />
+        </div>
+
         {/* Search Results */}
         {searchQuery.trim() && (
           <div className="mb-8">
@@ -289,7 +295,7 @@ const Home = () => {
               </div>
             ) : filteredPlaybooks.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-600">No playbooks found. Upload images to create your first playbook.</p>
+                <p className="text-gray-600">No playbooks found. Upload documents above to create your first playbook.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
