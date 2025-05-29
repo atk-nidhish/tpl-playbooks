@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
 import { FileUpload } from "@/components/FileUpload";
+import { Leaderboard } from "@/components/Leaderboard";
 
 interface Playbook {
   id: string;
@@ -203,6 +204,11 @@ const Home = () => {
         {/* File Upload Section */}
         <div className="mb-8">
           <FileUpload onUploadComplete={fetchPlaybooks} />
+        </div>
+
+        {/* Leaderboard Section */}
+        <div className="mb-8">
+          <Leaderboard />
         </div>
 
         {/* Search Results */}
