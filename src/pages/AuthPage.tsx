@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -105,7 +104,7 @@ const AuthPage = () => {
             <Wind className="h-8 w-8 text-white" />
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold text-gray-900">Wind - C&P</CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-900">Playbook Portal</CardTitle>
             <CardDescription className="text-gray-600">
               Contracting & Procurement Playbook Access
             </CardDescription>
