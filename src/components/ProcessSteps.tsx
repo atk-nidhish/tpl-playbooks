@@ -58,12 +58,12 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
         const bId = b.step_id;
         
         // Handle "Start" step - should always be first
-        if (aId === "Start") return -1;
-        if (bId === "Start") return 1;
+        if (aId === "Start" || aId === "S") return -1;
+        if (bId === "Start" || bId === "S") return 1;
         
         // Handle "End" step - should always be last
-        if (aId === "End") return 1;
-        if (bId === "End") return -1;
+        if (aId === "End" || aId === "E") return 1;
+        if (bId === "End" || bId === "E") return -1;
         
         // For P-prefixed steps (P1, P2, etc.), sort numerically
         if (aId.startsWith('P') && bId.startsWith('P')) {
@@ -104,8 +104,8 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
   );
 
   const getStepDisplayId = (stepId: string) => {
-    if (stepId === "S") return "Start";
-    if (stepId === "E") return "End";
+    if (stepId === "S" || stepId === "Start") return "Start";
+    if (stepId === "E" || stepId === "End") return "End";
     return stepId;
   };
 
@@ -175,7 +175,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     <h3 className="font-semibold text-gray-900 mb-2 text-sm">{step.activity}</h3>
 
                     {/* Single Row Layout for Inputs, Outputs, Responsible, Timeline */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                    <div className="grid grid-cols-4 gap-1 mb-2">
                       {/* Inputs - Compact Box with actual content */}
                       <div className="p-1 bg-blue-50 border border-blue-200 rounded text-xs">
                         <div className="flex items-center gap-0.5 mb-0.5">
