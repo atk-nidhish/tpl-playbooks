@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Award, Brain, CheckCircle, X, RotateCcw, Download, Star } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CertificationQuestion {
   id: number;
@@ -172,10 +172,13 @@ export const PlaybookCertification = () => {
     }
   };
 
-  const saveCertificate = () => {
+  const saveCertificate = async () => {
+    const score = getScorePercentage();
+    
+    // Save to localStorage for backwards compatibility
     const certificate = {
       title: "Wind C&P Playbook Certification",
-      score: getScorePercentage(),
+      score: score,
       date: new Date().toLocaleDateString(),
       playbookId: "wind-cp"
     };
@@ -183,6 +186,31 @@ export const PlaybookCertification = () => {
     const existingCertificates = JSON.parse(localStorage.getItem('user_certificates') || '[]');
     const updatedCertificates = [...existingCertificates.filter((cert: any) => cert.playbookId !== 'wind-cp'), certificate];
     localStorage.setItem('user_certificates', JSON.stringify(updatedCertificates));
+
+    // Save to Supabase
+    try {
+      // For now, we'll use a placeholder user name and department
+      // In a real application, this would come from user authentication
+      const userName = `User_${Date.now()}`;
+      const userDepartment = "Not specified";
+      
+      const { error } = await supabase
+        .from('certification_scores')
+        .insert({
+          user_name: userName,
+          user_department: userDepartment,
+          playbook_name: "Wind C&P Playbook Certification",
+          score: score,
+        });
+
+      if (error) {
+        console.error('Error saving certification to database:', error);
+      } else {
+        console.log('Certification saved to database successfully');
+      }
+    } catch (error) {
+      console.error('Error saving certification:', error);
+    }
   };
 
   const downloadCertificate = () => {
