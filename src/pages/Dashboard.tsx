@@ -1,15 +1,49 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wind, FileText, Award, Download, LogOut, User, Building } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CertificationData {
+  id: string;
+  user_name: string;
+  user_department: string;
+  playbook_name: string;
+  score: number;
+  completed_at: string;
+}
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const [downloadingCert, setDownloadingCert] = useState(false);
+  const [userCertifications, setUserCertifications] = useState<CertificationData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUserCertifications();
+  }, [user]);
+
+  const fetchUserCertifications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('certification_scores')
+        .select('*')
+        .order('completed_at', { ascending: false });
+
+      if (error) throw error;
+      
+      // For now, we'll show all certifications since we don't have user-specific filtering
+      // In a real app, you'd filter by user_id or user_name
+      setUserCertifications(data || []);
+    } catch (error) {
+      console.error('Error fetching certifications:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const generateCertificate = (userName: string, department: string) => {
     // Create a canvas to generate the certificate image
@@ -93,18 +127,6 @@ const Dashboard = () => {
       color: "from-orange-400 to-yellow-500",
       status: "Available",
       route: "/wind-cp"
-    }
-  ];
-
-  const certificates = [
-    {
-      id: "wind-cp-cert",
-      title: "Wind C&P Certification",
-      description: "Contracting & Procurement Specialist",
-      icon: Award,
-      color: "from-green-400 to-emerald-500",
-      status: "Earned",
-      completedDate: "2024-01-15"
     }
   ];
 
@@ -207,28 +229,39 @@ const Dashboard = () => {
             </div>
             
             <div className="grid gap-6">
-              {certificates.map((cert) => {
-                const IconComponent = cert.icon;
-                return (
+              {loading ? (
+                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
+                  <CardContent className="p-6 text-center">
+                    <p className="text-gray-600">Loading certifications...</p>
+                  </CardContent>
+                </Card>
+              ) : userCertifications.length === 0 ? (
+                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
+                  <CardContent className="p-6 text-center">
+                    <p className="text-gray-600">No certifications earned yet. Complete a playbook to earn your first certification!</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                userCertifications.slice(0, 3).map((cert) => (
                   <Card key={cert.id} className="group hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-green-200">
                     <CardHeader className="pb-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center space-x-3">
-                          <div className={`bg-gradient-to-r ${cert.color} p-3 rounded-lg shadow-lg`}>
-                            <IconComponent className="h-6 w-6 text-white" />
+                          <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-3 rounded-lg shadow-lg">
+                            <Award className="h-6 w-6 text-white" />
                           </div>
                           <div>
-                            <CardTitle className="text-xl text-gray-900">{cert.title}</CardTitle>
-                            <CardDescription className="text-gray-600">{cert.description}</CardDescription>
-                            {cert.completedDate && (
-                              <p className="text-sm text-green-600 mt-1">
-                                Completed: {new Date(cert.completedDate).toLocaleDateString()}
-                              </p>
-                            )}
+                            <CardTitle className="text-xl text-gray-900">{cert.playbook_name}</CardTitle>
+                            <CardDescription className="text-gray-600">
+                              Score: {cert.score}% - {cert.user_name}
+                            </CardDescription>
+                            <p className="text-sm text-green-600 mt-1">
+                              Completed: {new Date(cert.completed_at).toLocaleDateString()}
+                            </p>
                           </div>
                         </div>
                         <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          {cert.status}
+                          Earned
                         </Badge>
                       </div>
                     </CardHeader>
@@ -243,8 +276,8 @@ const Dashboard = () => {
                       </Button>
                     </CardContent>
                   </Card>
-                );
-              })}
+                ))
+              )}
             </div>
           </div>
         </div>
