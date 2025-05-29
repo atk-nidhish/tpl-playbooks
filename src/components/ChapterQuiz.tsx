@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,9 +14,10 @@ interface QuizQuestion {
 
 interface ChapterQuizProps {
   activePhase: string;
+  onQuizComplete?: () => void;
 }
 
-export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
+export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
@@ -173,6 +173,18 @@ export const ChapterQuiz = ({ activePhase }: ChapterQuizProps) => {
     } else {
       setQuizCompleted(true);
       setShowResults(true);
+      
+      // Save completed quiz to localStorage
+      const completedQuizzes = JSON.parse(localStorage.getItem('completed_quizzes') || '[]');
+      if (!completedQuizzes.includes(activePhase)) {
+        completedQuizzes.push(activePhase);
+        localStorage.setItem('completed_quizzes', JSON.stringify(completedQuizzes));
+      }
+      
+      // Call the onQuizComplete callback if provided
+      if (onQuizComplete) {
+        onQuizComplete();
+      }
     }
   };
 

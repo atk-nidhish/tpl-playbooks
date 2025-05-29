@@ -3,13 +3,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CheckCircle, Users, Map, Brain } from "lucide-react";
 
 interface ModernTabsProps {
-  defaultValue: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   children: React.ReactNode;
 }
 
-export const ModernTabs = ({ defaultValue, children }: ModernTabsProps) => {
+export const ModernTabs = ({ defaultValue, value, onValueChange, children }: ModernTabsProps) => {
   return (
-    <Tabs defaultValue={defaultValue} className="space-y-8">
+    <Tabs defaultValue={defaultValue} value={value} onValueChange={onValueChange} className="space-y-8">
       <div className="flex justify-center">
         <TabsList className="bg-white/95 backdrop-blur-md border-2 border-orange-100 p-1.5 rounded-2xl shadow-lg">
           <TabsTrigger 
