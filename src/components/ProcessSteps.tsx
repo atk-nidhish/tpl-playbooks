@@ -159,32 +159,32 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-3">
           {filteredSteps.map((step, index) => (
             <Card key={step.id} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-md transition-all duration-300">
-              <CardHeader className="pb-3">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-lg">
+              <CardHeader className="pb-2">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-lg">
                     {getStepDisplayId(step.step_id)}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-2">{step.activity}</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2 text-sm">{step.activity}</h3>
                     
-                    {/* Input Section - Always on top if present */}
+                    {/* Input Section - Compact */}
                     {step.inputs && step.inputs.length > 0 && (
-                      <div className="mb-3">
-                        <div className="p-2 bg-blue-50 border border-blue-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-1">
-                            <FileInput className="h-3 w-3 text-blue-500" />
+                      <div className="mb-2">
+                        <div className="p-1.5 bg-blue-50 border border-blue-200 rounded">
+                          <div className="flex items-center gap-1 mb-1">
+                            <FileInput className="h-2.5 w-2.5 text-blue-500" />
                             <span className="font-medium text-blue-800 text-xs">Required Inputs:</span>
                           </div>
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             {step.inputs.map((input, idx) => (
-                              <div key={idx} className="p-1.5 bg-blue-100 border border-blue-300 rounded text-xs">
-                                <Badge variant="outline" className="text-xs bg-blue-200 text-blue-700 border-blue-400 mb-1 px-1 py-0 text-[10px]">
+                              <div key={idx} className="p-1 bg-blue-100 border border-blue-300 rounded">
+                                <Badge variant="outline" className="text-[9px] bg-blue-200 text-blue-700 border-blue-400 mb-0.5 px-1 py-0 h-4">
                                   Input {idx + 1}
                                 </Badge>
-                                <p className="text-blue-800 text-xs">{input}</p>
+                                <p className="text-blue-800 text-xs leading-tight">{input}</p>
                               </div>
                             ))}
                           </div>
@@ -193,44 +193,44 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     )}
 
                     {/* Process Flow Arrow */}
-                    <div className="flex justify-center mb-3">
-                      <ArrowDown className="h-4 w-4 text-gray-400" />
+                    <div className="flex justify-center mb-2">
+                      <ArrowDown className="h-3 w-3 text-gray-400" />
                     </div>
 
-                    {/* Responsible and Timeline - Equal size boxes */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
-                      <div className="p-2 bg-purple-50 border border-purple-200 rounded-lg min-h-[50px]">
-                        <div className="flex items-center gap-1 mb-1">
-                          <User className="h-3 w-3 text-purple-500" />
+                    {/* Responsible and Timeline - Compact */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 mb-2">
+                      <div className="p-1.5 bg-purple-50 border border-purple-200 rounded">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <User className="h-2.5 w-2.5 text-purple-500" />
                           <span className="font-medium text-purple-800 text-xs">Responsible:</span>
                         </div>
-                        <p className="text-xs text-purple-700">{step.responsible || "Not specified"}</p>
+                        <p className="text-xs text-purple-700 leading-tight">{step.responsible || "Not specified"}</p>
                       </div>
                       
-                      <div className="p-2 bg-yellow-50 border border-yellow-200 rounded-lg min-h-[50px]">
-                        <div className="flex items-center gap-1 mb-1">
-                          <Settings className="h-3 w-3 text-yellow-600" />
+                      <div className="p-1.5 bg-yellow-50 border border-yellow-200 rounded">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <Settings className="h-2.5 w-2.5 text-yellow-600" />
                           <span className="font-medium text-yellow-800 text-xs">Timeline:</span>
                         </div>
-                        <p className="text-xs text-yellow-700">{step.timeline || "Not specified"}</p>
+                        <p className="text-xs text-yellow-700 leading-tight">{step.timeline || "Not specified"}</p>
                       </div>
                     </div>
 
-                    {/* Outputs Section */}
+                    {/* Outputs Section - Compact */}
                     {step.outputs && step.outputs.length > 0 && (
-                      <div className="mb-3">
-                        <div className="p-2 bg-green-50 border border-green-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Package className="h-3 w-3 text-green-500" />
+                      <div className="mb-2">
+                        <div className="p-1.5 bg-green-50 border border-green-200 rounded">
+                          <div className="flex items-center gap-1 mb-1">
+                            <Package className="h-2.5 w-2.5 text-green-500" />
                             <span className="font-medium text-green-800 text-xs">Step Outputs:</span>
                           </div>
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             {step.outputs.map((output, idx) => (
-                              <div key={idx} className="p-1.5 bg-green-100 border border-green-300 rounded text-xs">
-                                <Badge variant="outline" className="text-xs bg-green-200 text-green-700 border-green-400 mb-1 px-1 py-0 text-[10px]">
+                              <div key={idx} className="p-1 bg-green-100 border border-green-300 rounded">
+                                <Badge variant="outline" className="text-[9px] bg-green-200 text-green-700 border-green-400 mb-0.5 px-1 py-0 h-4">
                                   Output {idx + 1}
                                 </Badge>
-                                <p className="text-green-800 text-xs">{output}</p>
+                                <p className="text-green-800 text-xs leading-tight">{output}</p>
                               </div>
                             ))}
                           </div>
@@ -239,12 +239,12 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     )}
 
                     {step.comments && (
-                      <div className="bg-blue-50 border-l-4 border-blue-400 p-2 rounded">
-                        <div className="flex items-start gap-2">
-                          <MessageSquare className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <div className="bg-blue-50 border-l-4 border-blue-400 p-1.5 rounded">
+                        <div className="flex items-start gap-1.5">
+                          <MessageSquare className="h-2.5 w-2.5 text-blue-500 mt-0.5 flex-shrink-0" />
                           <div>
                             <span className="font-medium text-blue-800 text-xs">Additional Comments:</span>
-                            <p className="text-blue-700 text-xs mt-1">{step.comments}</p>
+                            <p className="text-blue-700 text-xs mt-0.5 leading-tight">{step.comments}</p>
                           </div>
                         </div>
                       </div>
