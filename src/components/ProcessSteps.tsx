@@ -72,6 +72,10 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
           return aNum - bNum;
         }
         
+        // P-prefixed steps come before non-P steps
+        if (aId.startsWith('P') && !bId.startsWith('P')) return -1;
+        if (!aId.startsWith('P') && bId.startsWith('P')) return 1;
+        
         // For numbered steps without P prefix, sort numerically
         const aNum = parseInt(aId);
         const bNum = parseInt(bId);
@@ -173,15 +177,15 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     {/* Input Section - Compact */}
                     {step.inputs && step.inputs.length > 0 && (
                       <div className="mb-2">
-                        <div className="p-1.5 bg-blue-50 border border-blue-200 rounded">
+                        <div className="p-1 bg-blue-50 border border-blue-200 rounded">
                           <div className="flex items-center gap-1 mb-1">
-                            <FileInput className="h-2.5 w-2.5 text-blue-500" />
+                            <FileInput className="h-2 w-2 text-blue-500" />
                             <span className="font-medium text-blue-800 text-xs">Required Inputs:</span>
                           </div>
                           <div className="space-y-0.5">
                             {step.inputs.map((input, idx) => (
-                              <div key={idx} className="p-1 bg-blue-100 border border-blue-300 rounded">
-                                <Badge variant="outline" className="text-[9px] bg-blue-200 text-blue-700 border-blue-400 mb-0.5 px-1 py-0 h-4">
+                              <div key={idx} className="p-0.5 bg-blue-100 border border-blue-300 rounded">
+                                <Badge variant="outline" className="text-[8px] bg-blue-200 text-blue-700 border-blue-400 mb-0.5 px-0.5 py-0 h-3">
                                   Input {idx + 1}
                                 </Badge>
                                 <p className="text-blue-800 text-xs leading-tight">{input}</p>
@@ -197,37 +201,61 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                       <ArrowDown className="h-3 w-3 text-gray-400" />
                     </div>
 
-                    {/* Responsible and Timeline - Compact */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 mb-2">
-                      <div className="p-1.5 bg-purple-50 border border-purple-200 rounded">
-                        <div className="flex items-center gap-1 mb-0.5">
-                          <User className="h-2.5 w-2.5 text-purple-500" />
+                    {/* Single Row Layout for Inputs, Outputs, Responsible, Timeline */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
+                      {/* Inputs - Compact Box */}
+                      <div className="p-1 bg-blue-50 border border-blue-200 rounded min-h-[40px]">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <FileInput className="h-2 w-2 text-blue-500" />
+                          <span className="font-medium text-blue-800 text-xs">Inputs:</span>
+                        </div>
+                        <p className="text-xs text-blue-700 leading-tight">
+                          {step.inputs && step.inputs.length > 0 ? `${step.inputs.length} item(s)` : "None"}
+                        </p>
+                      </div>
+
+                      {/* Outputs - Compact Box */}
+                      <div className="p-1 bg-green-50 border border-green-200 rounded min-h-[40px]">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <Package className="h-2 w-2 text-green-500" />
+                          <span className="font-medium text-green-800 text-xs">Outputs:</span>
+                        </div>
+                        <p className="text-xs text-green-700 leading-tight">
+                          {step.outputs && step.outputs.length > 0 ? `${step.outputs.length} item(s)` : "None"}
+                        </p>
+                      </div>
+
+                      {/* Responsible - Compact Box */}
+                      <div className="p-1 bg-purple-50 border border-purple-200 rounded min-h-[40px]">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <User className="h-2 w-2 text-purple-500" />
                           <span className="font-medium text-purple-800 text-xs">Responsible:</span>
                         </div>
                         <p className="text-xs text-purple-700 leading-tight">{step.responsible || "Not specified"}</p>
                       </div>
                       
-                      <div className="p-1.5 bg-yellow-50 border border-yellow-200 rounded">
-                        <div className="flex items-center gap-1 mb-0.5">
-                          <Settings className="h-2.5 w-2.5 text-yellow-600" />
+                      {/* Timeline - Compact Box */}
+                      <div className="p-1 bg-yellow-50 border border-yellow-200 rounded min-h-[40px]">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <Settings className="h-2 w-2 text-yellow-600" />
                           <span className="font-medium text-yellow-800 text-xs">Timeline:</span>
                         </div>
                         <p className="text-xs text-yellow-700 leading-tight">{step.timeline || "Not specified"}</p>
                       </div>
                     </div>
 
-                    {/* Outputs Section - Compact */}
+                    {/* Outputs Section - Full Details */}
                     {step.outputs && step.outputs.length > 0 && (
                       <div className="mb-2">
-                        <div className="p-1.5 bg-green-50 border border-green-200 rounded">
+                        <div className="p-1 bg-green-50 border border-green-200 rounded">
                           <div className="flex items-center gap-1 mb-1">
-                            <Package className="h-2.5 w-2.5 text-green-500" />
+                            <Package className="h-2 w-2 text-green-500" />
                             <span className="font-medium text-green-800 text-xs">Step Outputs:</span>
                           </div>
                           <div className="space-y-0.5">
                             {step.outputs.map((output, idx) => (
-                              <div key={idx} className="p-1 bg-green-100 border border-green-300 rounded">
-                                <Badge variant="outline" className="text-[9px] bg-green-200 text-green-700 border-green-400 mb-0.5 px-1 py-0 h-4">
+                              <div key={idx} className="p-0.5 bg-green-100 border border-green-300 rounded">
+                                <Badge variant="outline" className="text-[8px] bg-green-200 text-green-700 border-green-400 mb-0.5 px-0.5 py-0 h-3">
                                   Output {idx + 1}
                                 </Badge>
                                 <p className="text-green-800 text-xs leading-tight">{output}</p>
@@ -239,9 +267,9 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     )}
 
                     {step.comments && (
-                      <div className="bg-blue-50 border-l-4 border-blue-400 p-1.5 rounded">
-                        <div className="flex items-start gap-1.5">
-                          <MessageSquare className="h-2.5 w-2.5 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <div className="bg-blue-50 border-l-4 border-blue-400 p-1 rounded">
+                        <div className="flex items-start gap-1">
+                          <MessageSquare className="h-2 w-2 text-blue-500 mt-0.5 flex-shrink-0" />
                           <div>
                             <span className="font-medium text-blue-800 text-xs">Additional Comments:</span>
                             <p className="text-blue-700 text-xs mt-0.5 leading-tight">{step.comments}</p>
