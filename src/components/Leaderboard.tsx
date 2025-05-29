@@ -24,7 +24,8 @@ export const Leaderboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const { data, error } = await supabase
+      // Using type assertion since Supabase types haven't been updated yet
+      const { data, error } = await (supabase as any)
         .from('certification_scores')
         .select('*')
         .order('score', { ascending: false })
