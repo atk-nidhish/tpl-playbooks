@@ -22,10 +22,35 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
 
   useEffect(() => {
     // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('completed_quizzes');
-    if (saved) {
-      setCompletedQuizzes(JSON.parse(saved));
-    }
+    const loadCompletedQuizzes = () => {
+      const saved = localStorage.getItem('completed_quizzes');
+      if (saved) {
+        setCompletedQuizzes(JSON.parse(saved));
+      }
+    };
+
+    // Load initial data
+    loadCompletedQuizzes();
+
+    // Listen for storage changes (when quizzes are completed)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'completed_quizzes') {
+        loadCompletedQuizzes();
+      }
+    };
+
+    // Listen for custom events when localStorage is updated in the same tab
+    const handleCustomStorageChange = () => {
+      loadCompletedQuizzes();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('completedQuizzesUpdated', handleCustomStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('completedQuizzesUpdated', handleCustomStorageChange);
+    };
   }, []);
 
   const toggleChapter = (chapterId: string) => {

@@ -158,6 +158,13 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery, onNavigateToQ
     if (aId === "E") return 1;
     if (bId === "E") return -1;
     
+    // For P-prefixed steps (P1, P2, etc.), sort numerically
+    if (aId.startsWith('P') && bId.startsWith('P')) {
+      const aNum = parseInt(aId.substring(1));
+      const bNum = parseInt(bId.substring(1));
+      return aNum - bNum;
+    }
+    
     // For numbered steps, sort numerically
     const aNum = parseInt(aId.replace(/^P/, ''));
     const bNum = parseInt(bId.replace(/^P/, ''));
@@ -225,56 +232,61 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery, onNavigateToQ
             </div>
           ) : (
             <div className="space-y-4">
-              {sortedFilteredData.map((item) => {
-                const outputs = getStepOutputs(item.step_id);
-                return (
-                  <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-[80px]">Step</TableHead>
-                          <TableHead className="min-w-[300px]">Task</TableHead>
-                          <TableHead className="w-[200px]">Responsible</TableHead>
-                          <TableHead className="w-[200px]">Accountable</TableHead>
-                          <TableHead className="w-[200px]">Consulted</TableHead>
-                          <TableHead className="w-[200px]">Informed</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow className="hover:bg-gray-50">
+              {/* Single table with header */}
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[80px]">Step</TableHead>
+                      <TableHead className="min-w-[300px]">Task</TableHead>
+                      <TableHead className="w-[200px]">Responsible</TableHead>
+                      <TableHead className="w-[200px]">Accountable</TableHead>
+                      <TableHead className="w-[200px]">Consulted</TableHead>
+                      <TableHead className="w-[200px]">Informed</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {sortedFilteredData.map((item) => {
+                      const outputs = getStepOutputs(item.step_id);
+                      return (
+                        <TableRow key={item.id} className="hover:bg-gray-50">
                           <TableCell>
                             <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
                               {getStepDisplayId(item.step_id)}
                             </div>
                           </TableCell>
-                          <TableCell className="font-medium">{item.task}</TableCell>
+                          <TableCell className="font-medium">
+                            <div className="space-y-2">
+                              <div>{item.task}</div>
+                              {outputs.length > 0 && (
+                                <div className="bg-green-50 border-t border-green-200 p-2 rounded">
+                                  <div className="flex items-start gap-2">
+                                    <Package className="h-3 w-3 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <div>
+                                      <span className="font-medium text-green-800 text-xs">Outputs:</span>
+                                      <div className="flex flex-wrap gap-1 mt-1">
+                                        {outputs.map((output, idx) => (
+                                          <Badge key={idx} variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
+                                            {output}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
                           <TableCell>{getRoleBadge(item.responsible, "R")}</TableCell>
                           <TableCell>{getRoleBadge(item.accountable, "A")}</TableCell>
                           <TableCell>{getRoleBadge(item.consulted, "C")}</TableCell>
                           <TableCell>{getRoleBadge(item.informed, "I")}</TableCell>
                         </TableRow>
-                      </TableBody>
-                    </Table>
-                    {outputs.length > 0 && (
-                      <div className="bg-green-50 border-t border-green-200 p-3">
-                        <div className="flex items-start gap-2">
-                          <Package className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="font-medium text-green-800 text-sm">Step Outputs:</span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {outputs.map((output, idx) => (
-                                <Badge key={idx} variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
-                                  {output}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Navigation Button at the end */}
               {sortedFilteredData.length > 0 && onNavigateToQuiz && (

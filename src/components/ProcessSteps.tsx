@@ -52,7 +52,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
 
       console.log(`Found ${data?.length || 0} process steps:`, data);
       
-      // Sort steps to ensure Start comes first, then numbered steps, then End at the end
+      // Sort steps: Start first, then P1, P2, P3... then End at the end
       const sortedSteps = (data || []).sort((a, b) => {
         const aId = a.step_id;
         const bId = b.step_id;
@@ -65,7 +65,14 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
         if (aId === "E") return 1;
         if (bId === "E") return -1;
         
-        // For numbered steps, sort numerically
+        // For P-prefixed steps (P1, P2, etc.), sort numerically
+        if (aId.startsWith('P') && bId.startsWith('P')) {
+          const aNum = parseInt(aId.substring(1));
+          const bNum = parseInt(bId.substring(1));
+          return aNum - bNum;
+        }
+        
+        // For numbered steps without P prefix, sort numerically
         const aNum = parseInt(aId);
         const bNum = parseInt(bId);
         
@@ -166,18 +173,18 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     {/* Input Section - Always on top if present */}
                     {step.inputs && step.inputs.length > 0 && (
                       <div className="mb-4">
-                        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-3">
+                        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center gap-2 mb-2">
                             <FileInput className="h-4 w-4 text-blue-500" />
-                            <span className="font-medium text-blue-800">Required Inputs:</span>
+                            <span className="font-medium text-blue-800 text-sm">Required Inputs:</span>
                           </div>
                           <div className="space-y-2">
                             {step.inputs.map((input, idx) => (
-                              <div key={idx} className="p-2 bg-blue-100 border border-blue-300 rounded">
+                              <div key={idx} className="p-2 bg-blue-100 border border-blue-300 rounded text-sm">
                                 <Badge variant="outline" className="text-xs bg-blue-200 text-blue-700 border-blue-400 mb-1">
                                   Input {idx + 1}
                                 </Badge>
-                                <p className="text-sm text-blue-800">{input}</p>
+                                <p className="text-blue-800">{input}</p>
                               </div>
                             ))}
                           </div>
@@ -191,19 +198,19 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     </div>
 
                     {/* Responsible and Timeline - Equal size boxes */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg min-h-[80px]">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                      <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg min-h-[60px]">
+                        <div className="flex items-center gap-2 mb-1">
                           <User className="h-4 w-4 text-purple-500" />
-                          <span className="font-medium text-purple-800">Responsible:</span>
+                          <span className="font-medium text-purple-800 text-sm">Responsible:</span>
                         </div>
                         <p className="text-sm text-purple-700">{step.responsible || "Not specified"}</p>
                       </div>
                       
-                      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg min-h-[80px]">
-                        <div className="flex items-center gap-2 mb-2">
+                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg min-h-[60px]">
+                        <div className="flex items-center gap-2 mb-1">
                           <Settings className="h-4 w-4 text-yellow-600" />
-                          <span className="font-medium text-yellow-800">Timeline:</span>
+                          <span className="font-medium text-yellow-800 text-sm">Timeline:</span>
                         </div>
                         <p className="text-sm text-yellow-700">{step.timeline || "Not specified"}</p>
                       </div>
@@ -212,18 +219,18 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     {/* Outputs Section */}
                     {step.outputs && step.outputs.length > 0 && (
                       <div className="mb-4">
-                        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-3">
+                        <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                          <div className="flex items-center gap-2 mb-2">
                             <Package className="h-4 w-4 text-green-500" />
-                            <span className="font-medium text-green-800">Step Outputs:</span>
+                            <span className="font-medium text-green-800 text-sm">Step Outputs:</span>
                           </div>
                           <div className="space-y-2">
                             {step.outputs.map((output, idx) => (
-                              <div key={idx} className="p-2 bg-green-100 border border-green-300 rounded">
+                              <div key={idx} className="p-2 bg-green-100 border border-green-300 rounded text-sm">
                                 <Badge variant="outline" className="text-xs bg-green-200 text-green-700 border-green-400 mb-1">
                                   Output {idx + 1}
                                 </Badge>
-                                <p className="text-sm text-green-800">{output}</p>
+                                <p className="text-green-800">{output}</p>
                               </div>
                             ))}
                           </div>

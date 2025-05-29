@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -179,6 +180,9 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       if (!completedQuizzes.includes(activePhase)) {
         completedQuizzes.push(activePhase);
         localStorage.setItem('completed_quizzes', JSON.stringify(completedQuizzes));
+        
+        // Dispatch custom event to notify other components
+        window.dispatchEvent(new CustomEvent('completedQuizzesUpdated'));
       }
       
       // Call the onQuizComplete callback if provided
