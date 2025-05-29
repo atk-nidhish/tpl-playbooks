@@ -173,98 +173,69 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 mb-2 text-sm">{step.activity}</h3>
-                    
-                    {/* Input Section - Compact */}
-                    {step.inputs && step.inputs.length > 0 && (
-                      <div className="mb-2">
-                        <div className="p-1 bg-blue-50 border border-blue-200 rounded">
-                          <div className="flex items-center gap-1 mb-1">
-                            <FileInput className="h-2 w-2 text-blue-500" />
-                            <span className="font-medium text-blue-800 text-xs">Required Inputs:</span>
-                          </div>
-                          <div className="space-y-0.5">
-                            {step.inputs.map((input, idx) => (
-                              <div key={idx} className="p-0.5 bg-blue-100 border border-blue-300 rounded">
-                                <Badge variant="outline" className="text-[8px] bg-blue-200 text-blue-700 border-blue-400 mb-0.5 px-0.5 py-0 h-3">
-                                  Input {idx + 1}
-                                </Badge>
-                                <p className="text-blue-800 text-xs leading-tight">{input}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Process Flow Arrow */}
-                    <div className="flex justify-center mb-2">
-                      <ArrowDown className="h-3 w-3 text-gray-400" />
-                    </div>
 
                     {/* Single Row Layout for Inputs, Outputs, Responsible, Timeline */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-2">
-                      {/* Inputs - Compact Box */}
-                      <div className="p-1 bg-blue-50 border border-blue-200 rounded min-h-[40px]">
+                      {/* Inputs - Compact Box with actual content */}
+                      <div className="p-1 bg-blue-50 border border-blue-200 rounded text-xs">
                         <div className="flex items-center gap-0.5 mb-0.5">
                           <FileInput className="h-2 w-2 text-blue-500" />
-                          <span className="font-medium text-blue-800 text-xs">Inputs:</span>
+                          <span className="font-medium text-blue-800">Inputs:</span>
                         </div>
-                        <p className="text-xs text-blue-700 leading-tight">
-                          {step.inputs && step.inputs.length > 0 ? `${step.inputs.length} item(s)` : "None"}
-                        </p>
+                        <div className="text-blue-700 leading-tight">
+                          {step.inputs && step.inputs.length > 0 ? (
+                            <div className="space-y-0.5">
+                              {step.inputs.map((input, idx) => (
+                                <div key={idx} className="text-[10px] truncate" title={input}>
+                                  {idx + 1}. {input}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            "None"
+                          )}
+                        </div>
                       </div>
 
-                      {/* Outputs - Compact Box */}
-                      <div className="p-1 bg-green-50 border border-green-200 rounded min-h-[40px]">
+                      {/* Outputs - Compact Box with actual content */}
+                      <div className="p-1 bg-green-50 border border-green-200 rounded text-xs">
                         <div className="flex items-center gap-0.5 mb-0.5">
                           <Package className="h-2 w-2 text-green-500" />
-                          <span className="font-medium text-green-800 text-xs">Outputs:</span>
+                          <span className="font-medium text-green-800">Outputs:</span>
                         </div>
-                        <p className="text-xs text-green-700 leading-tight">
-                          {step.outputs && step.outputs.length > 0 ? `${step.outputs.length} item(s)` : "None"}
-                        </p>
+                        <div className="text-green-700 leading-tight">
+                          {step.outputs && step.outputs.length > 0 ? (
+                            <div className="space-y-0.5">
+                              {step.outputs.map((output, idx) => (
+                                <div key={idx} className="text-[10px] truncate" title={output}>
+                                  {idx + 1}. {output}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            "None"
+                          )}
+                        </div>
                       </div>
 
                       {/* Responsible - Compact Box */}
-                      <div className="p-1 bg-purple-50 border border-purple-200 rounded min-h-[40px]">
+                      <div className="p-1 bg-purple-50 border border-purple-200 rounded text-xs">
                         <div className="flex items-center gap-0.5 mb-0.5">
                           <User className="h-2 w-2 text-purple-500" />
-                          <span className="font-medium text-purple-800 text-xs">Responsible:</span>
+                          <span className="font-medium text-purple-800">Responsible:</span>
                         </div>
-                        <p className="text-xs text-purple-700 leading-tight">{step.responsible || "Not specified"}</p>
+                        <p className="text-purple-700 leading-tight text-[10px]">{step.responsible || "Not specified"}</p>
                       </div>
                       
                       {/* Timeline - Compact Box */}
-                      <div className="p-1 bg-yellow-50 border border-yellow-200 rounded min-h-[40px]">
+                      <div className="p-1 bg-yellow-50 border border-yellow-200 rounded text-xs">
                         <div className="flex items-center gap-0.5 mb-0.5">
                           <Settings className="h-2 w-2 text-yellow-600" />
-                          <span className="font-medium text-yellow-800 text-xs">Timeline:</span>
+                          <span className="font-medium text-yellow-800">Timeline:</span>
                         </div>
-                        <p className="text-xs text-yellow-700 leading-tight">{step.timeline || "Not specified"}</p>
+                        <p className="text-yellow-700 leading-tight text-[10px]">{step.timeline || "Not specified"}</p>
                       </div>
                     </div>
-
-                    {/* Outputs Section - Full Details */}
-                    {step.outputs && step.outputs.length > 0 && (
-                      <div className="mb-2">
-                        <div className="p-1 bg-green-50 border border-green-200 rounded">
-                          <div className="flex items-center gap-1 mb-1">
-                            <Package className="h-2 w-2 text-green-500" />
-                            <span className="font-medium text-green-800 text-xs">Step Outputs:</span>
-                          </div>
-                          <div className="space-y-0.5">
-                            {step.outputs.map((output, idx) => (
-                              <div key={idx} className="p-0.5 bg-green-100 border border-green-300 rounded">
-                                <Badge variant="outline" className="text-[8px] bg-green-200 text-green-700 border-green-400 mb-0.5 px-0.5 py-0 h-3">
-                                  Output {idx + 1}
-                                </Badge>
-                                <p className="text-green-800 text-xs leading-tight">{output}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
 
                     {step.comments && (
                       <div className="bg-blue-50 border-l-4 border-blue-400 p-1 rounded">
