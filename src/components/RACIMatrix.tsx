@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, Package } from "lucide-react";
+import { Users, Package, ArrowRight, BookOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface RACIData {
@@ -25,9 +26,10 @@ interface RACIMatrixProps {
   playbookId: string;
   activePhase: string;
   searchQuery: string;
+  onNavigateToQuiz?: () => void;
 }
 
-export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixProps) => {
+export const RACIMatrix = ({ playbookId, activePhase, searchQuery, onNavigateToQuiz }: RACIMatrixProps) => {
   const [raciData, setRaciData] = useState<RACIData[]>([]);
   const [processSteps, setProcessSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
@@ -119,6 +121,12 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
     return step?.outputs || [];
   };
 
+  const getStepDisplayId = (stepId: string) => {
+    if (stepId === "S") return "Start";
+    if (stepId === "E") return "End";
+    return stepId;
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8">
@@ -137,7 +145,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
     );
   }
 
-  // Sort filtered data: S first, then numbered steps, then E last
+  // Sort filtered data: Start first, then numbered steps, then End last
   const sortedFilteredData = filteredData.sort((a, b) => {
     const aId = a.step_id;
     const bId = b.step_id;
@@ -236,7 +244,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
                         <TableRow className="hover:bg-gray-50">
                           <TableCell>
                             <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-sm">
-                              {item.step_id}
+                              {getStepDisplayId(item.step_id)}
                             </div>
                           </TableCell>
                           <TableCell className="font-medium">{item.task}</TableCell>
@@ -267,6 +275,22 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery }: RACIMatrixP
                   </div>
                 );
               })}
+
+              {/* Navigation Button at the end */}
+              {sortedFilteredData.length > 0 && onNavigateToQuiz && (
+                <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+                  <CardContent className="p-6 text-center">
+                    <Button 
+                      onClick={onNavigateToQuiz}
+                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
+                    >
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      Take Chapter Quiz
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           )}
         </CardContent>

@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wind, User, Mail, Lock, Building } from "lucide-react";
+import { Wind, User, Mail, Lock, Building, IdCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,7 @@ const AuthPage = () => {
   // Register state
   const [registerName, setRegisterName] = useState("");
   const [registerDepartment, setRegisterDepartment] = useState("");
+  const [registerEmployeeId, setRegisterEmployeeId] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
@@ -67,6 +69,7 @@ const AuthPage = () => {
           data: {
             full_name: registerName,
             department: registerDepartment,
+            employee_id: registerEmployeeId,
           },
         },
       });
@@ -82,6 +85,7 @@ const AuthPage = () => {
         setLoginEmail(registerEmail);
         setRegisterName("");
         setRegisterDepartment("");
+        setRegisterEmployeeId("");
         setRegisterEmail("");
         setRegisterPassword("");
       }
@@ -106,7 +110,7 @@ const AuthPage = () => {
           <div>
             <CardTitle className="text-2xl font-bold text-gray-900">Playbook Portal</CardTitle>
             <CardDescription className="text-gray-600">
-              Contracting & Procurement Playbook Access
+              Access playbooks and project execution guides
             </CardDescription>
           </div>
         </CardHeader>
@@ -120,13 +124,13 @@ const AuthPage = () => {
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="login-email">Email</Label>
+                  <Label htmlFor="login-email">Work Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       id="login-email"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="Enter your work email"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="pl-10"
@@ -192,13 +196,28 @@ const AuthPage = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-employee-id">Employee ID</Label>
+                  <div className="relative">
+                    <IdCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      id="register-employee-id"
+                      type="text"
+                      placeholder="Enter your employee ID"
+                      value={registerEmployeeId}
+                      onChange={(e) => setRegisterEmployeeId(e.target.value)}
+                      className="pl-10"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="register-email">Work Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       id="register-email"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="Enter your work email"
                       value={registerEmail}
                       onChange={(e) => setRegisterEmail(e.target.value)}
                       className="pl-10"

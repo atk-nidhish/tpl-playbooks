@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,6 +21,7 @@ const WindCPDashboard = () => {
   const [playbookId, setPlaybookId] = useState<string>("");
   const [isInitialized, setIsInitialized] = useState(false);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState("processes");
 
   useEffect(() => {
     // Load completed quizzes from localStorage
@@ -124,6 +124,37 @@ const WindCPDashboard = () => {
       }
       return completedQuizzes.includes(chapter.id);
     });
+
+  const handleNavigateToRaci = () => {
+    setActiveTab("raci");
+  };
+
+  const handleNavigateToQuiz = () => {
+    setActiveTab("quiz");
+  };
+
+  const getNextChapter = (currentPhase: string) => {
+    const allChapterIds = chapters.reduce((acc, ch) => {
+      if (ch.subChapters) {
+        return [...acc, ...ch.subChapters.map(sub => sub.id)];
+      }
+      return [...acc, ch.id];
+    }, [] as string[]);
+    
+    const currentIndex = allChapterIds.indexOf(currentPhase);
+    if (currentIndex >= 0 && currentIndex < allChapterIds.length - 1) {
+      return allChapterIds[currentIndex + 1];
+    }
+    return null;
+  };
+
+  const handleQuizComplete = () => {
+    const nextChapter = getNextChapter(activePhase);
+    if (nextChapter && nextChapter !== "certification") {
+      setActivePhase(nextChapter);
+      setActiveTab("processes");
+    }
+  };
 
   const getProcessMapImage = (phaseId: string) => {
     switch (phaseId) {
@@ -305,13 +336,23 @@ const WindCPDashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Main Content Tabs */}
-        <ModernTabs defaultValue="processes">
+        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="processes">
-            <ProcessSteps playbookId={playbookId} activePhase={activePhase} searchQuery={searchQuery} />
+            <ProcessSteps 
+              playbookId={playbookId} 
+              activePhase={activePhase} 
+              searchQuery={searchQuery}
+              onNavigateToRaci={handleNavigateToRaci}
+            />
           </TabsContent>
 
           <TabsContent value="raci">
-            <RACIMatrix playbookId={playbookId} activePhase={activePhase} searchQuery={searchQuery} />
+            <RACIMatrix 
+              playbookId={playbookId} 
+              activePhase={activePhase} 
+              searchQuery={searchQuery}
+              onNavigateToQuiz={handleNavigateToQuiz}
+            />
           </TabsContent>
 
           <TabsContent value="process-map">
@@ -351,7 +392,10 @@ const WindCPDashboard = () => {
 
           <TabsContent value="quiz">
             {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
-              <ChapterQuiz activePhase={activePhase} />
+              <ChapterQuiz 
+                activePhase={activePhase} 
+                onQuizComplete={handleQuizComplete}
+              />
             ) : (
               <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
                 <CardContent className="p-12 text-center">

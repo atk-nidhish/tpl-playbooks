@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, MessageSquare, Settings, ArrowRight, ArrowDown, FileInput, Package } from "lucide-react";
+import { User, MessageSquare, Settings, ArrowRight, ArrowDown, FileInput, Package, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProcessStep {
@@ -20,9 +22,10 @@ interface ProcessStepsProps {
   playbookId: string;
   activePhase: string;
   searchQuery: string;
+  onNavigateToRaci?: () => void;
 }
 
-export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessStepsProps) => {
+export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateToRaci }: ProcessStepsProps) => {
   const [steps, setSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +52,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
 
       console.log(`Found ${data?.length || 0} process steps:`, data);
       
-      // Sort steps to ensure S comes first, then numbered steps, then E at the end
+      // Sort steps to ensure Start comes first, then numbered steps, then End at the end
       const sortedSteps = (data || []).sort((a, b) => {
         const aId = a.step_id;
         const bId = b.step_id;
@@ -88,6 +91,12 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
     step.inputs?.some(input => input.toLowerCase().includes(searchQuery.toLowerCase())) ||
     step.outputs?.some(output => output.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  const getStepDisplayId = (stepId: string) => {
+    if (stepId === "S") return "Start";
+    if (stepId === "E") return "End";
+    return stepId;
+  };
 
   if (loading) {
     return (
@@ -149,25 +158,19 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
               <CardHeader className="pb-3">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-lg">
-                    {step.step_id}
+                    {getStepDisplayId(step.step_id)}
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 mb-3">{step.activity}</h3>
                     
-                    {/* Process Flow Arrow */}
-                    <div className="flex justify-center mb-4">
-                      <ArrowDown className="h-6 w-6 text-gray-400" />
-                    </div>
-
-                    {/* Input and Output Sections with Same Size */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      {/* Required Inputs Section */}
-                      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg min-h-[120px]">
-                        <div className="flex items-center gap-2 mb-3">
-                          <FileInput className="h-4 w-4 text-blue-500" />
-                          <span className="font-medium text-blue-800">Required Inputs:</span>
-                        </div>
-                        {step.inputs && step.inputs.length > 0 ? (
+                    {/* Input Section - Always on top if present */}
+                    {step.inputs && step.inputs.length > 0 && (
+                      <div className="mb-4">
+                        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center gap-2 mb-3">
+                            <FileInput className="h-4 w-4 text-blue-500" />
+                            <span className="font-medium text-blue-800">Required Inputs:</span>
+                          </div>
                           <div className="space-y-2">
                             {step.inputs.map((input, idx) => (
                               <div key={idx} className="p-2 bg-blue-100 border border-blue-300 rounded">
@@ -178,18 +181,42 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                               </div>
                             ))}
                           </div>
-                        ) : (
-                          <p className="text-sm text-blue-600">No inputs specified</p>
-                        )}
-                      </div>
-
-                      {/* Outputs Section */}
-                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg min-h-[120px]">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Package className="h-4 w-4 text-green-500" />
-                          <span className="font-medium text-green-800">Step Outputs:</span>
                         </div>
-                        {step.outputs && step.outputs.length > 0 ? (
+                      </div>
+                    )}
+
+                    {/* Process Flow Arrow */}
+                    <div className="flex justify-center mb-4">
+                      <ArrowDown className="h-6 w-6 text-gray-400" />
+                    </div>
+
+                    {/* Responsible and Timeline - Equal size boxes */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg min-h-[80px]">
+                        <div className="flex items-center gap-2 mb-2">
+                          <User className="h-4 w-4 text-purple-500" />
+                          <span className="font-medium text-purple-800">Responsible:</span>
+                        </div>
+                        <p className="text-sm text-purple-700">{step.responsible || "Not specified"}</p>
+                      </div>
+                      
+                      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg min-h-[80px]">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Settings className="h-4 w-4 text-yellow-600" />
+                          <span className="font-medium text-yellow-800">Timeline:</span>
+                        </div>
+                        <p className="text-sm text-yellow-700">{step.timeline || "Not specified"}</p>
+                      </div>
+                    </div>
+
+                    {/* Outputs Section */}
+                    {step.outputs && step.outputs.length > 0 && (
+                      <div className="mb-4">
+                        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Package className="h-4 w-4 text-green-500" />
+                            <span className="font-medium text-green-800">Step Outputs:</span>
+                          </div>
                           <div className="space-y-2">
                             {step.outputs.map((output, idx) => (
                               <div key={idx} className="p-2 bg-green-100 border border-green-300 rounded">
@@ -200,25 +227,9 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
                               </div>
                             ))}
                           </div>
-                        ) : (
-                          <p className="text-sm text-green-600">No outputs specified</p>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="font-medium text-gray-700">Responsible:</span>
-                        <div className="flex items-center gap-1 mt-1">
-                          <User className="h-3 w-3 text-gray-500" />
-                          <span className="text-gray-600">{step.responsible || "Not specified"}</span>
                         </div>
                       </div>
-                      <div>
-                        <span className="font-medium text-gray-700">Timeline:</span>
-                        <div className="text-gray-600 mt-1">{step.timeline || "Not specified"}</div>
-                      </div>
-                    </div>
+                    )}
 
                     {step.comments && (
                       <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
@@ -236,6 +247,22 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery }: ProcessSt
               </CardHeader>
             </Card>
           ))}
+
+          {/* Navigation Button at the end */}
+          {filteredSteps.length > 0 && onNavigateToRaci && (
+            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <CardContent className="p-6 text-center">
+                <Button 
+                  onClick={onNavigateToRaci}
+                  className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  View RACI Matrix
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
     </div>
