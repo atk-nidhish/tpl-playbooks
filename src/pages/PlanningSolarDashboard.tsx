@@ -13,7 +13,7 @@ import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { ArrowLeft, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
+import { Home, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -180,7 +180,7 @@ export default function PlanningSolarDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <ArrowLeft className="h-5 w-5 text-gray-600" />
+                  <Home className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
@@ -219,7 +219,7 @@ export default function PlanningSolarDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                    <ArrowLeft className="h-5 w-5 text-gray-600" />
+                    <Home className="h-5 w-5 text-gray-600" />
                   </Link>
                   <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                     <Zap className="h-6 w-6 text-white" />
@@ -274,7 +274,7 @@ export default function PlanningSolarDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <ArrowLeft className="h-5 w-5 text-gray-600" />
+                  <Home className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
@@ -314,7 +314,7 @@ export default function PlanningSolarDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <Home className="h-5 w-5 text-gray-600" />
               </Link>
               <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                 <Zap className="h-6 w-6 text-white" />
