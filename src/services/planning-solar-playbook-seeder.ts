@@ -492,11 +492,11 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
-    // Chapter 2 - Scope Management Plan Process Steps
+    // Chapter 2 - Scope Management Plan Process Steps (Updated from images)
     const chapter2ProcessSteps = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'S',
         activity: 'Project Planner (PP) requests Chief PMO to develop Work Breakdown structure (WBS) and shares the following inputs',
         inputs: ['Project Execution Approach (PEA)', 'Project Schedule (PS)', 'Scope Matrix'],
@@ -507,7 +507,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P1',
         activity: 'Chief PMO reviews the inputs and project scope definition to finalizes project control philosophy i.e., required level of monitoring and control on the project at each level',
         inputs: ['PEA (includes scope matrix)', 'PS', 'Scope Matrix'],
@@ -518,7 +518,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P2',
         activity: 'Chief PMO shares the scope matrix and project control philosophy with Schedule Head',
         inputs: [],
@@ -529,7 +529,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P3',
         activity: 'Schedule Head defines WBS elements, based on the approved control philosophy. For defining the elements, Schedule Head leverages the Master WBS Solar and makes necessary changes to ensure alignment with project scope and schedule. The WBS reflects the project level classification as listed below: L1-1 Solar Power Plant System, L2-1.1 Electrical System, L3-1.1.1 Sub-system, L4-1.1.1.1 Component, L5-1.1.1.1.1 Functional Element',
         inputs: ['Scope Matrix'],
@@ -540,7 +540,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P4',
         activity: 'Schedule Head develops the codes for WBS, based on the project level WBS classification to be adopted',
         inputs: ['Project Control Philosophy', 'Master WBS Solar'],
@@ -551,7 +551,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P5',
         activity: 'Schedule Head checks for consistency in alignment between the defined project WBS and Cost Breakdown Structure (CBS) based on the project CBS. In case of a lack of consistency between the WBS and CBS structures, the CBS elements and codes are revised to achieve consistency with WBS',
         inputs: ['CBS'],
@@ -562,7 +562,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P6',
         activity: 'Schedule Head prepares the WBS for the project using a bottom-up approach, which involves preparing WBS elements at package level which are collated at the project level to form the Project WBS',
         inputs: [],
@@ -573,7 +573,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P7',
         activity: 'Schedule Head seeks approval from Chief PMO on the WBS and incorporates any necessary changes',
         inputs: [],
@@ -584,7 +584,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'E',
         activity: 'Schedule Head publishes the project WBS which forms the basis for project monitoring and control. Schedule Head share the project WBS with Project Planner for cross-functional coordination',
         inputs: [],
@@ -595,11 +595,11 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
-    // Chapter 3 - Cost Management Plan Process Steps
+    // Chapter 3 - Cost Management Plan Process Steps (Updated from images)
     const chapter3ProcessSteps = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'S',
         activity: 'Project Planner (PP) requests for Cost Breakdown Structure (CBS) and shares the following Plans/schedules with Chief PMO',
         inputs: ['Project Schedule (PS)', 'Project Execution Approach (PEA)', 'Project Procurement Plan (PPP)', 'Project Budget (submitted during bid submission)', 'Work Breakdown Structure (WBS)'],
@@ -610,7 +610,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P1',
         activity: 'Chief PMO asks the Cost Controller to start the development of CBS and shares the inputs (Project Schedule, Project Execution Approach, Project Procurement Plan, Project Budget and Work Breakdown Structure)',
         inputs: ['PS', 'PEA (includes scope matrix)', 'PPP', 'Project Budget', 'WBS'],
@@ -621,7 +621,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P2',
         activity: 'CC defines/ realigns the coding structure for CBS in line with the Work Breakdown Structure coding structure',
         inputs: [],
@@ -632,7 +632,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P3',
         activity: 'CC defines the elements of CBS leveraging the Project Work Breakdown Structure and Master CBS Solar. CC makes modifications to master CBS Solar to ensure alignment with project scope and schedule.',
         inputs: ['Master CBS Solar'],
@@ -643,7 +643,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P4',
         activity: 'CC assigns the scope to all elements defined in CBS using the Scope Matrix',
         inputs: ['Scope Matrix'],
@@ -654,7 +654,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P5',
         activity: 'CC checks for consistency between Work Breakdown Structure and CBS up to package level based on project control philosophy',
         inputs: [],
@@ -665,7 +665,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P6',
         activity: 'In case of consistency between Work Breakdown Structure and CBS, process P7 is followed and In case of inconsistency between Work Breakdown Structure and CBS, CBS is realigned through process P2',
         inputs: [],
@@ -676,7 +676,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P7',
         activity: 'CC assigns the budget cost to the CBS elements based on the project budget',
         inputs: ['Project Budget'],
@@ -687,7 +687,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P8',
         activity: 'CC allocates specific cost estimates (in INR) to each element. CC uses vendor quotes, historical data, and expert judgment to estimate cost for each item. CC consults Solar Procurement Head, if needed. CC seeks sign off from Chief PMO for CBS',
         inputs: [],
@@ -698,7 +698,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P9',
         activity: 'If changes are required, CC makes necessary revisions and reshares for approval. If no changes are required, CC finalizes CBS',
         inputs: [],
@@ -709,7 +709,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'E',
         activity: 'Cost Controller publishes the project CBS, which forms the basis for project cost monitoring and control. CC shares the project CBS with Project Planner for cross-functional coordination',
         inputs: [],
@@ -731,11 +731,11 @@ export const seedPlanningSolarData = async () => {
       await supabase.from('process_steps').insert(step);
     }
 
-    // Chapter 2 - Scope Management Plan RACI Matrix
+    // Chapter 2 - Scope Management Plan RACI Matrix (Updated from images)
     const chapter2RACIData = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'S',
         task: 'Request for Work Breakdown Structure (WBS) and share the required inputs (Project Execution Approach, Project Schedule, and Scope Matrix)',
         responsible: 'Project Planner',
@@ -745,7 +745,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P1',
         task: 'Review project scope definition and approve the project control philosophy, i.e., required level of monitoring and control on the project, at each level',
         responsible: 'Chief PMO',
@@ -755,7 +755,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P2',
         task: 'Share the scope matrix and project control philosophy',
         responsible: 'Chief PMO',
@@ -765,7 +765,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P3',
         task: 'Define WBS elements based on the approved control philosophy, leveraging the Master WBS Solar and making necessary changes to align with project scope and schedule',
         responsible: 'Schedule Head',
@@ -775,7 +775,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P4',
         task: 'Define the WBS codes for the project',
         responsible: 'Schedule Head',
@@ -785,7 +785,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P5',
         task: 'Check for consistency between the defined project WBS and Cost Breakdown Structure (CBS); revise CBS codes if needed',
         responsible: 'Schedule Head',
@@ -795,7 +795,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P6',
         task: 'Prepare the WBS for the project using a bottom-up approach, collating package-level WBS elements at the project level',
         responsible: 'Schedule Head',
@@ -805,7 +805,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'P7',
         task: 'Seek approval from Chief PMO on the WBS and incorporate necessary changes',
         responsible: 'Schedule Head',
@@ -815,7 +815,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'E',
         task: 'Publish and share project WBS',
         responsible: 'Schedule Head',
@@ -825,11 +825,11 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
-    // Chapter 3 - Cost Management Plan RACI Matrix
+    // Chapter 3 - Cost Management Plan RACI Matrix (Updated from images)
     const chapter3RACIData = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'S',
         task: 'Request for Cost Breakdown Structure (CBS) and share the required Plans/schedules with Chief PMO',
         responsible: 'Project Planner',
@@ -839,7 +839,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P1',
         task: 'Ask the Cost Controller (CC) to commence the development of CBS and share the required inputs with CC',
         responsible: 'Chief PMO',
@@ -849,7 +849,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P2',
         task: 'Define/realign the coding structure for CBS to align with Work Breakdown Structure (WBS) coding structure',
         responsible: 'Cost Controller',
@@ -859,7 +859,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P3',
         task: 'Define the elements of the CBS, leveraging the WBS and Master CBS Solar, and make the necessary modifications to ensure alignment with the project\'s scope and requirements',
         responsible: 'Cost Controller',
@@ -869,7 +869,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P4',
         task: 'Assign the scope to all CBS elements using the Scope Matrix',
         responsible: 'Cost Controller',
@@ -879,7 +879,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P5',
         task: 'Check for consistency between Work Breakdown Structure and CBS up to the package level',
         responsible: 'Cost Controller',
@@ -889,7 +889,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P6',
         task: 'If Work Breakdown Structure and CBS are inconsistent, realign CBS to make it consistent with WBS',
         responsible: 'Cost Controller',
@@ -899,7 +899,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P7',
         task: 'Assign the budget cost (in INR) to the CBS elements based on the project budget',
         responsible: 'Cost Controller',
@@ -909,7 +909,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P8',
         task: 'Seek sign-off from Chief PMO for CBS',
         responsible: 'Cost Controller',
@@ -919,7 +919,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'P9',
         task: 'If changes are required, make necessary revisions and reshare for approval, to finalize CBS',
         responsible: 'Cost Controller',
@@ -929,7 +929,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'E',
         task: 'Publish the project CBS, which forms the basis for project cost monitoring and control. Share the project CBS with Project Planner for cross-functional coordination',
         responsible: 'Cost Controller',
@@ -1034,7 +1034,7 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.1',
+        phase_id: 'chapter-2',
         step_id: 'START',
         step_type: 'start',
         title: 'Scope Management Start',
@@ -1043,29 +1043,11 @@ export const seedPlanningSolarData = async () => {
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-2.3',
-        step_id: 'START',
-        step_type: 'start',
-        title: 'Scope Process Map',
-        description: 'Visual workflow for scope management',
-        order_index: 1
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-3.1',
+        phase_id: 'chapter-3',
         step_id: 'START',
         step_type: 'start',
         title: 'Cost Management Start',
         description: 'Beginning of cost management process',
-        order_index: 1
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-3.3',
-        step_id: 'START',
-        step_type: 'start',
-        title: 'Cost Process Map',
-        description: 'Visual workflow for cost management',
         order_index: 1
       }
     ];
