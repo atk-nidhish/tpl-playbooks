@@ -1,6 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle, Users, Map, Brain, Award, Trophy } from "lucide-react";
+import { CheckCircle, Users, Map, Brain } from "lucide-react";
 
 interface ModernTabsProps {
   defaultValue?: string;
@@ -41,20 +41,6 @@ export const ModernTabs = ({ defaultValue, value, onValueChange, children }: Mod
           >
             <Brain className="h-4 w-4" />
             <span className="font-semibold">Quiz</span>
-          </TabsTrigger>
-          <TabsTrigger 
-            value="certificate" 
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
-          >
-            <Award className="h-4 w-4" />
-            <span className="font-semibold">Certificate</span>
-          </TabsTrigger>
-          <TabsTrigger 
-            value="leaderboard" 
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 transform data-[state=active]:scale-105"
-          >
-            <Trophy className="h-4 w-4" />
-            <span className="font-semibold">Leaderboard</span>
           </TabsTrigger>
         </TabsList>
       </div>
