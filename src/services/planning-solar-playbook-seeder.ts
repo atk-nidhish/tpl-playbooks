@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export const createPlanningSolarPlaybook = async (): Promise<string> => {
@@ -239,6 +238,298 @@ export const seedSection11Data = async (playbookId: string) => {
     console.log('Successfully seeded Section 1.1 data');
   } catch (error) {
     console.error('Error seeding Section 1.1 data:', error);
+    throw error;
+  }
+};
+
+// Section 1.2 Data
+export const seedSection12Data = async (playbookId: string) => {
+  console.log('Seeding Section 1.2 data...');
+
+  // Process Steps for Section 1.2 - Project Schedule and Execution Approach
+  const processSteps = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'S',
+      activity: 'The Bid Incharge notifies the Chief Projects about any bid being won',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Bid Incharge',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P1',
+      activity: 'Chief Projects designates a Project Planner (PP) and Project Manager (PM) for the project',
+      inputs: [],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Chief Projects',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P2',
+      activity: 'Bid Incharge shares the Final L1 Plan and Final Bid Report (FBR) with Chief Projects',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Bid Incharge',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P3',
+      activity: 'Chief Projects shares the Final L1 Plan and Final Bid Report with Project Planner and Project Manager, to initiate the development of the Project Schedule (PS) and Project Execution Approach (PEA) respectively',
+      inputs: ['Final L1 Plan', 'FBR'],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Chief Projects',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P4A',
+      activity: 'Project Planner prepares the preliminary Project Schedule by leveraging the Solar Project Master Plan and modifying it to align with project requirements - To understand project requirements, Project Planner and Project Manager analyze key milestones, critical timelines, land availability, and other details by reviewing the Final L1 Plan and Final Bid Report - The project timeline is broken down into specific tasks with start and end dates, along with intermediate deadlines for key deliverables. - Each phase is detailed to account for task dependencies, and critical path activities. - The Plan includes float for potential risks or delays',
+      inputs: ['Solar Project Master Plan'],
+      outputs: ['Preliminary PS'],
+      timeline: '2 (P4A and P4B to occur parallelly)',
+      responsible: 'Project Planner',
+      comments: 'PS must align with the L1 schedule submitted during bid stage. Any deviations must be communicated by the Project Planner to the Project Manager for review and necessary action'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P4B',
+      activity: 'Project Manager leverages the Final Bid Report to develop Project Execution Approach, which provides a high-level overview of the entire project - Scope of the project (scope matrix) - Land availability and high-level requirements, specifying the type, size, and amount of land needed; if land parcel has already been identified for the project, details of the land parcel to also be a part of PEA (in consultation with Land Team) - Budgeting, including the value engineering target, to optimize cost-efficiency without compromising quality (in consultation with Commercial Team and Engineering Team) - Regulatory compliance requirements, necessary permits, environmental considerations, and safety regulations (in consultation with Regulatory Team)',
+      inputs: [],
+      outputs: ['Scope Matrix (Template Provided)'],
+      timeline: '2 (P4A and P4B to occur parallelly)',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P5',
+      activity: 'Project Planner reviews Project Schedule with Project Manager to ensure alignment. Any modifications identified during this review are incorporated. In case of any discrepancies between Project Manager and Project Planner, the Project Manager takes the final decision',
+      inputs: [],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P6',
+      activity: 'Project Planner and Project Manager circulate Project Schedule and Project Execution Approach respectively to functional leads for review, to seek alignment and address potential conflicts or gaps at an early stage',
+      inputs: [],
+      outputs: [],
+      timeline: '2',
+      responsible: 'Project Planner, Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P7A',
+      activity: 'Project Planner, in consultation with Project Manager, assesses the feedback received from functional leads and adjusts the Project Schedule',
+      inputs: [],
+      outputs: [],
+      timeline: '2 (P7A and P7B to occur parallelly)',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P7B',
+      activity: 'Project Manager incorporates necessary changes in Project Execution Approach',
+      inputs: [],
+      outputs: ['PEA (includes scope matrix)'],
+      timeline: '2 (P7A and P7B to occur parallelly)',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P8',
+      activity: 'Project Planner seeks sign-off on Project Schedule from functional leads',
+      inputs: [],
+      outputs: ['PS (Template Provided)'],
+      timeline: '1',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'E',
+      activity: 'Project Planner retains finalized Project Schedule, and Project Manager shares Project Execution Approach with Project Planner for future cross-functional coordination',
+      inputs: [],
+      outputs: [],
+      timeline: 'Total - 9 - 11 days',
+      responsible: 'Project Planner',
+      comments: ''
+    }
+  ];
+
+  // RACI Matrix for Section 1.2
+  const raciMatrix = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'S',
+      task: 'Notify Chief Projects about any bid being won',
+      responsible: 'Bid Incharge',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief Projects'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P1',
+      task: 'Designate Project Planner (PP) and Project Manager (PM) for the project',
+      responsible: 'Chief Projects',
+      accountable: 'Chief Projects',
+      consulted: '',
+      informed: 'Project Planner & Project Manager'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P2',
+      task: 'Share Final L1 Plan and Final Bid Report with Chief Projects',
+      responsible: 'Bid Incharge',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief Projects'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P3',
+      task: 'Share Final L1 Plan and Final Bid Report with Project Planner and Project Manager',
+      responsible: 'Chief Projects',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Planner & Project Manager'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P4A',
+      task: 'Prepare the draft Project Schedule (PS), leveraging the Solar Project Master Plan and insights from Final L1 Plan and Final Bid Report',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief Projects'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P4B',
+      task: 'Develop Project Execution Approach (PEA) leveraging Final Bid Report',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: 'Chief Land Officer, Chief Procurement, Chief Regulatory and Chief Engineering',
+      informed: 'Chief Projects'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P5',
+      task: 'Review Project Schedule with Project Manager for alignment',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: 'Project Manager',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P6',
+      task: 'Circulate Project Schedule and Project Execution Approach with functional leads for review',
+      responsible: 'Project Planner, Project Manager',
+      accountable: '',
+      consulted: 'Functional Leads',
+      informed: 'Chief Projects'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P7A',
+      task: 'Assess feedback from functional leads and adjust Project Schedule accordingly',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: 'Project Manager',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P7B',
+      task: 'Assess feedback from functional leads and finalize Project Execution Approach',
+      responsible: 'Project Manager',
+      accountable: 'Chief Projects',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'P8',
+      task: 'Seek sign-off on Project Schedule from functional leads to finalize it',
+      responsible: 'Project Planner',
+      accountable: 'Chief Projects',
+      consulted: 'Functional Leads',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.2',
+      step_id: 'E',
+      task: 'Retain the finalized Project Schedule and Project Execution Approach for future cross-functional coordination in future',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
+    }
+  ];
+
+  try {
+    // Insert process steps
+    const { error: stepsError } = await supabase
+      .from('process_steps')
+      .insert(processSteps);
+
+    if (stepsError) {
+      console.error('Error inserting Section 1.2 process steps:', stepsError);
+      throw stepsError;
+    }
+
+    // Insert RACI matrix
+    const { error: raciError } = await supabase
+      .from('raci_matrix')
+      .insert(raciMatrix);
+
+    if (raciError) {
+      console.error('Error inserting Section 1.2 RACI matrix:', raciError);
+      throw raciError;
+    }
+
+    console.log('Successfully seeded Section 1.2 data');
+  } catch (error) {
+    console.error('Error seeding Section 1.2 data:', error);
     throw error;
   }
 };
