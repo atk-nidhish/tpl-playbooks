@@ -11,11 +11,10 @@ import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
-import { PlaybookReprocessor } from "@/components/PlaybookReprocessor";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { Search, BookOpen, Users, Map, Settings, RotateCcw, Zap, Award, Trophy, Lock } from "lucide-react";
+import { ArrowLeft, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -49,25 +48,6 @@ export default function PlanningSolarDashboard() {
     } catch (error) {
       console.error('Error initializing playbook:', error);
       toast.error("Failed to initialize playbook data");
-    }
-  };
-
-  const handleReprocessPlaybook = async () => {
-    try {
-      console.log('Reprocessing Planning - Solar playbook...');
-      
-      // Clear existing data for this playbook
-      await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID);
-      await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID);
-      await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID);
-      
-      // Re-seed the data
-      await seedPlanningSolarData();
-      
-      toast.success("Playbook reprocessed successfully!");
-    } catch (error) {
-      console.error('Error reprocessing playbook:', error);
-      toast.error("Failed to reprocess playbook");
     }
   };
 
@@ -198,7 +178,7 @@ export default function PlanningSolarDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Search className="h-5 w-5 text-gray-600" />
+                  <ArrowLeft className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
@@ -237,7 +217,7 @@ export default function PlanningSolarDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                    <Search className="h-5 w-5 text-gray-600" />
+                    <ArrowLeft className="h-5 w-5 text-gray-600" />
                   </Link>
                   <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                     <Zap className="h-6 w-6 text-white" />
@@ -292,7 +272,7 @@ export default function PlanningSolarDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Search className="h-5 w-5 text-gray-600" />
+                  <ArrowLeft className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
@@ -332,7 +312,7 @@ export default function PlanningSolarDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                <Search className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 text-gray-600" />
               </Link>
               <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
                 <Zap className="h-6 w-6 text-white" />
@@ -344,22 +324,13 @@ export default function PlanningSolarDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search processes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-80 bg-white/90"
+                  className="w-80 bg-white/90"
                 />
               </div>
-              <Button
-                onClick={handleReprocessPlaybook}
-                variant="outline"
-                className="border-orange-200 hover:bg-orange-50"
-              >
-                <RotateCcw className="h-4 w-4 mr-2" />
-                Reprocess
-              </Button>
             </div>
           </div>
         </div>
