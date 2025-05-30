@@ -332,7 +332,11 @@ const WindCPDashboard = () => {
         />
 
         <div className="container mx-auto px-6 py-8">
-          <PlaybookCertification />
+          <PlaybookCertification 
+            playbookId={playbookId}
+            playbookName="Wind - C&P"
+            chapters={chapters}
+          />
         </div>
       </div>
     );
