@@ -117,7 +117,8 @@ export default function PlanningSolarDashboard() {
     "chapter-2": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
     "chapter-3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png",
     "chapter-4": "/lovable-uploads/7c770988-9bc7-44c4-b83c-875d7731fe58.png",
-    "chapter-5": "/lovable-uploads/62318464-8cad-4c33-af4b-1d77c3894c26.png"
+    "chapter-5": "/lovable-uploads/62318464-8cad-4c33-af4b-1d77c3894c26.png",
+    "chapter-6": "/lovable-uploads/5988e549-2352-4c27-9380-24fdc2e14575.png"
   };
 
   // Check if all quizzes are completed

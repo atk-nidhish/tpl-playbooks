@@ -33,10 +33,10 @@ export const seedPlanningSolarData = async () => {
       console.log('Planning - Solar playbook created successfully:', newPlaybook);
     }
 
-    // Clear existing data for chapters 2, 3, 4, and 5 to avoid duplicates
-    await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
-    await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
-    await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
+    // Clear existing data for chapters 2-6 to avoid duplicates
+    await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5', 'chapter-6']);
+    await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5', 'chapter-6']);
+    await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5', 'chapter-6']);
 
     // Chapter 2: Scope Management Plan - Process Steps
     const chapter2ProcessSteps = [
@@ -637,10 +637,237 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 6: Risk Management Plan - Process Steps
+    const chapter6ProcessSteps = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "S",
+        activity: "Project Planner (PP) shares the following with Risk Head (RH), and requests for the initiation of Risk Management Plan (RMP) – Project Schedule (PS) and Project Execution Approach (PEA)",
+        inputs: ["PS", "PEA (includes scope matrix)"],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Planner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P1",
+        activity: "RH reviews the Project Schedule and Project Execution Approach to identify risk review requirement",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Risk Head",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P2",
+        activity: "RH conducts Risk Review Workshop, where Functional Leads collectively, identify the risks. Risk Head documents the risks in the Risk Register. Functional Leads allocate a risk owner for every risk identified. An employee from any of the affected functions could be identified as the risk owner. Project Manager is de facto risk owner of any risk not attributed to any specific functions. Project Manager informs the respective Functions of the cross functional risks involved. Joint Risk Owners identified for cross-functional risks",
+        inputs: [],
+        outputs: ["Preliminary Risk Register"],
+        timeline: "-",
+        responsible: "Risk Head",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P3",
+        activity: "From this step, the risk owner holds the primary responsibility of the risk. For each risk, Risk Owner initiates the development of Risk Management Plan, which includes the Plan for risk assessment and risk mitigation",
+        inputs: [],
+        outputs: ["Risk Register (Risk Register and risk management plan template shared as a separate file)"],
+        timeline: "-",
+        responsible: "Functional Leads",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P4",
+        activity: "For Risk Assessment, the Risk Owner quantifies following 4 metric – Impact of risk on project schedule, Impact of risk on project scope, Impact of risk on project quality, Probability of risk occurrence",
+        inputs: [],
+        outputs: ["Preliminary Risk Management Plan"],
+        timeline: "2",
+        responsible: "Risk Owner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P5",
+        activity: "Risk Owner identify and communicate the inputs to Risk Head, who updates the risk register.",
+        inputs: [],
+        outputs: [],
+        timeline: "1",
+        responsible: "Risk Owner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P6",
+        activity: "Basis the inputs, risk register automatically assesses the risk and assigns Risk Priority Number (RPN). Basis the RPN, Risk Owner further builds Risk Management Plan by identifying an optimal risk mitigation action from different approaches based on an effort-benefit analysis, along with associated timelines",
+        inputs: ["Risk Mitigation Approaches (Template Provided)"],
+        outputs: ["Risk Management Plan (Risk Register and risk management plan template shared as a separate file)"],
+        timeline: "2",
+        responsible: "Risk Owner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P7",
+        activity: "If there are changes to the already identified risks, Risk Owner communicates it to the Risk Head, who then updates the risk register. Functional Leads continue to identify additional risks as the project progresses. Risk Register is accessible only to Risk Head, and any change in the register must go via Risk Head",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Risk Owner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "E",
+        activity: "The risk register is reviewed periodically during the weekly project review meeting. The process of identifying and updating risk continues throughout the project lifecycle",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 6 – 7 days",
+        responsible: "Risk Head",
+        comments: ""
+      }
+    ];
+
+    // Chapter 6: RACI Matrix
+    const chapter6RACIData = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "S",
+        task: "Share the required schedules / Plans with Risk Head (RH), and request RH to initiate the Risk Management Plan (RMP)",
+        responsible: "Project Planner",
+        accountable: "",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P1",
+        task: "Review the Project Schedule and Project Execution Approach to assess the risk review requirement",
+        responsible: "Risk Head",
+        accountable: "",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P2",
+        task: "Conduct a Risk Review Workshop, where Functional Leads collectively identify the risks with documentation of risks done in Risk Register",
+        responsible: "Risk Head",
+        accountable: "",
+        consulted: "Functional Leads",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P3",
+        task: "Identify a Risk Owner for every risk identified",
+        responsible: "Functional Leads",
+        accountable: "",
+        consulted: "Risk Head",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P4",
+        task: "Develop the Risk Management Plan, which includes risk assessment and mitigation Plans",
+        responsible: "Risk Owner",
+        accountable: "Risk Owner",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P4",
+        task: "For Risk Assessment, quantify certain metrics and communicate it to RM.",
+        responsible: "Risk Owner",
+        accountable: "Risk Owner",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P5",
+        task: "Update the risk register basis metrics from Risk Owner. Based on the inputs, the risk register assigns Risk Priority Number (RPN).",
+        responsible: "Risk Head",
+        accountable: "",
+        consulted: "Risk Owner",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P6",
+        task: "Based on the RPN, identify an optimal risk mitigation action, with associated timelines",
+        responsible: "Risk Owner",
+        accountable: "",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P7",
+        task: "If there are changes to identified risks, communicate it to Risk Head",
+        responsible: "Risk Owner",
+        accountable: "Risk Owner",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P7",
+        task: "Update the risk register",
+        responsible: "Risk Head",
+        accountable: "",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P7",
+        task: "Functional Leads continue to identify additional risks as the project progresses",
+        responsible: "Functional Leads",
+        accountable: "",
+        consulted: "",
+        informed: "Risk Head"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "E",
+        task: "Continue identifying and updating risks throughout the project lifecycle",
+        responsible: "Risk Head",
+        accountable: "",
+        consulted: "",
+        informed: ""
+      }
+    ];
+
     // Insert process steps for all chapters
     const { error: processStepsError } = await supabase
       .from('process_steps')
-      .insert([...chapter2ProcessSteps, ...chapter3ProcessSteps, ...chapter4ProcessSteps, ...chapter5ProcessSteps]);
+      .insert([...chapter2ProcessSteps, ...chapter3ProcessSteps, ...chapter4ProcessSteps, ...chapter5ProcessSteps, ...chapter6ProcessSteps]);
 
     if (processStepsError) {
       console.error('Error inserting process steps:', processStepsError);
@@ -650,14 +877,14 @@ export const seedPlanningSolarData = async () => {
     // Insert RACI data for all chapters
     const { error: raciError } = await supabase
       .from('raci_matrix')
-      .insert([...chapter2RACIData, ...chapter3RACIData, ...chapter4RACIData, ...chapter5RACIData]);
+      .insert([...chapter2RACIData, ...chapter3RACIData, ...chapter4RACIData, ...chapter5RACIData, ...chapter6RACIData]);
 
     if (raciError) {
       console.error('Error inserting RACI data:', raciError);
       throw raciError;
     }
 
-    // Add process map data for all chapters
+    // Chapter 2: Process Map
     const chapter2ProcessMap = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -697,6 +924,7 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 3: Process Map
     const chapter3ProcessMap = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -745,6 +973,7 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 4: Process Map
     const chapter4ProcessMap = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -811,6 +1040,7 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 5: Process Map
     const chapter5ProcessMap = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -913,10 +1143,95 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 6: Process Map
+    const chapter6ProcessMap = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "S",
+        step_type: "start",
+        title: "Share Required Plans",
+        description: "Project Planner shares PS and PEA with Risk Head",
+        order_index: 1
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P1",
+        step_type: "process",
+        title: "Review Schedule & Approach",
+        description: "Risk Head reviews to identify risk requirements",
+        order_index: 2
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P2",
+        step_type: "process",
+        title: "Risk Review Workshop",
+        description: "Functional Leads identify risks and allocate owners",
+        order_index: 3
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P3",
+        step_type: "process",
+        title: "Risk Owner Assignment",
+        description: "Risk owners take responsibility for risk management",
+        order_index: 4
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P4",
+        step_type: "process",
+        title: "Risk Assessment",
+        description: "Quantify impact metrics and probability",
+        order_index: 5
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P5",
+        step_type: "process",
+        title: "Communicate to Risk Head",
+        description: "Risk Owner updates Risk Head with assessment",
+        order_index: 6
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P6",
+        step_type: "process",
+        title: "Risk Mitigation Planning",
+        description: "Develop optimal mitigation actions with timelines",
+        order_index: 7
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "P7",
+        step_type: "process",
+        title: "Ongoing Risk Management",
+        description: "Continuous risk identification and updates",
+        order_index: 8
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-6",
+        step_id: "E",
+        step_type: "end",
+        title: "Periodic Review",
+        description: "Weekly project review meetings for risk updates",
+        order_index: 9
+      }
+    ];
+
     // Insert process map data
     const { error: processMapError } = await supabase
       .from('process_map')
-      .insert([...chapter2ProcessMap, ...chapter3ProcessMap, ...chapter4ProcessMap, ...chapter5ProcessMap]);
+      .insert([...chapter2ProcessMap, ...chapter3ProcessMap, ...chapter4ProcessMap, ...chapter5ProcessMap, ...chapter6ProcessMap]);
 
     if (processMapError) {
       console.error('Error inserting process map data:', processMapError);
