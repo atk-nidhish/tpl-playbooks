@@ -10,6 +10,7 @@ import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
 import { PlaybookReprocessor } from "@/components/PlaybookReprocessor";
+import { ModernNavigation } from "@/components/ModernNavigation";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
 import { Search, BookOpen, Users, Map, Settings, RotateCcw, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,32 +58,67 @@ export default function PlanningSolarDashboard() {
     }
   };
 
-  const phases = [
-    // Chapter 1 - Planning Process
-    { id: "section-1.1", title: "Project Initiation", description: "Initial project setup", chapter: "1" },
-    { id: "section-1.2", title: "Planning Scope", description: "Define project scope", chapter: "1" },
-    { id: "section-1.3", title: "Land Plan", description: "Land acquisition planning", chapter: "1" },
-    { id: "section-1.4", title: "Engineering Plan", description: "Engineering design planning", chapter: "1" },
-    { id: "section-1.5", title: "Procurement Plan", description: "Procurement strategy", chapter: "1" },
-    { id: "section-1.6", title: "Construction Plan", description: "Construction management", chapter: "1" },
-    { id: "section-1.7", title: "Commissioning Plan", description: "Commissioning strategy", chapter: "1" },
-    { id: "section-1.8", title: "Plan Integration", description: "Integration of all plans", chapter: "1" },
-    { id: "section-1.9", title: "Plan Update", description: "Plan revision management", chapter: "1" },
-    
-    // Chapter 2 - Scope Management Plan
-    { id: "section-2.1", title: "Scope Process Steps", description: "Work breakdown structure development", chapter: "2" },
-    { id: "section-2.2", title: "Scope RACI", description: "Scope management responsibilities", chapter: "2" },
-    { id: "section-2.3", title: "Scope Process Map", description: "Scope management workflow", chapter: "2" },
-    
-    // Chapter 3 - Cost Management Plan
-    { id: "section-3.1", title: "Cost Process Steps", description: "Cost breakdown structure development", chapter: "3" },
-    { id: "section-3.2", title: "Cost RACI", description: "Cost management responsibilities", chapter: "3" },
-    { id: "section-3.3", title: "Cost Process Map", description: "Cost management workflow", chapter: "3" },
-    
-    // Placeholder chapters (to be populated later)
-    { id: "section-4.1", title: "Quality Management", description: "Quality assurance processes", chapter: "4" },
-    { id: "section-5.1", title: "Risk Management", description: "Risk identification and mitigation", chapter: "5" },
-    { id: "section-6.1", title: "Resource Management", description: "Resource allocation and management", chapter: "6" }
+  const chapters = [
+    {
+      id: "chapter-1",
+      name: "Chapter 1: Planning Process",
+      shortName: "Ch 1: Planning",
+      subChapters: [
+        { id: "section-1.1", name: "1.1 Project Initiation" },
+        { id: "section-1.2", name: "1.2 Planning Scope" },
+        { id: "section-1.3", name: "1.3 Land Plan" },
+        { id: "section-1.4", name: "1.4 Engineering Plan" },
+        { id: "section-1.5", name: "1.5 Procurement Plan" },
+        { id: "section-1.6", name: "1.6 Construction Plan" },
+        { id: "section-1.7", name: "1.7 Commissioning Plan" },
+        { id: "section-1.8", name: "1.8 Plan Integration" },
+        { id: "section-1.9", name: "1.9 Plan Update" }
+      ]
+    },
+    {
+      id: "chapter-2",
+      name: "Chapter 2: Scope Management Plan",
+      shortName: "Ch 2: Scope",
+      subChapters: [
+        { id: "section-2.1", name: "2.1 Scope Process Steps" },
+        { id: "section-2.2", name: "2.2 Scope RACI" },
+        { id: "section-2.3", name: "2.3 Scope Process Map" }
+      ]
+    },
+    {
+      id: "chapter-3",
+      name: "Chapter 3: Cost Management Plan",
+      shortName: "Ch 3: Cost",
+      subChapters: [
+        { id: "section-3.1", name: "3.1 Cost Process Steps" },
+        { id: "section-3.2", name: "3.2 Cost RACI" },
+        { id: "section-3.3", name: "3.3 Cost Process Map" }
+      ]
+    },
+    {
+      id: "chapter-4",
+      name: "Chapter 4: Quality Management Plan",
+      shortName: "Ch 4: Quality",
+      subChapters: [
+        { id: "section-4.1", name: "4.1 Quality Management" }
+      ]
+    },
+    {
+      id: "chapter-5",
+      name: "Chapter 5: Risk Management Plan",
+      shortName: "Ch 5: Risk",
+      subChapters: [
+        { id: "section-5.1", name: "5.1 Risk Management" }
+      ]
+    },
+    {
+      id: "chapter-6",
+      name: "Chapter 6: Resource Management Plan",
+      shortName: "Ch 6: Resource",
+      subChapters: [
+        { id: "section-6.1", name: "6.1 Resource Management" }
+      ]
+    }
   ];
 
   const processMapImages = {
@@ -105,24 +141,6 @@ export default function PlanningSolarDashboard() {
 
   const navigateToQuiz = () => {
     setActiveTab("quiz");
-  };
-
-  // Group phases by chapter
-  const phasesByChapter = phases.reduce((acc, phase) => {
-    if (!acc[phase.chapter]) {
-      acc[phase.chapter] = [];
-    }
-    acc[phase.chapter].push(phase);
-    return acc;
-  }, {} as Record<string, typeof phases>);
-
-  const chapterTitles = {
-    "1": "Planning Process",
-    "2": "Scope Management Plan", 
-    "3": "Cost Management Plan",
-    "4": "Quality Management Plan",
-    "5": "Risk Management Plan",
-    "6": "Resource Management Plan"
   };
 
   return (
@@ -167,47 +185,12 @@ export default function PlanningSolarDashboard() {
           </CardHeader>
         </Card>
 
-        {/* Chapter and Phase Selection */}
-        <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-800">Chapters & Phases</CardTitle>
-            <CardDescription>Select a chapter and phase to explore detailed processes and requirements</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {Object.entries(phasesByChapter).map(([chapterNum, chapterPhases]) => (
-              <div key={chapterNum} className="space-y-3">
-                <h3 className="text-lg font-semibold text-gray-700 border-b border-orange-200 pb-2">
-                  Chapter {chapterNum}: {chapterTitles[chapterNum as keyof typeof chapterTitles]}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {chapterPhases.map((phase) => (
-                    <Button
-                      key={phase.id}
-                      variant={activePhase === phase.id ? "default" : "outline"}
-                      className={`h-auto p-4 flex flex-col items-start text-left ${
-                        activePhase === phase.id
-                          ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400"
-                          : "border-orange-200 hover:bg-orange-50 hover:border-orange-300"
-                      }`}
-                      onClick={() => setActivePhase(phase.id)}
-                    >
-                      <Badge 
-                        variant="secondary" 
-                        className={`mb-2 text-xs ${
-                          activePhase === phase.id ? "bg-white/20 text-white" : "bg-orange-100 text-orange-800"
-                        }`}
-                      >
-                        {phase.id.replace('section-', 'Section ')}
-                      </Badge>
-                      <div className="font-semibold text-sm mb-1">{phase.title}</div>
-                      <div className="text-xs opacity-80">{phase.description}</div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        {/* Modern Navigation */}
+        <ModernNavigation 
+          chapters={chapters}
+          activePhase={activePhase}
+          onPhaseChange={setActivePhase}
+        />
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -264,14 +247,14 @@ export default function PlanningSolarDashboard() {
                     Detailed Process Map
                   </CardTitle>
                   <CardDescription>
-                    Visual workflow diagram for {phases.find(p => p.id === activePhase)?.title}
+                    Visual workflow diagram for {chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="border-2 border-orange-200 rounded-lg overflow-hidden bg-white">
                     <img 
                       src={processMapImages[activePhase as keyof typeof processMapImages]}
-                      alt={`Process map for ${phases.find(p => p.id === activePhase)?.title}`}
+                      alt={`Process map for ${chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name}`}
                       className="w-full h-auto"
                     />
                   </div>
