@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 const PLAYBOOK_ID = "f895041f-04e3-466b-aa09-53782e40467c";
@@ -34,10 +33,10 @@ export const seedPlanningSolarData = async () => {
       console.log('Planning - Solar playbook created successfully:', newPlaybook);
     }
 
-    // Clear existing data for chapters 2 and 3 to avoid duplicates
-    await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3']);
-    await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3']);
-    await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3']);
+    // Clear existing data for chapters 2, 3, 4, and 5 to avoid duplicates
+    await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
+    await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
+    await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID).in('phase_id', ['chapter-2', 'chapter-3', 'chapter-4', 'chapter-5']);
 
     // Chapter 2: Scope Management Plan - Process Steps
     const chapter2ProcessSteps = [
@@ -244,27 +243,421 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
-    // Insert process steps for chapters 2 and 3
+    // Chapter 4: Quality Management Plan - Process Steps
+    const chapter4ProcessSteps = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "S",
+        activity: "Project Planner (PP) shares the following schedules with Chief QHSSE, and requests them to initiate the development of Project Quality Management Plan (PQMP) – Project Execution Approach (PEA), Project Schedule (PS), and Engineering Execution Plans (EEPs) (for standard quality requirements)",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Planner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P1",
+        activity: "Chief QHSSE reviews the Project Schedule and Project Execution Approach to establish an understanding of project calendar which forms the basis for timeline identification for PQMP. QM is fully aware of the project's quality standards, having collaborated with the Project Engineering Manager to define the standard quality requirements during the preparation of the EEPs",
+        inputs: ["PEA (includes scope matrix)", "PS"],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Chief QHSSE",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P2",
+        activity: "Chief QHSSE, in consultation with PM, performs the following activities: Determine and outline various functional roles required to ensure the quality standards are met throughout the project's lifecycle. Identify audit requirements during project including frequency and auditors",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Chief QHSSE",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P3",
+        activity: "Chief QHSSE refers to 'Master Plan for Quality Management – Solar' and makes necessary adjustments to align it with the project's scope and requirements",
+        inputs: ["EEPs"],
+        outputs: ["Preliminary PQMP"],
+        timeline: "1",
+        responsible: "Chief QHSSE",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P4",
+        activity: "PQMP covers plans, timeline and checkpoints, and functional role required to implement quality standard. Project Quality Standards are referred to from Project Quality Requirement developed in Engineering Execution Plans. Chief QHSSE develops the PQMP to ensure comprehensive guidelines are in place for implementing and overseeing quality standards, which covers – QC hold points, Quality documentation requirements by contractors, Submittals from contractor for quality approval, Non-conformance report (NCR) management and all other requirements in this context",
+        inputs: ["Master Plan for Quality Management - Solar"],
+        outputs: [],
+        timeline: "",
+        responsible: "Chief QHSSE",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P5",
+        activity: "Chief QHSSE finalizes PQMP, ensuring it includes – Quality Management Plan – Defined roles, audit requirements, and a structured approach with Plans, timelines, and checkpoints to uphold quality standards. Quality Monitoring and Control Plan – Established guidelines for inspections, documentation, submittals, and NCR management to ensure consistent quality throughout the project.",
+        inputs: [],
+        outputs: ["PQMP (Template Provided)"],
+        timeline: "",
+        responsible: "Chief QHSSE",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "E",
+        activity: "QHSSE shares PQMP with Project Planner (PP) for facilitating cross-functional coordination",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 2 – 3 days",
+        responsible: "Chief QHSSE",
+        comments: ""
+      }
+    ];
+
+    // Chapter 4: RACI Matrix
+    const chapter4RACIData = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "S",
+        task: "Share the required Plans/schedules with Chief QHSSE and request them to develop Project Quality Management Plan (PQMP)",
+        responsible: "Project Planner",
+        accountable: "",
+        consulted: "",
+        informed: "Chief QHSSE"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P1",
+        task: "Review the Project Schedule to establish an understanding of the project calendar, forming the basis for timeline identification for PQMP",
+        responsible: "Chief QHSSE",
+        accountable: "",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P2",
+        task: "Determine and outline various functional roles required to ensure quality standards and audit requirements throughout the project's lifecycle",
+        responsible: "Chief QHSSE",
+        accountable: "",
+        consulted: "Project Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P3",
+        task: "Refer to 'Master Plan for Quality Management – Solar' and modify it to align with the project's scope and requirements",
+        responsible: "Chief QHSSE",
+        accountable: "Chief QHSSE",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P4",
+        task: "Further develop the PQMP to ensure comprehensive guidelines are in place for implementing and overseeing quality standards",
+        responsible: "Chief QHSSE",
+        accountable: "Chief QHSSE",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P5",
+        task: "Finalize the PQMP, ensuring it includes quality management Plan and quality Monitoring and Control Plan",
+        responsible: "Chief QHSSE",
+        accountable: "Chief QHSSE",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "E",
+        task: "Share the PQMP with Project Planner (PP) for cross-functional coordination",
+        responsible: "Chief QHSSE",
+        accountable: "Chief QHSSE",
+        consulted: "",
+        informed: "Project Planner"
+      }
+    ];
+
+    // Chapter 5: Statutory Approval Management Plan - Process Steps
+    const chapter5ProcessSteps = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "S",
+        activity: "Project Planner (PP) requests the Project Manager (PM) to develop Statutory Approval Management Plan (SAMP) and shares the required schedules / Plans – Project Schedule (PS), Project Execution Approach (PEA), Project Procurement Plan (PPP)",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Planner",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P1",
+        activity: "The Project Manager informs the Chief Regulatory of the need to appoint a Regulatory Manager (RM) for the project",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P2",
+        activity: "Chief Regulatory appoints a RM for the project",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Chief Regulatory",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P3",
+        activity: "PM, in consultation with RM, refers to the Solar Statutory Approval Requirement Compendium to prepare SAMP. The compendium outlines state-level statutory approval requirements for solar power Plants; helps to identify necessary approvals required throughout the project lifecycle",
+        inputs: ["Solar Statutory Approval Requirement Compendium"],
+        outputs: ["Preliminary SAMP"],
+        timeline: "1",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P4",
+        activity: "The Project Manager incorporates timelines into SAMP – Project Manager identifies the timelines and criticalities of statutory approvals by reviewing Project Schedule and Project Execution Approach",
+        inputs: ["PS", "PEA (includes scope matrix)"],
+        outputs: [],
+        timeline: "",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P5",
+        activity: "PM, in consultation with RM, identifies various requirements/ pre-requisites to be fulfilled for obtaining approvals. Documents required for obtaining approval, Pre-requisites or conditions that must be satisfied before approval is granted, Cost associated with getting approvals, Duration or estimated time for obtaining approval, Risks associated with getting the clearance, Consenting considerations, requirements the approving authority mandates before granting approval, Management action Plan for the process. Project Manager leverages Solar Statutory Approval Requirements Compendium to identify the above",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P6",
+        activity: "For each statutory approval required, Project Manager identifies a PoC across function teams, whose work would be impacted by delay in obtaining statutory approvals. – Project Manager may consult functional leads to identify PoC",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P7",
+        activity: "PM, in consultation with the RM, prepares the final SAMP, which includes – Documentation, pre-requisites, costs, approval timelines, risks, and consenting considerations, A clear action Plan for obtaining approvals, Identification of PoC whose work will be impacted in case of any delay",
+        inputs: [],
+        outputs: [],
+        timeline: "1",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P8",
+        activity: "Project Manager seeks review and approval (approval via formal sign-off) for SAMP from Chief Regulatory",
+        inputs: [],
+        outputs: [],
+        timeline: "1",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P9",
+        activity: "If changes are required, Project Manager incorporates the feedback and reshares SAMP with Chief Regulatory for approval. If no changes are required, Project Manager finalizes SAMP",
+        inputs: [],
+        outputs: ["SAMP (Template Provided)"],
+        timeline: "",
+        responsible: "Project Manager",
+        comments: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "E",
+        activity: "Project Manager shares the SAMP with Project Planner for cross-functional coordination",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 5 – 6 days",
+        responsible: "Project Manager",
+        comments: ""
+      }
+    ];
+
+    // Chapter 5: RACI Matrix
+    const chapter5RACIData = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "S",
+        task: "Share required Plans/schedules with Project Manager (PM), for the development of Statutory Approval Management Plan (SAMP)",
+        responsible: "Project Planner",
+        accountable: "",
+        consulted: "Project Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P1",
+        task: "Inform the Chief Regulatory of the need to appoint Regulatory Manager for the project",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "",
+        informed: "Chief Regulatory"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P2",
+        task: "Appoint a Regulatory Manager for the project",
+        responsible: "Chief Regulatory",
+        accountable: "Chief Regulatory",
+        consulted: "",
+        informed: "Regulatory Manager"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P3",
+        task: "Develop SAMP, leveraging the Solar Statutory Approval Requirement Compendium",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "Regulatory Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P4",
+        task: "Incorporate timeline for statutory approvals in SAMP by reviewing Project Schedule and Project Execution Approach",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "Regulatory Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P5",
+        task: "Identify requirements/ pre-requisites to be fulfilled for obtaining statutory approvals, leveraging Solar Statutory Approval Requirements Compendium",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "Regulatory Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P6",
+        task: "Identify PoC within functional teams whose work would be impacted by delay in obtaining statutory approvals",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "Cost Controller",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P7",
+        task: "Prepare the final SAMP, detailing documentation, pre-requisites, costs, approval timelines, risks, consenting considerations, and PoC for each approval (as done in P6)",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "Regulatory Manager",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P8",
+        task: "Seek review and approval (approval via formal sign-off) for SAMP from Chief Regulatory",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "Chief Regulatory",
+        informed: "Regulatory Manager"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P9",
+        task: "Incorporate changes to SAMP basis feedback received and reapply for approval from Chief Regulatory to finalize SAMP",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "Chief Regulatory",
+        informed: "Regulatory Manager"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "E",
+        task: "Share final SAMP with Project Planner for cross-functional coordination",
+        responsible: "Project Manager",
+        accountable: "",
+        consulted: "",
+        informed: "Project Planner"
+      }
+    ];
+
+    // Insert process steps for all chapters
     const { error: processStepsError } = await supabase
       .from('process_steps')
-      .insert([...chapter2ProcessSteps, ...chapter3ProcessSteps]);
+      .insert([...chapter2ProcessSteps, ...chapter3ProcessSteps, ...chapter4ProcessSteps, ...chapter5ProcessSteps]);
 
     if (processStepsError) {
       console.error('Error inserting process steps:', processStepsError);
       throw processStepsError;
     }
 
-    // Insert RACI data for chapters 2 and 3
+    // Insert RACI data for all chapters
     const { error: raciError } = await supabase
       .from('raci_matrix')
-      .insert([...chapter2RACIData, ...chapter3RACIData]);
+      .insert([...chapter2RACIData, ...chapter3RACIData, ...chapter4RACIData, ...chapter5RACIData]);
 
     if (raciError) {
       console.error('Error inserting RACI data:', raciError);
       throw raciError;
     }
 
-    // Add process map data for chapters 2 and 3
+    // Add process map data for all chapters
     const chapter2ProcessMap = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -352,10 +745,178 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    const chapter4ProcessMap = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "S",
+        step_type: "start",
+        title: "Share Required Plans",
+        description: "Project Planner shares schedules with Chief QHSSE",
+        order_index: 1
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P1",
+        step_type: "process",
+        title: "Review Project Schedule",
+        description: "Establish project calendar for PQMP timeline",
+        order_index: 2
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P2",
+        step_type: "process",
+        title: "Define Quality Roles",
+        description: "Determine functional roles and audit requirements",
+        order_index: 3
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P3",
+        step_type: "process",
+        title: "Draft Preliminary PQMP",
+        description: "Leverage Master Plan for Quality Management",
+        order_index: 4
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P4",
+        step_type: "process",
+        title: "Develop Comprehensive PQMP",
+        description: "Include QC hold points and quality standards",
+        order_index: 5
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "P5",
+        step_type: "milestone",
+        title: "Finalize PQMP",
+        description: "Complete quality management and monitoring plan",
+        order_index: 6
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-4",
+        step_id: "E",
+        step_type: "end",
+        title: "Share PQMP",
+        description: "Coordinate with Project Planner",
+        order_index: 7
+      }
+    ];
+
+    const chapter5ProcessMap = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "S",
+        step_type: "start",
+        title: "Share Required Plans",
+        description: "Project Planner requests SAMP development",
+        order_index: 1
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P1",
+        step_type: "process",
+        title: "Inform Chief Regulatory",
+        description: "Need to appoint Regulatory Manager",
+        order_index: 2
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P2",
+        step_type: "process",
+        title: "Appoint Regulatory Manager",
+        description: "Chief Regulatory appoints RM for project",
+        order_index: 3
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P3",
+        step_type: "process",
+        title: "Develop Preliminary SAMP",
+        description: "Leverage Solar Statutory Approval Compendium",
+        order_index: 4
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P4",
+        step_type: "process",
+        title: "Incorporate Timelines",
+        description: "Identify criticalities and timeline requirements",
+        order_index: 5
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P5",
+        step_type: "process",
+        title: "Identify Requirements",
+        description: "Document approval prerequisites and costs",
+        order_index: 6
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P6",
+        step_type: "process",
+        title: "Identify PoC",
+        description: "Determine impact on functional teams",
+        order_index: 7
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P7",
+        step_type: "process",
+        title: "Prepare Final SAMP",
+        description: "Complete documentation and action plans",
+        order_index: 8
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P8",
+        step_type: "process",
+        title: "Seek Approval",
+        description: "Review and approval from Chief Regulatory",
+        order_index: 9
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "P9",
+        step_type: "milestone",
+        title: "Finalize SAMP",
+        description: "Incorporate feedback and finalize",
+        order_index: 10
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "chapter-5",
+        step_id: "E",
+        step_type: "end",
+        title: "Share Final SAMP",
+        description: "Coordinate with Project Planner",
+        order_index: 11
+      }
+    ];
+
     // Insert process map data
     const { error: processMapError } = await supabase
       .from('process_map')
-      .insert([...chapter2ProcessMap, ...chapter3ProcessMap]);
+      .insert([...chapter2ProcessMap, ...chapter3ProcessMap, ...chapter4ProcessMap, ...chapter5ProcessMap]);
 
     if (processMapError) {
       console.error('Error inserting process map data:', processMapError);

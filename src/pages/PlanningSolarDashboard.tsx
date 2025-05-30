@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -116,7 +115,9 @@ export default function PlanningSolarDashboard() {
     "section-1.8": "/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png",
     "section-1.9": "/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png",
     "chapter-2": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
-    "chapter-3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png"
+    "chapter-3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png",
+    "chapter-4": "/lovable-uploads/7c770988-9bc7-44c4-b83c-875d7731fe58.png",
+    "chapter-5": "/lovable-uploads/62318464-8cad-4c33-af4b-1d77c3894c26.png"
   };
 
   // Check if all quizzes are completed
