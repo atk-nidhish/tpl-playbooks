@@ -64,15 +64,15 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 1: Planning Process",
       shortName: "Ch 1: Planning",
       subChapters: [
-        { id: "section-1.1", name: "1.1 Project Initiation" },
-        { id: "section-1.2", name: "1.2 Planning Scope" },
-        { id: "section-1.3", name: "1.3 Land Plan" },
-        { id: "section-1.4", name: "1.4 Engineering Plan" },
-        { id: "section-1.5", name: "1.5 Procurement Plan" },
-        { id: "section-1.6", name: "1.6 Construction Plan" },
-        { id: "section-1.7", name: "1.7 Commissioning Plan" },
-        { id: "section-1.8", name: "1.8 Plan Integration" },
-        { id: "section-1.9", name: "1.9 Plan Update" }
+        { id: "section-1.1", name: "1.1 Project Initiation", shortName: "1.1" },
+        { id: "section-1.2", name: "1.2 Planning Scope", shortName: "1.2" },
+        { id: "section-1.3", name: "1.3 Land Plan", shortName: "1.3" },
+        { id: "section-1.4", name: "1.4 Engineering Plan", shortName: "1.4" },
+        { id: "section-1.5", name: "1.5 Procurement Plan", shortName: "1.5" },
+        { id: "section-1.6", name: "1.6 Construction Plan", shortName: "1.6" },
+        { id: "section-1.7", name: "1.7 Commissioning Plan", shortName: "1.7" },
+        { id: "section-1.8", name: "1.8 Plan Integration", shortName: "1.8" },
+        { id: "section-1.9", name: "1.9 Plan Update", shortName: "1.9" }
       ]
     },
     {
@@ -80,9 +80,9 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 2: Scope Management Plan",
       shortName: "Ch 2: Scope",
       subChapters: [
-        { id: "section-2.1", name: "2.1 Scope Process Steps" },
-        { id: "section-2.2", name: "2.2 Scope RACI" },
-        { id: "section-2.3", name: "2.3 Scope Process Map" }
+        { id: "section-2.1", name: "2.1 Scope Process Steps", shortName: "2.1" },
+        { id: "section-2.2", name: "2.2 Scope RACI", shortName: "2.2" },
+        { id: "section-2.3", name: "2.3 Scope Process Map", shortName: "2.3" }
       ]
     },
     {
@@ -90,9 +90,9 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 3: Cost Management Plan",
       shortName: "Ch 3: Cost",
       subChapters: [
-        { id: "section-3.1", name: "3.1 Cost Process Steps" },
-        { id: "section-3.2", name: "3.2 Cost RACI" },
-        { id: "section-3.3", name: "3.3 Cost Process Map" }
+        { id: "section-3.1", name: "3.1 Cost Process Steps", shortName: "3.1" },
+        { id: "section-3.2", name: "3.2 Cost RACI", shortName: "3.2" },
+        { id: "section-3.3", name: "3.3 Cost Process Map", shortName: "3.3" }
       ]
     },
     {
@@ -100,7 +100,7 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 4: Quality Management Plan",
       shortName: "Ch 4: Quality",
       subChapters: [
-        { id: "section-4.1", name: "4.1 Quality Management" }
+        { id: "section-4.1", name: "4.1 Quality Management", shortName: "4.1" }
       ]
     },
     {
@@ -108,7 +108,7 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 5: Risk Management Plan",
       shortName: "Ch 5: Risk",
       subChapters: [
-        { id: "section-5.1", name: "5.1 Risk Management" }
+        { id: "section-5.1", name: "5.1 Risk Management", shortName: "5.1" }
       ]
     },
     {
@@ -116,7 +116,7 @@ export default function PlanningSolarDashboard() {
       name: "Chapter 6: Resource Management Plan",
       shortName: "Ch 6: Resource",
       subChapters: [
-        { id: "section-6.1", name: "6.1 Resource Management" }
+        { id: "section-6.1", name: "6.1 Resource Management", shortName: "6.1" }
       ]
     }
   ];
