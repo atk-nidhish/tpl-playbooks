@@ -46,7 +46,6 @@ export default function PlanningSolarDashboard() {
       await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID);
       await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID);
       await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID);
-      await supabase.from('phases').delete().eq('playbook_id', PLAYBOOK_ID);
       
       // Re-seed the data
       await seedPlanningSolarData();
@@ -240,7 +239,6 @@ export default function PlanningSolarDashboard() {
 
           <TabsContent value="quiz" className="space-y-6">
             <ChapterQuiz 
-              playbookId={PLAYBOOK_ID} 
               activePhase={activePhase}
             />
           </TabsContent>

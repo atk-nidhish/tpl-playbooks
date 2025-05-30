@@ -86,19 +86,6 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
-    // Insert sections
-    for (const section of sections) {
-      await supabase
-        .from('phases')
-        .insert({
-          playbook_id: playbookId,
-          phase_id: section.id,
-          title: section.title,
-          description: section.description,
-          order_index: sections.indexOf(section) + 1
-        });
-    }
-
     // Section 1.1 - Project Initiation Process Steps
     const section11ProcessSteps = [
       {
