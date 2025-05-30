@@ -1,100 +1,25 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from "@/integrations/supabase/client";
 
-export const createPlanningSolarPlaybook = async (): Promise<string> => {
-  console.log('Creating Planning - Solar Playbook...');
-
-  // Create the playbook with properly ordered phases
-  const playbookData = {
-    name: 'planning-solar-playbook',
-    title: 'Planning - Solar',
-    description: 'Comprehensive solar project planning playbook',
-    phases: {
-      'Chapter 1': {
-        name: 'Chapter 1 - Plan Integration Management',
-        description: 'Comprehensive project planning and integration management'
-      },
-      'section-1.1': {
-        name: 'Section 1.1 - Project Plan Preparation During Bidding',
-        description: 'Project plan preparation and bidding processes',
-        parent: 'Chapter 1'
-      },
-      'section-1.2': {
-        name: 'Section 1.2 - Project Schedule and Execution Approach',
-        description: 'Project scheduling and execution methodology',
-        parent: 'Chapter 1'
-      },
-      'section-1.3': {
-        name: 'Section 1.3 - Land Finalization Plan',
-        description: 'Land acquisition and finalization processes',
-        parent: 'Chapter 1'
-      },
-      'section-1.4': {
-        name: 'Section 1.4 - Engineering Plan',
-        description: 'Engineering planning and design processes',
-        parent: 'Chapter 1'
-      },
-      'section-1.5': {
-        name: 'Section 1.5 - Procurement Plan',
-        description: 'Procurement planning and execution',
-        parent: 'Chapter 1'
-      },
-      'section-1.6': {
-        name: 'Section 1.6 - Construction Plan',
-        description: 'Construction planning and execution',
-        parent: 'Chapter 1'
-      },
-      'section-1.7': {
-        name: 'Section 1.7 - Commissioning Plan',
-        description: 'Commissioning planning and execution',
-        parent: 'Chapter 1'
-      },
-      'section-1.8': {
-        name: 'Section 1.8 - Plan Integration',
-        description: 'Integration of all project plans',
-        parent: 'Chapter 1'
-      },
-      'section-1.9': {
-        name: 'Section 1.9 - Plan Update',
-        description: 'Plan updates and change management',
-        parent: 'Chapter 1'
-      },
-      'Chapter 2': {
-        name: 'Chapter 2 - Scope Management Plan',
-        description: 'Project scope definition and management'
-      },
-      'Chapter 3': {
-        name: 'Chapter 3 - Cost Management Plan',
-        description: 'Project cost planning and control'
-      },
-      'Chapter 4': {
-        name: 'Chapter 4 - Quality Management Plan',
-        description: 'Quality assurance and control planning'
-      },
-      'Chapter 5': {
-        name: 'Chapter 5 - Statutory Approval Management Plan',
-        description: 'Regulatory and statutory approval processes'
-      },
-      'Chapter 6': {
-        name: 'Chapter 6 - Risk Management Plan',
-        description: 'Risk identification, assessment and mitigation'
-      }
-    }
-  };
-
-  const { data: playbook, error: playbookError } = await supabase
+export const createPlanningSolarPlaybook = async () => {
+  console.log('Creating Planning - Solar playbook...');
+  
+  const { data, error } = await supabase
     .from('playbooks')
-    .insert(playbookData)
-    .select('id')
+    .insert({
+      title: 'Planning - Solar',
+      description: 'Solar Project Planning Playbook',
+      category: 'Solar Planning'
+    })
+    .select()
     .single();
 
-  if (playbookError) {
-    console.error('Error creating playbook:', playbookError);
-    throw playbookError;
+  if (error) {
+    console.error('Error creating playbook:', error);
+    throw error;
   }
 
-  const playbookId = playbook.id;
-  console.log(`Created Planning - Solar playbook with ID: ${playbookId}`);
-  return playbookId;
+  console.log('Planning - Solar playbook created with ID:', data.id);
+  return data.id;
 };
 
 // Section 1.1 Data
@@ -1284,6 +1209,206 @@ export const seedSection15Data = async (playbookId: string) => {
   }
 };
 
+// Section 1.6 Data
+export const seedSection16Data = async (playbookId: string) => {
+  console.log('Seeding Section 1.6 data...');
+
+  // Process Steps for Section 1.6
+  const processSteps = [
+    {
+      step_id: "S",
+      activity: "Project Planner (PP) shares the following schedules and Plans with Project Manager (PM) and requests the Construction Management Plan (CMP) – Project Schedule (PS), Project Execution Approach (PEA), Engineering Execution Plans (EEPs), and Project Procurement Plan (PPP), Statutory Approval Management Plan (SAMP)",
+      inputs: [],
+      outputs: [],
+      timeline: "-",
+      responsible: "Project Planner",
+      comments: ""
+    },
+    {
+      step_id: "P1",
+      activity: "Project Manager reviews the inputs received to identify – Timeline of activities impacting construction, Constraints that may impact the construction – regulatory, financial, time-based, resource-based limitations.",
+      inputs: ["PS", "PEA (includes scope matrix)", "EEPs", "PPP", "SAMP"],
+      outputs: [],
+      timeline: "0.5",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P2",
+      activity: "Project Manager prepares draft CMP by leveraging the Solar Project Master Plan and modifying it to align with project milestones, timelines and constraints as analyzed in P1. CMP includes activities, milestones and timelines for all construction related activities, including: Early Works Schedule (EWS), Mobilization Checklist, Construction Schedule, Logistics Planning. Timelines of CMP must align with Project Schedule.",
+      inputs: ["Solar Project Master Plan"],
+      outputs: ["Draft CMP"],
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P3",
+      activity: "Project Manager discusses the draft CMP with EPC contractor to seek inputs and any required modifications, under their scope of execution. While the Project Manager incorporates EPC contractor inputs, ownership of the plan remains with the Project Manager. This step may be bypassed if the EPC contractor for the project has not been selected finalized",
+      inputs: [],
+      outputs: [],
+      timeline: "2",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P4",
+      activity: "Project Manager incorporates changes suggested by EPC contractor, if required",
+      inputs: [],
+      outputs: [],
+      timeline: "",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P5",
+      activity: "Project Manager shares CMP with Chief Solar for review and approval (approval via formal sign-off)",
+      inputs: [],
+      outputs: [],
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P6",
+      activity: "If changes are needed, Project Manager updates the Plan and reshares for approval with Chief Solar",
+      inputs: [],
+      outputs: [],
+      timeline: "",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P7",
+      activity: "Project Manager shares the CMP with Chief Projects for approval. Required only for projects > 50 MW capacity",
+      inputs: [],
+      outputs: ["CMP (Template Provided)"],
+      timeline: "0.5",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "E",
+      activity: "Project Manager shares the CMP with Project Planner for cross-functional coordination",
+      inputs: [],
+      outputs: [],
+      timeline: "Total – 5 – 6 days",
+      responsible: "Project Manager",
+      comments: ""
+    }
+  ];
+
+  // RACI Matrix for Section 1.6
+  const raciData = [
+    {
+      step_id: "S",
+      task: "Share Project Schedule (PS), Project Execution Approach (PEA), Engineering Execution Plans (EEPs), Project Procurement Plan (PPP) and Statutory Approval Management Plan (SAMP), and request for the development of Construction Management Plan (CMP)",
+      responsible: "Project Planner",
+      accountable: "",
+      consulted: "",
+      informed: "Project Manager"
+    },
+    {
+      step_id: "P1",
+      task: "Review the received inputs to identify timeline of construction-related activities and identify any constraints that may impact the construction",
+      responsible: "Project Manager",
+      accountable: "Project Manager",
+      consulted: "",
+      informed: ""
+    },
+    {
+      step_id: "P2",
+      task: "Prepare draft CMP by leveraging the Solar Project Master Plan and modifying it to align with project requirements",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: "Chief Solar"
+    },
+    {
+      step_id: "P3",
+      task: "Share draft CMP with EPC contractor to seek inputs and any necessary modifications, under their scope of execution",
+      responsible: "Project Manager",
+      accountable: "Project Manager",
+      consulted: "",
+      informed: ""
+    },
+    {
+      step_id: "P4",
+      task: "Incorporate changes suggested by EPC contractor, if required",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: ""
+    },
+    {
+      step_id: "P5",
+      task: "Seek sign-off on CMP from Chief Solar",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "Chief Solar",
+      informed: ""
+    },
+    {
+      step_id: "P6",
+      task: "If changes are needed, update CMP and seek re-approval to finalize CMP",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "Chief Solar",
+      informed: ""
+    },
+    {
+      step_id: "P7",
+      task: "Seek further approval from Chief Projects. Required only for projects > 50 MW capacity",
+      responsible: "Project Manager",
+      accountable: "Chief Solar",
+      consulted: "Chief Projects",
+      informed: ""
+    },
+    {
+      step_id: "E",
+      task: "Share CMP with Project Planner for cross-functional coordination",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: "Project Planner"
+    }
+  ];
+
+  // Insert process steps
+  for (const step of processSteps) {
+    const { error } = await supabase
+      .from('process_steps')
+      .insert({
+        playbook_id: playbookId,
+        phase_id: 'section-1.6',
+        ...step
+      });
+
+    if (error) {
+      console.error('Error inserting process step:', error);
+      throw error;
+    }
+  }
+
+  // Insert RACI data
+  for (const raci of raciData) {
+    const { error } = await supabase
+      .from('raci_matrix')
+      .insert({
+        playbook_id: playbookId,
+        phase_id: 'section-1.6',
+        ...raci
+      });
+
+    if (error) {
+      console.error('Error inserting RACI data:', error);
+      throw error;
+    }
+  }
+
+  console.log('Section 1.6 data seeded successfully');
+};
+
 // Section 1.7 Data
 export const seedSection17Data = async (playbookId: string) => {
   console.log('Seeding Section 1.7 data...');
@@ -1291,142 +1416,197 @@ export const seedSection17Data = async (playbookId: string) => {
   // Process Steps for Section 1.7
   const processSteps = [
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'S',
-      activity: 'Project Manager (PM) directs Commissioning Head (CH) to develop comprehensive commissioning plan',
+      step_id: "S",
+      activity: "Project Planner (PP) shares the following schedules with Project Manager (PM), and requests for Commissioning Plan – Project Schedule (PS), Project Execution Approach (PEA), Construction Management Plan (CMP), Statutory Approval Management Plan (SAMP)",
       inputs: [],
       outputs: [],
-      timeline: '',
-      responsible: 'Project Manager',
-      comments: ''
+      timeline: "-",
+      responsible: "Project Planner",
+      comments: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P1',
-      activity: 'CH analyzes commissioning requirements and develops testing strategy',
-      inputs: ['Engineering Plans', 'Technical Specifications'],
+      step_id: "P1",
+      activity: "Project Manager identifies the project activities and dependencies related to pre-commissioning and commissioning activities – For this, Project Manager leverages the inputs (Project Schedule, Project Execution Approach, Construction Management Plan and SAMP) received",
+      inputs: ["PS", "PEA (includes scope matrix)", "CMP", "SAMP"],
       outputs: [],
-      timeline: '',
-      responsible: 'Commissioning Head',
-      comments: ''
+      timeline: "",
+      responsible: "Project Manager",
+      comments: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P2',
-      activity: 'CH develops commissioning procedures and test protocols',
+      step_id: "P2",
+      activity: "Project Manager defines the Turn-over Systems (TOS) and its completion criteria based on high level pre-commissioning and commissioning activities and package dependencies",
       inputs: [],
-      outputs: ['Commissioning Procedures'],
-      timeline: '',
-      responsible: 'Commissioning Head',
-      comments: ''
+      outputs: ["Turnover Systems List & Completion Criteria (Template Provided)"],
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P3',
-      activity: 'CH coordinates with OEM and technical teams for commissioning preparation',
-      inputs: ['Commissioning Procedures'],
+      step_id: "P3",
+      activity: "Project Manager defines the responsibility matrix for TOS, assigning a Point of Contact (PoC) accountable for the completion of each activity – Project Manager may consult Site Manager for creation of TOS and responsibility matrix",
+      inputs: [],
+      outputs: ["Responsibility Matrix (Template Provided)"],
+      timeline: "",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P4",
+      activity: "Project Manager prepare draft Pre-Commissioning Plan (PCP) by leveraging the Solar Project Master Plan and modifying it to align with project requirements",
+      inputs: ["Solar Project Master Plan"],
+      outputs: ["Draft PCP"],
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P5",
+      activity: "After preparation of PCP and Statutory Approval Management Plan (SAMP), Project Manager begins drafting the Commissioning Plan (CP) by leveraging the Solar Project Master Plan and modifying it to align with project requirements – Key commissioning activities, milestones and timelines as mentioned in Project Schedule, Project Execution Approach and Construction Management Plan – Pre-requisites of commissioning activities and their details as mentioned in TOS & completion criteria and Responsibility Matrix – Regulatory timeline as mentioned in SAMP. Project Manager drafts CP in consultation with Chief O&M. Timelines of CP must align with Project Schedule",
+      inputs: ["SAMP", "Solar Project Master Plan", "Draft PCP"],
+      outputs: ["Draft CP"],
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "P6",
+      activity: "Project Manager seeks review and approval (approval via formal sign-off) on draft PCP and CP from Chief Solar",
+      inputs: [],
       outputs: [],
-      timeline: '',
-      responsible: 'Commissioning Head',
-      comments: ''
+      timeline: "1",
+      responsible: "Project Manager",
+      comments: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P4',
-      activity: 'CH finalizes commissioning plan with timeline and resource allocation',
+      step_id: "P7",
+      activity: "If changes are needed, Project Manager updates the Plan and reshares for approval – If no changes are needed, Project Manager finalizes the PCP and CP",
       inputs: [],
-      outputs: ['Final Commissioning Plan'],
-      timeline: '',
-      responsible: 'Commissioning Head',
-      comments: ''
+      outputs: ["PCP", "CP (Template Provided)"],
+      timeline: "",
+      responsible: "Project Manager",
+      comments: ""
+    },
+    {
+      step_id: "E",
+      activity: "Project Manager shares the Plans with Project Planner for future cross-functional coordination",
+      inputs: [],
+      outputs: [],
+      timeline: "Total – 4 – 5 days",
+      responsible: "Project Manager",
+      comments: ""
     }
   ];
 
   // RACI Matrix for Section 1.7
-  const raciMatrix = [
+  const raciData = [
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'S',
-      task: 'Direct CH to develop commissioning plan',
-      responsible: 'Project Manager',
-      accountable: '',
-      consulted: '',
-      informed: 'Commissioning Head'
+      step_id: "S",
+      task: "Share Project Schedule (PS), Project Execution Approach (PEA), Construction Management Plan (CMP) and Statutory Approval Management Plan (SAMP), and request for the development of Commissioning Plan",
+      responsible: "Project Planner",
+      accountable: "",
+      consulted: "",
+      informed: "Project Manager"
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P1',
-      task: 'Analyze commissioning requirements',
-      responsible: 'Commissioning Head',
-      accountable: '',
-      consulted: 'Engineering Team',
-      informed: 'Project Manager'
+      step_id: "P1",
+      task: "Identify project activities and dependencies related to pre-commissioning and commissioning activities by leveraging Project Schedule, Project Execution Approach and Construction Management Plan",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P2',
-      task: 'Develop procedures and protocols',
-      responsible: 'Commissioning Head',
-      accountable: '',
-      consulted: 'Technical Team',
-      informed: 'Project Manager'
+      step_id: "P2",
+      task: "Define the Turn-over Systems (TOS) and its completion criteria based on high level pre-commissioning and commissioning activities, and package dependencies",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P3',
-      task: 'Coordinate with OEM and teams',
-      responsible: 'Commissioning Head',
-      accountable: '',
-      consulted: 'OEM, Technical Teams',
-      informed: 'Project Manager'
+      step_id: "P3",
+      task: "Define the responsibility matrix for TOS, assigning POCs accountable for completion of each activity",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "Cross-Functional Heads",
+      informed: ""
     },
     {
-      playbook_id: playbookId,
-      phase_id: 'section-1.7',
-      step_id: 'P4',
-      task: 'Finalize commissioning plan',
-      responsible: 'Commissioning Head',
-      accountable: 'Project Manager',
-      consulted: 'Stakeholders',
-      informed: 'Project Team'
+      step_id: "P4",
+      task: "Prepare draft Pre-Commissioning Plan (PCP) by leveraging the Solar Project Master Plan and modifying it to align with project requirements and timelines",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: "Chief Solar"
+    },
+    {
+      step_id: "P5",
+      task: "Prepare draft Commissioning Plan (CP) by leveraging the Solar Project Master Plan and modifying it to align with project requirements and timelines",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: "Chief Solar"
+    },
+    {
+      step_id: "P6",
+      task: "Seek review and approval (approval via formal sign-off) on PCP and CP from Chief Solar",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "Chief Solar",
+      informed: ""
+    },
+    {
+      step_id: "P7",
+      task: "If changes are needed, update the Plan and seek re-approval to finalize PCP and CP",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "Chief Solar",
+      informed: ""
+    },
+    {
+      step_id: "E",
+      task: "Share the Plans with Project Planner for cross-functional coordination",
+      responsible: "Project Manager",
+      accountable: "",
+      consulted: "",
+      informed: "Project Planner"
     }
   ];
 
-  try {
-    // Insert process steps
-    const { error: stepsError } = await supabase
+  // Insert process steps
+  for (const step of processSteps) {
+    const { error } = await supabase
       .from('process_steps')
-      .insert(processSteps);
+      .insert({
+        playbook_id: playbookId,
+        phase_id: 'section-1.7',
+        ...step
+      });
 
-    if (stepsError) {
-      console.error('Error inserting Section 1.7 process steps:', stepsError);
-      throw stepsError;
+    if (error) {
+      console.error('Error inserting process step:', error);
+      throw error;
     }
-
-    // Insert RACI matrix
-    const { error: raciError } = await supabase
-      .from('raci_matrix')
-      .insert(raciMatrix);
-
-    if (raciError) {
-      console.error('Error inserting Section 1.7 RACI matrix:', raciError);
-      throw raciError;
-    }
-
-    console.log('Successfully seeded Section 1.7 data');
-  } catch (error) {
-    console.error('Error seeding Section 1.7 data:', error);
-    throw error;
   }
+
+  // Insert RACI data
+  for (const raci of raciData) {
+    const { error } = await supabase
+      .from('raci_matrix')
+      .insert({
+        playbook_id: playbookId,
+        phase_id: 'section-1.7',
+        ...raci
+      });
+
+    if (error) {
+      console.error('Error inserting RACI data:', error);
+      throw error;
+    }
+  }
+
+  console.log('Section 1.7 data seeded successfully');
 };
 
 // Section 1.8 Data

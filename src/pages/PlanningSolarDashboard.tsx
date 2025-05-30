@@ -11,7 +11,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
-import { createPlanningSolarPlaybook, seedSection11Data, seedSection12Data, seedSection13Data, seedSection14Data, seedSection15Data, seedSection17Data, seedSection18Data } from "@/services/planning-solar-playbook-seeder";
+import { createPlanningSolarPlaybook, seedSection11Data, seedSection12Data, seedSection13Data, seedSection14Data, seedSection15Data, seedSection16Data, seedSection17Data, seedSection18Data } from "@/services/planning-solar-playbook-seeder";
 
 const PlanningSolarDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,6 +39,7 @@ const PlanningSolarDashboard = () => {
         await seedSection13Data(newPlaybookId);
         await seedSection14Data(newPlaybookId);
         await seedSection15Data(newPlaybookId);
+        await seedSection16Data(newPlaybookId);
         await seedSection17Data(newPlaybookId);
         await seedSection18Data(newPlaybookId);
         setPlaybookId(newPlaybookId);
@@ -188,8 +189,18 @@ const PlanningSolarDashboard = () => {
     switch (phaseId) {
       case "section-1.1":
         return "/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png";
+      case "section-1.2":
+        return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
       case "section-1.3":
         return "/lovable-uploads/2289e97c-b60f-4e79-b555-017b1a434121.png";
+      case "section-1.4":
+        return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
+      case "section-1.5":
+        return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
+      case "section-1.6":
+        return "/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png";
+      case "section-1.7":
+        return "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png";
       default:
         return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
     }
