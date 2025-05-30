@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export const createPlanningSolarPlaybook = async (): Promise<string> => {
@@ -1073,10 +1072,612 @@ export const seedSection14Data = async (playbookId: string) => {
   }
 };
 
+export const seedSection15Data = async (playbookId: string) => {
+  console.log('Seeding Section 1.5 data...');
+
+  // Process Steps for Section 1.5 - Procurement Plan
+  const processSteps = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'S',
+      activity: 'Project Planner (PP) requests the procurement team for Project Procurement Plan and shares the following to Solar Procurement Head (SPH) - Project Schedule (PS), Project Execution Approach (PEA), and Engineering Execution Plans (EEPs) as they are progressively prepared, enabling procurement Planning to commence concurrently. Chief Procurement appoints Solar Procurement Head (SPH) to oversee the preparation of Project Procurement Plan and shares the inputs received',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P1',
+      activity: 'SPH reviews the Project Schedule, Project Execution Approach and Engineering Execution Plans to identify the items for procurement, technical requirements and timelines across the project lifecycle. Items to be procured encompass materials, components and services. If needed, SPH seeks clarifications from Project Engineering Managers',
+      inputs: ['PS', 'PEA (includes scope matrix)', 'EEPs'],
+      outputs: ['Procurement Requirement List (Template Provided)'],
+      timeline: '1',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P2',
+      activity: 'SPH designs the contracting packages for materials and services, leveraging Execution Strategy Framework (ESF) to identify the right package strategy for the project. SPH may consult functional leads¹ in drafting the contracting packages for the project',
+      inputs: ['ESF'],
+      outputs: ['Procurement Package Strategy (draft)'],
+      timeline: '0.5',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P3',
+      activity: 'SPH shares the package strategy with Functional Leads¹ for review and sign-off',
+      inputs: ['Procurement Package Strategy (draft)'],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P4',
+      activity: 'SPH incorporates any modifications suggested by Functional Leads¹',
+      inputs: [],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P5',
+      activity: 'SPH shares the package strategy with Chief procurement for review and approval (approval via formal sign-off). Required only for projects > 50 MW capacity',
+      inputs: [],
+      outputs: [],
+      timeline: '0.5',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P6',
+      activity: 'If required, SPH modifies the package strategy basis inputs from Chief Procurement and seeks re-approval to finalize the strategy',
+      inputs: [],
+      outputs: ['Procurement Package Strategy (Template Provided)'],
+      timeline: '0.5',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P7',
+      activity: 'SPH assigns the procurement packages to the respective Procurement Leads. Procurement Leads further notify the vendors¹ about the procurement Plan',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P8',
+      activity: 'Procurement Leads prepare their draft Procurement Schedules by modifying the Solar Project Master Plan based on inputs from: Analysis of items to be procured and timelines in P1, Inputs from vendors. Further refinements to the draft Plan are made based on subsequent rounds of alignment with vendors',
+      inputs: ['Solar Project Master Plan'],
+      outputs: ['Draft Procurement Schedules'],
+      timeline: '1',
+      responsible: 'Procurement Leads',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P9',
+      activity: 'Procurement Leads share procurement schedule with SPH for review and approval (approval via formal sign-off)',
+      inputs: [],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Procurement Leads',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P10',
+      activity: 'If SPH recommends changes to the procurement schedule, Procurement Leads incorporate the changes and reshare for approval',
+      inputs: [],
+      outputs: ['Procurement Schedules (Template Provided)'],
+      timeline: '1',
+      responsible: 'Procurement Leads',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P11',
+      activity: 'SPH shares the finalized procurement schedules with Project Planner',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P12',
+      activity: 'Project Planner compiles all the procurement schedules to create consolidated Project Procurement Plan (PPP) and shares it with SPH. Timelines of PPP must align with Project Schedule. Any deviations must be communicated by Project Planner to the Project Manager for review and necessary action',
+      inputs: ['Procurement Schedules'],
+      outputs: [],
+      timeline: '0.5',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P13',
+      activity: 'SPH seeks further approval for Project Procurement Plan from Chief Procurement. Required only for projects > 50 MW capacity',
+      inputs: [],
+      outputs: ['Project Procurement Plan'],
+      timeline: '0.5',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'E',
+      activity: 'SPH communicates finalized Project Procurement Plan to Project Planner for cross-functional coordination',
+      inputs: [],
+      outputs: [],
+      timeline: 'Total – 7 – 9 days',
+      responsible: 'Solar Procurement Head',
+      comments: ''
+    }
+  ];
+
+  // RACI Matrix for Section 1.5
+  const raciMatrix = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'S',
+      task: 'Request the procurement team for procurement Plan and share Project Schedule (PS), Project Execution Approach (PEA), and Engineering Execution Plans (EEPs)',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief Procurement'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'S',
+      task: 'Appoint Solar Procurement Head (SPH) for the project',
+      responsible: 'Chief Procurement',
+      accountable: '',
+      consulted: '',
+      informed: 'Solar Procurement Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P1',
+      task: 'Review Project Schedule, Project Execution Approach, and Engineering Execution Plans to identify procurement items, requirements, and timelines',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: 'Project Engineering Managers',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P2',
+      task: 'Leverage Execution Strategy Framework (ESF) to package procurement activities',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: 'Land Manager, Project Manager, Project Engineering Manager',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P3',
+      task: 'Share the package strategy with Functional Leads for review and sign-off',
+      responsible: 'Solar Procurement Head',
+      accountable: 'Solar Procurement Head',
+      consulted: 'Land Manager, Project Manager, Project Engineering Manager',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P4',
+      task: 'Incorporate any modifications suggested by Functional Leads',
+      responsible: 'Solar Procurement Head',
+      accountable: 'Solar Procurement Head',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P5',
+      task: 'Seek sign-off on procurement package allocation from Chief Procurement',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: 'Chief Procurement',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P6',
+      task: 'Modify procurement package basis inputs from Chief Procurement, if required, and seek re-approval to finalize the strategy',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: 'Chief Procurement',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P7',
+      task: 'Assign procurement packages to respective Procurement Leads',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: '',
+      informed: 'Procurement Leads'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P7',
+      task: 'Notify EPC contractor about components to be procured by them',
+      responsible: 'Procurement Leads',
+      accountable: '',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P8',
+      task: 'Prepare draft Procurement Schedule by leveraging the Solar Project Master Plan and aligning it with project requirements and timelines',
+      responsible: 'Procurement Leads',
+      accountable: 'Solar Procurement Head',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P9',
+      task: 'Share procurement schedule with SPH for review and approval (approval via formal sign-off)',
+      responsible: 'Procurement Leads',
+      accountable: '',
+      consulted: 'Solar Procurement Head',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P10',
+      task: 'Incorporate changes to procurement schedule based on SPH\'s review and reshare for approval',
+      responsible: 'Procurement Leads',
+      accountable: '',
+      consulted: 'Solar Procurement Head',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P11',
+      task: 'Share finalized procurement schedules with Project Planner',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Planner'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P12',
+      task: 'Compile all procurement schedules to create consolidated Project Procurement Plan (PPP) and share it with SPH',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Solar Procurement Head'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P13',
+      task: 'Seek further approval for PPP from Chief Procurement',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: 'Chief Procurement',
+      informed: 'Project Planner'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'E',
+      task: 'Communicate final PPP to Project Planner for future cross functional coordination',
+      responsible: 'Solar Procurement Head',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Planner'
+    }
+  ];
+
+  try {
+    // Insert process steps
+    const { error: stepsError } = await supabase
+      .from('process_steps')
+      .insert(processSteps);
+
+    if (stepsError) {
+      console.error('Error inserting process steps:', stepsError);
+      throw stepsError;
+    }
+
+    // Insert RACI matrix
+    const { error: raciError } = await supabase
+      .from('raci_matrix')
+      .insert(raciMatrix);
+
+    if (raciError) {
+      console.error('Error inserting RACI matrix:', raciError);
+      throw raciError;
+    }
+
+    console.log('Successfully seeded Section 1.5 data');
+  } catch (error) {
+    console.error('Error seeding Section 1.5 data:', error);
+    throw error;
+  }
+};
+
+export const seedSection16Data = async (playbookId: string) => {
+  console.log('Seeding Section 1.6 data...');
+
+  // Process Steps for Section 1.6 - Construction Plan
+  const processSteps = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'S',
+      activity: 'Project Planner (PP) shares the following schedules and Plans with Project Manager (PM) and requests the Construction Management Plan (CMP) – Project Schedule (PS), Project Execution Approach (PEA), Engineering Execution Plans (EEPs), and Project Procurement Plan (PPP), Statutory Approval Management Plan (SAMP)¹',
+      inputs: [],
+      outputs: [],
+      timeline: '-',
+      responsible: 'Project Planner',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P1',
+      activity: 'Project Manager reviews the inputs received to identify – Timeline of activities impacting construction, Constraints that may impact the construction – regulatory, financial, time-based, resource-based limitations.',
+      inputs: ['PS', 'PEA (includes scope matrix)', 'EEPs', 'PPP', 'SAMP'],
+      outputs: [],
+      timeline: '0.5',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P2',
+      activity: 'Project Manager prepares draft CMP by leveraging the Solar Project Master Plan and modifying it to align with project milestones, timelines and constraints as analyzed in P1. CMP includes activities, milestones and timelines for all construction related activities, including: Early Works Schedule (EWS), Mobilization Checklist, Construction Schedule, Logistics Planning. Timelines of CMP must align with Project Schedule.',
+      inputs: ['Solar Project Master Plan'],
+      outputs: ['Draft CMP'],
+      timeline: '1',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P3',
+      activity: 'Project Manager discusses the draft CMP with EPC contractor to seek inputs and any required modifications, under their scope of execution. While the Project Manager incorporates EPC contractor inputs, ownership of the plan remains with the Project Manager. This step may be bypassed if the EPC contractor for the project has not been selected finalized',
+      inputs: [],
+      outputs: [],
+      timeline: '2',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P4',
+      activity: 'Project Manager incorporates changes suggested by EPC contractor, if required',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P5',
+      activity: 'Project Manager shares CMP with Chief Solar for review and approval (approval via formal sign-off)',
+      inputs: [],
+      outputs: [],
+      timeline: '1',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P6',
+      activity: 'If changes are needed, Project Manager updates the Plan and reshares for approval with Chief Solar',
+      inputs: [],
+      outputs: [],
+      timeline: '',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P7',
+      activity: 'Project Manager shares the CMP with Chief Projects for approval. Required only for projects > 50 MW capacity',
+      inputs: [],
+      outputs: ['CMP (Template Provided)'],
+      timeline: '0.5',
+      responsible: 'Project Manager',
+      comments: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'E',
+      activity: 'Project Manager shares the CMP with Project Planner for cross-functional coordination',
+      inputs: [],
+      outputs: [],
+      timeline: 'Total – 5 – 6 days',
+      responsible: 'Project Manager',
+      comments: ''
+    }
+  ];
+
+  // RACI Matrix for Section 1.6
+  const raciMatrix = [
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'S',
+      task: 'Share Project Schedule (PS), Project Execution Approach (PEA), Engineering Execution Plans (EEPs), Project Procurement Plan (PPP) and Statutory Approval Management Plan (SAMP), and request for Construction Management Plan (CMP)',
+      responsible: 'Project Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Manager'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P1',
+      task: 'Review the received inputs to identify timeline of construction-related activities and identify any constraints that may impact the construction',
+      responsible: 'Project Manager',
+      accountable: 'Project Manager',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P2',
+      task: 'Prepare draft CMP by leveraging the Solar Project Master Plan and modifying it to align with project requirements',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: '',
+      informed: 'Chief Solar'
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P3',
+      task: 'Share draft CMP with EPC contractor to seek inputs and any necessary modifications, under their scope of execution',
+      responsible: 'Project Manager',
+      accountable: 'Project Manager',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P4',
+      task: 'Incorporate changes suggested by EPC contractor, if required',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: '',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P5',
+      task: 'Seek sign-off on CMP from Chief Solar',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: 'Chief Solar',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P6',
+      task: 'If changes are needed, update CMP and seek re-approval to finalize CMP',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: 'Chief Solar',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P7',
+      task: 'Seek further approval from Chief Projects',
+      responsible: 'Project Manager',
+      accountable: 'Chief Solar',
+      consulted: 'Chief Projects',
+      informed: ''
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'E',
+      task: 'Share CMP with Project Planner for cross-functional coordination',
+      responsible: 'Project Manager',
+      accountable: '',
+      consulted: '',
+      informed: 'Project Planner'
+    }
+  ];
+
+  try {
+    // Insert process steps
+    const { error: stepsError } = await supabase
+      .from('process_steps')
+      .insert(processSteps);
+
+    if (stepsError) {
+      console.error('Error inserting process steps:', stepsError);
+      throw stepsError;
+    }
+
+    // Insert RACI matrix
+    const { error: raciError } = await supabase
+      .from('raci_matrix')
+      .insert(raciMatrix);
+
+    if (raciError) {
+      console.error('Error inserting RACI matrix:', raciError);
+      throw raciError;
+    }
+
+    console.log('Successfully seeded Section 1.6 data');
+  } catch (error) {
+    console.error('Error seeding Section 1.6 data:', error);
+    throw error;
+  }
+};
+
 export const seedProcessMapData = async (playbookId: string) => {
   console.log('Seeding Process Map data...');
 
-  // Process Maps for Section 1.2 and 1.4
+  // Process Maps for all sections
   const processMaps = [
     // Section 1.2 Process Map
     {
@@ -1154,7 +1755,7 @@ export const seedProcessMapData = async (playbookId: string) => {
     {
       playbook_id: playbookId,
       phase_id: 'section-1.2',
-      step_id: 'P7',
+      step_id: 'P7A',
       step_type: 'decision',
       title: 'Assess Feedback and Adjust',
       description: 'Incorporate feedback from functional leads',
@@ -1269,6 +1870,226 @@ export const seedProcessMapData = async (playbookId: string) => {
       title: 'Share EEPs with Project Planner',
       description: 'Finalize and coordinate across functions',
       order_index: 10
+    },
+
+    // Section 1.5 Process Map
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'S',
+      step_type: 'start',
+      title: 'Request Procurement Plan from Team',
+      description: 'Project Planner shares PS, PEA, and EEPs with Solar Procurement Head',
+      order_index: 1
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P1',
+      step_type: 'process',
+      title: 'Review and Identify Procurement Requirements',
+      description: 'SPH analyzes inputs to create procurement requirement list',
+      order_index: 2
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P2',
+      step_type: 'process',
+      title: 'Design Contracting Packages',
+      description: 'SPH leverages ESF to create procurement package strategy',
+      order_index: 3
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P3',
+      step_type: 'milestone',
+      title: 'Share Strategy with Functional Leads',
+      description: 'Seek review and sign-off from functional leads',
+      order_index: 4
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P4',
+      step_type: 'decision',
+      title: 'Incorporate Modifications',
+      description: 'SPH updates strategy based on feedback',
+      order_index: 5
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P5',
+      step_type: 'milestone',
+      title: 'Seek Chief Procurement Approval',
+      description: 'Additional approval for projects > 50 MW',
+      order_index: 6
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P6',
+      step_type: 'decision',
+      title: 'Finalize Strategy',
+      description: 'SPH modifies and finalizes procurement strategy',
+      order_index: 7
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P7',
+      step_type: 'process',
+      title: 'Assign Packages to Procurement Leads',
+      description: 'SPH assigns packages and notifies vendors',
+      order_index: 8
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P8',
+      step_type: 'process',
+      title: 'Prepare Draft Procurement Schedules',
+      description: 'Procurement Leads create schedules using Solar Master Plan',
+      order_index: 9
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P9',
+      step_type: 'milestone',
+      title: 'Share Schedules for Review',
+      description: 'Procurement Leads seek SPH approval',
+      order_index: 10
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P10',
+      step_type: 'decision',
+      title: 'Incorporate Schedule Changes',
+      description: 'Update schedules based on SPH feedback',
+      order_index: 11
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P11',
+      step_type: 'process',
+      title: 'Share Finalized Schedules',
+      description: 'SPH shares schedules with Project Planner',
+      order_index: 12
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P12',
+      step_type: 'process',
+      title: 'Compile Project Procurement Plan',
+      description: 'Project Planner creates consolidated PPP',
+      order_index: 13
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'P13',
+      step_type: 'milestone',
+      title: 'Seek Final Approval',
+      description: 'SPH gets Chief Procurement approval for PPP',
+      order_index: 14
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.5',
+      step_id: 'E',
+      step_type: 'end',
+      title: 'Communicate Final PPP',
+      description: 'Share finalized plan for cross-functional coordination',
+      order_index: 15
+    },
+
+    // Section 1.6 Process Map
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'S',
+      step_type: 'start',
+      title: 'Share Plans with Project Manager',
+      description: 'Project Planner shares PS, PEA, EEPs, PPP, and SAMP',
+      order_index: 1
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P1',
+      step_type: 'process',
+      title: 'Review Inputs and Identify Constraints',
+      description: 'Project Manager analyzes construction timelines and constraints',
+      order_index: 2
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P2',
+      step_type: 'process',
+      title: 'Prepare Draft Construction Management Plan',
+      description: 'Project Manager creates CMP using Solar Master Plan',
+      order_index: 3
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P3',
+      step_type: 'process',
+      title: 'Discuss with EPC Contractor',
+      description: 'Project Manager seeks inputs from EPC contractor',
+      order_index: 4
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P4',
+      step_type: 'decision',
+      title: 'Incorporate EPC Changes',
+      description: 'Update CMP based on EPC contractor feedback',
+      order_index: 5
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P5',
+      step_type: 'milestone',
+      title: 'Seek Chief Solar Approval',
+      description: 'Project Manager gets formal sign-off on CMP',
+      order_index: 6
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P6',
+      step_type: 'decision',
+      title: 'Update Plan if Required',
+      description: 'Incorporate changes from Chief Solar review',
+      order_index: 7
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'P7',
+      step_type: 'milestone',
+      title: 'Seek Chief Projects Approval',
+      description: 'Additional approval for projects > 50 MW',
+      order_index: 8
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1.6',
+      step_id: 'E',
+      step_type: 'end',
+      title: 'Share CMP for Cross-functional Coordination',
+      description: 'Finalize and coordinate across functions',
+      order_index: 9
     }
   ];
 
