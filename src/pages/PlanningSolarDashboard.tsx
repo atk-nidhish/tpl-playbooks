@@ -11,7 +11,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
-import { createPlanningSolarPlaybook, seedSection11Data, seedSection12Data, seedSection13Data, seedSection17Data, seedSection18Data } from "@/services/planning-solar-playbook-seeder";
+import { createPlanningSolarPlaybook, seedSection11Data, seedSection12Data, seedSection13Data, seedSection14Data, seedSection15Data, seedSection17Data, seedSection18Data } from "@/services/planning-solar-playbook-seeder";
 
 const PlanningSolarDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,6 +37,8 @@ const PlanningSolarDashboard = () => {
         await seedSection11Data(newPlaybookId);
         await seedSection12Data(newPlaybookId);
         await seedSection13Data(newPlaybookId);
+        await seedSection14Data(newPlaybookId);
+        await seedSection15Data(newPlaybookId);
         await seedSection17Data(newPlaybookId);
         await seedSection18Data(newPlaybookId);
         setPlaybookId(newPlaybookId);
