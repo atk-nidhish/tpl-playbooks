@@ -3,16 +3,19 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
+import { PlaybookCertification } from "@/components/PlaybookCertification";
+import { Leaderboard } from "@/components/Leaderboard";
 import { PlaybookReprocessor } from "@/components/PlaybookReprocessor";
 import { ModernNavigation } from "@/components/ModernNavigation";
+import { ModernTabs } from "@/components/ModernTabs";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { Search, BookOpen, Users, Map, Settings, RotateCcw, Zap } from "lucide-react";
+import { Search, BookOpen, Users, Map, Settings, RotateCcw, Zap, Award, Trophy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -21,7 +24,7 @@ const PLAYBOOK_ID = "f895041f-04e3-466b-aa09-53782e40467c";
 export default function PlanningSolarDashboard() {
   const [activePhase, setActivePhase] = useState("section-1.1");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("process-steps");
+  const [activeTab, setActiveTab] = useState("processes");
 
   useEffect(() => {
     // Initialize playbook data on component mount
@@ -79,45 +82,31 @@ export default function PlanningSolarDashboard() {
       id: "chapter-2",
       name: "Chapter 2: Scope Management Plan",
       shortName: "Ch 2: Scope",
-      subChapters: [
-        { id: "section-2.1", name: "2.1 Scope Process Steps", shortName: "2.1" },
-        { id: "section-2.2", name: "2.2 Scope RACI", shortName: "2.2" },
-        { id: "section-2.3", name: "2.3 Scope Process Map", shortName: "2.3" }
-      ]
+      subChapters: []
     },
     {
       id: "chapter-3",
       name: "Chapter 3: Cost Management Plan",
       shortName: "Ch 3: Cost",
-      subChapters: [
-        { id: "section-3.1", name: "3.1 Cost Process Steps", shortName: "3.1" },
-        { id: "section-3.2", name: "3.2 Cost RACI", shortName: "3.2" },
-        { id: "section-3.3", name: "3.3 Cost Process Map", shortName: "3.3" }
-      ]
+      subChapters: []
     },
     {
       id: "chapter-4",
       name: "Chapter 4: Quality Management Plan",
       shortName: "Ch 4: Quality",
-      subChapters: [
-        { id: "section-4.1", name: "4.1 Quality Management", shortName: "4.1" }
-      ]
+      subChapters: []
     },
     {
       id: "chapter-5",
       name: "Chapter 5: Risk Management Plan",
       shortName: "Ch 5: Risk",
-      subChapters: [
-        { id: "section-5.1", name: "5.1 Risk Management", shortName: "5.1" }
-      ]
+      subChapters: []
     },
     {
       id: "chapter-6",
       name: "Chapter 6: Resource Management Plan",
       shortName: "Ch 6: Resource",
-      subChapters: [
-        { id: "section-6.1", name: "6.1 Resource Management", shortName: "6.1" }
-      ]
+      subChapters: []
     }
   ];
 
@@ -136,7 +125,7 @@ export default function PlanningSolarDashboard() {
   };
 
   const navigateToRaci = () => {
-    setActiveTab("raci-matrix");
+    setActiveTab("raci");
   };
 
   const navigateToQuiz = () => {
@@ -192,32 +181,9 @@ export default function PlanningSolarDashboard() {
           onPhaseChange={setActivePhase}
         />
 
-        {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-            <CardContent className="p-6">
-              <TabsList className="grid grid-cols-4 lg:grid-cols-4 w-full bg-orange-50">
-                <TabsTrigger value="process-steps" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-                  <Settings className="h-4 w-4" />
-                  Process Steps
-                </TabsTrigger>
-                <TabsTrigger value="raci-matrix" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-                  <Users className="h-4 w-4" />
-                  RACI Matrix
-                </TabsTrigger>
-                <TabsTrigger value="process-map" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-                  <Map className="h-4 w-4" />
-                  Process Map
-                </TabsTrigger>
-                <TabsTrigger value="quiz" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-                  <BookOpen className="h-4 w-4" />
-                  Chapter Quiz
-                </TabsTrigger>
-              </TabsList>
-            </CardContent>
-          </Card>
-
-          <TabsContent value="process-steps" className="space-y-6">
+        {/* Main Content with Modern Tabs */}
+        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsContent value="processes" className="space-y-6">
             <ProcessSteps 
               playbookId={PLAYBOOK_ID} 
               activePhase={activePhase} 
@@ -226,7 +192,7 @@ export default function PlanningSolarDashboard() {
             />
           </TabsContent>
 
-          <TabsContent value="raci-matrix" className="space-y-6">
+          <TabsContent value="raci" className="space-y-6">
             <RACIMatrix 
               playbookId={PLAYBOOK_ID} 
               activePhase={activePhase} 
@@ -247,14 +213,14 @@ export default function PlanningSolarDashboard() {
                     Detailed Process Map
                   </CardTitle>
                   <CardDescription>
-                    Visual workflow diagram for {chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name}
+                    Visual workflow diagram for {chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name || chapters.find(c => c.id === activePhase)?.name}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="border-2 border-orange-200 rounded-lg overflow-hidden bg-white">
                     <img 
                       src={processMapImages[activePhase as keyof typeof processMapImages]}
-                      alt={`Process map for ${chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name}`}
+                      alt={`Process map for ${chapters.flatMap(c => c.subChapters).find(s => s.id === activePhase)?.name || chapters.find(c => c.id === activePhase)?.name}`}
                       className="w-full h-auto"
                     />
                   </div>
@@ -268,7 +234,32 @@ export default function PlanningSolarDashboard() {
               activePhase={activePhase}
             />
           </TabsContent>
-        </Tabs>
+
+          <TabsContent value="certificate" className="space-y-6">
+            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Award className="h-5 w-5 text-orange-500" />
+                  Playbook Certification
+                </CardTitle>
+                <CardDescription>
+                  Complete all chapter quizzes to earn your Planning - Solar certification
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PlaybookCertification 
+                  playbookId={PLAYBOOK_ID}
+                  playbookName="Planning - Solar"
+                  chapters={chapters}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="leaderboard" className="space-y-6">
+            <Leaderboard />
+          </TabsContent>
+        </ModernTabs>
       </div>
     </div>
   );
