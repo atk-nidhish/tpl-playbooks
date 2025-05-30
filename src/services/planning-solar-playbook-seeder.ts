@@ -28,66 +28,9 @@ export const seedPlanningSolarData = async () => {
   try {
     const playbookId = await createPlanningSolarPlaybook();
 
-    // Define sections with their phases
-    const sections = [
-      {
-        id: 'section-1.1',
-        title: 'Project Initiation',
-        description: 'Initial project setup and requirements gathering',
-        processMapImage: '/lovable-uploads/2289e97c-b60f-4e79-b555-017b1a434121.png'
-      },
-      {
-        id: 'section-1.2',
-        title: 'Planning Scope',
-        description: 'Define project scope and planning requirements',
-        processMapImage: '/lovable-uploads/e636eada-e8c6-4f53-9c93-b0409b936e03.png'
-      },
-      {
-        id: 'section-1.3',
-        title: 'Land Plan',
-        description: 'Land acquisition and development planning',
-        processMapImage: '/lovable-uploads/3d9ebbef-27ff-4dc6-89d0-ec7cc752027e.png'
-      },
-      {
-        id: 'section-1.4',
-        title: 'Engineering Plan',
-        description: 'Engineering design and execution planning',
-        processMapImage: '/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png'
-      },
-      {
-        id: 'section-1.5',
-        title: 'Procurement Plan',
-        description: 'Procurement strategy and execution planning',
-        processMapImage: '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png'
-      },
-      {
-        id: 'section-1.6',
-        title: 'Construction Plan',
-        description: 'Construction management and execution planning',
-        processMapImage: '/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png'
-      },
-      {
-        id: 'section-1.7',
-        title: 'Commissioning Plan',
-        description: 'Commissioning strategy and execution planning',
-        processMapImage: '/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png'
-      },
-      {
-        id: 'section-1.8',
-        title: 'Plan Integration',
-        description: 'Integration of all detailed plans into comprehensive project schedule',
-        processMapImage: '/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png'
-      },
-      {
-        id: 'section-1.9',
-        title: 'Plan Update',
-        description: 'Plan revision and schedule management throughout project lifecycle',
-        processMapImage: '/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png'
-      }
-    ];
-
-    // Section 1.1 - Project Initiation Process Steps
-    const section11ProcessSteps = [
+    // Chapter 1 - Planning Process Steps (existing data)
+    const chapter1ProcessSteps = [
+      // Section 1.1 - Project Initiation Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.1',
@@ -120,11 +63,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '3',
         responsible: 'Project Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.2 - Planning Scope Process Steps
-    const section12ProcessSteps = [
+      },
+      // Section 1.2 - Planning Scope Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.2',
@@ -168,11 +108,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '4',
         responsible: 'Project Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.3 - Land Plan Process Steps
-    const section13ProcessSteps = [
+      },
+      // Section 1.3 - Land Plan Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.3',
@@ -205,11 +142,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '3',
         responsible: 'Land Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.4 - Engineering Plan Process Steps
-    const section14ProcessSteps = [
+      },
+      // Section 1.4 - Engineering Plan Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.4',
@@ -253,11 +187,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '4',
         responsible: 'Project Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.5 - Procurement Plan Process Steps
-    const section15ProcessSteps = [
+      },
+      // Section 1.5 - Procurement Plan Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.5',
@@ -290,11 +221,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '3',
         responsible: 'Procurement Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.6 - Construction Plan Process Steps
-    const section16ProcessSteps = [
+      },
+      // Section 1.6 - Construction Plan Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.6',
@@ -327,11 +255,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '3',
         responsible: 'Project Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.7 - Commissioning Plan Process Steps
-    const section17ProcessSteps = [
+      },
+      // Section 1.7 - Commissioning Plan Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.7',
@@ -364,11 +289,8 @@ export const seedPlanningSolarData = async () => {
         timeline: '3',
         responsible: 'Project Manager',
         comments: ''
-      }
-    ];
-
-    // Section 1.8 - Plan Integration Process Steps
-    const section18ProcessSteps = [
+      },
+      // Section 1.8 - Plan Integration Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.8',
@@ -478,11 +400,8 @@ export const seedPlanningSolarData = async () => {
         timeline: 'Total 4-8 days',
         responsible: 'Project Planner',
         comments: ''
-      }
-    ];
-
-    // Section 1.9 - Plan Update Process Steps
-    const section19ProcessSteps = [
+      },
+      // Section 1.9 - Plan Update Process Steps
       {
         playbook_id: playbookId,
         phase_id: 'section-1.9',
@@ -573,487 +492,464 @@ export const seedPlanningSolarData = async () => {
       }
     ];
 
+    // Chapter 2 - Scope Management Plan Process Steps
+    const chapter2ProcessSteps = [
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'S',
+        activity: 'Project Planner (PP) requests Chief PMO to develop Work Breakdown structure (WBS) and shares the following inputs',
+        inputs: ['Project Execution Approach (PEA)', 'Project Schedule (PS)', 'Scope Matrix'],
+        outputs: [],
+        timeline: '-',
+        responsible: 'Project Planner',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P1',
+        activity: 'Chief PMO reviews the inputs and project scope definition to finalizes project control philosophy i.e., required level of monitoring and control on the project at each level',
+        inputs: ['PEA (includes scope matrix)', 'PS', 'Scope Matrix'],
+        outputs: ['Project Control Philosophy'],
+        timeline: '0.5',
+        responsible: 'Chief PMO',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P2',
+        activity: 'Chief PMO shares the scope matrix and project control philosophy with Schedule Head',
+        inputs: [],
+        outputs: [],
+        timeline: '-',
+        responsible: 'Chief PMO',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P3',
+        activity: 'Schedule Head defines WBS elements, based on the approved control philosophy. For defining the elements, Schedule Head leverages the Master WBS Solar and makes necessary changes to ensure alignment with project scope and schedule. The WBS reflects the project level classification as listed below: L1-1 Solar Power Plant System, L2-1.1 Electrical System, L3-1.1.1 Sub-system, L4-1.1.1.1 Component, L5-1.1.1.1.1 Functional Element',
+        inputs: ['Scope Matrix'],
+        outputs: ['Preliminary WBS'],
+        timeline: '1',
+        responsible: 'Schedule Head',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P4',
+        activity: 'Schedule Head develops the codes for WBS, based on the project level WBS classification to be adopted',
+        inputs: ['Project Control Philosophy', 'Master WBS Solar'],
+        outputs: [],
+        timeline: '',
+        responsible: 'Schedule Head',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P5',
+        activity: 'Schedule Head checks for consistency in alignment between the defined project WBS and Cost Breakdown Structure (CBS) based on the project CBS. In case of a lack of consistency between the WBS and CBS structures, the CBS elements and codes are revised to achieve consistency with WBS',
+        inputs: ['CBS'],
+        outputs: [],
+        timeline: '1',
+        responsible: 'Schedule Head',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P6',
+        activity: 'Schedule Head prepares the WBS for the project using a bottom-up approach, which involves preparing WBS elements at package level which are collated at the project level to form the Project WBS',
+        inputs: [],
+        outputs: [],
+        timeline: '1',
+        responsible: 'Schedule Head',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'P7',
+        activity: 'Schedule Head seeks approval from Chief PMO on the WBS and incorporates any necessary changes',
+        inputs: [],
+        outputs: ['WBS (Template Provided)'],
+        timeline: '0.5',
+        responsible: 'Schedule Head',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'E',
+        activity: 'Schedule Head publishes the project WBS which forms the basis for project monitoring and control. Schedule Head share the project WBS with Project Planner for cross-functional coordination',
+        inputs: [],
+        outputs: [],
+        timeline: 'Total - 4-5 days',
+        responsible: 'Schedule Head',
+        comments: ''
+      }
+    ];
+
+    // Chapter 3 - Cost Management Plan Process Steps
+    const chapter3ProcessSteps = [
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'S',
+        activity: 'Project Planner (PP) requests for Cost Breakdown Structure (CBS) and shares the following Plans/schedules with Chief PMO',
+        inputs: ['Project Schedule (PS)', 'Project Execution Approach (PEA)', 'Project Procurement Plan (PPP)', 'Project Budget (submitted during bid submission)', 'Work Breakdown Structure (WBS)'],
+        outputs: [],
+        timeline: '-',
+        responsible: 'Project Planner',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P1',
+        activity: 'Chief PMO asks the Cost Controller to start the development of CBS and shares the inputs (Project Schedule, Project Execution Approach, Project Procurement Plan, Project Budget and Work Breakdown Structure)',
+        inputs: ['PS', 'PEA (includes scope matrix)', 'PPP', 'Project Budget', 'WBS'],
+        outputs: [],
+        timeline: '-',
+        responsible: 'Chief PMO',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P2',
+        activity: 'CC defines/ realigns the coding structure for CBS in line with the Work Breakdown Structure coding structure',
+        inputs: [],
+        outputs: [],
+        timeline: '0.5',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P3',
+        activity: 'CC defines the elements of CBS leveraging the Project Work Breakdown Structure and Master CBS Solar. CC makes modifications to master CBS Solar to ensure alignment with project scope and schedule.',
+        inputs: ['Master CBS Solar'],
+        outputs: ['Preliminary CBS'],
+        timeline: '1',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P4',
+        activity: 'CC assigns the scope to all elements defined in CBS using the Scope Matrix',
+        inputs: ['Scope Matrix'],
+        outputs: [],
+        timeline: '',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P5',
+        activity: 'CC checks for consistency between Work Breakdown Structure and CBS up to package level based on project control philosophy',
+        inputs: [],
+        outputs: [],
+        timeline: '',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P6',
+        activity: 'In case of consistency between Work Breakdown Structure and CBS, process P7 is followed and In case of inconsistency between Work Breakdown Structure and CBS, CBS is realigned through process P2',
+        inputs: [],
+        outputs: [],
+        timeline: '0.5',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P7',
+        activity: 'CC assigns the budget cost to the CBS elements based on the project budget',
+        inputs: ['Project Budget'],
+        outputs: [],
+        timeline: '1',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P8',
+        activity: 'CC allocates specific cost estimates (in INR) to each element. CC uses vendor quotes, historical data, and expert judgment to estimate cost for each item. CC consults Solar Procurement Head, if needed. CC seeks sign off from Chief PMO for CBS',
+        inputs: [],
+        outputs: [],
+        timeline: '',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P9',
+        activity: 'If changes are required, CC makes necessary revisions and reshares for approval. If no changes are required, CC finalizes CBS',
+        inputs: [],
+        outputs: ['CBS (Template Provided)'],
+        timeline: '1',
+        responsible: 'Cost Controller',
+        comments: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'E',
+        activity: 'Cost Controller publishes the project CBS, which forms the basis for project cost monitoring and control. CC shares the project CBS with Project Planner for cross-functional coordination',
+        inputs: [],
+        outputs: [],
+        timeline: 'Total - 4-5 days',
+        responsible: 'Cost Controller',
+        comments: ''
+      }
+    ];
+
     // Insert all process steps
     const allProcessSteps = [
-      ...section11ProcessSteps,
-      ...section12ProcessSteps,
-      ...section13ProcessSteps,
-      ...section14ProcessSteps,
-      ...section15ProcessSteps,
-      ...section16ProcessSteps,
-      ...section17ProcessSteps,
-      ...section18ProcessSteps,
-      ...section19ProcessSteps
+      ...chapter1ProcessSteps,
+      ...chapter2ProcessSteps,
+      ...chapter3ProcessSteps
     ];
 
     for (const step of allProcessSteps) {
       await supabase.from('process_steps').insert(step);
     }
 
-    // Section 1.1 - Project Initiation RACI Matrix
-    const section11RACIData = [
+    // Chapter 2 - Scope Management Plan RACI Matrix
+    const chapter2RACIData = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.1',
+        phase_id: 'section-2.1',
         step_id: 'S',
-        task: 'Project Kickoff and Initial Setup',
-        responsible: 'Project Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.1',
-        step_id: 'P1',
-        task: 'Identify key stakeholders and establish communication plan',
-        responsible: 'Project Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.1',
-        step_id: 'E',
-        task: 'Complete project initiation documentation and approvals',
-        responsible: 'Project Manager',
-        accountable: 'Project Sponsor',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.2 - Planning Scope RACI Matrix
-    const section12RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.2',
-        step_id: 'S',
-        task: 'Define project scope and objectives',
+        task: 'Request for Work Breakdown Structure (WBS) and share the required inputs (Project Execution Approach, Project Schedule, and Scope Matrix)',
         responsible: 'Project Planner',
-        accountable: 'Project Manager',
+        accountable: '',
         consulted: '',
-        informed: ''
+        informed: 'Chief PMO'
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.2',
+        phase_id: 'section-2.1',
         step_id: 'P1',
-        task: 'Identify deliverables and acceptance criteria',
-        responsible: 'Project Planner',
-        accountable: 'Project Manager',
+        task: 'Review project scope definition and approve the project control philosophy, i.e., required level of monitoring and control on the project, at each level',
+        responsible: 'Chief PMO',
+        accountable: '',
         consulted: '',
         informed: ''
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.2',
+        phase_id: 'section-2.1',
         step_id: 'P2',
-        task: 'Develop Work Breakdown Structure (WBS)',
-        responsible: 'Project Planner',
-        accountable: 'Project Manager',
+        task: 'Share the scope matrix and project control philosophy',
+        responsible: 'Chief PMO',
+        accountable: '',
         consulted: '',
-        informed: ''
+        informed: 'Schedule Head'
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.2',
-        step_id: 'E',
-        task: 'Review and approve project scope and WBS',
-        responsible: 'Project Manager',
-        accountable: 'Project Sponsor',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.3 - Land Plan RACI Matrix
-    const section13RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.3',
-        step_id: 'S',
-        task: 'Identify land acquisition requirements',
-        responsible: 'Land Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.3',
-        step_id: 'P1',
-        task: 'Conduct land surveys and assessments',
-        responsible: 'Land Surveyor',
-        accountable: 'Land Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.3',
-        step_id: 'E',
-        task: 'Finalize land acquisition and development plan',
-        responsible: 'Land Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.4 - Engineering Plan RACI Matrix
-    const section14RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.4',
-        step_id: 'S',
-        task: 'Develop preliminary engineering designs',
-        responsible: 'Engineering Lead',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.4',
-        step_id: 'P1',
-        task: 'Review and refine engineering designs',
-        responsible: 'Engineering Lead',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.4',
-        step_id: 'P2',
-        task: 'Coordinate with procurement and construction teams for design inputs',
-        responsible: 'Engineering Lead',
-        accountable: 'Project Manager',
-        consulted: 'Procurement Manager, Construction Manager',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.4',
-        step_id: 'E',
-        task: 'Approve final engineering plan',
-        responsible: 'Project Manager',
-        accountable: 'Project Sponsor',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.5 - Procurement Plan RACI Matrix
-    const section15RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.5',
-        step_id: 'S',
-        task: 'Develop procurement strategy',
-        responsible: 'Procurement Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.5',
-        step_id: 'P1',
-        task: 'Identify suppliers and vendors',
-        responsible: 'Procurement Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.5',
-        step_id: 'E',
-        task: 'Finalize procurement plan and contracts',
-        responsible: 'Procurement Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.6 - Construction Plan RACI Matrix
-    const section16RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.6',
-        step_id: 'S',
-        task: 'Develop construction schedule and resource plan',
-        responsible: 'Construction Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.6',
-        step_id: 'P1',
-        task: 'Coordinate with procurement for material delivery',
-        responsible: 'Construction Manager',
-        accountable: 'Project Manager',
-        consulted: 'Procurement Manager',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.6',
-        step_id: 'E',
-        task: 'Approve final construction plan',
-        responsible: 'Project Manager',
-        accountable: 'Project Sponsor',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.7 - Commissioning Plan RACI Matrix
-    const section17RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.7',
-        step_id: 'S',
-        task: 'Develop commissioning strategy',
-        responsible: 'Commissioning Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.7',
-        step_id: 'P1',
-        task: 'Plan commissioning tests and inspections',
-        responsible: 'Commissioning Manager',
-        accountable: 'Project Manager',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.7',
-        step_id: 'E',
-        task: 'Approve commissioning plan',
-        responsible: 'Project Manager',
-        accountable: 'Project Sponsor',
-        consulted: '',
-        informed: ''
-      }
-    ];
-
-    // Section 1.8 - Plan Integration RACI Matrix
-    const section18RACIData = [
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
-        step_id: 'S',
-        task: 'Receive plans from across cross-functional teams',
-        responsible: 'Project Planner',
-        accountable: 'Project Planner',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
-        step_id: 'P1',
-        task: 'Integrate all detailed plans received from functional departments (Land, Engineering, Procurement, Projects) to create Detailed Project Schedule',
-        responsible: 'Project Planner',
-        accountable: 'Project Planner',
-        consulted: '',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
-        step_id: 'P2',
-        task: 'Share the Detailed Project Schedule with Chief Projects for sign off',
-        responsible: 'Project Planner',
-        accountable: 'Project Planner',
-        consulted: '',
-        informed: 'Chief Projects'
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
+        phase_id: 'section-2.1',
         step_id: 'P3',
-        task: 'Share the Detailed Project Schedule with COO for final sign-off',
-        responsible: 'Chief Projects',
-        accountable: 'Chief Projects',
+        task: 'Define WBS elements based on the approved control philosophy, leveraging the Master WBS Solar and making necessary changes to align with project scope and schedule',
+        responsible: 'Schedule Head',
+        accountable: '',
         consulted: '',
-        informed: 'COO'
+        informed: ''
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.8',
+        phase_id: 'section-2.1',
         step_id: 'P4',
-        task: 'If COO recommends any modifications, discuss the required modification with the respective functional department',
-        responsible: 'Chief Projects',
-        accountable: 'Chief Projects',
-        consulted: 'Functional Leads',
-        informed: ''
+        task: 'Define the WBS codes for the project',
+        responsible: 'Schedule Head',
+        accountable: 'Schedule Head',
+        consulted: '',
+        informed: 'Chief PMO'
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.8',
+        phase_id: 'section-2.1',
         step_id: 'P5',
-        task: 'Update the respective plan, and share the same to Project Planner',
-        responsible: 'Functional Leads',
-        accountable: 'Functional Leads',
-        consulted: '',
-        informed: 'Project Planner'
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
-        step_id: 'P6',
-        task: 'Integrate the updated functional plan into the Detailed Project Schedule',
-        responsible: 'Project Planner',
-        accountable: 'Project Planner',
+        task: 'Check for consistency between the defined project WBS and Cost Breakdown Structure (CBS); revise CBS codes if needed',
+        responsible: 'Schedule Head',
+        accountable: '',
         consulted: '',
         informed: ''
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.8',
+        phase_id: 'section-2.1',
+        step_id: 'P6',
+        task: 'Prepare the WBS for the project using a bottom-up approach, collating package-level WBS elements at the project level',
+        responsible: 'Schedule Head',
+        accountable: '',
+        consulted: '',
+        informed: 'Chief PMO'
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
         step_id: 'P7',
-        task: 'Share the Detailed Project Schedule with Chief Projects for seeking approval from COO',
-        responsible: 'Project Planner',
-        accountable: 'Project Planner',
-        consulted: '',
-        informed: 'Chief Projects'
+        task: 'Seek approval from Chief PMO on the WBS and incorporate necessary changes',
+        responsible: 'Schedule Head',
+        accountable: '',
+        consulted: 'Chief PMO',
+        informed: ''
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.8',
-        step_id: 'P8',
-        task: 'Share the signed-off Detailed Project Schedule with Project Planner',
-        responsible: 'Chief Projects',
-        accountable: 'Chief Projects',
-        consulted: '',
-        informed: 'Project Planner'
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.8',
+        phase_id: 'section-2.1',
         step_id: 'E',
-        task: 'Publish the Detailed Project Schedule to notify functional teams',
-        responsible: 'Project Planner',
+        task: 'Publish and share project WBS',
+        responsible: 'Schedule Head',
         accountable: '',
         consulted: '',
-        informed: 'Functional Leads'
+        informed: 'Project Planner'
       }
     ];
 
-    // Section 1.9 - Plan Update RACI Matrix
-    const section19RACIData = [
+    // Chapter 3 - Cost Management Plan RACI Matrix
+    const chapter3RACIData = [
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.9',
+        phase_id: 'section-3.1',
         step_id: 'S',
-        task: 'Identify a delay in project execution that necessitates an update to the project Plan',
-        responsible: 'Schedule Head / Site Planner',
+        task: 'Request for Cost Breakdown Structure (CBS) and share the required Plans/schedules with Chief PMO',
+        responsible: 'Project Planner',
         accountable: '',
         consulted: '',
-        informed: 'Site Planner, Chief PMO'
+        informed: 'Chief PMO'
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.9',
+        phase_id: 'section-3.1',
         step_id: 'P1',
-        task: 'Inform the PM about the identified delay',
-        responsible: 'Schedule Planner',
+        task: 'Ask the Cost Controller (CC) to commence the development of CBS and share the required inputs with CC',
+        responsible: 'Chief PMO',
         accountable: '',
         consulted: '',
-        informed: 'Project Manager'
+        informed: 'Cost Controller'
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.9',
+        phase_id: 'section-3.1',
         step_id: 'P2',
-        task: 'Collaborate with the functional lead, responsible for the delayed activity, to assess the impact and define corrective actions',
-        responsible: 'Project Manager',
+        task: 'Define/realign the coding structure for CBS to align with Work Breakdown Structure (WBS) coding structure',
+        responsible: 'Cost Controller',
         accountable: '',
-        consulted: 'Functional Lead',
+        consulted: 'Schedule Head',
         informed: ''
       },
       {
         playbook_id: playbookId,
-        phase_id: 'section-1.9',
+        phase_id: 'section-3.1',
         step_id: 'P3',
-        task: 'Revise the schedules, considering the discussed changes with functional lead and realigning dependent activities',
-        responsible: 'Project Manager',
-        accountable: 'Project Manager',
-        consulted: 'Functional Heads',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.9',
-        step_id: 'P4',
-        task: 'Submit the revised Plan to Chief Solar for review and approval (approval via formal sign-off)',
-        responsible: 'Project Manager',
-        accountable: '',
-        consulted: 'Chief Solar',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.9',
-        step_id: 'P5',
-        task: 'Incorporate any feedback from the Chief Solar and resubmit the revised Plan to Chief Solar for approval, if needed',
-        responsible: 'Project Manager',
-        accountable: '',
-        consulted: 'Chief Solar',
-        informed: ''
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.9',
-        step_id: 'P6',
-        task: 'Any delay beyond 5%, seek approval from Chief Projects',
-        responsible: 'Project Manager',
-        accountable: '',
-        consulted: 'Chief Projects',
-        informed: 'Chief Solar'
-      },
-      {
-        playbook_id: playbookId,
-        phase_id: 'section-1.9',
-        step_id: 'E',
-        task: 'Publish the updated Plan to notify functional leads and Project Planner of the revised schedule - The process of Plan revision and schedule management continues throughout the project lifecycle',
-        responsible: 'Project Manager',
+        task: 'Define the elements of the CBS, leveraging the WBS and Master CBS Solar, and make the necessary modifications to ensure alignment with the project\'s scope and requirements',
+        responsible: 'Cost Controller',
         accountable: '',
         consulted: '',
-        informed: 'Functional Heads & Project Planner'
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P4',
+        task: 'Assign the scope to all CBS elements using the Scope Matrix',
+        responsible: 'Cost Controller',
+        accountable: '',
+        consulted: '',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P5',
+        task: 'Check for consistency between Work Breakdown Structure and CBS up to the package level',
+        responsible: 'Cost Controller',
+        accountable: '',
+        consulted: '',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P6',
+        task: 'If Work Breakdown Structure and CBS are inconsistent, realign CBS to make it consistent with WBS',
+        responsible: 'Cost Controller',
+        accountable: '',
+        consulted: 'Schedule Head',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P7',
+        task: 'Assign the budget cost (in INR) to the CBS elements based on the project budget',
+        responsible: 'Cost Controller',
+        accountable: '',
+        consulted: 'Solar Procurement Head',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P8',
+        task: 'Seek sign-off from Chief PMO for CBS',
+        responsible: 'Cost Controller',
+        accountable: 'Cost Controller',
+        consulted: 'Chief PMO',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'P9',
+        task: 'If changes are required, make necessary revisions and reshare for approval, to finalize CBS',
+        responsible: 'Cost Controller',
+        accountable: 'Cost Controller',
+        consulted: 'Chief PMO',
+        informed: ''
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'E',
+        task: 'Publish the project CBS, which forms the basis for project cost monitoring and control. Share the project CBS with Project Planner for cross-functional coordination',
+        responsible: 'Cost Controller',
+        accountable: '',
+        consulted: 'Chief PMO',
+        informed: 'Project Planner'
       }
     ];
 
     // Insert all RACI data
     const allRACIData = [
-      ...section11RACIData,
-      ...section12RACIData,
-      ...section13RACIData,
-      ...section14RACIData,
-      ...section15RACIData,
-      ...section16RACIData,
-      ...section17RACIData,
-      ...section18RACIData,
-      ...section19RACIData
+      ...chapter2RACIData,
+      ...chapter3RACIData
     ];
 
     for (const raci of allRACIData) {
       await supabase.from('raci_matrix').insert(raci);
     }
 
-    // Update process map data with correct images
+    // Process map data for new sections
     const processMapData = [
       {
         playbook_id: playbookId,
@@ -1134,6 +1030,42 @@ export const seedPlanningSolarData = async () => {
         step_type: 'start',
         title: 'Plan Update Start',
         description: 'Beginning of plan update process',
+        order_index: 1
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.1',
+        step_id: 'START',
+        step_type: 'start',
+        title: 'Scope Management Start',
+        description: 'Beginning of scope management process',
+        order_index: 1
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-2.3',
+        step_id: 'START',
+        step_type: 'start',
+        title: 'Scope Process Map',
+        description: 'Visual workflow for scope management',
+        order_index: 1
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.1',
+        step_id: 'START',
+        step_type: 'start',
+        title: 'Cost Management Start',
+        description: 'Beginning of cost management process',
+        order_index: 1
+      },
+      {
+        playbook_id: playbookId,
+        phase_id: 'section-3.3',
+        step_id: 'START',
+        step_type: 'start',
+        title: 'Cost Process Map',
+        description: 'Visual workflow for cost management',
         order_index: 1
       }
     ];

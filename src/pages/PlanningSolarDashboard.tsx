@@ -58,15 +58,31 @@ export default function PlanningSolarDashboard() {
   };
 
   const phases = [
-    { id: "section-1.1", title: "Project Initiation", description: "Initial project setup" },
-    { id: "section-1.2", title: "Planning Scope", description: "Define project scope" },
-    { id: "section-1.3", title: "Land Plan", description: "Land acquisition planning" },
-    { id: "section-1.4", title: "Engineering Plan", description: "Engineering design planning" },
-    { id: "section-1.5", title: "Procurement Plan", description: "Procurement strategy" },
-    { id: "section-1.6", title: "Construction Plan", description: "Construction management" },
-    { id: "section-1.7", title: "Commissioning Plan", description: "Commissioning strategy" },
-    { id: "section-1.8", title: "Plan Integration", description: "Integration of all plans" },
-    { id: "section-1.9", title: "Plan Update", description: "Plan revision management" }
+    // Chapter 1 - Planning Process
+    { id: "section-1.1", title: "Project Initiation", description: "Initial project setup", chapter: "1" },
+    { id: "section-1.2", title: "Planning Scope", description: "Define project scope", chapter: "1" },
+    { id: "section-1.3", title: "Land Plan", description: "Land acquisition planning", chapter: "1" },
+    { id: "section-1.4", title: "Engineering Plan", description: "Engineering design planning", chapter: "1" },
+    { id: "section-1.5", title: "Procurement Plan", description: "Procurement strategy", chapter: "1" },
+    { id: "section-1.6", title: "Construction Plan", description: "Construction management", chapter: "1" },
+    { id: "section-1.7", title: "Commissioning Plan", description: "Commissioning strategy", chapter: "1" },
+    { id: "section-1.8", title: "Plan Integration", description: "Integration of all plans", chapter: "1" },
+    { id: "section-1.9", title: "Plan Update", description: "Plan revision management", chapter: "1" },
+    
+    // Chapter 2 - Scope Management Plan
+    { id: "section-2.1", title: "Scope Process Steps", description: "Work breakdown structure development", chapter: "2" },
+    { id: "section-2.2", title: "Scope RACI", description: "Scope management responsibilities", chapter: "2" },
+    { id: "section-2.3", title: "Scope Process Map", description: "Scope management workflow", chapter: "2" },
+    
+    // Chapter 3 - Cost Management Plan
+    { id: "section-3.1", title: "Cost Process Steps", description: "Cost breakdown structure development", chapter: "3" },
+    { id: "section-3.2", title: "Cost RACI", description: "Cost management responsibilities", chapter: "3" },
+    { id: "section-3.3", title: "Cost Process Map", description: "Cost management workflow", chapter: "3" },
+    
+    // Placeholder chapters (to be populated later)
+    { id: "section-4.1", title: "Quality Management", description: "Quality assurance processes", chapter: "4" },
+    { id: "section-5.1", title: "Risk Management", description: "Risk identification and mitigation", chapter: "5" },
+    { id: "section-6.1", title: "Resource Management", description: "Resource allocation and management", chapter: "6" }
   ];
 
   const processMapImages = {
@@ -78,7 +94,9 @@ export default function PlanningSolarDashboard() {
     "section-1.6": "/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png",
     "section-1.7": "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png",
     "section-1.8": "/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png",
-    "section-1.9": "/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png"
+    "section-1.9": "/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png",
+    "section-2.3": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
+    "section-3.3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png"
   };
 
   const navigateToRaci = () => {
@@ -87,6 +105,24 @@ export default function PlanningSolarDashboard() {
 
   const navigateToQuiz = () => {
     setActiveTab("quiz");
+  };
+
+  // Group phases by chapter
+  const phasesByChapter = phases.reduce((acc, phase) => {
+    if (!acc[phase.chapter]) {
+      acc[phase.chapter] = [];
+    }
+    acc[phase.chapter].push(phase);
+    return acc;
+  }, {} as Record<string, typeof phases>);
+
+  const chapterTitles = {
+    "1": "Planning Process",
+    "2": "Scope Management Plan", 
+    "3": "Cost Management Plan",
+    "4": "Quality Management Plan",
+    "5": "Risk Management Plan",
+    "6": "Resource Management Plan"
   };
 
   return (
@@ -131,38 +167,45 @@ export default function PlanningSolarDashboard() {
           </CardHeader>
         </Card>
 
-        {/* Phase Selection */}
+        {/* Chapter and Phase Selection */}
         <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-800">Project Phases</CardTitle>
-            <CardDescription>Select a phase to explore its detailed processes and requirements</CardDescription>
+            <CardTitle className="text-xl font-semibold text-gray-800">Chapters & Phases</CardTitle>
+            <CardDescription>Select a chapter and phase to explore detailed processes and requirements</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {phases.map((phase) => (
-                <Button
-                  key={phase.id}
-                  variant={activePhase === phase.id ? "default" : "outline"}
-                  className={`h-auto p-4 flex flex-col items-start text-left ${
-                    activePhase === phase.id
-                      ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400"
-                      : "border-orange-200 hover:bg-orange-50 hover:border-orange-300"
-                  }`}
-                  onClick={() => setActivePhase(phase.id)}
-                >
-                  <Badge 
-                    variant="secondary" 
-                    className={`mb-2 text-xs ${
-                      activePhase === phase.id ? "bg-white/20 text-white" : "bg-orange-100 text-orange-800"
-                    }`}
-                  >
-                    {phase.id.replace('section-', 'Section ')}
-                  </Badge>
-                  <div className="font-semibold text-sm mb-1">{phase.title}</div>
-                  <div className="text-xs opacity-80">{phase.description}</div>
-                </Button>
-              ))}
-            </div>
+          <CardContent className="space-y-6">
+            {Object.entries(phasesByChapter).map(([chapterNum, chapterPhases]) => (
+              <div key={chapterNum} className="space-y-3">
+                <h3 className="text-lg font-semibold text-gray-700 border-b border-orange-200 pb-2">
+                  Chapter {chapterNum}: {chapterTitles[chapterNum as keyof typeof chapterTitles]}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {chapterPhases.map((phase) => (
+                    <Button
+                      key={phase.id}
+                      variant={activePhase === phase.id ? "default" : "outline"}
+                      className={`h-auto p-4 flex flex-col items-start text-left ${
+                        activePhase === phase.id
+                          ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400"
+                          : "border-orange-200 hover:bg-orange-50 hover:border-orange-300"
+                      }`}
+                      onClick={() => setActivePhase(phase.id)}
+                    >
+                      <Badge 
+                        variant="secondary" 
+                        className={`mb-2 text-xs ${
+                          activePhase === phase.id ? "bg-white/20 text-white" : "bg-orange-100 text-orange-800"
+                        }`}
+                      >
+                        {phase.id.replace('section-', 'Section ')}
+                      </Badge>
+                      <div className="font-semibold text-sm mb-1">{phase.title}</div>
+                      <div className="text-xs opacity-80">{phase.description}</div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
