@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 export const createPlanningSolarPlaybook = async () => {
@@ -6,19 +7,19 @@ export const createPlanningSolarPlaybook = async () => {
   const { data, error } = await supabase
     .from('playbooks')
     .insert({
+      name: 'planning-solar',
       title: 'Planning - Solar',
-      description: 'Solar Project Planning Playbook',
-      category: 'Solar Planning'
+      description: 'Solar Project Planning Playbook'
     })
     .select()
     .single();
 
   if (error) {
-    console.error('Error creating playbook:', error);
+    console.error('Error creating Planning - Solar playbook:', error);
     throw error;
   }
 
-  console.log('Planning - Solar playbook created with ID:', data.id);
+  console.log('Planning - Solar playbook created successfully:', data);
   return data.id;
 };
 
