@@ -105,11 +105,11 @@ export default function PlanningSolarDashboard() {
   ];
 
   const processMapImages = {
-    "section-1.1": "/lovable-uploads/2289e97c-b60f-4e79-b555-017b1a434121.png",
+    "section-1.1": "/lovable-uploads/5707c4f3-b2b9-4e30-b8e5-27b2de0ecf63.png",
     "section-1.2": "/lovable-uploads/e636eada-e8c6-4f53-9c93-b0409b936e03.png",
-    "section-1.3": "/lovable-uploads/3d9ebbef-27ff-4dc6-89d0-ec7cc752027e.png",
+    "section-1.3": "/lovable-uploads/80b2c685-97ca-460f-8b5f-ef4312be4cd9.png",
     "section-1.4": "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
-    "section-1.5": "/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png",
+    "section-1.5": "/lovable-uploads/ab781f20-6004-4afc-80be-aade9fc13cd3.png",
     "section-1.6": "/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png",
     "section-1.7": "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png",
     "section-1.8": "/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png",
