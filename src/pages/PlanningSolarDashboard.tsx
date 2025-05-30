@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
-import { createPlanningSolarPlaybook, seedSection11Data, seedSection13Data } from "@/services/planning-solar-playbook-seeder";
+import { createPlanningSolarPlaybook, seedSection11Data, seedSection13Data, seedSection17Data, seedSection18Data } from "@/services/planning-solar-playbook-seeder";
 
 const PlanningSolarDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,6 +36,8 @@ const PlanningSolarDashboard = () => {
         const newPlaybookId = await createPlanningSolarPlaybook();
         await seedSection11Data(newPlaybookId);
         await seedSection13Data(newPlaybookId);
+        await seedSection17Data(newPlaybookId);
+        await seedSection18Data(newPlaybookId);
         setPlaybookId(newPlaybookId);
         setIsInitialized(true);
         console.log('Planning - Solar playbook initialized successfully');
