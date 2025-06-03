@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,13 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
   const [raciData, setRaciData] = useState<RACIData[]>([]);
   const [quizPassed, setQuizPassed] = useState(false);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
+  const [showQuestionFeedback, setShowQuestionFeedback] = useState(false);
+  const [currentQuestionResult, setCurrentQuestionResult] = useState<{
+    isCorrect: boolean;
+    correctAnswer: string;
+    explanation: string;
+    sourceStep: string;
+  } | null>(null);
 
   useEffect(() => {
     // Load completed quizzes from localStorage
@@ -100,13 +108,13 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       (item.responsible || item.accountable || item.consulted || item.informed)
     );
 
-    // Generate responsibility questions with natural language
+    // Generate responsibility questions with improved natural language
     validSteps.forEach((item) => {
       if (usedTasks.has(item.task) || questions.length >= 5) return;
       
       const roles = [];
-      if (item.responsible) roles.push({ role: item.responsible, type: 'responsible for' });
-      if (item.accountable) roles.push({ role: item.accountable, type: 'accountable for' });
+      if (item.responsible) roles.push({ role: item.responsible, type: 'responsible for executing' });
+      if (item.accountable) roles.push({ role: item.accountable, type: 'accountable for the outcome of' });
       if (item.consulted) roles.push({ role: item.consulted, type: 'consulted during' });
       if (item.informed) roles.push({ role: item.informed, type: 'informed about' });
 
@@ -122,7 +130,25 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
           .slice(0, 2);
 
         if (otherRoles.length >= 2) {
-          const taskDescription = item.task.length > 80 ? item.task.substring(0, 80) + "..." : item.task;
+          // Create a more natural question based on the task
+          let questionText = "";
+          const taskKey = item.task.toLowerCase();
+          
+          if (taskKey.includes("develop") || taskKey.includes("create") || taskKey.includes("establish")) {
+            questionText = `Who should be ${correctRole.type} developing and establishing the necessary frameworks and processes?`;
+          } else if (taskKey.includes("review") || taskKey.includes("approve")) {
+            questionText = `Which role is ${correctRole.type} reviewing and approving critical project decisions?`;
+          } else if (taskKey.includes("coordinate") || taskKey.includes("manage")) {
+            questionText = `Who is ${correctRole.type} coordinating and managing the project activities?`;
+          } else if (taskKey.includes("monitor") || taskKey.includes("track")) {
+            questionText = `Which stakeholder should be ${correctRole.type} monitoring project progress and performance?`;
+          } else {
+            // Fallback to a generic question format
+            const simplifiedTask = item.task.length > 50 ? 
+              item.task.substring(0, 50).replace(/[.,;:]$/, '') + "..." : 
+              item.task.replace(/[.,;:]$/, '');
+            questionText = `In the context of "${simplifiedTask}", who is ${correctRole.type} this activity?`;
+          }
           
           const options = [correctRole.role, ...otherRoles];
           
@@ -132,7 +158,7 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
 
           questions.push({
             id: `${item.id}-responsibility`,
-            question: `Who is ${correctRole.type} "${taskDescription}"?`,
+            question: questionText,
             options: shuffledOptions,
             correctAnswer: correctIndex,
             explanation: `${correctRole.role} is ${correctRole.type} this task according to the RACI matrix for Step ${item.step_id}.`,
@@ -145,7 +171,7 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       }
     });
 
-    // Generate sequence questions with natural language
+    // Generate sequence questions with improved natural language
     if (validSteps.length > 1 && questions.length < 5) {
       for (let i = 0; i < validSteps.length - 1 && questions.length < 5; i++) {
         const currentStep = validSteps[i];
@@ -159,22 +185,43 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
             .slice(0, 2);
 
           if (wrongSteps.length >= 2) {
-            const currentTaskDescription = currentStep.task.length > 60 ? currentStep.task.substring(0, 60) + "..." : currentStep.task;
-            const nextTaskDescription = nextStep.task.length > 60 ? nextStep.task.substring(0, 60) + "..." : nextStep.task;
+            // Create more natural sequence questions
+            let questionText = "";
+            const currentTaskKey = currentStep.task.toLowerCase();
+            
+            if (currentTaskKey.includes("initiat") || currentTaskKey.includes("start")) {
+              questionText = `After project initiation activities are completed, what is the logical next step in the process?`;
+            } else if (currentTaskKey.includes("plan") || currentTaskKey.includes("design")) {
+              questionText = `Following the completion of planning and design activities, which activity should be prioritized next?`;
+            } else if (currentTaskKey.includes("review") || currentTaskKey.includes("approv")) {
+              questionText = `Once review and approval processes are finalized, what is the subsequent activity?`;
+            } else {
+              // Fallback with simplified task description
+              const simplifiedTask = currentStep.task.length > 40 ? 
+                currentStep.task.substring(0, 40).replace(/[.,;:]$/, '') + "..." : 
+                currentStep.task.replace(/[.,;:]$/, '');
+              questionText = `After completing "${simplifiedTask}", what is the next logical step?`;
+            }
+            
+            // Create simplified options for next steps
+            const createSimplifiedOption = (task: string) => {
+              if (task.length <= 60) return task.replace(/[.,;:]$/, '');
+              return task.substring(0, 60).replace(/[.,;:]$/, '') + "...";
+            };
             
             const options = [
-              nextTaskDescription,
-              wrongSteps[0].task.length > 60 ? wrongSteps[0].task.substring(0, 60) + "..." : wrongSteps[0].task,
-              wrongSteps[1].task.length > 60 ? wrongSteps[1].task.substring(0, 60) + "..." : wrongSteps[1].task
+              createSimplifiedOption(nextStep.task),
+              createSimplifiedOption(wrongSteps[0].task),
+              createSimplifiedOption(wrongSteps[1].task)
             ];
 
             // Shuffle options
             const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
-            const correctIndex = shuffledOptions.indexOf(nextTaskDescription);
+            const correctIndex = shuffledOptions.indexOf(createSimplifiedOption(nextStep.task));
 
             questions.push({
               id: `${currentStep.id}-sequence`,
-              question: `What activity typically follows after completing "${currentTaskDescription}"?`,
+              question: questionText,
               options: shuffledOptions,
               correctAnswer: correctIndex,
               explanation: `After Step ${currentStep.step_id}, the next step in the process is Step ${nextStep.step_id} according to the process sequence.`,
@@ -196,9 +243,23 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       ...prev,
       [currentQuestion]: answerIndex
     }));
+
+    // Show immediate feedback
+    const question = currentQuestions[currentQuestion];
+    const isCorrect = answerIndex === question.correctAnswer;
+    setCurrentQuestionResult({
+      isCorrect,
+      correctAnswer: question.options[question.correctAnswer],
+      explanation: question.explanation,
+      sourceStep: question.sourceStep
+    });
+    setShowQuestionFeedback(true);
   };
 
   const handleNextQuestion = () => {
+    setShowQuestionFeedback(false);
+    setCurrentQuestionResult(null);
+    
     if (currentQuestion < currentQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
@@ -209,6 +270,8 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
   };
 
   const handlePreviousQuestion = () => {
+    setShowQuestionFeedback(false);
+    setCurrentQuestionResult(null);
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
@@ -220,6 +283,8 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
     setShowResults(false);
     setQuizCompleted(false);
     setQuizPassed(false);
+    setShowQuestionFeedback(false);
+    setCurrentQuestionResult(null);
     // Regenerate questions
     if (raciData.length > 0) {
       const questions = generateQuestionsFromRaci(raciData);
@@ -319,8 +384,8 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
             Chapter Quiz - {activePhase}
           </CardTitle>
           <CardDescription>
-            Test your knowledge with {currentQuestions.length} questions from this chapter's RACI matrix. 
-            You need 75% to pass.
+            Test your knowledge with {currentQuestions.length} questions from this chapter's process steps. 
+            You need 75% to pass and unlock the next chapter.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -353,11 +418,12 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
                     <button
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
+                      disabled={showQuestionFeedback}
                       className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
                         selectedAnswers[currentQuestion] === index
                           ? 'border-blue-500 bg-blue-50'
                           : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-25'
-                      }`}
+                      } ${showQuestionFeedback ? 'cursor-not-allowed opacity-70' : ''}`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-4 h-4 rounded-full border-2 ${
@@ -374,6 +440,39 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
                     </button>
                   ))}
                 </div>
+
+                {/* Immediate Feedback */}
+                {showQuestionFeedback && currentQuestionResult && (
+                  <div className={`mt-4 p-4 rounded-lg border-2 ${
+                    currentQuestionResult.isCorrect 
+                      ? 'border-green-200 bg-green-50' 
+                      : 'border-red-200 bg-red-50'
+                  }`}>
+                    <div className="flex items-start gap-3">
+                      {currentQuestionResult.isCorrect ? (
+                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      ) : (
+                        <X className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      )}
+                      <div className="flex-1">
+                        <p className={`font-medium mb-2 ${
+                          currentQuestionResult.isCorrect ? 'text-green-800' : 'text-red-800'
+                        }`}>
+                          {currentQuestionResult.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
+                        </p>
+                        {!currentQuestionResult.isCorrect && (
+                          <p className="text-sm text-gray-700 mb-2">
+                            <span className="font-medium">Correct answer:</span> {currentQuestionResult.correctAnswer}
+                          </p>
+                        )}
+                        <p className="text-sm text-gray-600 mb-2">{currentQuestionResult.explanation}</p>
+                        <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700">
+                          Process Step {currentQuestionResult.sourceStep}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Navigation */}
@@ -417,7 +516,7 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
                 <p className="text-gray-600 mt-2">
                   {quizPassed 
                     ? 'Congratulations! You can proceed to the next chapter.' 
-                    : 'You need 75% to pass. Please retake the quiz to continue.'}
+                    : 'You need 75% to pass. You must retake this quiz to continue.'}
                 </p>
               </div>
 
@@ -453,7 +552,7 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
                             <p className="text-sm text-gray-600 mt-2">{question.explanation}</p>
                             <div className="flex gap-2 mt-2">
                               <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700">
-                                Step {question.sourceStep}
+                                Process Step {question.sourceStep}
                               </Badge>
                               <Badge variant="outline" className="text-xs bg-purple-100 text-purple-700">
                                 {question.sourceChapter}
