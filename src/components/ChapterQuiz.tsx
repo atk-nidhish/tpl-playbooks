@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -98,42 +97,45 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       item.step_id !== "S" && 
       item.step_id !== "E" && 
       item.task && 
-      (item.responsible || item.accountable)
+      (item.responsible || item.accountable || item.consulted || item.informed)
     );
 
-    // Generate responsibility questions
-    validSteps.forEach((item, index) => {
+    // Generate responsibility questions with natural language
+    validSteps.forEach((item) => {
       if (usedTasks.has(item.task) || questions.length >= 5) return;
       
       const roles = [];
-      if (item.responsible) roles.push({ role: item.responsible, type: 'Responsible' });
-      if (item.accountable) roles.push({ role: item.accountable, type: 'Accountable' });
-      if (item.consulted) roles.push({ role: item.consulted, type: 'Consulted' });
-      if (item.informed) roles.push({ role: item.informed, type: 'Informed' });
+      if (item.responsible) roles.push({ role: item.responsible, type: 'responsible for' });
+      if (item.accountable) roles.push({ role: item.accountable, type: 'accountable for' });
+      if (item.consulted) roles.push({ role: item.consulted, type: 'consulted during' });
+      if (item.informed) roles.push({ role: item.informed, type: 'informed about' });
 
       if (roles.length > 0) {
         const correctRole = roles[0];
+        
+        // Get other roles from different steps to create wrong options
         const otherRoles = validSteps
           .filter(other => other.id !== item.id)
           .flatMap(other => [other.responsible, other.accountable, other.consulted, other.informed])
           .filter(role => role && role !== correctRole.role)
+          .filter((role, idx, arr) => arr.indexOf(role) === idx) // Remove duplicates
           .slice(0, 2);
 
-        const options = [correctRole.role, ...otherRoles, "None of the above"]
-          .filter((role, idx, arr) => role && arr.indexOf(role) === idx)
-          .slice(0, 4);
-
-        if (options.length >= 3) {
+        if (otherRoles.length >= 2) {
+          const taskDescription = item.task.length > 80 ? item.task.substring(0, 80) + "..." : item.task;
+          
+          const options = [correctRole.role, ...otherRoles];
+          
           // Shuffle options
           const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
           const correctIndex = shuffledOptions.indexOf(correctRole.role);
 
           questions.push({
             id: `${item.id}-responsibility`,
-            question: `Who is ${correctRole.type.toLowerCase()} for: "${item.task}"?`,
+            question: `Who is ${correctRole.type} "${taskDescription}"?`,
             options: shuffledOptions,
             correctAnswer: correctIndex,
-            explanation: `${correctRole.role} is ${correctRole.type.toLowerCase()} for this task as defined in the RACI matrix.`,
+            explanation: `${correctRole.role} is ${correctRole.type} this task according to the RACI matrix for Step ${item.step_id}.`,
             sourceStep: item.step_id,
             sourceChapter: activePhase
           });
@@ -143,37 +145,43 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
       }
     });
 
-    // Generate sequence questions (which step comes before what)
+    // Generate sequence questions with natural language
     if (validSteps.length > 1 && questions.length < 5) {
       for (let i = 0; i < validSteps.length - 1 && questions.length < 5; i++) {
         const currentStep = validSteps[i];
         const nextStep = validSteps[i + 1];
         
         if (currentStep && nextStep) {
-          const wrongOptions = validSteps
+          // Get two other random steps as wrong options
+          const wrongSteps = validSteps
             .filter(step => step.step_id !== nextStep.step_id && step.step_id !== currentStep.step_id)
-            .slice(0, 2)
-            .map(step => `Step ${step.step_id}: ${step.task.substring(0, 50)}...`);
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 2);
 
-          const options = [
-            `Step ${nextStep.step_id}: ${nextStep.task.substring(0, 50)}...`,
-            ...wrongOptions,
-            "No specific next step"
-          ].slice(0, 4);
+          if (wrongSteps.length >= 2) {
+            const currentTaskDescription = currentStep.task.length > 60 ? currentStep.task.substring(0, 60) + "..." : currentStep.task;
+            const nextTaskDescription = nextStep.task.length > 60 ? nextStep.task.substring(0, 60) + "..." : nextStep.task;
+            
+            const options = [
+              nextTaskDescription,
+              wrongSteps[0].task.length > 60 ? wrongSteps[0].task.substring(0, 60) + "..." : wrongSteps[0].task,
+              wrongSteps[1].task.length > 60 ? wrongSteps[1].task.substring(0, 60) + "..." : wrongSteps[1].task
+            ];
 
-          // Shuffle options
-          const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
-          const correctIndex = shuffledOptions.indexOf(`Step ${nextStep.step_id}: ${nextStep.task.substring(0, 50)}...`);
+            // Shuffle options
+            const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+            const correctIndex = shuffledOptions.indexOf(nextTaskDescription);
 
-          questions.push({
-            id: `${currentStep.id}-sequence`,
-            question: `What typically follows after "${currentStep.task}"?`,
-            options: shuffledOptions,
-            correctAnswer: correctIndex,
-            explanation: `Step ${nextStep.step_id} follows Step ${currentStep.step_id} in the process sequence.`,
-            sourceStep: currentStep.step_id,
-            sourceChapter: activePhase
-          });
+            questions.push({
+              id: `${currentStep.id}-sequence`,
+              question: `What activity typically follows after completing "${currentTaskDescription}"?`,
+              options: shuffledOptions,
+              correctAnswer: correctIndex,
+              explanation: `After Step ${currentStep.step_id}, the next step in the process is Step ${nextStep.step_id} according to the process sequence.`,
+              sourceStep: currentStep.step_id,
+              sourceChapter: activePhase
+            });
+          }
         }
       }
     }
@@ -392,7 +400,7 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
             <div className="text-center space-y-6">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Completed!</h3>
-                <div className={`text-4xl font-bold ${getScoreColor(calculateScore(), currentQuestions.length)}`}>
+                <div className={`text-4xl font-bold ${getScorePercentage() >= 75 ? 'text-green-600' : 'text-red-600'}`}>
                   {calculateScore()} / {currentQuestions.length} ({getScorePercentage()}%)
                 </div>
                 <div className="mt-4">
@@ -433,6 +441,9 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
                           <div className="space-y-1">
                             <p className="text-sm">
                               <span className="font-medium">Your answer:</span> {question.options[userAnswer]}
+                              <span className={`ml-2 font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                {isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                              </span>
                             </p>
                             {!isCorrect && (
                               <p className="text-sm text-green-700">

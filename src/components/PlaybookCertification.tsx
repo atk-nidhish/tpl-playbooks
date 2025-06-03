@@ -12,6 +12,7 @@ interface CertificationQuestion {
   options: string[];
   correctAnswer: number;
   chapter: string;
+  explanation: string;
 }
 
 interface Chapter {
@@ -37,99 +38,99 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const certificationQuestions: CertificationQuestion[] = [
     {
       id: 1,
-      question: "What is the primary objective of project initiation in solar planning?",
+      question: "What is the primary objective during the project initiation phase of wind energy planning?",
       options: [
-        "To define project scope and objectives",
-        "To start construction immediately",
-        "To finalize procurement contracts",
-        "To complete commissioning activities"
+        "To establish clear project scope and objectives",
+        "To begin construction activities immediately",
+        "To finalize all procurement contracts"
       ],
       correctAnswer: 0,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1",
+      explanation: "Project initiation focuses on defining scope and objectives to provide a clear foundation for the entire project."
     },
     {
       id: 2,
-      question: "Which phase involves developing the land acquisition and site preparation strategy?",
+      question: "Which phase is primarily responsible for developing the comprehensive land acquisition strategy?",
       options: [
-        "Project Initiation",
-        "Land Plan",
-        "Engineering Plan",
-        "Construction Plan"
+        "Project Initiation Phase",
+        "Land Planning Phase", 
+        "Engineering Design Phase"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1",
+      explanation: "The Land Planning Phase specifically focuses on developing strategies for land acquisition and site preparation."
     },
     {
       id: 3,
-      question: "What is the key focus of the engineering plan in solar projects?",
+      question: "What is the main focus of the engineering planning phase in wind energy projects?",
       options: [
-        "Financial planning",
-        "Technical design and specifications",
-        "Resource allocation",
-        "Risk assessment only"
+        "Financial planning and budgeting",
+        "Detailed technical design and engineering specifications",
+        "Resource allocation and scheduling"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1", 
+      explanation: "The engineering planning phase concentrates on technical design and creating detailed engineering specifications."
     },
     {
       id: 4,
-      question: "Which component is essential in the procurement plan?",
+      question: "Which element is most critical in the procurement planning process?",
       options: [
-        "Site survey only",
-        "Vendor selection and contract management",
-        "Construction scheduling",
-        "Commissioning procedures"
+        "Site survey documentation",
+        "Strategic vendor selection and contract management",
+        "Construction timeline development"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1",
+      explanation: "Procurement planning centers on strategic vendor selection and effective contract management to ensure project success."
     },
     {
       id: 5,
-      question: "What is the primary purpose of the commissioning plan?",
+      question: "What is the primary purpose of developing a comprehensive commissioning plan?",
       options: [
-        "To start construction",
-        "To ensure system performance and handover",
-        "To acquire land",
-        "To design the system"
+        "To initiate construction activities",
+        "To ensure optimal system performance and smooth project handover",
+        "To complete land acquisition processes"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1",
+      explanation: "The commissioning plan ensures that all systems perform optimally and facilitates a smooth handover to operations."
     },
     {
       id: 6,
-      question: "Why is plan integration crucial in solar project planning?",
+      question: "Why is comprehensive plan integration essential in wind energy project planning?",
       options: [
-        "To reduce costs only",
-        "To coordinate all project elements and ensure alignment",
-        "To speed up construction",
-        "To simplify documentation"
+        "To minimize project costs exclusively",
+        "To coordinate all project elements and ensure strategic alignment",
+        "To accelerate construction timelines"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Chapter 1",
+      explanation: "Plan integration ensures all project elements work together cohesively and remain strategically aligned throughout the project lifecycle."
     },
     {
       id: 7,
-      question: "What is the significance of scope management in solar projects?",
+      question: "What is the fundamental importance of effective scope management in wind energy projects?",
       options: [
-        "Controlling project boundaries and deliverables",
-        "Managing only financial aspects",
-        "Handling construction activities",
-        "Focusing on technical design only"
+        "Controlling project boundaries and managing deliverables effectively",
+        "Managing financial aspects exclusively",
+        "Focusing solely on technical design elements"
       ],
       correctAnswer: 0,
-      chapter: "Chapter 2"
+      chapter: "Chapter 2",
+      explanation: "Scope management is crucial for controlling project boundaries and ensuring deliverables are managed effectively."
     },
     {
       id: 8,
-      question: "How should cost management be approached in solar projects?",
+      question: "How should cost management be strategically approached in wind energy projects?",
       options: [
-        "Focus only on initial costs",
-        "Consider lifecycle costs and value optimization",
-        "Minimize all expenses regardless of quality",
-        "Ignore maintenance costs"
+        "Focus exclusively on initial capital costs",
+        "Consider comprehensive lifecycle costs and value optimization",
+        "Minimize expenses regardless of quality impact"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 3"
+      chapter: "Chapter 3",
+      explanation: "Effective cost management requires considering the full lifecycle costs and optimizing value rather than just minimizing initial expenses."
     }
   ];
 
@@ -373,11 +374,63 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                 <div className={`text-4xl font-bold ${getScorePercentage() >= 75 ? 'text-green-600' : 'text-red-600'}`}>
                   {getScorePercentage()}%
                 </div>
+                <div className="mt-4">
+                  <Badge 
+                    className={`text-lg px-4 py-2 ${
+                      certificateEarned 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}
+                  >
+                    {certificateEarned ? '✅ PASSED' : '❌ FAILED'}
+                  </Badge>
+                </div>
                 <p className="text-gray-600 mt-2">
                   {certificateEarned ? '🎉 Congratulations! You have earned your certification!' : 
                    getScorePercentage() >= 60 ? 'Close! You need 75% to pass. Try again!' : 
                    'Keep studying and try again!'}
                 </p>
+              </div>
+
+              {/* Detailed Results */}
+              <div className="space-y-4 mb-6">
+                <h4 className="text-lg font-semibold text-gray-900">Detailed Results</h4>
+                {certificationQuestions.map((question, index) => {
+                  const userAnswer = selectedAnswers[index];
+                  const isCorrect = userAnswer === question.correctAnswer;
+                  
+                  return (
+                    <div key={question.id} className="text-left p-4 bg-gray-50 rounded-lg">
+                      <div className="flex items-start gap-3 mb-2">
+                        {isCorrect ? (
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        ) : (
+                          <X className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                        )}
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900 mb-2">{question.question}</p>
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium">Your answer:</span> {question.options[userAnswer]}
+                              <span className={`ml-2 font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                {isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                              </span>
+                            </p>
+                            {!isCorrect && (
+                              <p className="text-sm text-green-700">
+                                <span className="font-medium">Correct answer:</span> {question.options[question.correctAnswer]}
+                              </p>
+                            )}
+                            <p className="text-sm text-gray-600 mt-2">{question.explanation}</p>
+                            <Badge variant="outline" className="text-xs bg-orange-100 text-orange-700 mt-2">
+                              {question.chapter}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {certificateEarned && (
