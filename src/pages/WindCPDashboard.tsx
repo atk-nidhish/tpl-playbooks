@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Wind, ArrowLeft, Download, Lock } from "lucide-react";
+import { Search, Wind, ArrowLeft, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
-import { ChapterQuiz } from "@/components/ChapterQuiz";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
@@ -21,16 +20,7 @@ const WindCPDashboard = () => {
   const [activePhase, setActivePhase] = useState("chapter-1");
   const [playbookId, setPlaybookId] = useState<string>("");
   const [isInitialized, setIsInitialized] = useState(false);
-  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("processes");
-
-  useEffect(() => {
-    // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('completed_quizzes');
-    if (saved) {
-      setCompletedQuizzes(JSON.parse(saved));
-    }
-  }, []);
 
   useEffect(() => {
     const initializePlaybook = async () => {
@@ -121,45 +111,8 @@ const WindCPDashboard = () => {
     }
   ];
 
-  // Check if all quizzes are completed
-  const allQuizzesCompleted = chapters
-    .filter(ch => ch.id !== "certification" && ch.id !== "leaderboard")
-    .every(chapter => {
-      if (chapter.subChapters) {
-        return chapter.subChapters.every(sub => completedQuizzes.includes(sub.id));
-      }
-      return completedQuizzes.includes(chapter.id);
-    });
-
   const handleNavigateToRaci = () => {
     setActiveTab("raci");
-  };
-
-  const handleNavigateToQuiz = () => {
-    setActiveTab("quiz");
-  };
-
-  const getNextChapter = (currentPhase: string) => {
-    const allChapterIds = chapters.reduce((acc, ch) => {
-      if (ch.subChapters) {
-        return [...acc, ...ch.subChapters.map(sub => sub.id)];
-      }
-      return [...acc, ch.id];
-    }, [] as string[]);
-    
-    const currentIndex = allChapterIds.indexOf(currentPhase);
-    if (currentIndex >= 0 && currentIndex < allChapterIds.length - 1) {
-      return allChapterIds[currentIndex + 1];
-    }
-    return null;
-  };
-
-  const handleQuizComplete = () => {
-    const nextChapter = getNextChapter(activePhase);
-    if (nextChapter && nextChapter !== "certification" && nextChapter !== "leaderboard") {
-      setActivePhase(nextChapter);
-      setActiveTab("processes");
-    }
   };
 
   const getProcessMapImage = (phaseId: string) => {
@@ -210,7 +163,6 @@ const WindCPDashboard = () => {
   if (activePhase === "leaderboard") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        {/* Header */}
         <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
@@ -230,7 +182,6 @@ const WindCPDashboard = () => {
           </div>
         </header>
 
-        {/* Modern Navigation */}
         <ModernNavigation 
           chapters={chapters}
           activePhase={activePhase}
@@ -246,65 +197,8 @@ const WindCPDashboard = () => {
 
   // Handle certification section
   if (activePhase === "certification") {
-    if (!allQuizzesCompleted) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-          {/* Header */}
-          <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
-            <div className="container mx-auto px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
-                    <ArrowLeft className="h-5 w-5 text-gray-600" />
-                  </Link>
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
-                    <Wind className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Wind - C&P</h1>
-                    <p className="text-sm text-gray-600">Contracting & Procurement Playbook</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* Modern Navigation */}
-          <ModernNavigation 
-            chapters={chapters}
-            activePhase={activePhase}
-            onPhaseChange={setActivePhase}
-          />
-
-          <div className="container mx-auto px-6 py-8">
-            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-              <CardContent className="p-12 text-center">
-                <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Certification Locked</h2>
-                <p className="text-gray-600 text-lg mb-6">
-                  Complete all chapter quizzes to unlock the playbook certification exam.
-                </p>
-                <div className="max-w-md mx-auto">
-                  <div className="bg-gray-200 rounded-full h-2 mb-4">
-                    <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${(completedQuizzes.length / 8) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    Progress: {completedQuizzes.length} of 8 quizzes completed
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        {/* Header */}
         <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
@@ -324,7 +218,6 @@ const WindCPDashboard = () => {
           </div>
         </header>
 
-        {/* Modern Navigation */}
         <ModernNavigation 
           chapters={chapters}
           activePhase={activePhase}
@@ -344,7 +237,6 @@ const WindCPDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -375,7 +267,6 @@ const WindCPDashboard = () => {
         </div>
       </header>
 
-      {/* Modern Navigation */}
       <ModernNavigation 
         chapters={chapters}
         activePhase={activePhase}
@@ -383,7 +274,6 @@ const WindCPDashboard = () => {
       />
 
       <div className="container mx-auto px-6 py-8">
-        {/* Main Content Tabs */}
         <ModernTabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="processes">
             <ProcessSteps 
@@ -399,7 +289,6 @@ const WindCPDashboard = () => {
               playbookId={playbookId} 
               activePhase={activePhase} 
               searchQuery={searchQuery}
-              onNavigateToQuiz={handleNavigateToQuiz}
             />
           </TabsContent>
 
@@ -436,25 +325,6 @@ const WindCPDashboard = () => {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
-              <ChapterQuiz 
-                activePhase={activePhase} 
-                onQuizComplete={handleQuizComplete}
-              />
-            ) : (
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-                <CardContent className="p-12 text-center">
-                  <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>
-                  <p className="text-gray-600 text-lg">
-                    Complete all chapter quizzes to unlock this feature.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
           </TabsContent>
         </ModernTabs>
       </div>
