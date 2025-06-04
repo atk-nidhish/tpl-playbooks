@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,6 +24,7 @@ export default function WindPlanningDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("processes");
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
+  const [quizLocked, setQuizLocked] = useState(false);
 
   useEffect(() => {
     // Load completed quizzes from localStorage
@@ -104,6 +104,14 @@ export default function WindPlanningDashboard() {
 
   const navigateToQuiz = () => {
     setActiveTab("quiz");
+  };
+
+  const handleQuizStart = () => {
+    setQuizLocked(true);
+  };
+
+  const handleQuizEnd = () => {
+    setQuizLocked(false);
   };
 
   const handleQuizComplete = () => {
@@ -302,7 +310,7 @@ export default function WindPlanningDashboard() {
 
       <div className="container mx-auto px-6 py-8">
         {/* Main Content Tabs */}
-        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
+        <ModernTabs value={activeTab} onValueChange={setActiveTab} quizLocked={quizLocked}>
           <TabsContent value="processes">
             <ProcessSteps 
               playbookId={PLAYBOOK_ID} 
@@ -353,6 +361,8 @@ export default function WindPlanningDashboard() {
                 playbookId={PLAYBOOK_ID}
                 activePhase={activePhase} 
                 onQuizComplete={handleQuizComplete}
+                onQuizStart={handleQuizStart}
+                onQuizEnd={handleQuizEnd}
               />
             ) : (
               <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
