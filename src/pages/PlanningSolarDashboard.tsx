@@ -1,38 +1,26 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { ChapterQuiz } from "@/components/ChapterQuiz";
-import { PlaybookCertification } from "@/components/PlaybookCertification";
-import { Leaderboard } from "@/components/Leaderboard";
-import { ModernNavigation } from "@/components/ModernNavigation";
-import { ModernTabs } from "@/components/ModernTabs";
+import { PlaybookReprocessor } from "@/components/PlaybookReprocessor";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { Home, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
+import { Search, BookOpen, Users, Map, Settings, RotateCcw, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
 
 const PLAYBOOK_ID = "f895041f-04e3-466b-aa09-53782e40467c";
 
 export default function PlanningSolarDashboard() {
   const [activePhase, setActivePhase] = useState("section-1.1");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("processes");
-  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('completed_quizzes');
-    if (saved) {
-      setCompletedQuizzes(JSON.parse(saved));
-    }
-  }, []);
+  const [activeTab, setActiveTab] = useState("process-steps");
 
   useEffect(() => {
     // Initialize playbook data on component mount
@@ -50,305 +38,203 @@ export default function PlanningSolarDashboard() {
     }
   };
 
-  const chapters = [
-    {
-      id: "chapter-1",
-      name: "Chapter 1: Plan Integration Management",
-      shortName: "Ch 1: Plan Integration",
-      subChapters: [
-        { id: "section-1.1", name: "Section 1.1: Project Plan Preparation During Bidding", shortName: "1.1 Project Plan Prep" },
-        { id: "section-1.2", name: "Section 1.2: Project Schedule and Execution Approach", shortName: "1.2 Schedule & Execution" },
-        { id: "section-1.3", name: "Section 1.3: Land Finalization Plan", shortName: "1.3 Land Finalization" },
-        { id: "section-1.4", name: "Section 1.4: Engineering Plan", shortName: "1.4 Engineering Plan" },
-        { id: "section-1.5", name: "Section 1.5: Procurement Plan", shortName: "1.5 Procurement Plan" },
-        { id: "section-1.6", name: "Section 1.6: Construction Plan", shortName: "1.6 Construction Plan" },
-        { id: "section-1.7", name: "Section 1.7: Commissioning Plan", shortName: "1.7 Commissioning Plan" },
-        { id: "section-1.8", name: "Section 1.8: Plan Integration", shortName: "1.8 Plan Integration" },
-        { id: "section-1.9", name: "Section 1.9: Plan Update", shortName: "1.9 Plan Update" }
-      ]
-    },
-    {
-      id: "chapter-2",
-      name: "Chapter 2: Scope Management Plan",
-      shortName: "Ch 2: Scope Management"
-    },
-    {
-      id: "chapter-3",
-      name: "Chapter 3: Cost Management Plan",
-      shortName: "Ch 3: Cost Management"
-    },
-    {
-      id: "chapter-4",
-      name: "Chapter 4: Quality Management Plan",
-      shortName: "Ch 4: Quality Management"
-    },
-    {
-      id: "chapter-5",
-      name: "Chapter 5: Statutory Approval Management Plan",
-      shortName: "Ch 5: Statutory Approval"
-    },
-    {
-      id: "chapter-6",
-      name: "Chapter 6: Risk Management Plan",
-      shortName: "Ch 6: Risk Management"
-    },
-    {
-      id: "certification",
-      name: "Playbook Certification",
-      shortName: "Certification"
-    },
-    {
-      id: "leaderboard",
-      name: "Certification Leaderboard",
-      shortName: "Leaderboard"
+  const handleReprocessPlaybook = async () => {
+    try {
+      console.log('Reprocessing Planning - Solar playbook...');
+      
+      // Clear existing data for this playbook
+      await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID);
+      await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID);
+      await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID);
+      
+      // Re-seed the data
+      await seedPlanningSolarData();
+      
+      toast.success("Playbook reprocessed successfully!");
+    } catch (error) {
+      console.error('Error reprocessing playbook:', error);
+      toast.error("Failed to reprocess playbook");
     }
+  };
+
+  const phases = [
+    // Chapter 1 - Planning Process
+    { id: "section-1.1", title: "Project Initiation", description: "Initial project setup", chapter: "1" },
+    { id: "section-1.2", title: "Planning Scope", description: "Define project scope", chapter: "1" },
+    { id: "section-1.3", title: "Land Plan", description: "Land acquisition planning", chapter: "1" },
+    { id: "section-1.4", title: "Engineering Plan", description: "Engineering design planning", chapter: "1" },
+    { id: "section-1.5", title: "Procurement Plan", description: "Procurement strategy", chapter: "1" },
+    { id: "section-1.6", title: "Construction Plan", description: "Construction management", chapter: "1" },
+    { id: "section-1.7", title: "Commissioning Plan", description: "Commissioning strategy", chapter: "1" },
+    { id: "section-1.8", title: "Plan Integration", description: "Integration of all plans", chapter: "1" },
+    { id: "section-1.9", title: "Plan Update", description: "Plan revision management", chapter: "1" },
+    
+    // Chapter 2 - Scope Management Plan
+    { id: "section-2.1", title: "Scope Process Steps", description: "Work breakdown structure development", chapter: "2" },
+    { id: "section-2.2", title: "Scope RACI", description: "Scope management responsibilities", chapter: "2" },
+    { id: "section-2.3", title: "Scope Process Map", description: "Scope management workflow", chapter: "2" },
+    
+    // Chapter 3 - Cost Management Plan
+    { id: "section-3.1", title: "Cost Process Steps", description: "Cost breakdown structure development", chapter: "3" },
+    { id: "section-3.2", title: "Cost RACI", description: "Cost management responsibilities", chapter: "3" },
+    { id: "section-3.3", title: "Cost Process Map", description: "Cost management workflow", chapter: "3" },
+    
+    // Placeholder chapters (to be populated later)
+    { id: "section-4.1", title: "Quality Management", description: "Quality assurance processes", chapter: "4" },
+    { id: "section-5.1", title: "Risk Management", description: "Risk identification and mitigation", chapter: "5" },
+    { id: "section-6.1", title: "Resource Management", description: "Resource allocation and management", chapter: "6" }
   ];
 
   const processMapImages = {
-    "section-1.1": "/lovable-uploads/5707c4f3-b2b9-4e30-b8e5-27b2de0ecf63.png",
+    "section-1.1": "/lovable-uploads/2289e97c-b60f-4e79-b555-017b1a434121.png",
     "section-1.2": "/lovable-uploads/e636eada-e8c6-4f53-9c93-b0409b936e03.png",
-    "section-1.3": "/lovable-uploads/80b2c685-97ca-460f-8b5f-ef4312be4cd9.png",
+    "section-1.3": "/lovable-uploads/3d9ebbef-27ff-4dc6-89d0-ec7cc752027e.png",
     "section-1.4": "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
-    "section-1.5": "/lovable-uploads/ab781f20-6004-4afc-80be-aade9fc13cd3.png",
+    "section-1.5": "/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png",
     "section-1.6": "/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png",
     "section-1.7": "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png",
     "section-1.8": "/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png",
     "section-1.9": "/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png",
-    "chapter-2": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
-    "chapter-3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png",
-    "chapter-4": "/lovable-uploads/7c770988-9bc7-44c4-b83c-875d7731fe58.png",
-    "chapter-5": "/lovable-uploads/62318464-8cad-4c33-af4b-1d77c3894c26.png",
-    "chapter-6": "/lovable-uploads/5988e549-2352-4c27-9380-24fdc2e14575.png"
+    "section-2.3": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
+    "section-3.3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png"
   };
 
-  // Check if all quizzes are completed
-  const allQuizzesCompleted = chapters
-    .filter(ch => ch.id !== "certification" && ch.id !== "leaderboard")
-    .every(chapter => {
-      if (chapter.subChapters) {
-        return chapter.subChapters.every(sub => completedQuizzes.includes(sub.id));
-      }
-      return completedQuizzes.includes(chapter.id);
-    });
-
   const navigateToRaci = () => {
-    setActiveTab("raci");
+    setActiveTab("raci-matrix");
   };
 
   const navigateToQuiz = () => {
     setActiveTab("quiz");
   };
 
-  const handleQuizComplete = () => {
-    const allChapterIds = chapters.reduce((acc, ch) => {
-      if (ch.subChapters) {
-        return [...acc, ...ch.subChapters.map(sub => sub.id)];
-      }
-      if (ch.id !== "certification" && ch.id !== "leaderboard") {
-        return [...acc, ch.id];
-      }
-      return acc;
-    }, [] as string[]);
-    
-    const currentIndex = allChapterIds.indexOf(activePhase);
-    if (currentIndex >= 0 && currentIndex < allChapterIds.length - 1) {
-      const nextChapter = allChapterIds[currentIndex + 1];
-      setActivePhase(nextChapter);
-      setActiveTab("processes");
+  // Group phases by chapter
+  const phasesByChapter = phases.reduce((acc, phase) => {
+    if (!acc[phase.chapter]) {
+      acc[phase.chapter] = [];
     }
+    acc[phase.chapter].push(phase);
+    return acc;
+  }, {} as Record<string, typeof phases>);
+
+  const chapterTitles = {
+    "1": "Planning Process",
+    "2": "Scope Management Plan", 
+    "3": "Cost Management Plan",
+    "4": "Quality Management Plan",
+    "5": "Risk Management Plan",
+    "6": "Resource Management Plan"
   };
-
-  const downloadProcessMap = (phaseId: string) => {
-    const imageUrl = processMapImages[phaseId as keyof typeof processMapImages];
-    if (imageUrl) {
-      const link = document.createElement('a');
-      link.href = imageUrl;
-      link.download = `Process-Map-${phaseId}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
-
-  // Handle leaderboard section
-  if (activePhase === "leaderboard") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Home className="h-5 w-5 text-gray-600" />
-                </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                  <p className="text-sm text-gray-600">Planning Playbook</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Modern Navigation */}
-        <ModernNavigation 
-          chapters={chapters}
-          activePhase={activePhase}
-          onPhaseChange={setActivePhase}
-        />
-
-        <div className="container mx-auto px-6 py-8">
-          <Leaderboard />
-        </div>
-      </div>
-    );
-  }
-
-  // Handle certification section
-  if (activePhase === "certification") {
-    if (!allQuizzesCompleted) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-          {/* Header */}
-          <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-            <div className="container mx-auto px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                    <Home className="h-5 w-5 text-gray-600" />
-                  </Link>
-                  <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                    <p className="text-sm text-gray-600">Planning Playbook</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* Modern Navigation */}
-          <ModernNavigation 
-            chapters={chapters}
-            activePhase={activePhase}
-            onPhaseChange={setActivePhase}
-          />
-
-          <div className="container mx-auto px-6 py-8">
-            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-              <CardContent className="p-12 text-center">
-                <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Certification Locked</h2>
-                <p className="text-gray-600 text-lg mb-6">
-                  Complete all chapter quizzes to unlock the playbook certification exam.
-                </p>
-                <div className="max-w-md mx-auto">
-                  <div className="bg-gray-200 rounded-full h-2 mb-4">
-                    <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${(completedQuizzes.length / 15) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    Progress: {completedQuizzes.length} of 15 quizzes completed
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Home className="h-5 w-5 text-gray-600" />
-                </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                  <p className="text-sm text-gray-600">Planning Playbook</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Modern Navigation */}
-        <ModernNavigation 
-          chapters={chapters}
-          activePhase={activePhase}
-          onPhaseChange={setActivePhase}
-        />
-
-        <div className="container mx-auto px-6 py-8">
-          <PlaybookCertification 
-            playbookId={PLAYBOOK_ID}
-            playbookName="Planning - Solar"
-            chapters={chapters}
-          />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                <Home className="h-5 w-5 text-gray-600" />
-              </Link>
-              <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                <Zap className="h-6 w-6 text-white" />
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <Card className="bg-white/90 backdrop-blur-sm border-orange-200 shadow-lg">
+          <CardHeader className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="p-3 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full">
+                <Zap className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                <p className="text-sm text-gray-600">Comprehensive solar project planning methodology and execution framework</p>
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+                  Planning - Solar Playbook
+                </CardTitle>
+                <CardDescription className="text-lg text-gray-600 mt-2">
+                  Comprehensive solar project planning methodology and execution framework
+                </CardDescription>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
+            
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search processes..."
+                  placeholder="Search across all sections..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-80 bg-white/90"
+                  className="pl-10 border-orange-200 focus:border-orange-400"
                 />
               </div>
+              <Button
+                onClick={handleReprocessPlaybook}
+                variant="outline"
+                className="border-orange-200 hover:bg-orange-50"
+              >
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Reprocess
+              </Button>
             </div>
-          </div>
-        </div>
-      </header>
+          </CardHeader>
+        </Card>
 
-      {/* Modern Navigation */}
-      <ModernNavigation 
-        chapters={chapters}
-        activePhase={activePhase}
-        onPhaseChange={setActivePhase}
-      />
+        {/* Chapter and Phase Selection */}
+        <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold text-gray-800">Chapters & Phases</CardTitle>
+            <CardDescription>Select a chapter and phase to explore detailed processes and requirements</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {Object.entries(phasesByChapter).map(([chapterNum, chapterPhases]) => (
+              <div key={chapterNum} className="space-y-3">
+                <h3 className="text-lg font-semibold text-gray-700 border-b border-orange-200 pb-2">
+                  Chapter {chapterNum}: {chapterTitles[chapterNum as keyof typeof chapterTitles]}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {chapterPhases.map((phase) => (
+                    <Button
+                      key={phase.id}
+                      variant={activePhase === phase.id ? "default" : "outline"}
+                      className={`h-auto p-4 flex flex-col items-start text-left ${
+                        activePhase === phase.id
+                          ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400"
+                          : "border-orange-200 hover:bg-orange-50 hover:border-orange-300"
+                      }`}
+                      onClick={() => setActivePhase(phase.id)}
+                    >
+                      <Badge 
+                        variant="secondary" 
+                        className={`mb-2 text-xs ${
+                          activePhase === phase.id ? "bg-white/20 text-white" : "bg-orange-100 text-orange-800"
+                        }`}
+                      >
+                        {phase.id.replace('section-', 'Section ')}
+                      </Badge>
+                      <div className="font-semibold text-sm mb-1">{phase.title}</div>
+                      <div className="text-xs opacity-80">{phase.description}</div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
 
-      <div className="container mx-auto px-6 py-8">
         {/* Main Content Tabs */}
-        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsContent value="processes">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+            <CardContent className="p-6">
+              <TabsList className="grid grid-cols-4 lg:grid-cols-4 w-full bg-orange-50">
+                <TabsTrigger value="process-steps" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+                  <Settings className="h-4 w-4" />
+                  Process Steps
+                </TabsTrigger>
+                <TabsTrigger value="raci-matrix" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+                  <Users className="h-4 w-4" />
+                  RACI Matrix
+                </TabsTrigger>
+                <TabsTrigger value="process-map" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+                  <Map className="h-4 w-4" />
+                  Process Map
+                </TabsTrigger>
+                <TabsTrigger value="quiz" className="flex items-center gap-2 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+                  <BookOpen className="h-4 w-4" />
+                  Chapter Quiz
+                </TabsTrigger>
+              </TabsList>
+            </CardContent>
+          </Card>
+
+          <TabsContent value="process-steps" className="space-y-6">
             <ProcessSteps 
               playbookId={PLAYBOOK_ID} 
               activePhase={activePhase} 
@@ -357,7 +243,7 @@ export default function PlanningSolarDashboard() {
             />
           </TabsContent>
 
-          <TabsContent value="raci">
+          <TabsContent value="raci-matrix" className="space-y-6">
             <RACIMatrix 
               playbookId={PLAYBOOK_ID} 
               activePhase={activePhase} 
@@ -366,67 +252,40 @@ export default function PlanningSolarDashboard() {
             />
           </TabsContent>
 
-          <TabsContent value="process-map">
-            <div className="space-y-6">
+          <TabsContent value="process-map" className="space-y-6">
+            <ProcessMap playbookId={PLAYBOOK_ID} activePhase={activePhase} />
+            
+            {/* Process Map Image */}
+            {processMapImages[activePhase as keyof typeof processMapImages] && (
               <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        Process Map - {activePhase}
-                      </CardTitle>
-                      <CardDescription>
-                        Visual representation of the complete process flow
-                      </CardDescription>
-                    </div>
-                    <Button 
-                      onClick={() => downloadProcessMap(activePhase)}
-                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
-                    >
-                      <Map className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                  </div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Map className="h-5 w-5 text-orange-500" />
+                    Detailed Process Map
+                  </CardTitle>
+                  <CardDescription>
+                    Visual workflow diagram for {phases.find(p => p.id === activePhase)?.title}
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <div className="flex justify-center">
-                    {processMapImages[activePhase as keyof typeof processMapImages] ? (
-                      <img 
-                        src={processMapImages[activePhase as keyof typeof processMapImages]}
-                        alt={`Process Map for ${activePhase}`}
-                        className="max-w-full h-auto rounded-lg shadow-lg border border-orange-200"
-                      />
-                    ) : (
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">No process map available for this section</p>
-                      </div>
-                    )}
+                <CardContent>
+                  <div className="border-2 border-orange-200 rounded-lg overflow-hidden bg-white">
+                    <img 
+                      src={processMapImages[activePhase as keyof typeof processMapImages]}
+                      alt={`Process map for ${phases.find(p => p.id === activePhase)?.title}`}
+                      className="w-full h-auto"
+                    />
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
-              <ChapterQuiz 
-                playbookId={PLAYBOOK_ID}
-                activePhase={activePhase} 
-                onQuizComplete={handleQuizComplete}
-              />
-            ) : (
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-                <CardContent className="p-12 text-center">
-                  <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>
-                  <p className="text-gray-600 text-lg">
-                    Complete all chapter quizzes to unlock this feature.
-                  </p>
                 </CardContent>
               </Card>
             )}
           </TabsContent>
-        </ModernTabs>
+
+          <TabsContent value="quiz" className="space-y-6">
+            <ChapterQuiz 
+              activePhase={activePhase}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
