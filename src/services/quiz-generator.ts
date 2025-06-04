@@ -86,13 +86,11 @@ export class QuizGenerator {
         // Question about who is responsible for a specific activity
         const otherResponsibles = processSteps
           .filter(s => s.responsible && s.responsible !== step.responsible)
-          .map(s => s.responsible);
+          .map(s => s.responsible)
+          .slice(0, 3);
 
-        // Get unique options and limit to 2 additional options
-        const uniqueOthers = [...new Set(otherResponsibles)].slice(0, 2);
-
-        if (uniqueOthers.length >= 2) {
-          const options = [step.responsible, ...uniqueOthers];
+        if (otherResponsibles.length >= 2) {
+          const options = [step.responsible, ...otherResponsibles].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(step.responsible);
 
@@ -108,18 +106,16 @@ export class QuizGenerator {
         }
       }
 
-      // Question about inputs if available
+      // Question about inputs/outputs if available
       if (step.inputs && step.inputs.length > 0) {
         const otherInputs = processSteps
           .filter(s => s.inputs && s.inputs.length > 0 && s.id !== step.id)
-          .flatMap(s => s.inputs);
+          .flatMap(s => s.inputs)
+          .slice(0, 3);
 
-        // Get unique options and limit to 2 additional options
-        const uniqueOthers = [...new Set(otherInputs)].slice(0, 2);
-
-        if (uniqueOthers.length >= 2) {
+        if (otherInputs.length >= 2) {
           const correctInput = step.inputs[0];
-          const options = [correctInput, ...uniqueOthers];
+          const options = [correctInput, ...otherInputs].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(correctInput);
 
@@ -147,13 +143,11 @@ export class QuizGenerator {
         // Question about who is responsible in RACI
         const otherResponsibles = raciData
           .filter(r => r.responsible && r.responsible !== raci.responsible)
-          .map(r => r.responsible);
+          .map(r => r.responsible)
+          .slice(0, 3);
 
-        // Get unique options and limit to 2 additional options
-        const uniqueOthers = [...new Set(otherResponsibles)].slice(0, 2);
-
-        if (uniqueOthers.length >= 2) {
-          const options = [raci.responsible, ...uniqueOthers];
+        if (otherResponsibles.length >= 2) {
+          const options = [raci.responsible, ...otherResponsibles].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(raci.responsible);
 
@@ -173,13 +167,11 @@ export class QuizGenerator {
         // Question about who is accountable in RACI
         const otherAccountables = raciData
           .filter(r => r.accountable && r.accountable !== raci.accountable)
-          .map(r => r.accountable);
+          .map(r => r.accountable)
+          .slice(0, 3);
 
-        // Get unique options and limit to 2 additional options
-        const uniqueOthers = [...new Set(otherAccountables)].slice(0, 2);
-
-        if (uniqueOthers.length >= 2) {
-          const options = [raci.accountable, ...uniqueOthers];
+        if (otherAccountables.length >= 2) {
+          const options = [raci.accountable, ...otherAccountables].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(raci.accountable);
 

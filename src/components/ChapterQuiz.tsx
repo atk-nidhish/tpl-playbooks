@@ -10,22 +10,13 @@ interface ChapterQuizProps {
   playbookId: string;
   activePhase: string;
   onQuizComplete?: () => void;
-  onQuizStart?: () => void;
-  onQuizEnd?: () => void;
 }
 
-export const ChapterQuiz = ({ 
-  playbookId, 
-  activePhase, 
-  onQuizComplete, 
-  onQuizStart, 
-  onQuizEnd 
-}: ChapterQuizProps) => {
+export const ChapterQuiz = ({ playbookId, activePhase, onQuizComplete }: ChapterQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestions, setCurrentQuestions] = useState<QuizQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,16 +24,6 @@ export const ChapterQuiz = ({
   useEffect(() => {
     loadQuizQuestions();
   }, [playbookId, activePhase]);
-
-  useEffect(() => {
-    // Notify parent when quiz starts/ends
-    if (quizStarted && onQuizStart) {
-      onQuizStart();
-    }
-    if (showResults && onQuizEnd) {
-      onQuizEnd();
-    }
-  }, [quizStarted, showResults, onQuizStart, onQuizEnd]);
 
   const loadQuizQuestions = async () => {
     if (!playbookId || !activePhase || activePhase === "certification") {
@@ -85,13 +66,6 @@ export const ChapterQuiz = ({
     }));
   };
 
-  const handleStartQuiz = () => {
-    setQuizStarted(true);
-    if (onQuizStart) {
-      onQuizStart();
-    }
-  };
-
   const handleNextQuestion = () => {
     if (currentQuestion < currentQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -127,16 +101,12 @@ export const ChapterQuiz = ({
     setSelectedAnswers({});
     setShowResults(false);
     setQuizCompleted(false);
-    setQuizStarted(false);
   };
 
   const handleRetakeQuiz = async () => {
     // Reset used questions and generate new ones
     quizGenerator.resetUsedQuestions();
     await loadQuizQuestions();
-    if (onQuizEnd) {
-      onQuizEnd();
-    }
   };
 
   const calculateScore = () => {
@@ -217,24 +187,7 @@ export const ChapterQuiz = ({
 
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-6">
-          {!quizStarted ? (
-            /* Quiz Start Screen */
-            <div className="text-center space-y-6">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Ready to start the quiz?</h3>
-                <p className="text-gray-600">
-                  You'll have {currentQuestions.length} questions about this chapter. 
-                  Once you start, other tabs will be locked until you complete the quiz.
-                </p>
-              </div>
-              <Button
-                onClick={handleStartQuiz}
-                className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
-              >
-                Start Quiz
-              </Button>
-            </div>
-          ) : !quizCompleted ? (
+          {!quizCompleted ? (
             <div className="space-y-6">
               {/* Progress Bar */}
               <div className="flex items-center justify-between mb-6">

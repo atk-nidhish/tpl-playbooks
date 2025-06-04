@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,7 +24,6 @@ const WindCPDashboard = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("processes");
-  const [quizLocked, setQuizLocked] = useState(false);
 
   useEffect(() => {
     // Load completed quizzes from localStorage
@@ -138,14 +138,6 @@ const WindCPDashboard = () => {
 
   const handleNavigateToQuiz = () => {
     setActiveTab("quiz");
-  };
-
-  const handleQuizStart = () => {
-    setQuizLocked(true);
-  };
-
-  const handleQuizEnd = () => {
-    setQuizLocked(false);
   };
 
   const getNextChapter = (currentPhase: string) => {
@@ -393,7 +385,7 @@ const WindCPDashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Main Content Tabs */}
-        <ModernTabs value={activeTab} onValueChange={setActiveTab} quizLocked={quizLocked}>
+        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="processes">
             <ProcessSteps 
               playbookId={playbookId} 
@@ -453,8 +445,6 @@ const WindCPDashboard = () => {
                 playbookId={playbookId}
                 activePhase={activePhase} 
                 onQuizComplete={handleQuizComplete}
-                onQuizStart={handleQuizStart}
-                onQuizEnd={handleQuizEnd}
               />
             ) : (
               <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
