@@ -187,7 +187,7 @@ export const ChapterQuiz = ({ playbookId, activePhase, onQuizComplete }: Chapter
 
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-6">
-          {!quizCompleted ? (
+          {!showResults ? (
             <div className="space-y-6">
               {/* Progress Bar */}
               <div className="flex items-center justify-between mb-6">
@@ -262,7 +262,7 @@ export const ChapterQuiz = ({ playbookId, activePhase, onQuizComplete }: Chapter
               </div>
             </div>
           ) : (
-            /* Results */
+            /* Quiz Results */
             <div className="text-center space-y-6">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Completed!</h3>
@@ -278,12 +278,13 @@ export const ChapterQuiz = ({ playbookId, activePhase, onQuizComplete }: Chapter
 
               {/* Detailed Results */}
               <div className="space-y-4 mb-6">
+                <h4 className="text-lg font-semibold text-gray-900 text-left">Quiz Results Breakdown:</h4>
                 {currentQuestions.map((question, index) => {
                   const userAnswer = selectedAnswers[index];
                   const isCorrect = userAnswer === question.correctAnswer;
                   
                   return (
-                    <div key={question.id} className="text-left p-4 bg-gray-50 rounded-lg">
+                    <div key={question.id} className="text-left p-4 bg-gray-50 rounded-lg border">
                       <div className="flex items-start gap-3 mb-2">
                         {isCorrect ? (
                           <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
@@ -291,17 +292,27 @@ export const ChapterQuiz = ({ playbookId, activePhase, onQuizComplete }: Chapter
                           <X className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
                         )}
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 mb-2">{question.question}</p>
+                          <p className="font-medium text-gray-900 mb-2">
+                            Question {index + 1}: {question.question}
+                          </p>
                           <div className="space-y-1">
                             <p className="text-sm">
-                              <span className="font-medium">Your answer:</span> {question.options[userAnswer]}
+                              <span className="font-medium">Your answer:</span> 
+                              <span className={isCorrect ? 'text-green-700' : 'text-red-700'}>
+                                {' '}{question.options[userAnswer]}
+                              </span>
                             </p>
                             {!isCorrect && (
                               <p className="text-sm">
-                                <span className="font-medium">Correct answer:</span> {question.options[question.correctAnswer]}
+                                <span className="font-medium">Correct answer:</span> 
+                                <span className="text-green-700">
+                                  {' '}{question.options[question.correctAnswer]}
+                                </span>
                               </p>
                             )}
-                            <p className="text-sm text-gray-600 mt-2">{question.explanation}</p>
+                            <p className="text-sm text-gray-600 mt-2 bg-blue-50 p-2 rounded">
+                              <span className="font-medium">Explanation:</span> {question.explanation}
+                            </p>
                           </div>
                         </div>
                       </div>
