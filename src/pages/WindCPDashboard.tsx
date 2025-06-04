@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ModernNavigation } from "@/components/ModernNavigation";
@@ -5,12 +6,12 @@ import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
-import { PlaybookSidebar } from "@/components/PlaybookSidebar";
 
 const WindCPDashboard = () => {
   const { id } = useParams();
   const [activePhase, setActivePhase] = useState("chapters-overview");
   const [activeTab, setActiveTab] = useState("processes");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     // Initialize active phase from URL or default to "chapter-1"
@@ -67,7 +68,6 @@ const WindCPDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <PlaybookSidebar />
       
       {/* Navigation */}
       <ModernNavigation 
@@ -83,6 +83,7 @@ const WindCPDashboard = () => {
             <ProcessSteps 
               playbookId="wind-cp"
               activePhase={activePhase}
+              searchQuery={searchQuery}
             />
           </TabsContent>
           
@@ -90,6 +91,7 @@ const WindCPDashboard = () => {
             <RACIMatrix 
               playbookId="wind-cp"
               activePhase={activePhase}
+              searchQuery={searchQuery}
             />
           </TabsContent>
           
