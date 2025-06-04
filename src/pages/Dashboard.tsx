@@ -1,304 +1,415 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wind, FileText, Award, Download, LogOut, User, Building, Sun } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind, Users, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useDataInit } from "@/hooks/useDataInit";
+import { FileUpload } from "@/components/FileUpload";
+import { Leaderboard } from "@/components/Leaderboard";
 
-interface CertificationData {
+interface Playbook {
   id: string;
-  user_name: string;
-  user_department: string;
-  playbook_name: string;
-  score: number;
-  completed_at: string;
+  name: string;
+  title: string;
+  description: string;
+  phases: any;
+  file_path?: string;
 }
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
-  const [downloadingCert, setDownloadingCert] = useState(false);
-  const [userCertifications, setUserCertifications] = useState<CertificationData[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [playbooks, setPlaybooks] = useState<Playbook[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+  const { isInitialized } = useDataInit();
 
   useEffect(() => {
-    fetchUserCertifications();
-  }, [user]);
+    if (isInitialized) {
+      fetchPlaybooks();
+    }
+  }, [isInitialized]);
 
-  const fetchUserCertifications = async () => {
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      performGlobalSearch();
+    } else {
+      setSearchResults([]);
+      setIsSearching(false);
+    }
+  }, [searchQuery]);
+
+  const fetchPlaybooks = async () => {
     try {
       const { data, error } = await supabase
-        .from('certification_scores')
+        .from('playbooks')
         .select('*')
-        .order('completed_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       
-      // For now, we'll show all certifications since we don't have user-specific filtering
-      // In a real app, you'd filter by user_id or user_name
-      setUserCertifications(data || []);
+      // Remove duplicates based on title, keeping the first occurrence
+      const uniquePlaybooks = data?.filter((playbook, index, self) => 
+        index === self.findIndex(p => p.title === playbook.title)
+      ) || [];
+      
+      setPlaybooks(uniquePlaybooks);
     } catch (error) {
-      console.error('Error fetching certifications:', error);
+      console.error('Error fetching playbooks:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const generateCertificate = (userName: string, department: string) => {
-    // Create a canvas to generate the certificate image
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+  const performGlobalSearch = async () => {
+    if (!searchQuery.trim()) return;
     
-    // Set canvas size
-    canvas.width = 800;
-    canvas.height = 600;
-    
-    // Background
-    ctx!.fillStyle = '#f8fafc';
-    ctx!.fillRect(0, 0, 800, 600);
-    
-    // Border
-    ctx!.strokeStyle = '#fb923c';
-    ctx!.lineWidth = 8;
-    ctx!.strokeRect(20, 20, 760, 560);
-    
-    // Title
-    ctx!.fillStyle = '#1f2937';
-    ctx!.font = 'bold 48px Arial';
-    ctx!.textAlign = 'center';
-    ctx!.fillText('Certificate of Completion', 400, 120);
-    
-    // Subtitle
-    ctx!.font = 'bold 24px Arial';
-    ctx!.fillStyle = '#fb923c';
-    ctx!.fillText('Wind C&P Playbook', 400, 160);
-    
-    // User name
-    ctx!.font = 'bold 36px Arial';
-    ctx!.fillStyle = '#1f2937';
-    ctx!.fillText(`${userName}`, 400, 280);
-    
-    // Department
-    ctx!.font = '20px Arial';
-    ctx!.fillStyle = '#6b7280';
-    ctx!.fillText(`Department: ${department}`, 400, 320);
-    
-    // Completion text
-    ctx!.font = '18px Arial';
-    ctx!.fillText('has successfully completed the', 400, 380);
-    ctx!.fillText('Wind Contracting & Procurement Playbook', 400, 410);
-    
-    // Date
-    const currentDate = new Date().toLocaleDateString();
-    ctx!.fillText(`Date: ${currentDate}`, 400, 480);
-    
-    return canvas.toDataURL('image/png');
+    setIsSearching(true);
+    try {
+      const searchTerm = searchQuery.toLowerCase();
+      
+      // Search across all tables
+      const [playbooksResult, processStepsResult, raciResult, processMapResult] = await Promise.all([
+        supabase
+          .from('playbooks')
+          .select('*')
+          .or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,name.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('process_steps')
+          .select('*, playbooks!inner(title, name)')
+          .or(`activity.ilike.%${searchTerm}%,responsible.ilike.%${searchTerm}%,comments.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('raci_matrix')
+          .select('*, playbooks!inner(title, name)')
+          .or(`task.ilike.%${searchTerm}%,responsible.ilike.%${searchTerm}%,accountable.ilike.%${searchTerm}%,consulted.ilike.%${searchTerm}%,informed.ilike.%${searchTerm}%`),
+        
+        supabase
+          .from('process_map')
+          .select('*, playbooks!inner(title, name)')
+          .or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
+      ]);
+
+      const results = [
+        ...(playbooksResult.data || []).map(item => ({ ...item, type: 'playbook' })),
+        ...(processStepsResult.data || []).map(item => ({ ...item, type: 'process_step' })),
+        ...(raciResult.data || []).map(item => ({ ...item, type: 'raci' })),
+        ...(processMapResult.data || []).map(item => ({ ...item, type: 'process_map' }))
+      ];
+
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error performing global search:', error);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
-  const handleDownloadCertificate = async () => {
-    setDownloadingCert(true);
-    
-    setTimeout(() => {
-      const userName = user?.user_metadata?.full_name || user?.email || 'Participant';
-      const department = user?.user_metadata?.department || 'Wind Energy';
+  const deleteAllPlaybooks = async () => {
+    try {
+      // Delete all data from related tables first
+      await supabase.from('process_steps').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('raci_matrix').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('process_map').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('playbooks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
-      // Generate certificate
-      const certificateDataUrl = generateCertificate(userName, department);
-      
-      // Create a download link
-      const link = document.createElement('a');
-      link.href = certificateDataUrl;
-      link.download = 'Wind-CP-Certificate.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setDownloadingCert(false);
-    }, 1000);
+      console.log('All playbooks and related data deleted');
+      fetchPlaybooks();
+    } catch (error) {
+      console.error('Error deleting playbooks:', error);
+    }
   };
 
-  const playbooks = [
+  const filteredPlaybooks = searchQuery.trim() ? [] : playbooks;
+
+  const getResultTypeIcon = (type: string) => {
+    switch (type) {
+      case 'playbook':
+        return <BookOpen className="h-4 w-4" />;
+      case 'process_step':
+        return <Zap className="h-4 w-4" />;
+      case 'raci':
+        return <FileText className="h-4 w-4" />;
+      case 'process_map':
+        return <ArrowRight className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getResultTypeName = (type: string) => {
+    switch (type) {
+      case 'playbook':
+        return 'Playbook';
+      case 'process_step':
+        return 'Process Step';
+      case 'raci':
+        return 'RACI Matrix';
+      case 'process_map':
+        return 'Process Map';
+      default:
+        return 'Result';
+    }
+  };
+
+  // Define the interactive playbooks
+  const interactivePlaybooks = [
+    {
+      id: "wind-commissioning",
+      title: "Wind - Commissioning",
+      description: "Complete wind project commissioning and approvals workflow",
+      icon: Wind,
+      route: "/commissioning",
+      color: "from-blue-500 to-cyan-500",
+      phases: 6
+    },
     {
       id: "wind-cp",
       title: "Wind - C&P",
-      description: "Contracting & Procurement",
+      description: "Contracting & Procurement processes for wind projects",
       icon: Wind,
+      route: "/wind-cp",
       color: "from-orange-400 to-yellow-500",
-      status: "Available",
-      route: "/wind-cp"
-    },
-    {
-      id: "planning-solar",
-      title: "Planning - Solar",
-      description: "Solar Project Planning",
-      icon: Sun,
-      color: "from-yellow-400 to-orange-500",
-      status: "Available",
-      route: "/planning-solar"
-    },
-    {
-      id: "wind-planning",
-      title: "Wind - Planning",
-      description: "Wind Project Planning",
-      icon: Wind,
-      color: "from-blue-400 to-cyan-500",
-      status: "Available",
-      route: "/wind-planning"
+      phases: 8
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-blue-200 shadow-sm">
+      <header className="bg-white/80 backdrop-blur-md border-b border-orange-200 sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                <FileText className="h-6 w-6 text-white" />
+              <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
+                <Sun className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Playbook Portal</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Solar Project Execution Tracker</h1>
+                <p className="text-sm text-gray-600">Interactive Playbook Management System</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              {user && (
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <User className="h-4 w-4" />
-                    <span>{user.user_metadata?.full_name || user.email}</span>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search across all playbooks..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-80 bg-white/90"
+                />
+                {isSearching && (
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <RefreshCw className="h-4 w-4 animate-spin text-gray-400" />
                   </div>
-                  {user.user_metadata?.department && (
-                    <div className="flex items-center space-x-1">
-                      <Building className="h-4 w-4" />
-                      <span>{user.user_metadata.department}</span>
-                    </div>
-                  )}
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={signOut}
-                    className="flex items-center space-x-1"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h2>
-          <p className="text-gray-600">Access your playbooks and track your certifications</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Your Playbook Library</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Access and manage all your solar project execution playbooks in one centralized location. 
+            Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Playbooks Section */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-6 w-6 text-blue-600" />
-              <h3 className="text-2xl font-bold text-gray-900">Playbooks</h3>
-            </div>
-            
-            <div className="grid gap-6">
-              {playbooks.map((playbook) => {
-                const IconComponent = playbook.icon;
-                return (
-                  <Card key={playbook.id} className="group hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-blue-200">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className={`bg-gradient-to-r ${playbook.color} p-3 rounded-lg shadow-lg`}>
-                            <IconComponent className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-gray-900">{playbook.title}</CardTitle>
-                            <CardDescription className="text-gray-600">{playbook.description}</CardDescription>
-                          </div>
+        {/* Interactive Playbooks Section */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Interactive Playbooks</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {interactivePlaybooks.map((playbook) => {
+              const IconComponent = playbook.icon;
+              return (
+                <Card 
+                  key={playbook.id}
+                  className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group"
+                >
+                  <Link to={playbook.route}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className={`bg-gradient-to-r ${playbook.color} p-2 rounded-lg`}>
+                          <IconComponent className="h-6 w-6 text-white" />
                         </div>
-                        <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          {playbook.status}
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                          {playbook.phases} chapters
                         </Badge>
                       </div>
+                      <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
+                        {playbook.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {playbook.description}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Link to={playbook.route}>
-                        <Button className={`w-full bg-gradient-to-r ${playbook.color} hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all duration-300`}>
-                          Access Playbook
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Certificates Section */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-2">
-              <Award className="h-6 w-6 text-green-600" />
-              <h3 className="text-2xl font-bold text-gray-900">Certifications</h3>
-            </div>
-            
-            <div className="grid gap-6">
-              {loading ? (
-                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-gray-600">Loading certifications...</p>
-                  </CardContent>
-                </Card>
-              ) : userCertifications.length === 0 ? (
-                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-gray-600">No certifications earned yet. Complete a playbook to earn your first certification!</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                userCertifications.slice(0, 3).map((cert) => (
-                  <Card key={cert.id} className="group hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-green-200">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-3 rounded-lg shadow-lg">
-                            <Award className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-gray-900">{cert.playbook_name}</CardTitle>
-                            <CardDescription className="text-gray-600">
-                              Score: {cert.score}% - {cert.user_name}
-                            </CardDescription>
-                            <p className="text-sm text-green-600 mt-1">
-                              Completed: {new Date(cert.completed_at).toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-                        <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          Earned
-                        </Badge>
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <Zap className="h-3 w-3" />
+                          Interactive
+                        </span>
+                        <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
+                          Open Playbook
+                          <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                        </span>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <Button 
-                        onClick={handleDownloadCertificate}
-                        disabled={downloadingCert}
-                        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        {downloadingCert ? "Generating..." : "Download Certificate"}
-                      </Button>
                     </CardContent>
-                  </Card>
-                ))
-              )}
-            </div>
+                  </Link>
+                </Card>
+              );
+            })}
           </div>
         </div>
+
+        {/* File Upload Section */}
+        <div className="mb-8">
+          <FileUpload onUploadComplete={fetchPlaybooks} />
+        </div>
+
+        {/* Leaderboard Section */}
+        <div className="mb-8">
+          <Leaderboard />
+        </div>
+
+        {/* Search Results */}
+        {searchQuery.trim() && (
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Search Results for "{searchQuery}" ({searchResults.length} found)
+            </h3>
+            {searchResults.length === 0 ? (
+              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+                <CardContent className="p-8 text-center">
+                  <p className="text-gray-600">No results found for your search.</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {searchResults.map((result, index) => (
+                  <Card key={`${result.type}-${result.id || index}`} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 transition-all">
+                    <CardHeader>
+                      <div className="flex items-center space-x-2 mb-2">
+                        {getResultTypeIcon(result.type)}
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                          {getResultTypeName(result.type)}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-lg">
+                        {result.title || result.activity || result.task || result.name}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {result.description || result.comments || 'Found in playbook search'}
+                      </CardDescription>
+                      {result.playbooks && (
+                        <div className="text-xs text-gray-500">
+                          From: {result.playbooks.title}
+                        </div>
+                      )}
+                    </CardHeader>
+                    <CardContent>
+                      {result.type === 'playbook' ? (
+                        <Link to={`/playbook/${result.id}`} className="text-orange-600 hover:text-orange-700 text-sm flex items-center gap-1">
+                          Open Playbook <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      ) : (
+                        <div className="text-sm text-gray-600">
+                          {result.phase_id && `Phase: ${result.phase_id}`}
+                          {result.step_id && ` | Step: ${result.step_id}`}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Interactive Playbooks</CardTitle>
+              <BookOpen className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{interactivePlaybooks.length}</div>
+              <p className="text-xs text-muted-foreground">Available for execution</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Uploaded Playbooks</CardTitle>
+              <FileText className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{playbooks.length}</div>
+              <p className="text-xs text-muted-foreground">From uploaded documents</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Uploaded Playbooks Grid */}
+        {!searchQuery.trim() && (
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Uploaded Playbooks</h3>
+            {loading ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">Loading playbooks...</p>
+              </div>
+            ) : filteredPlaybooks.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No uploaded playbooks found. Upload documents above to create your first playbook.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPlaybooks.map((playbook) => (
+                  <Card 
+                    key={playbook.id}
+                    className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group"
+                  >
+                    <Link to={`/playbook/${playbook.id}`}>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
+                            {playbook.title}
+                          </CardTitle>
+                          <div className="flex gap-2">
+                            <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                              {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
+                            </Badge>
+                          </div>
+                        </div>
+                        <CardDescription className="text-sm">
+                          {playbook.description || "Detailed process execution playbook"}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-sm text-gray-600">
+                          <span>ID: {playbook.name}</span>
+                          <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
+                            <FileText className="h-3 w-3" />
+                            View Details
+                            <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
