@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,15 +13,14 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
-import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { Home, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
+import { Home, BookOpen, Users, Map, Settings, Wind, Award, Trophy, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
-const PLAYBOOK_ID = "f895041f-04e3-466b-aa09-53782e40467c";
+const PLAYBOOK_ID = "wind-planning-001";
 
-export default function PlanningSolarDashboard() {
+export default function WindPlanningDashboard() {
   const [activePhase, setActivePhase] = useState("section-1.1");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("processes");
@@ -28,27 +28,11 @@ export default function PlanningSolarDashboard() {
 
   useEffect(() => {
     // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('completed_quizzes');
+    const saved = localStorage.getItem('wind_planning_completed_quizzes');
     if (saved) {
       setCompletedQuizzes(JSON.parse(saved));
     }
   }, []);
-
-  useEffect(() => {
-    // Initialize playbook data on component mount
-    initializePlaybook();
-  }, []);
-
-  const initializePlaybook = async () => {
-    try {
-      console.log('Initializing Planning - Solar playbook...');
-      await seedPlanningSolarData();
-      console.log('Planning - Solar playbook initialized successfully');
-    } catch (error) {
-      console.error('Error initializing playbook:', error);
-      toast.error("Failed to initialize playbook data");
-    }
-  };
 
   const chapters = [
     {
@@ -104,23 +88,6 @@ export default function PlanningSolarDashboard() {
     }
   ];
 
-  const processMapImages = {
-    "section-1.1": "/lovable-uploads/5707c4f3-b2b9-4e30-b8e5-27b2de0ecf63.png",
-    "section-1.2": "/lovable-uploads/e636eada-e8c6-4f53-9c93-b0409b936e03.png",
-    "section-1.3": "/lovable-uploads/80b2c685-97ca-460f-8b5f-ef4312be4cd9.png",
-    "section-1.4": "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
-    "section-1.5": "/lovable-uploads/ab781f20-6004-4afc-80be-aade9fc13cd3.png",
-    "section-1.6": "/lovable-uploads/612ac02b-ad2d-414a-a2db-6fbbd09d360d.png",
-    "section-1.7": "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png",
-    "section-1.8": "/lovable-uploads/0b8675aa-99ea-47ba-9261-2092b1d93024.png",
-    "section-1.9": "/lovable-uploads/d2969666-1f4c-4539-bd93-f744a481fd27.png",
-    "chapter-2": "/lovable-uploads/1ace2979-e13f-4f17-a553-3f0241ffa59a.png",
-    "chapter-3": "/lovable-uploads/8988784b-8360-4035-b449-b2c21a211765.png",
-    "chapter-4": "/lovable-uploads/7c770988-9bc7-44c4-b83c-875d7731fe58.png",
-    "chapter-5": "/lovable-uploads/62318464-8cad-4c33-af4b-1d77c3894c26.png",
-    "chapter-6": "/lovable-uploads/5988e549-2352-4c27-9380-24fdc2e14575.png"
-  };
-
   // Check if all quizzes are completed
   const allQuizzesCompleted = chapters
     .filter(ch => ch.id !== "certification" && ch.id !== "leaderboard")
@@ -158,35 +125,23 @@ export default function PlanningSolarDashboard() {
     }
   };
 
-  const downloadProcessMap = (phaseId: string) => {
-    const imageUrl = processMapImages[phaseId as keyof typeof processMapImages];
-    if (imageUrl) {
-      const link = document.createElement('a');
-      link.href = imageUrl;
-      link.download = `Process-Map-${phaseId}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
-
   // Handle leaderboard section
   if (activePhase === "leaderboard") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
+        <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
+                <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                   <Home className="h-5 w-5 text-gray-600" />
                 </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
+                  <Wind className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
                   <p className="text-sm text-gray-600">Planning Playbook</p>
                 </div>
               </div>
@@ -212,20 +167,20 @@ export default function PlanningSolarDashboard() {
   if (activePhase === "certification") {
     if (!allQuizzesCompleted) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
           {/* Header */}
-          <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
+          <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
             <div className="container mx-auto px-6 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
+                  <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                     <Home className="h-5 w-5 text-gray-600" />
                   </Link>
-                  <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                    <Zap className="h-6 w-6 text-white" />
+                  <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
+                    <Wind className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
                     <p className="text-sm text-gray-600">Planning Playbook</p>
                   </div>
                 </div>
@@ -241,7 +196,7 @@ export default function PlanningSolarDashboard() {
           />
 
           <div className="container mx-auto px-6 py-8">
-            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+            <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
               <CardContent className="p-12 text-center">
                 <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Certification Locked</h2>
@@ -251,7 +206,7 @@ export default function PlanningSolarDashboard() {
                 <div className="max-w-md mx-auto">
                   <div className="bg-gray-200 rounded-full h-2 mb-4">
                     <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
+                      className="bg-blue-500 h-2 rounded-full transition-all duration-500"
                       style={{ width: `${(completedQuizzes.length / 15) * 100}%` }}
                     ></div>
                   </div>
@@ -267,20 +222,20 @@ export default function PlanningSolarDashboard() {
     }
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
+        <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
+                <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                   <Home className="h-5 w-5 text-gray-600" />
                 </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
+                  <Wind className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
                   <p className="text-sm text-gray-600">Planning Playbook</p>
                 </div>
               </div>
@@ -298,7 +253,7 @@ export default function PlanningSolarDashboard() {
         <div className="container mx-auto px-6 py-8">
           <PlaybookCertification 
             playbookId={PLAYBOOK_ID}
-            playbookName="Planning - Solar"
+            playbookName="Wind - Planning"
             chapters={chapters}
           />
         </div>
@@ -307,21 +262,21 @@ export default function PlanningSolarDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
+      <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
+              <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                 <Home className="h-5 w-5 text-gray-600" />
               </Link>
-              <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                <Zap className="h-6 w-6 text-white" />
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
+                <Wind className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                <p className="text-sm text-gray-600">Comprehensive solar project planning methodology and execution framework</p>
+                <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
+                <p className="text-sm text-gray-600">Comprehensive wind project planning methodology and execution framework</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -368,7 +323,7 @@ export default function PlanningSolarDashboard() {
 
           <TabsContent value="process-map">
             <div className="space-y-6">
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -379,28 +334,13 @@ export default function PlanningSolarDashboard() {
                         Visual representation of the complete process flow
                       </CardDescription>
                     </div>
-                    <Button 
-                      onClick={() => downloadProcessMap(activePhase)}
-                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
-                    >
-                      <Map className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="flex justify-center">
-                    {processMapImages[activePhase as keyof typeof processMapImages] ? (
-                      <img 
-                        src={processMapImages[activePhase as keyof typeof processMapImages]}
-                        alt={`Process Map for ${activePhase}`}
-                        className="max-w-full h-auto rounded-lg shadow-lg border border-orange-200"
-                      />
-                    ) : (
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">No process map available for this section</p>
-                      </div>
-                    )}
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">Process maps will be available soon</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -415,7 +355,7 @@ export default function PlanningSolarDashboard() {
                 onQuizComplete={handleQuizComplete}
               />
             ) : (
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
                 <CardContent className="p-12 text-center">
                   <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>

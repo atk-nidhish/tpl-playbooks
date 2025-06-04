@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, Check } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Chapter {
@@ -18,40 +18,6 @@ interface ModernNavigationProps {
 
 export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: ModernNavigationProps) => {
   const [expandedChapters, setExpandedChapters] = useState<string[]>([]);
-  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Load completed quizzes from localStorage
-    const loadCompletedQuizzes = () => {
-      const saved = localStorage.getItem('completed_quizzes');
-      if (saved) {
-        setCompletedQuizzes(JSON.parse(saved));
-      }
-    };
-
-    // Load initial data
-    loadCompletedQuizzes();
-
-    // Listen for storage changes (when quizzes are completed)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'completed_quizzes') {
-        loadCompletedQuizzes();
-      }
-    };
-
-    // Listen for custom events when localStorage is updated in the same tab
-    const handleCustomStorageChange = () => {
-      loadCompletedQuizzes();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('completedQuizzesUpdated', handleCustomStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('completedQuizzesUpdated', handleCustomStorageChange);
-    };
-  }, []);
 
   const toggleChapter = (chapterId: string) => {
     setExpandedChapters(prev => {
@@ -62,13 +28,6 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   };
 
   const isExpanded = (chapterId: string) => expandedChapters.includes(chapterId);
-
-  const isChapterCompleted = (chapter: Chapter) => {
-    if (chapter.subChapters) {
-      return chapter.subChapters.every(sub => completedQuizzes.includes(sub.id));
-    }
-    return completedQuizzes.includes(chapter.id);
-  };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -88,7 +47,6 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
             const hasSubChapters = chapter.subChapters && chapter.subChapters.length > 0;
             const isActive = activePhase === chapter.id || 
               (hasSubChapters && chapter.subChapters?.some(sub => sub.id === activePhase));
-            const isCompleted = isChapterCompleted(chapter);
             
             return (
               <div key={chapter.id} className="relative flex-shrink-0" onClick={(e) => e.stopPropagation()}>
@@ -109,16 +67,12 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                     }
                     transition-all duration-300 font-bold text-xs px-3 py-2 rounded-xl
                     ${hasSubChapters ? 'pr-6' : ''}
-                    ${isCompleted ? 'pr-8' : ''}
                     transform hover:scale-105 hover:-translate-y-0.5 whitespace-nowrap relative
                   `}
                 >
                   {chapter.shortName}
-                  {isCompleted && (
-                    <Check className="h-3 w-3 text-green-600 absolute -top-1 -right-1 bg-white rounded-full p-0.5" />
-                  )}
                   {hasSubChapters && (
-                    <div className={`absolute ${isCompleted ? 'right-6' : 'right-1.5'} top-1/2 transform -translate-y-1/2`}>
+                    <div className="absolute right-1.5 top-1/2 transform -translate-y-1/2">
                       {isExpanded(chapter.id) ? (
                         <ChevronDown className="h-3 w-3 transition-transform duration-200" />
                       ) : (
@@ -132,7 +86,6 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 {hasSubChapters && isExpanded(chapter.id) && (
                   <div className="absolute top-full left-0 mt-2 bg-white border border-orange-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => {
-                      const subIsCompleted = completedQuizzes.includes(subChapter.id);
                       return (
                         <Button
                           key={subChapter.id}
@@ -150,9 +103,6 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                         >
                           <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-3 flex-shrink-0 mt-1" />
                           <span className="text-wrap break-words whitespace-normal pr-6">{subChapter.name}</span>
-                          {subIsCompleted && (
-                            <Check className="h-3 w-3 text-green-600 absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-0.5" />
-                          )}
                         </Button>
                       );
                     })}

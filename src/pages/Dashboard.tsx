@@ -136,6 +136,15 @@ const Dashboard = () => {
       color: "from-yellow-400 to-orange-500",
       status: "Available",
       route: "/planning-solar"
+    },
+    {
+      id: "wind-planning",
+      title: "Wind - Planning",
+      description: "Wind Project Planning",
+      icon: Wind,
+      color: "from-blue-400 to-cyan-500",
+      status: "Available",
+      route: "/wind-planning"
     }
   ];
 

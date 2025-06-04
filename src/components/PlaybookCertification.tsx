@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,20 @@ interface CertificationQuestion {
   chapter: string;
 }
 
-export const PlaybookCertification = () => {
+interface Chapter {
+  id: string;
+  name: string;
+  shortName: string;
+  subChapters?: Chapter[];
+}
+
+interface PlaybookCertificationProps {
+  playbookId: string;
+  playbookName: string;
+  chapters: Chapter[];
+}
+
+export const PlaybookCertification = ({ playbookId, playbookName, chapters }: PlaybookCertificationProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
@@ -23,99 +37,99 @@ export const PlaybookCertification = () => {
   const certificationQuestions: CertificationQuestion[] = [
     {
       id: 1,
-      question: "What is the primary goal of cost estimation in PPA bid submissions?",
+      question: "What is the primary objective of project initiation in solar planning?",
       options: [
-        "To ensure competitive and accurate pricing",
-        "To maximize profit margins only",
-        "To reduce project scope",
-        "To delay project timelines"
+        "To define project scope and objectives",
+        "To start construction immediately",
+        "To finalize procurement contracts",
+        "To complete commissioning activities"
       ],
       correctAnswer: 0,
       chapter: "Chapter 1"
     },
     {
       id: 2,
-      question: "Which stakeholder is typically accountable for vendor empanelment decisions?",
+      question: "Which phase involves developing the land acquisition and site preparation strategy?",
       options: [
-        "Project Manager",
-        "Procurement Team",
-        "Senior Management",
-        "Legal Department"
+        "Project Initiation",
+        "Land Plan",
+        "Engineering Plan",
+        "Construction Plan"
       ],
-      correctAnswer: 2,
-      chapter: "Chapter 2"
+      correctAnswer: 1,
+      chapter: "Chapter 1"
     },
     {
       id: 3,
-      question: "What distinguishes project-specific agreements from framework agreements?",
+      question: "What is the key focus of the engineering plan in solar projects?",
       options: [
-        "Project-specific are more expensive",
-        "Framework agreements cover multiple projects",
-        "Project-specific require more documentation",
-        "Framework agreements are always preferred"
+        "Financial planning",
+        "Technical design and specifications",
+        "Resource allocation",
+        "Risk assessment only"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 3"
+      chapter: "Chapter 1"
     },
     {
       id: 4,
-      question: "What is the key benefit of proper contractor management?",
+      question: "Which component is essential in the procurement plan?",
       options: [
-        "Reduced costs only",
-        "Better project outcomes and risk mitigation",
-        "Faster project completion",
-        "Simplified documentation"
+        "Site survey only",
+        "Vendor selection and contract management",
+        "Construction scheduling",
+        "Commissioning procedures"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 4"
+      chapter: "Chapter 1"
     },
     {
       id: 5,
-      question: "How should cost estimates be maintained throughout the bidding process?",
+      question: "What is the primary purpose of the commissioning plan?",
       options: [
-        "Never updated after initial calculation",
-        "Updated only at project completion",
-        "Regularly updated as conditions change",
-        "Updated only when client requests"
+        "To start construction",
+        "To ensure system performance and handover",
+        "To acquire land",
+        "To design the system"
       ],
-      correctAnswer: 2,
+      correctAnswer: 1,
       chapter: "Chapter 1"
     },
     {
       id: 6,
-      question: "What is essential for effective vendor performance evaluation?",
+      question: "Why is plan integration crucial in solar project planning?",
       options: [
-        "Price comparison only",
-        "Regular monitoring and feedback",
-        "Annual reviews only",
-        "Technical specifications only"
+        "To reduce costs only",
+        "To coordinate all project elements and ensure alignment",
+        "To speed up construction",
+        "To simplify documentation"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 2"
+      chapter: "Chapter 1"
     },
     {
       id: 7,
-      question: "What is the most critical factor in contract award decisions?",
+      question: "What is the significance of scope management in solar projects?",
       options: [
-        "Lowest bid price",
-        "Balance of price, quality, and capability",
-        "Vendor location",
-        "Previous relationship"
+        "Controlling project boundaries and deliverables",
+        "Managing only financial aspects",
+        "Handling construction activities",
+        "Focusing on technical design only"
       ],
-      correctAnswer: 1,
-      chapter: "Chapter 3"
+      correctAnswer: 0,
+      chapter: "Chapter 2"
     },
     {
       id: 8,
-      question: "How should scope changes be handled in contractor management?",
+      question: "How should cost management be approached in solar projects?",
       options: [
-        "Automatically approved",
-        "Through formal change control process",
-        "Rejected by default",
-        "Handled informally"
+        "Focus only on initial costs",
+        "Consider lifecycle costs and value optimization",
+        "Minimize all expenses regardless of quality",
+        "Ignore maintenance costs"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 4"
+      chapter: "Chapter 3"
     }
   ];
 
@@ -177,14 +191,14 @@ export const PlaybookCertification = () => {
     
     // Save to localStorage for backwards compatibility
     const certificate = {
-      title: "Wind C&P Playbook Certification",
+      title: `${playbookName} Certification`,
       score: score,
       date: new Date().toLocaleDateString(),
-      playbookId: "wind-cp"
+      playbookId: playbookId
     };
 
     const existingCertificates = JSON.parse(localStorage.getItem('user_certificates') || '[]');
-    const updatedCertificates = [...existingCertificates.filter((cert: any) => cert.playbookId !== 'wind-cp'), certificate];
+    const updatedCertificates = [...existingCertificates.filter((cert: any) => cert.playbookId !== playbookId), certificate];
     localStorage.setItem('user_certificates', JSON.stringify(updatedCertificates));
 
     // Save to Supabase
@@ -199,7 +213,7 @@ export const PlaybookCertification = () => {
         .insert({
           user_name: userName,
           user_department: userDepartment,
-          playbook_name: "Wind C&P Playbook Certification",
+          playbook_name: `${playbookName} Certification`,
           score: score,
         });
 
@@ -240,13 +254,13 @@ export const PlaybookCertification = () => {
     // Subtitle
     ctx.font = '24px Arial';
     ctx.fillStyle = '#6b7280';
-    ctx.fillText('Wind C&P Playbook Certification', canvas.width / 2, 170);
+    ctx.fillText(`${playbookName} Certification`, canvas.width / 2, 170);
 
     // Content
     ctx.font = '18px Arial';
     ctx.fillStyle = '#374151';
     ctx.fillText('This certifies that the bearer has successfully completed', canvas.width / 2, 250);
-    ctx.fillText('the Wind Contracting & Procurement Playbook', canvas.width / 2, 280);
+    ctx.fillText(`the ${playbookName}`, canvas.width / 2, 280);
     ctx.fillText(`with a score of ${getScorePercentage()}%`, canvas.width / 2, 310);
 
     // Date
@@ -256,7 +270,7 @@ export const PlaybookCertification = () => {
 
     // Download
     const link = document.createElement('a');
-    link.download = 'wind-cp-certificate.png';
+    link.download = `${playbookId}-certificate.png`;
     link.href = canvas.toDataURL();
     link.click();
   };
@@ -270,7 +284,7 @@ export const PlaybookCertification = () => {
             Playbook Certification Exam
           </CardTitle>
           <CardDescription>
-            Complete this comprehensive exam covering all chapters to earn your Wind C&P Playbook certification. 
+            Complete this comprehensive exam covering all chapters to earn your {playbookName} certification. 
             A score of 75% or higher is required to pass.
           </CardDescription>
         </CardHeader>
@@ -377,7 +391,7 @@ export const PlaybookCertification = () => {
                       <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-4">Wind C&P Playbook Certified Professional</p>
+                  <p className="text-gray-700 mb-4">{playbookName} Certified Professional</p>
                   <Button
                     onClick={downloadCertificate}
                     className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
