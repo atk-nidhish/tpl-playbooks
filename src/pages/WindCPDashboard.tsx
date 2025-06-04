@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -439,11 +440,23 @@ const WindCPDashboard = () => {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <ChapterQuiz 
-              playbookId={playbookId}
-              activePhase={activePhase} 
-              onQuizComplete={handleQuizComplete}
-            />
+            {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
+              <ChapterQuiz 
+                playbookId={playbookId}
+                activePhase={activePhase} 
+                onQuizComplete={handleQuizComplete}
+              />
+            ) : (
+              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+                <CardContent className="p-12 text-center">
+                  <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>
+                  <p className="text-gray-600 text-lg">
+                    Complete all chapter quizzes to unlock this feature.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </ModernTabs>
       </div>

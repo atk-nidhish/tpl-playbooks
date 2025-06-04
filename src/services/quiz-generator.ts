@@ -27,18 +27,13 @@ export class QuizGenerator {
       this.getRaciData(playbookId, phaseId)
     ]);
 
-    console.log('Process steps for quiz generation:', processSteps);
-    console.log('RACI data for quiz generation:', raciData);
-
-    // Generate questions from process steps
+    // Generate questions from process steps (who is responsible)
     const processQuestions = this.generateProcessStepQuestions(processSteps);
     questions.push(...processQuestions);
 
-    // Generate questions from RACI matrix
+    // Generate questions from RACI matrix (team assignments)
     const raciQuestions = this.generateRaciQuestions(raciData);
     questions.push(...raciQuestions);
-
-    console.log('All generated questions:', questions);
 
     // Filter out used questions and shuffle
     const availableQuestions = questions.filter(q => !this.usedQuestions.has(q.id));
@@ -50,7 +45,6 @@ export class QuizGenerator {
     // Mark questions as used
     selectedQuestions.forEach(q => this.usedQuestions.add(q.id));
     
-    console.log('Selected questions for quiz:', selectedQuestions);
     return selectedQuestions;
   }
 
@@ -87,19 +81,16 @@ export class QuizGenerator {
   private generateProcessStepQuestions(processSteps: any[]): QuizQuestion[] {
     const questions: QuizQuestion[] = [];
 
-    // Collect all unique responsible parties and inputs for generating alternatives
-    const allResponsibles = [...new Set(processSteps.map(s => s.responsible).filter(Boolean))];
-    const allInputs = [...new Set(processSteps.flatMap(s => s.inputs || []).filter(Boolean))];
-
     processSteps.forEach((step, index) => {
       if (step.responsible && step.activity) {
-        // Create alternatives by excluding the correct answer
-        const alternatives = allResponsibles.filter(r => r !== step.responsible);
-        
-        if (alternatives.length >= 2) {
-          // Take exactly 2 alternatives and add the correct answer
-          const selectedAlternatives = alternatives.slice(0, 2);
-          const options = [step.responsible, ...selectedAlternatives];
+        // Question about who is responsible for a specific activity
+        const otherResponsibles = processSteps
+          .filter(s => s.responsible && s.responsible !== step.responsible)
+          .map(s => s.responsible)
+          .slice(0, 3);
+
+        if (otherResponsibles.length >= 2) {
+          const options = [step.responsible, ...otherResponsibles].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(step.responsible);
 
@@ -115,16 +106,16 @@ export class QuizGenerator {
         }
       }
 
-      // Question about inputs if available
+      // Question about inputs/outputs if available
       if (step.inputs && step.inputs.length > 0) {
-        const correctInput = step.inputs[0];
-        // Create alternatives by excluding the correct answer
-        const alternatives = allInputs.filter(input => input !== correctInput);
-        
-        if (alternatives.length >= 2) {
-          // Take exactly 2 alternatives and add the correct answer
-          const selectedAlternatives = alternatives.slice(0, 2);
-          const options = [correctInput, ...selectedAlternatives];
+        const otherInputs = processSteps
+          .filter(s => s.inputs && s.inputs.length > 0 && s.id !== step.id)
+          .flatMap(s => s.inputs)
+          .slice(0, 3);
+
+        if (otherInputs.length >= 2) {
+          const correctInput = step.inputs[0];
+          const options = [correctInput, ...otherInputs].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(correctInput);
 
@@ -147,19 +138,16 @@ export class QuizGenerator {
   private generateRaciQuestions(raciData: any[]): QuizQuestion[] {
     const questions: QuizQuestion[] = [];
 
-    // Collect all unique roles for generating alternatives
-    const allResponsibles = [...new Set(raciData.map(r => r.responsible).filter(Boolean))];
-    const allAccountables = [...new Set(raciData.map(r => r.accountable).filter(Boolean))];
-
     raciData.forEach((raci) => {
       if (raci.responsible && raci.task) {
-        // Create alternatives by excluding the correct answer
-        const alternatives = allResponsibles.filter(r => r !== raci.responsible);
-        
-        if (alternatives.length >= 2) {
-          // Take exactly 2 alternatives and add the correct answer
-          const selectedAlternatives = alternatives.slice(0, 2);
-          const options = [raci.responsible, ...selectedAlternatives];
+        // Question about who is responsible in RACI
+        const otherResponsibles = raciData
+          .filter(r => r.responsible && r.responsible !== raci.responsible)
+          .map(r => r.responsible)
+          .slice(0, 3);
+
+        if (otherResponsibles.length >= 2) {
+          const options = [raci.responsible, ...otherResponsibles].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(raci.responsible);
 
@@ -176,13 +164,14 @@ export class QuizGenerator {
       }
 
       if (raci.accountable && raci.task) {
-        // Create alternatives by excluding the correct answer
-        const alternatives = allAccountables.filter(a => a !== raci.accountable);
-        
-        if (alternatives.length >= 2) {
-          // Take exactly 2 alternatives and add the correct answer
-          const selectedAlternatives = alternatives.slice(0, 2);
-          const options = [raci.accountable, ...selectedAlternatives];
+        // Question about who is accountable in RACI
+        const otherAccountables = raciData
+          .filter(r => r.accountable && r.accountable !== raci.accountable)
+          .map(r => r.accountable)
+          .slice(0, 3);
+
+        if (otherAccountables.length >= 2) {
+          const options = [raci.accountable, ...otherAccountables].slice(0, 4);
           const shuffledOptions = this.shuffleArray(options);
           const correctIndex = shuffledOptions.indexOf(raci.accountable);
 
