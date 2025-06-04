@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Award, Brain, CheckCircle, X, RotateCcw, Download, Star, Lock, BookOpen } from "lucide-react";
+import { Award, Brain, CheckCircle, X, RotateCcw, Download, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CertificationQuestion {
@@ -11,7 +12,6 @@ interface CertificationQuestion {
   options: string[];
   correctAnswer: number;
   chapter: string;
-  explanation: string;
 }
 
 interface Chapter {
@@ -33,174 +33,114 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const [showResults, setShowResults] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [certificateEarned, setCertificateEarned] = useState(false);
-  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
-  const [showQuestionFeedback, setShowQuestionFeedback] = useState(false);
-  const [currentQuestionResult, setCurrentQuestionResult] = useState<{
-    isCorrect: boolean;
-    correctAnswer: string;
-    explanation: string;
-    chapter: string;
-  } | null>(null);
-
-  useEffect(() => {
-    // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('wind_planning_completed_quizzes');
-    if (saved) {
-      setCompletedQuizzes(JSON.parse(saved));
-    }
-
-    // Listen for quiz completion updates
-    const handleQuizUpdate = () => {
-      const updated = localStorage.getItem('wind_planning_completed_quizzes');
-      if (updated) {
-        setCompletedQuizzes(JSON.parse(updated));
-      }
-    };
-
-    window.addEventListener('completedQuizzesUpdated', handleQuizUpdate);
-    return () => window.removeEventListener('completedQuizzesUpdated', handleQuizUpdate);
-  }, []);
 
   const certificationQuestions: CertificationQuestion[] = [
     {
       id: 1,
-      question: "During the project initiation phase, what should be the primary focus to ensure successful wind energy project delivery?",
+      question: "What is the primary objective of project initiation in solar planning?",
       options: [
-        "Establishing comprehensive project scope, objectives, and stakeholder alignment",
-        "Immediately commencing construction and installation activities",
-        "Finalizing all equipment procurement contracts and vendor agreements"
+        "To define project scope and objectives",
+        "To start construction immediately",
+        "To finalize procurement contracts",
+        "To complete commissioning activities"
       ],
       correctAnswer: 0,
-      chapter: "Project Planning Framework",
-      explanation: "Project initiation requires establishing clear scope, objectives, and stakeholder alignment to create a solid foundation for project success."
+      chapter: "Chapter 1"
     },
     {
       id: 2,
-      question: "When developing a comprehensive land acquisition strategy, which phase should primarily handle this critical activity?",
+      question: "Which phase involves developing the land acquisition and site preparation strategy?",
       options: [
-        "Project Initiation and Startup Phase",
-        "Land Planning and Site Development Phase", 
-        "Engineering Design and Technical Planning Phase"
+        "Project Initiation",
+        "Land Plan",
+        "Engineering Plan",
+        "Construction Plan"
       ],
       correctAnswer: 1,
-      chapter: "Land Planning Framework",
-      explanation: "The Land Planning Phase is specifically designed to address land acquisition strategies, site preparation, and related logistical considerations."
+      chapter: "Chapter 1"
     },
     {
       id: 3,
-      question: "What represents the core deliverable of the engineering planning phase in wind energy development?",
+      question: "What is the key focus of the engineering plan in solar projects?",
       options: [
-        "Comprehensive financial modeling and budget forecasting",
-        "Detailed technical specifications, design drawings, and engineering documentation",
-        "Resource scheduling and project timeline optimization"
+        "Financial planning",
+        "Technical design and specifications",
+        "Resource allocation",
+        "Risk assessment only"
       ],
       correctAnswer: 1,
-      chapter: "Engineering Planning",
-      explanation: "Engineering planning focuses on creating detailed technical specifications, design documentation, and engineering deliverables that guide construction."
+      chapter: "Chapter 1"
     },
     {
       id: 4,
-      question: "In the context of procurement planning, what strategy ensures optimal project outcomes?",
+      question: "Which component is essential in the procurement plan?",
       options: [
-        "Comprehensive site survey documentation and environmental assessments",
-        "Strategic vendor evaluation, contract negotiation, and supply chain management",
-        "Detailed construction scheduling and timeline development"
+        "Site survey only",
+        "Vendor selection and contract management",
+        "Construction scheduling",
+        "Commissioning procedures"
       ],
       correctAnswer: 1,
-      chapter: "Procurement Management",
-      explanation: "Effective procurement planning emphasizes strategic vendor selection, contract management, and supply chain optimization for project success."
+      chapter: "Chapter 1"
     },
     {
       id: 5,
-      question: "What is the fundamental objective of developing a comprehensive commissioning strategy?",
+      question: "What is the primary purpose of the commissioning plan?",
       options: [
-        "Initiating construction activities and site preparation",
-        "Ensuring optimal system performance, testing protocols, and seamless operational handover",
-        "Completing final land acquisition and permitting processes"
+        "To start construction",
+        "To ensure system performance and handover",
+        "To acquire land",
+        "To design the system"
       ],
       correctAnswer: 1,
-      chapter: "Commissioning Planning",
-      explanation: "Commissioning planning ensures all systems meet performance specifications and facilitates a smooth transition to operational status."
+      chapter: "Chapter 1"
     },
     {
       id: 6,
-      question: "Why is integrated planning coordination essential across all phases of wind energy project development?",
+      question: "Why is plan integration crucial in solar project planning?",
       options: [
-        "To minimize initial capital expenditure and reduce project costs",
-        "To ensure seamless coordination, strategic alignment, and effective stakeholder communication",
-        "To accelerate construction timelines and expedite project delivery"
+        "To reduce costs only",
+        "To coordinate all project elements and ensure alignment",
+        "To speed up construction",
+        "To simplify documentation"
       ],
       correctAnswer: 1,
-      chapter: "Integrated Planning",
-      explanation: "Integrated planning ensures all project elements work cohesively, maintains strategic alignment, and facilitates effective stakeholder coordination."
+      chapter: "Chapter 1"
     },
     {
       id: 7,
-      question: "What principle should guide effective scope management throughout wind energy project execution?",
+      question: "What is the significance of scope management in solar projects?",
       options: [
-        "Clearly defined project boundaries, deliverable specifications, and change control processes",
-        "Exclusive focus on financial management and cost optimization strategies",
-        "Concentration on technical design elements and engineering specifications"
+        "Controlling project boundaries and deliverables",
+        "Managing only financial aspects",
+        "Handling construction activities",
+        "Focusing on technical design only"
       ],
       correctAnswer: 0,
-      chapter: "Scope Management",
-      explanation: "Effective scope management requires clear boundary definition, detailed deliverable specifications, and robust change control mechanisms."
+      chapter: "Chapter 2"
     },
     {
       id: 8,
-      question: "How should cost management be strategically approached throughout the wind energy project lifecycle?",
+      question: "How should cost management be approached in solar projects?",
       options: [
-        "Focus exclusively on initial capital cost minimization",
-        "Implement comprehensive lifecycle cost analysis, value engineering, and financial optimization",
-        "Prioritize cost reduction regardless of quality or performance impact"
+        "Focus only on initial costs",
+        "Consider lifecycle costs and value optimization",
+        "Minimize all expenses regardless of quality",
+        "Ignore maintenance costs"
       ],
       correctAnswer: 1,
-      chapter: "Cost Management",
-      explanation: "Strategic cost management requires comprehensive lifecycle analysis, value engineering principles, and balanced financial optimization approaches."
+      chapter: "Chapter 3"
     }
   ];
-
-  // Check if certification is unlocked
-  const isCertificationUnlocked = () => {
-    // Get all chapter IDs from the chapters prop
-    const allChapterIds = chapters.map(chapter => chapter.id);
-    
-    // Check if all chapters are completed
-    return allChapterIds.every(chapterId => completedQuizzes.includes(chapterId));
-  };
-
-  const getCompletionProgress = () => {
-    const allChapterIds = chapters.map(chapter => chapter.id);
-    const completed = allChapterIds.filter(chapterId => completedQuizzes.includes(chapterId)).length;
-    return {
-      completed,
-      total: allChapterIds.length,
-      percentage: Math.round((completed / allChapterIds.length) * 100)
-    };
-  };
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswers(prev => ({
       ...prev,
       [currentQuestion]: answerIndex
     }));
-
-    // Show immediate feedback
-    const question = certificationQuestions[currentQuestion];
-    const isCorrect = answerIndex === question.correctAnswer;
-    setCurrentQuestionResult({
-      isCorrect,
-      correctAnswer: question.options[question.correctAnswer],
-      explanation: question.explanation,
-      chapter: question.chapter
-    });
-    setShowQuestionFeedback(true);
   };
 
   const handleNextQuestion = () => {
-    setShowQuestionFeedback(false);
-    setCurrentQuestionResult(null);
-    
     if (currentQuestion < certificationQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
@@ -211,8 +151,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   };
 
   const handlePreviousQuestion = () => {
-    setShowQuestionFeedback(false);
-    setCurrentQuestionResult(null);
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
@@ -224,8 +162,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     setShowResults(false);
     setQuizCompleted(false);
     setCertificateEarned(false);
-    setShowQuestionFeedback(false);
-    setCurrentQuestionResult(null);
   };
 
   const calculateScore = () => {
@@ -339,88 +275,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     link.click();
   };
 
-  // If certification is locked, show progress
-  if (!isCertificationUnlocked()) {
-    const progress = getCompletionProgress();
-    
-    return (
-      <div className="space-y-6">
-        <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lock className="h-5 w-5 text-orange-500" />
-              Certification Exam Locked
-            </CardTitle>
-            <CardDescription>
-              Complete all chapter quizzes to unlock the certification exam.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-          <CardContent className="p-6">
-            <div className="text-center space-y-6">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Certification Progress</h3>
-                
-                {/* Progress bar */}
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                  <div 
-                    className="bg-gradient-to-r from-orange-500 to-yellow-500 h-4 rounded-full transition-all duration-300"
-                    style={{ width: `${progress.percentage}%` }}
-                  ></div>
-                </div>
-                
-                <div className="text-xl font-semibold text-gray-700">
-                  {progress.completed} of {progress.total} Chapters Completed
-                </div>
-                
-                <p className="text-gray-600 mt-4">
-                  Complete all chapter quizzes with a score of 75% or higher to unlock the certification exam.
-                </p>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="text-lg font-semibold text-gray-900">Chapters to Complete:</h4>
-                <div className="grid gap-3">
-                  {chapters.map(chapter => {
-                    const isCompleted = completedQuizzes.includes(chapter.id);
-                    return (
-                      <div 
-                        key={chapter.id}
-                        className={`flex items-center gap-3 p-3 rounded-lg border ${
-                          isCompleted ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        ) : (
-                          <BookOpen className="h-5 w-5 text-gray-500 flex-shrink-0" />
-                        )}
-                        <span className={`font-medium ${isCompleted ? 'text-green-800' : 'text-gray-800'}`}>
-                          {chapter.name}
-                        </span>
-                        <Badge
-                          className={`ml-auto ${
-                            isCompleted 
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          {isCompleted ? 'Completed' : 'Pending'}
-                        </Badge>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
@@ -469,12 +323,11 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                     <button
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
-                      disabled={showQuestionFeedback}
                       className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
                         selectedAnswers[currentQuestion] === index
                           ? 'border-orange-500 bg-orange-50'
                           : 'border-gray-200 bg-white hover:border-orange-300 hover:bg-orange-25'
-                      } ${showQuestionFeedback ? 'cursor-not-allowed opacity-70' : ''}`}
+                      }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-4 h-4 rounded-full border-2 ${
@@ -491,39 +344,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                     </button>
                   ))}
                 </div>
-                
-                {/* Immediate Feedback */}
-                {showQuestionFeedback && currentQuestionResult && (
-                  <div className={`mt-4 p-4 rounded-lg border-2 ${
-                    currentQuestionResult.isCorrect 
-                      ? 'border-green-200 bg-green-50' 
-                      : 'border-red-200 bg-red-50'
-                  }`}>
-                    <div className="flex items-start gap-3">
-                      {currentQuestionResult.isCorrect ? (
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      ) : (
-                        <X className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-                      )}
-                      <div className="flex-1">
-                        <p className={`font-medium mb-2 ${
-                          currentQuestionResult.isCorrect ? 'text-green-800' : 'text-red-800'
-                        }`}>
-                          {currentQuestionResult.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
-                        </p>
-                        {!currentQuestionResult.isCorrect && (
-                          <p className="text-sm text-gray-700 mb-2">
-                            <span className="font-medium">Correct answer:</span> {currentQuestionResult.correctAnswer}
-                          </p>
-                        )}
-                        <p className="text-sm text-gray-600 mb-2">{currentQuestionResult.explanation}</p>
-                        <Badge variant="outline" className="text-xs bg-purple-100 text-purple-700">
-                          {currentQuestionResult.chapter}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Navigation */}
@@ -551,65 +371,13 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Exam Completed!</h3>
                 <div className={`text-4xl font-bold ${getScorePercentage() >= 75 ? 'text-green-600' : 'text-red-600'}`}>
-                  {calculateScore()} / {certificationQuestions.length} ({getScorePercentage()}%)
-                </div>
-                <div className="mt-4">
-                  <Badge 
-                    className={`text-lg px-4 py-2 ${
-                      certificateEarned 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}
-                  >
-                    {certificateEarned ? '✅ PASSED' : '❌ FAILED'}
-                  </Badge>
+                  {getScorePercentage()}%
                 </div>
                 <p className="text-gray-600 mt-2">
                   {certificateEarned ? '🎉 Congratulations! You have earned your certification!' : 
                    getScorePercentage() >= 60 ? 'Close! You need 75% to pass. Try again!' : 
                    'Keep studying and try again!'}
                 </p>
-              </div>
-
-              {/* Detailed Results */}
-              <div className="space-y-4 mb-6">
-                <h4 className="text-lg font-semibold text-gray-900">Detailed Results</h4>
-                {certificationQuestions.map((question, index) => {
-                  const userAnswer = selectedAnswers[index];
-                  const isCorrect = userAnswer === question.correctAnswer;
-                  
-                  return (
-                    <div key={question.id} className="text-left p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-start gap-3 mb-2">
-                        {isCorrect ? (
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        ) : (
-                          <X className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-                        )}
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900 mb-2">{question.question}</p>
-                          <div className="space-y-1">
-                            <p className="text-sm">
-                              <span className="font-medium">Your answer:</span> {question.options[userAnswer]}
-                              <span className={`ml-2 font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                                {isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                              </span>
-                            </p>
-                            {!isCorrect && (
-                              <p className="text-sm text-green-700">
-                                <span className="font-medium">Correct answer:</span> {question.options[question.correctAnswer]}
-                              </p>
-                            )}
-                            <p className="text-sm text-gray-600 mt-2">{question.explanation}</p>
-                            <Badge variant="outline" className="text-xs bg-orange-100 text-orange-700 mt-2">
-                              {question.chapter}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
 
               {certificateEarned && (
