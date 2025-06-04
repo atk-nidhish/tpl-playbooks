@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,63 +29,63 @@ export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) =
     "chapter-1": [
       {
         id: 1,
-        question: "What is the main purpose of cost estimation in PPA bids?",
+        question: "What is the primary objective of cost estimation in the context of PPA bid submission?",
         options: [
-          "To ensure competitive pricing for project bids",
-          "To maximize company profits only",
-          "To reduce project timeline",
-          "To eliminate competition"
+          "To maximize project profitability",
+          "To determine accurate and competitive pricing for successful bid submission",
+          "To minimize project costs",
+          "To compare with competitor pricing"
         ],
-        correctAnswer: 0,
-        explanation: "Cost estimation ensures competitive and accurate pricing to win contracts while maintaining profitability."
+        correctAnswer: 1,
+        explanation: "The primary objective is to determine accurate and competitive pricing that enables successful bid submission while ensuring project viability."
       },
       {
         id: 2,
-        question: "Which factors are most important in PPA cost estimation?",
+        question: "Which of the following best describes the approach to cost estimation for renewable energy projects?",
         options: [
-          "Only material costs",
-          "Labor, materials, equipment, and overheads",
-          "Only equipment costs",
-          "Only overhead costs"
+          "Bottom-up approach considering all project components",
+          "Top-down approach based on market rates",
+          "Comparative analysis with similar projects",
+          "Rule of thumb estimations"
         ],
-        correctAnswer: 1,
-        explanation: "Comprehensive cost estimation includes all project components: labor, materials, equipment, and overhead costs."
+        correctAnswer: 0,
+        explanation: "A bottom-up approach considering all project components ensures comprehensive and accurate cost estimation for renewable energy projects."
       },
       {
         id: 3,
-        question: "How often should cost estimates be updated during bidding?",
+        question: "What is the recommended contingency percentage to be applied in cost estimation for wind energy projects?",
         options: [
-          "Never after initial calculation",
-          "Only at project completion",
-          "Regularly as market conditions change",
-          "Only when requested by client"
+          "2-5%",
+          "5-10%",
+          "10-15%",
+          "15-20%"
         ],
         correctAnswer: 2,
-        explanation: "Cost estimates should be updated regularly to reflect current market conditions and ensure accuracy."
+        explanation: "A contingency of 10-15% is typically recommended for wind energy projects to account for uncertainties and risk factors."
       },
       {
         id: 4,
-        question: "What is the typical contingency percentage in wind project estimates?",
+        question: "In the context of cost estimation, what does 'CAPEX' refer to?",
         options: [
-          "1-2%",
-          "5-15%",
-          "25-30%",
-          "50%"
+          "Capital Expenditure - upfront investment costs",
+          "Capacity Expenditure - operational costs",
+          "Cash Expenditure - working capital needs",
+          "Contingency Expenditure - risk allowances"
         ],
-        correctAnswer: 1,
-        explanation: "Industry standard contingency for wind projects typically ranges from 5-15% depending on project complexity."
+        correctAnswer: 0,
+        explanation: "CAPEX refers to Capital Expenditure, which includes all upfront investment costs required for project development and construction."
       },
       {
         id: 5,
-        question: "Which document is essential for accurate cost estimation?",
+        question: "Which factor is most critical when determining the cost of a wind turbine in a PPA bid?",
         options: [
-          "Company brochure",
-          "Project specifications and requirements",
-          "Previous year's budget",
-          "Marketing materials"
+          "Transportation costs only",
+          "Installation costs only",
+          "Turbine specification, capacity, and site-specific requirements",
+          "Maintenance costs only"
         ],
-        correctAnswer: 1,
-        explanation: "Project specifications and requirements are crucial for accurate cost estimation as they define the scope of work."
+        correctAnswer: 2,
+        explanation: "Turbine specification, capacity, and site-specific requirements are the most critical factors as they determine the technical suitability and overall project economics."
       }
     ],
     "chapter-2": [
