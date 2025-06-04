@@ -1,19 +1,16 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
-import { ChapterQuiz } from "@/components/ChapterQuiz";
-import { PlaybookCertification } from "@/components/PlaybookCertification";
-import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
 import { seedPlanningSolarData } from "@/services/planning-solar-playbook-seeder";
-import { Home, BookOpen, Users, Map, Settings, Zap, Award, Trophy, Lock } from "lucide-react";
+import { Home, Map, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -24,15 +21,6 @@ export default function PlanningSolarDashboard() {
   const [activePhase, setActivePhase] = useState("section-1.1");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("processes");
-  const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Load completed quizzes from localStorage
-    const saved = localStorage.getItem('completed_quizzes');
-    if (saved) {
-      setCompletedQuizzes(JSON.parse(saved));
-    }
-  }, []);
 
   useEffect(() => {
     // Initialize playbook data on component mount
@@ -91,16 +79,6 @@ export default function PlanningSolarDashboard() {
       id: "chapter-6",
       name: "Chapter 6: Risk Management Plan",
       shortName: "Ch 6: Risk Management"
-    },
-    {
-      id: "certification",
-      name: "Playbook Certification",
-      shortName: "Certification"
-    },
-    {
-      id: "leaderboard",
-      name: "Certification Leaderboard",
-      shortName: "Leaderboard"
     }
   ];
 
@@ -121,41 +99,8 @@ export default function PlanningSolarDashboard() {
     "chapter-6": "/lovable-uploads/5988e549-2352-4c27-9380-24fdc2e14575.png"
   };
 
-  // Check if all quizzes are completed
-  const allQuizzesCompleted = chapters
-    .filter(ch => ch.id !== "certification" && ch.id !== "leaderboard")
-    .every(chapter => {
-      if (chapter.subChapters) {
-        return chapter.subChapters.every(sub => completedQuizzes.includes(sub.id));
-      }
-      return completedQuizzes.includes(chapter.id);
-    });
-
   const navigateToRaci = () => {
     setActiveTab("raci");
-  };
-
-  const navigateToQuiz = () => {
-    setActiveTab("quiz");
-  };
-
-  const handleQuizComplete = () => {
-    const allChapterIds = chapters.reduce((acc, ch) => {
-      if (ch.subChapters) {
-        return [...acc, ...ch.subChapters.map(sub => sub.id)];
-      }
-      if (ch.id !== "certification" && ch.id !== "leaderboard") {
-        return [...acc, ch.id];
-      }
-      return acc;
-    }, [] as string[]);
-    
-    const currentIndex = allChapterIds.indexOf(activePhase);
-    if (currentIndex >= 0 && currentIndex < allChapterIds.length - 1) {
-      const nextChapter = allChapterIds[currentIndex + 1];
-      setActivePhase(nextChapter);
-      setActiveTab("processes");
-    }
   };
 
   const downloadProcessMap = (phaseId: string) => {
@@ -169,142 +114,6 @@ export default function PlanningSolarDashboard() {
       document.body.removeChild(link);
     }
   };
-
-  // Handle leaderboard section
-  if (activePhase === "leaderboard") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Home className="h-5 w-5 text-gray-600" />
-                </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                  <p className="text-sm text-gray-600">Planning Playbook</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Modern Navigation */}
-        <ModernNavigation 
-          chapters={chapters}
-          activePhase={activePhase}
-          onPhaseChange={setActivePhase}
-        />
-
-        <div className="container mx-auto px-6 py-8">
-          <Leaderboard />
-        </div>
-      </div>
-    );
-  }
-
-  // Handle certification section
-  if (activePhase === "certification") {
-    if (!allQuizzesCompleted) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-          {/* Header */}
-          <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-            <div className="container mx-auto px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                    <Home className="h-5 w-5 text-gray-600" />
-                  </Link>
-                  <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                    <p className="text-sm text-gray-600">Planning Playbook</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* Modern Navigation */}
-          <ModernNavigation 
-            chapters={chapters}
-            activePhase={activePhase}
-            onPhaseChange={setActivePhase}
-          />
-
-          <div className="container mx-auto px-6 py-8">
-            <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-              <CardContent className="p-12 text-center">
-                <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Certification Locked</h2>
-                <p className="text-gray-600 text-lg mb-6">
-                  Complete all chapter quizzes to unlock the playbook certification exam.
-                </p>
-                <div className="max-w-md mx-auto">
-                  <div className="bg-gray-200 rounded-full h-2 mb-4">
-                    <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${(completedQuizzes.length / 15) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    Progress: {completedQuizzes.length} of 15 quizzes completed
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-orange-200">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Link to="/" className="p-2 hover:bg-orange-100 rounded-lg transition-colors">
-                  <Home className="h-5 w-5 text-gray-600" />
-                </Link>
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Planning - Solar</h1>
-                  <p className="text-sm text-gray-600">Planning Playbook</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Modern Navigation */}
-        <ModernNavigation 
-          chapters={chapters}
-          activePhase={activePhase}
-          onPhaseChange={setActivePhase}
-        />
-
-        <div className="container mx-auto px-6 py-8">
-          <PlaybookCertification 
-            playbookId={PLAYBOOK_ID}
-            playbookName="Planning - Solar"
-            chapters={chapters}
-          />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
@@ -362,7 +171,6 @@ export default function PlanningSolarDashboard() {
               playbookId={PLAYBOOK_ID} 
               activePhase={activePhase} 
               searchQuery={searchQuery}
-              onNavigateToQuiz={navigateToQuiz}
             />
           </TabsContent>
 
@@ -405,25 +213,6 @@ export default function PlanningSolarDashboard() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
-              <ChapterQuiz 
-                activePhase={activePhase} 
-                onQuizComplete={handleQuizComplete}
-              />
-            ) : (
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-                <CardContent className="p-12 text-center">
-                  <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz Locked</h2>
-                  <p className="text-gray-600 text-lg">
-                    Complete all chapter quizzes to unlock this feature.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
           </TabsContent>
         </ModernTabs>
       </div>
