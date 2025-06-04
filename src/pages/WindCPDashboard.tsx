@@ -23,7 +23,6 @@ const WindCPDashboard = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("processes");
-  const [quizLocked, setQuizLocked] = useState(false);
 
   useEffect(() => {
     // Load completed quizzes from localStorage
@@ -138,14 +137,6 @@ const WindCPDashboard = () => {
 
   const handleNavigateToQuiz = () => {
     setActiveTab("quiz");
-  };
-
-  const handleQuizStart = () => {
-    setQuizLocked(true);
-  };
-
-  const handleQuizEnd = () => {
-    setQuizLocked(false);
   };
 
   const getNextChapter = (currentPhase: string) => {
@@ -393,7 +384,7 @@ const WindCPDashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Main Content Tabs */}
-        <ModernTabs value={activeTab} onValueChange={setActiveTab} quizLocked={quizLocked}>
+        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="processes">
             <ProcessSteps 
               playbookId={playbookId} 
@@ -450,11 +441,8 @@ const WindCPDashboard = () => {
           <TabsContent value="quiz">
             {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
               <ChapterQuiz 
-                playbookId={playbookId}
                 activePhase={activePhase} 
                 onQuizComplete={handleQuizComplete}
-                onQuizStart={handleQuizStart}
-                onQuizEnd={handleQuizEnd}
               />
             ) : (
               <Card className="bg-white/90 backdrop-blur-sm border-orange-200">

@@ -1,95 +1,170 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, CheckCircle, X, RotateCcw, Loader2 } from "lucide-react";
-import { quizGenerator, QuizQuestion } from "@/services/quiz-generator";
+import { Brain, CheckCircle, X, RotateCcw } from "lucide-react";
 
-interface ChapterQuizProps {
-  playbookId: string;
-  activePhase: string;
-  onQuizComplete?: () => void;
-  onQuizStart?: () => void;
-  onQuizEnd?: () => void;
+interface QuizQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
 }
 
-export const ChapterQuiz = ({ 
-  playbookId, 
-  activePhase, 
-  onQuizComplete, 
-  onQuizStart, 
-  onQuizEnd 
-}: ChapterQuizProps) => {
+interface ChapterQuizProps {
+  activePhase: string;
+  onQuizComplete?: () => void;
+}
+
+export const ChapterQuiz = ({ activePhase, onQuizComplete }: ChapterQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestions, setCurrentQuestions] = useState<QuizQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadQuizQuestions();
-  }, [playbookId, activePhase]);
-
-  useEffect(() => {
-    // Notify parent when quiz starts/ends
-    if (quizStarted && onQuizStart) {
-      onQuizStart();
-    }
-    if (showResults && onQuizEnd) {
-      onQuizEnd();
-    }
-  }, [quizStarted, showResults, onQuizStart, onQuizEnd]);
-
-  const loadQuizQuestions = async () => {
-    if (!playbookId || !activePhase || activePhase === "certification") {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-      
-      console.log('Generating quiz questions for:', { playbookId, activePhase });
-      
-      const questions = await quizGenerator.generateQuestionsForChapter(
-        playbookId, 
-        activePhase, 
-        3
-      );
-      
-      console.log('Generated questions:', questions);
-      
-      if (questions.length === 0) {
-        setError("No questions available for this chapter. Please ensure the chapter has process steps or RACI data.");
-      } else {
-        setCurrentQuestions(questions);
-        resetQuiz();
+  // Question pools for each chapter
+  const questionPools: { [key: string]: QuizQuestion[] } = {
+    "chapter-1": [
+      {
+        id: 1,
+        question: "What is the primary objective of cost estimation in the context of PPA bid submission?",
+        options: [
+          "To maximize project profitability",
+          "To determine accurate and competitive pricing for successful bid submission",
+          "To minimize project costs",
+          "To compare with competitor pricing"
+        ],
+        correctAnswer: 1,
+        explanation: "The primary objective is to determine accurate and competitive pricing that enables successful bid submission while ensuring project viability."
+      },
+      {
+        id: 2,
+        question: "Which of the following best describes the approach to cost estimation for renewable energy projects?",
+        options: [
+          "Bottom-up approach considering all project components",
+          "Top-down approach based on market rates",
+          "Comparative analysis with similar projects",
+          "Rule of thumb estimations"
+        ],
+        correctAnswer: 0,
+        explanation: "A bottom-up approach considering all project components ensures comprehensive and accurate cost estimation for renewable energy projects."
+      },
+      {
+        id: 3,
+        question: "What is the recommended contingency percentage to be applied in cost estimation for wind energy projects?",
+        options: [
+          "2-5%",
+          "5-10%",
+          "10-15%",
+          "15-20%"
+        ],
+        correctAnswer: 2,
+        explanation: "A contingency of 10-15% is typically recommended for wind energy projects to account for uncertainties and risk factors."
+      },
+      {
+        id: 4,
+        question: "In the context of cost estimation, what does 'CAPEX' refer to?",
+        options: [
+          "Capital Expenditure - upfront investment costs",
+          "Capacity Expenditure - operational costs",
+          "Cash Expenditure - working capital needs",
+          "Contingency Expenditure - risk allowances"
+        ],
+        correctAnswer: 0,
+        explanation: "CAPEX refers to Capital Expenditure, which includes all upfront investment costs required for project development and construction."
+      },
+      {
+        id: 5,
+        question: "Which factor is most critical when determining the cost of a wind turbine in a PPA bid?",
+        options: [
+          "Transportation costs only",
+          "Installation costs only",
+          "Turbine specification, capacity, and site-specific requirements",
+          "Maintenance costs only"
+        ],
+        correctAnswer: 2,
+        explanation: "Turbine specification, capacity, and site-specific requirements are the most critical factors as they determine the technical suitability and overall project economics."
       }
-    } catch (err) {
-      console.error('Error loading quiz questions:', err);
-      setError("Failed to load quiz questions. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    ],
+    "chapter-2": [
+      {
+        id: 1,
+        question: "What is vendor empanelment?",
+        options: [
+          "Firing vendors",
+          "Process of selecting and approving vendors",
+          "Paying vendors",
+          "Training vendors"
+        ],
+        correctAnswer: 1,
+        explanation: "Vendor empanelment is the systematic process of evaluating, selecting, and approving vendors for business partnerships."
+      },
+      {
+        id: 2,
+        question: "Which criteria is most important for vendor selection?",
+        options: [
+          "Lowest price only",
+          "Technical capability and financial stability",
+          "Company size only",
+          "Location proximity only"
+        ],
+        correctAnswer: 1,
+        explanation: "Technical capability and financial stability are crucial for ensuring reliable vendor performance."
+      },
+      {
+        id: 3,
+        question: "How often should vendor performance be reviewed?",
+        options: [
+          "Never",
+          "Once a year",
+          "Regularly throughout the project",
+          "Only at project end"
+        ],
+        correctAnswer: 2,
+        explanation: "Regular vendor performance reviews ensure quality standards are maintained throughout the project lifecycle."
+      },
+      {
+        id: 4,
+        question: "What documentation is required for vendor empanelment?",
+        options: [
+          "Business registration and certificates only",
+          "Complete compliance and capability documents",
+          "Bank statements only",
+          "Reference letters only"
+        ],
+        correctAnswer: 1,
+        explanation: "Comprehensive documentation including compliance, capability, and financial documents is required for proper vendor assessment."
+      },
+      {
+        id: 5,
+        question: "Who typically approves vendor empanelment decisions?",
+        options: [
+          "Project manager only",
+          "Procurement committee or senior management",
+          "Financial team only",
+          "Technical team only"
+        ],
+        correctAnswer: 1,
+        explanation: "Vendor empanelment decisions typically require approval from a procurement committee or senior management for accountability."
+      }
+    ]
   };
+
+  useEffect(() => {
+    // Select 3 random questions for the current chapter
+    const chapterQuestions = questionPools[activePhase] || questionPools["chapter-1"];
+    const shuffled = [...chapterQuestions].sort(() => 0.5 - Math.random());
+    setCurrentQuestions(shuffled.slice(0, 3));
+    resetQuiz();
+  }, [activePhase]);
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswers(prev => ({
       ...prev,
       [currentQuestion]: answerIndex
     }));
-  };
-
-  const handleStartQuiz = () => {
-    setQuizStarted(true);
-    if (onQuizStart) {
-      onQuizStart();
-    }
   };
 
   const handleNextQuestion = () => {
@@ -127,16 +202,10 @@ export const ChapterQuiz = ({
     setSelectedAnswers({});
     setShowResults(false);
     setQuizCompleted(false);
-    setQuizStarted(false);
-  };
-
-  const handleRetakeQuiz = async () => {
-    // Reset used questions and generate new ones
-    quizGenerator.resetUsedQuestions();
-    await loadQuizQuestions();
-    if (onQuizEnd) {
-      onQuizEnd();
-    }
+    // Shuffle questions again
+    const chapterQuestions = questionPools[activePhase] || questionPools["chapter-1"];
+    const shuffled = [...chapterQuestions].sort(() => 0.5 - Math.random());
+    setCurrentQuestions(shuffled.slice(0, 3));
   };
 
   const calculateScore = () => {
@@ -166,36 +235,11 @@ export const ChapterQuiz = ({
     );
   }
 
-  if (loading) {
-    return (
-      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-        <CardContent className="p-8 text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Generating quiz questions from playbook data...</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-        <CardContent className="p-8 text-center">
-          <p className="text-red-600 mb-4">{error}</p>
-          <Button onClick={loadQuizQuestions} variant="outline">
-            Try Again
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
   if (currentQuestions.length === 0) {
     return (
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-8 text-center">
-          <p className="text-gray-600">No quiz questions available for this chapter.</p>
-          <p className="text-sm text-gray-500 mt-2">Questions are generated from process steps and RACI matrix data.</p>
+          <p className="text-gray-600">Loading quiz questions...</p>
         </CardContent>
       </Card>
     );
@@ -210,31 +254,14 @@ export const ChapterQuiz = ({
             Chapter Quiz - {activePhase}
           </CardTitle>
           <CardDescription>
-            Test your knowledge with {currentQuestions.length} questions generated from this chapter's content
+            Test your knowledge with 3 questions from this chapter
           </CardDescription>
         </CardHeader>
       </Card>
 
       <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
         <CardContent className="p-6">
-          {!quizStarted ? (
-            /* Quiz Start Screen */
-            <div className="text-center space-y-6">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Ready to start the quiz?</h3>
-                <p className="text-gray-600">
-                  You'll have {currentQuestions.length} questions about this chapter. 
-                  Once you start, other tabs will be locked until you complete the quiz.
-                </p>
-              </div>
-              <Button
-                onClick={handleStartQuiz}
-                className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
-              >
-                Start Quiz
-              </Button>
-            </div>
-          ) : !quizCompleted ? (
+          {!quizCompleted ? (
             <div className="space-y-6">
               {/* Progress Bar */}
               <div className="flex items-center justify-between mb-6">
@@ -251,12 +278,6 @@ export const ChapterQuiz = ({
 
               {/* Question */}
               <div className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                    {currentQuestions[currentQuestion]?.source === 'process_steps' ? 'Process Steps' : 'RACI Matrix'}
-                  </Badge>
-                </div>
-                
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {currentQuestions[currentQuestion]?.question}
                 </h3>
@@ -358,11 +379,11 @@ export const ChapterQuiz = ({
               </div>
 
               <Button
-                onClick={handleRetakeQuiz}
+                onClick={resetQuiz}
                 className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
               >
                 <RotateCcw className="h-4 w-4 mr-2" />
-                Take New Quiz
+                Take Quiz Again
               </Button>
             </div>
           )}

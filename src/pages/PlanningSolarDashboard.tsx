@@ -410,7 +410,6 @@ export default function PlanningSolarDashboard() {
           <TabsContent value="quiz">
             {!allQuizzesCompleted && chapters.find(ch => ch.id === activePhase || (ch.subChapters && ch.subChapters.some(sub => sub.id === activePhase))) ? (
               <ChapterQuiz 
-                playbookId={PLAYBOOK_ID}
                 activePhase={activePhase} 
                 onQuizComplete={handleQuizComplete}
               />
