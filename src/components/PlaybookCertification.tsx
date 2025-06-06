@@ -37,99 +37,113 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const certificationQuestions: CertificationQuestion[] = [
     {
       id: 1,
-      question: "What is the primary objective of project initiation in solar planning?",
+      question: "Who is responsible for taking physical control of land covering a minimum of 20 WTG sites and PSS?",
       options: [
-        "To define project scope and objectives",
-        "To start construction immediately",
-        "To finalize procurement contracts",
-        "To complete commissioning activities"
+        "Land Manager",
+        "Site Manager",
+        "Project Manager"
       ],
-      correctAnswer: 0,
-      chapter: "Chapter 1"
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
     },
     {
       id: 2,
-      question: "Which phase involves developing the land acquisition and site preparation strategy?",
+      question: "What document does the Project Manager request from the Regulatory Approvals Head to proceed with the construction?",
       options: [
-        "Project Initiation",
-        "Land Plan",
-        "Engineering Plan",
-        "Construction Plan"
+        "Building and Other Construction Works (BOCW) license",
+        "Grant of Connectivity and Developer Permission",
+        "Notice to Proceed (NTP)"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Wind C&P Process"
     },
     {
       id: 3,
-      question: "What is the key focus of the engineering plan in solar projects?",
+      question: "Who is accountable for providing the Grant of Connectivity and Developer Permission to the Project Manager?",
       options: [
-        "Financial planning",
-        "Technical design and specifications",
-        "Resource allocation",
-        "Risk assessment only"
+        "Contractor SPOC",
+        "Regulatory Approvals Head",
+        "Site QHSSE Manager"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Wind C&P Process"
     },
     {
       id: 4,
-      question: "Which component is essential in the procurement plan?",
+      question: "What is the output document when the Project Manager issues the Notice to Proceed to the Contractor SPOC?",
       options: [
-        "Site survey only",
-        "Vendor selection and contract management",
-        "Construction scheduling",
-        "Commissioning procedures"
+        "Compliance Documents Application",
+        "Notice to Proceed",
+        "BOCW License"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Wind C&P Process"
     },
     {
       id: 5,
-      question: "What is the primary purpose of the commissioning plan?",
+      question: "Who is responsible for applying for the BOCW license and sharing it with the Project Manager and Regulatory Approvals Head?",
       options: [
-        "To start construction",
-        "To ensure system performance and handover",
-        "To acquire land",
-        "To design the system"
+        "Site Functional Head",
+        "Contractor SPOC",
+        "Site Manager"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 1"
+      chapter: "Wind C&P Process"
     },
     {
       id: 6,
-      question: "Why is plan integration crucial in solar project planning?",
+      question: "What document does the Contractor SPOC need to apply for compliance documents outlined in the contractor mobilization checklist?",
       options: [
-        "To reduce costs only",
-        "To coordinate all project elements and ensure alignment",
-        "To speed up construction",
-        "To simplify documentation"
+        "Construction Management Plan",
+        "Health and Fitness Certificates",
+        "Contractor Mobilization Checklist"
       ],
-      correctAnswer: 1,
-      chapter: "Chapter 1"
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
     },
     {
       id: 7,
-      question: "What is the significance of scope management in solar projects?",
+      question: "Who verifies the health and fitness certificates of the contractor's manpower?",
       options: [
-        "Controlling project boundaries and deliverables",
-        "Managing only financial aspects",
-        "Handling construction activities",
-        "Focusing on technical design only"
+        "Site QHSSE Manager",
+        "Project Manager",
+        "Site Functional Head"
       ],
       correctAnswer: 0,
-      chapter: "Chapter 2"
+      chapter: "Wind C&P Process"
     },
     {
       id: 8,
-      question: "How should cost management be approached in solar projects?",
+      question: "What document does the Site Functional Head raise to the Site QHSSE Lead once a job is completed?",
       options: [
-        "Focus only on initial costs",
-        "Consider lifecycle costs and value optimization",
-        "Minimize all expenses regardless of quality",
-        "Ignore maintenance costs"
+        "Quality Inspection Notice",
+        "Job Completion Certificate",
+        "Daily Progress Report (DPR)"
       ],
       correctAnswer: 1,
-      chapter: "Chapter 3"
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 9,
+      question: "Who is responsible for conducting the safety induction of all the site manpower and issuing ID cards to them?",
+      options: [
+        "Site Manager",
+        "Site QHSSE Manager",
+        "Contractor SPOC"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 10,
+      question: "What document does the Site QHSSE Lead issue to the Contractor SPOC upon successful inspection of the completed work?",
+      options: [
+        "Quality Deviation List",
+        "Job Completion Certificate",
+        "Notice to Proceed"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     }
   ];
 
