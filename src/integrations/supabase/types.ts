@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           completed_at: string
           created_at: string
+          employee_id: string | null
           id: string
           playbook_name: string
           score: number
@@ -22,6 +23,7 @@ export type Database = {
         Insert: {
           completed_at?: string
           created_at?: string
+          employee_id?: string | null
           id?: string
           playbook_name: string
           score: number
@@ -31,6 +33,7 @@ export type Database = {
         Update: {
           completed_at?: string
           created_at?: string
+          employee_id?: string | null
           id?: string
           playbook_name?: string
           score?: number

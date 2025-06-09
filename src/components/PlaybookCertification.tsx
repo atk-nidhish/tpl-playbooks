@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Award, Brain, CheckCircle, X, RotateCcw, Download, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { UserInfoForm } from "./UserInfoForm";
 
 interface CertificationQuestion {
   id: number;
@@ -21,6 +21,11 @@ interface Chapter {
   subChapters?: Chapter[];
 }
 
+interface UserInfo {
+  fullName: string;
+  employeeId: string;
+}
+
 interface PlaybookCertificationProps {
   playbookId: string;
   playbookName: string;
@@ -33,6 +38,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const [showResults, setShowResults] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [certificateEarned, setCertificateEarned] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [showUserForm, setShowUserForm] = useState(true);
 
   const certificationQuestions: CertificationQuestion[] = [
     {
@@ -147,6 +154,11 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
+    setUserInfo(submittedUserInfo);
+    setShowUserForm(false);
+  };
+
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswers(prev => ({
       ...prev,
@@ -176,6 +188,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     setShowResults(false);
     setQuizCompleted(false);
     setCertificateEarned(false);
+    setShowUserForm(true);
+    setUserInfo(null);
   };
 
   const calculateScore = () => {
@@ -201,6 +215,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   };
 
   const saveCertificate = async () => {
+    if (!userInfo) return;
+    
     const score = getScorePercentage();
     
     // Save to localStorage for backwards compatibility
@@ -208,25 +224,23 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
       title: `${playbookName} Certification`,
       score: score,
       date: new Date().toLocaleDateString(),
-      playbookId: playbookId
+      playbookId: playbookId,
+      fullName: userInfo.fullName,
+      employeeId: userInfo.employeeId
     };
 
     const existingCertificates = JSON.parse(localStorage.getItem('user_certificates') || '[]');
     const updatedCertificates = [...existingCertificates.filter((cert: any) => cert.playbookId !== playbookId), certificate];
     localStorage.setItem('user_certificates', JSON.stringify(updatedCertificates));
 
-    // Save to Supabase
+    // Save to Supabase with real user information
     try {
-      // For now, we'll use a placeholder user name and department
-      // In a real application, this would come from user authentication
-      const userName = `User_${Date.now()}`;
-      const userDepartment = "Not specified";
-      
       const { error } = await supabase
         .from('certification_scores')
         .insert({
-          user_name: userName,
-          user_department: userDepartment,
+          user_name: userInfo.fullName,
+          employee_id: userInfo.employeeId,
+          user_department: "Not specified", // Keep this field for now
           playbook_name: `${playbookName} Certification`,
           score: score,
         });
@@ -242,6 +256,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   };
 
   const downloadCertificate = () => {
+    if (!userInfo) return;
+
     // Create a simple certificate canvas
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -273,21 +289,52 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     // Content
     ctx.font = '18px Arial';
     ctx.fillStyle = '#374151';
-    ctx.fillText('This certifies that the bearer has successfully completed', canvas.width / 2, 250);
-    ctx.fillText(`the ${playbookName}`, canvas.width / 2, 280);
-    ctx.fillText(`with a score of ${getScorePercentage()}%`, canvas.width / 2, 310);
+    ctx.fillText('This certifies that', canvas.width / 2, 230);
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText(userInfo.fullName, canvas.width / 2, 270);
+    ctx.font = '16px Arial';
+    ctx.fillText(`Employee ID: ${userInfo.employeeId}`, canvas.width / 2, 300);
+    ctx.font = '18px Arial';
+    ctx.fillText('has successfully completed', canvas.width / 2, 340);
+    ctx.fillText(`the ${playbookName}`, canvas.width / 2, 370);
+    ctx.fillText(`with a score of ${getScorePercentage()}%`, canvas.width / 2, 400);
 
     // Date
     ctx.font = '16px Arial';
     ctx.fillStyle = '#6b7280';
-    ctx.fillText(`Issued on: ${new Date().toLocaleDateString()}`, canvas.width / 2, 450);
+    ctx.fillText(`Issued on: ${new Date().toLocaleDateString()}`, canvas.width / 2, 480);
 
     // Download
     const link = document.createElement('a');
-    link.download = `${playbookId}-certificate.png`;
+    link.download = `${userInfo.fullName}-${playbookId}-certificate.png`;
     link.href = canvas.toDataURL();
     link.click();
   };
+
+  // Show user info form if user hasn't provided their information yet
+  if (showUserForm) {
+    return (
+      <div className="space-y-6">
+        <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Award className="h-5 w-5 text-orange-500" />
+              Playbook Certification Exam
+            </CardTitle>
+            <CardDescription>
+              Complete this comprehensive exam covering all chapters to earn your {playbookName} certification. 
+              A score of 75% or higher is required to pass.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
+        <UserInfoForm 
+          onUserInfoSubmit={handleUserInfoSubmit}
+          playbookName={playbookName}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -298,7 +345,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
             Playbook Certification Exam
           </CardTitle>
           <CardDescription>
-            Complete this comprehensive exam covering all chapters to earn your {playbookName} certification. 
+            Welcome {userInfo?.fullName} (ID: {userInfo?.employeeId}). Complete this comprehensive exam covering all chapters to earn your {playbookName} certification. 
             A score of 75% or higher is required to pass.
           </CardDescription>
         </CardHeader>
