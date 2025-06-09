@@ -1,10 +1,13 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Award, Brain, CheckCircle, X, RotateCcw, Download, Star } from "lucide-react";
+import { Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserInfoForm } from "./UserInfoForm";
+import { QuizProgress } from "./QuizProgress";
+import { QuizQuestion } from "./QuizQuestion";
+import { QuizNavigation } from "./QuizNavigation";
+import { QuizResults } from "./QuizResults";
 
 interface CertificationQuestion {
   id: number;
@@ -255,62 +258,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   };
 
-  const downloadCertificate = () => {
-    if (!userInfo) return;
-
-    // Create a simple certificate canvas
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = 800;
-    canvas.height = 600;
-
-    // Background
-    ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Border
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 8;
-    ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-
-    // Title
-    ctx.fillStyle = '#1f2937';
-    ctx.font = 'bold 36px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Certificate of Completion', canvas.width / 2, 120);
-
-    // Subtitle
-    ctx.font = '24px Arial';
-    ctx.fillStyle = '#6b7280';
-    ctx.fillText(`${playbookName} Certification`, canvas.width / 2, 170);
-
-    // Content
-    ctx.font = '18px Arial';
-    ctx.fillStyle = '#374151';
-    ctx.fillText('This certifies that', canvas.width / 2, 230);
-    ctx.font = 'bold 24px Arial';
-    ctx.fillText(userInfo.fullName, canvas.width / 2, 270);
-    ctx.font = '16px Arial';
-    ctx.fillText(`Employee ID: ${userInfo.employeeId}`, canvas.width / 2, 300);
-    ctx.font = '18px Arial';
-    ctx.fillText('has successfully completed', canvas.width / 2, 340);
-    ctx.fillText(`the ${playbookName}`, canvas.width / 2, 370);
-    ctx.fillText(`with a score of ${getScorePercentage()}%`, canvas.width / 2, 400);
-
-    // Date
-    ctx.font = '16px Arial';
-    ctx.fillStyle = '#6b7280';
-    ctx.fillText(`Issued on: ${new Date().toLocaleDateString()}`, canvas.width / 2, 480);
-
-    // Download
-    const link = document.createElement('a');
-    link.download = `${userInfo.fullName}-${playbookId}-certificate.png`;
-    link.href = canvas.toDataURL();
-    link.click();
-  };
-
   // Show user info form if user hasn't provided their information yet
   if (showUserForm) {
     return (
@@ -355,122 +302,36 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         <CardContent className="p-6">
           {!quizCompleted ? (
             <div className="space-y-6">
-              {/* Progress Bar */}
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-sm font-medium text-gray-600">
-                  Question {currentQuestion + 1} of {certificationQuestions.length}
-                </span>
-                <div className="w-64 bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-gradient-to-r from-orange-500 to-yellow-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${((currentQuestion + 1) / certificationQuestions.length) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
+              <QuizProgress
+                currentQuestion={currentQuestion}
+                totalQuestions={certificationQuestions.length}
+                chapter={certificationQuestions[currentQuestion].chapter}
+              />
 
-              {/* Chapter Badge */}
-              <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                {certificationQuestions[currentQuestion].chapter}
-              </Badge>
+              <QuizQuestion
+                question={certificationQuestions[currentQuestion].question}
+                options={certificationQuestions[currentQuestion].options}
+                selectedAnswer={selectedAnswers[currentQuestion]}
+                onAnswerSelect={handleAnswerSelect}
+              />
 
-              {/* Question */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {certificationQuestions[currentQuestion].question}
-                </h3>
-                
-                <div className="space-y-3">
-                  {certificationQuestions[currentQuestion].options.map((option, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswerSelect(index)}
-                      className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
-                        selectedAnswers[currentQuestion] === index
-                          ? 'border-orange-500 bg-orange-50'
-                          : 'border-gray-200 bg-white hover:border-orange-300 hover:bg-orange-25'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-full border-2 ${
-                          selectedAnswers[currentQuestion] === index
-                            ? 'border-orange-500 bg-orange-500'
-                            : 'border-gray-300'
-                        }`}>
-                          {selectedAnswers[currentQuestion] === index && (
-                            <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                          )}
-                        </div>
-                        <span className="text-gray-800">{option}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Navigation */}
-              <div className="flex justify-between">
-                <Button
-                  variant="outline"
-                  onClick={handlePreviousQuestion}
-                  disabled={currentQuestion === 0}
-                  className="border-orange-200 hover:bg-orange-50"
-                >
-                  Previous
-                </Button>
-                <Button
-                  onClick={handleNextQuestion}
-                  disabled={selectedAnswers[currentQuestion] === undefined}
-                  className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
-                >
-                  {currentQuestion === certificationQuestions.length - 1 ? 'Complete Exam' : 'Next'}
-                </Button>
-              </div>
+              <QuizNavigation
+                currentQuestion={currentQuestion}
+                totalQuestions={certificationQuestions.length}
+                hasSelectedAnswer={selectedAnswers[currentQuestion] !== undefined}
+                onPrevious={handlePreviousQuestion}
+                onNext={handleNextQuestion}
+              />
             </div>
           ) : (
-            /* Results */
-            <div className="text-center space-y-6">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Exam Completed!</h3>
-                <div className={`text-4xl font-bold ${getScorePercentage() >= 75 ? 'text-green-600' : 'text-red-600'}`}>
-                  {getScorePercentage()}%
-                </div>
-                <p className="text-gray-600 mt-2">
-                  {certificateEarned ? '🎉 Congratulations! You have earned your certification!' : 
-                   getScorePercentage() >= 60 ? 'Close! You need 75% to pass. Try again!' : 
-                   'Keep studying and try again!'}
-                </p>
-              </div>
-
-              {certificateEarned && (
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6 mb-6">
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <Award className="h-8 w-8 text-yellow-500" />
-                    <h4 className="text-xl font-bold text-gray-900">Certificate Earned!</h4>
-                  </div>
-                  <div className="flex justify-center gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 mb-4">{playbookName} Certified Professional</p>
-                  <Button
-                    onClick={downloadCertificate}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Certificate
-                  </Button>
-                </div>
-              )}
-
-              <Button
-                onClick={resetQuiz}
-                className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
-              >
-                <RotateCcw className="h-4 w-4 mr-2" />
-                Retake Exam
-              </Button>
-            </div>
+            <QuizResults
+              scorePercentage={getScorePercentage()}
+              certificateEarned={certificateEarned}
+              userInfo={userInfo!}
+              playbookName={playbookName}
+              playbookId={playbookId}
+              onResetQuiz={resetQuiz}
+            />
           )}
         </CardContent>
       </Card>
