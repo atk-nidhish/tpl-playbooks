@@ -150,7 +150,7 @@ const WindCPDashboard = () => {
 
   if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-lg text-gray-600">Initializing Wind C&P Playbook...</p>
@@ -162,7 +162,7 @@ const WindCPDashboard = () => {
   // Handle leaderboard section
   if (activePhase === "leaderboard") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100">
         <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
@@ -170,7 +170,7 @@ const WindCPDashboard = () => {
                 <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                   <ArrowLeft className="h-5 w-5 text-gray-600" />
                 </Link>
-                <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg">
                   <Wind className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -198,7 +198,7 @@ const WindCPDashboard = () => {
   // Handle certification section
   if (activePhase === "certification") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100">
         <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
@@ -206,7 +206,7 @@ const WindCPDashboard = () => {
                 <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                   <ArrowLeft className="h-5 w-5 text-gray-600" />
                 </Link>
-                <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg">
                   <Wind className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -236,7 +236,7 @@ const WindCPDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100">
       <header className="bg-white/80 backdrop-blur-md border-b border-blue-200">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ const WindCPDashboard = () => {
               <Link to="/" className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
                 <ArrowLeft className="h-5 w-5 text-gray-600" />
               </Link>
-              <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-2 rounded-lg">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg">
                 <Wind className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -294,7 +294,7 @@ const WindCPDashboard = () => {
 
           <TabsContent value="process-map">
             <div className="space-y-6">
-              <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
+              <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -307,7 +307,7 @@ const WindCPDashboard = () => {
                     </div>
                     <Button 
                       onClick={() => downloadProcessMap(activePhase)}
-                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download
@@ -319,7 +319,7 @@ const WindCPDashboard = () => {
                     <img 
                       src={getProcessMapImage(activePhase)}
                       alt={`Process Map for ${activePhase}`}
-                      className="max-w-full h-auto rounded-lg shadow-lg border border-orange-200"
+                      className="max-w-full h-auto rounded-lg shadow-lg border border-blue-200"
                     />
                   </div>
                 </CardContent>

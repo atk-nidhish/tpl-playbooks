@@ -15,6 +15,7 @@ interface QuizResultsProps {
   playbookName: string;
   playbookId: string;
   onResetQuiz: () => void;
+  playbookType?: string;
 }
 
 export const QuizResults = ({ 
@@ -23,8 +24,15 @@ export const QuizResults = ({
   userInfo, 
   playbookName, 
   playbookId, 
-  onResetQuiz 
+  onResetQuiz,
+  playbookType = "solar"
 }: QuizResultsProps) => {
+  const isWindPlaybook = playbookType.toLowerCase().includes('wind');
+  
+  const gradientClass = isWindPlaybook 
+    ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" 
+    : "bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600";
+
   return (
     <div className="text-center space-y-6">
       <div className="mb-6">
@@ -45,12 +53,13 @@ export const QuizResults = ({
           playbookName={playbookName}
           playbookId={playbookId}
           scorePercentage={scorePercentage}
+          playbookType={playbookType}
         />
       )}
 
       <Button
         onClick={onResetQuiz}
-        className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
+        className={gradientClass}
       >
         <RotateCcw className="h-4 w-4 mr-2" />
         Retake Exam

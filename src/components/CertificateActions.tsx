@@ -12,14 +12,34 @@ interface CertificateActionsProps {
   playbookName: string;
   playbookId: string;
   scorePercentage: number;
+  playbookType?: string;
 }
 
 export const CertificateActions = ({ 
   userInfo, 
   playbookName, 
   playbookId, 
-  scorePercentage 
+  scorePercentage,
+  playbookType = "solar"
 }: CertificateActionsProps) => {
+  const isWindPlaybook = playbookType.toLowerCase().includes('wind');
+  
+  const backgroundClass = isWindPlaybook 
+    ? "bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200" 
+    : "bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200";
+  
+  const iconClass = isWindPlaybook 
+    ? "text-blue-500" 
+    : "text-yellow-500";
+  
+  const starClass = isWindPlaybook 
+    ? "text-blue-400 fill-current" 
+    : "text-yellow-400 fill-current";
+  
+  const gradientClass = isWindPlaybook 
+    ? "bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600" 
+    : "bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600";
+
   const downloadCertificate = () => {
     // Create a simple certificate canvas
     const canvas = document.createElement('canvas');
@@ -33,8 +53,8 @@ export const CertificateActions = ({
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Border
-    ctx.strokeStyle = '#f59e0b';
+    // Border - use appropriate color based on playbook type
+    ctx.strokeStyle = isWindPlaybook ? '#3b82f6' : '#f59e0b';
     ctx.lineWidth = 8;
     ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
@@ -75,20 +95,20 @@ export const CertificateActions = ({
   };
 
   return (
-    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6 mb-6">
+    <div className={`${backgroundClass} rounded-lg p-6 mb-6`}>
       <div className="flex items-center justify-center gap-2 mb-4">
-        <Award className="h-8 w-8 text-yellow-500" />
+        <Award className={`h-8 w-8 ${iconClass}`} />
         <h4 className="text-xl font-bold text-gray-900">Certificate Earned!</h4>
       </div>
       <div className="flex justify-center gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
-          <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+          <Star key={i} className={`h-5 w-5 ${starClass}`} />
         ))}
       </div>
       <p className="text-gray-700 mb-4">{playbookName} Certified Professional</p>
       <Button
         onClick={downloadCertificate}
-        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
+        className={gradientClass}
       >
         <Download className="h-4 w-4 mr-2" />
         Download Certificate

@@ -124,7 +124,7 @@ const Dashboard = () => {
       title: "Wind - C&P",
       description: "Contracting & Procurement",
       icon: Wind,
-      color: "from-orange-400 to-yellow-500",
+      color: "from-blue-500 to-blue-600",
       status: "Available",
       route: "/wind-cp"
     },
@@ -133,7 +133,7 @@ const Dashboard = () => {
       title: "Planning - Solar",
       description: "Solar Project Planning",
       icon: Sun,
-      color: "from-yellow-400 to-orange-500",
+      color: "from-orange-500 to-yellow-500",
       status: "Available",
       route: "/planning-solar"
     }
