@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,12 +95,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
           if (result) {
             successCount++;
             setProcessedCount(successCount);
-            console.log(`Successfully auto-processed: ${fileName}`);
-            
-            // Update UI immediately after each file is processed
-            if (onUploadComplete) {
-              onUploadComplete();
-            }
+            console.log(`Successfully auto-processed: ${fileName}`, result);
           }
         } catch (processingError) {
           console.error(`Error auto-processing ${fileName}:`, processingError);
@@ -117,6 +111,20 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
         title: "Processing complete!",
         description: `Successfully processed ${successCount} document(s) and created interactive playbooks!`,
       });
+
+      // Force refresh the playbooks list after successful processing
+      if (onUploadComplete) {
+        console.log('Calling onUploadComplete to refresh playbooks...');
+        onUploadComplete();
+      }
+
+      // Add a small delay and call refresh again to ensure the UI updates
+      setTimeout(() => {
+        if (onUploadComplete) {
+          console.log('Secondary refresh call to ensure playbooks are visible...');
+          onUploadComplete();
+        }
+      }, 2000);
 
     } catch (error) {
       console.error('Error in file upload process:', error);
@@ -177,7 +185,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
         </CardTitle>
         <CardDescription>
           Upload PDF or Word documents to automatically create interactive playbooks. 
-          Files are processed immediately after upload - no manual steps required!
+          Files are processed immediately after upload and will appear in the playbooks section below.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -240,7 +248,7 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
           {uploadStatus === 'success' && (
             <div className="text-center space-y-3">
               <div className="text-sm text-green-600 font-medium">
-                ✅ All documents processed successfully! Your playbooks are ready to view.
+                ✅ All documents processed successfully! Your new playbooks should now be visible in the playbooks section below.
               </div>
               <Button 
                 onClick={() => {

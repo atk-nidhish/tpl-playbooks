@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
 import { FileUpload } from "@/components/FileUpload";
 import { Leaderboard } from "@/components/Leaderboard";
-import { scanAndProcessPlaybooks, scanSpecificFile } from "@/services/pdf-parser";
 
 interface Playbook {
   id: string;
@@ -26,7 +24,6 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const [scanningFiles, setScanningFiles] = useState(false);
   const { isInitialized } = useDataInit();
 
   useEffect(() => {
@@ -46,6 +43,7 @@ const Home = () => {
 
   const fetchPlaybooks = async () => {
     try {
+      console.log('Fetching playbooks...');
       const { data, error } = await supabase
         .from('playbooks')
         .select('*')
@@ -58,6 +56,7 @@ const Home = () => {
         index === self.findIndex(p => p.title === playbook.title)
       ) || [];
       
+      console.log('Fetched playbooks:', uniquePlaybooks.length);
       setPlaybooks(uniquePlaybooks);
     } catch (error) {
       console.error('Error fetching playbooks:', error);
@@ -111,57 +110,6 @@ const Home = () => {
     }
   };
 
-  const deleteAllPlaybooks = async () => {
-    try {
-      // Delete all data from related tables first
-      await supabase.from('process_steps').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      await supabase.from('raci_matrix').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      await supabase.from('process_map').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      await supabase.from('playbooks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      
-      console.log('All playbooks and related data deleted');
-      fetchPlaybooks();
-    } catch (error) {
-      console.error('Error deleting playbooks:', error);
-    }
-  };
-
-  const handleScanForNewFiles = async () => {
-    setScanningFiles(true);
-    try {
-      console.log('Manually scanning for new files...');
-      const newPlaybooks = await scanAndProcessPlaybooks();
-      
-      if (newPlaybooks && newPlaybooks.length > 0) {
-        console.log(`Found and processed ${newPlaybooks.length} new playbooks`);
-        fetchPlaybooks(); // Refresh the playbooks list
-      } else {
-        console.log('No new files found to process');
-      }
-    } catch (error) {
-      console.error('Error scanning for new files:', error);
-    } finally {
-      setScanningFiles(false);
-    }
-  };
-
-  const handleScanSpecificFile = async () => {
-    setScanningFiles(true);
-    try {
-      console.log('Scanning for digital_wind_planning.pdf specifically...');
-      const result = await scanSpecificFile('digital_wind_planning.pdf');
-      
-      if (result) {
-        console.log('Successfully processed digital_wind_planning.pdf:', result);
-        fetchPlaybooks(); // Refresh the playbooks list
-      }
-    } catch (error) {
-      console.error('Error scanning specific file:', error);
-    } finally {
-      setScanningFiles(false);
-    }
-  };
-
   const filteredPlaybooks = searchQuery.trim() ? [] : playbooks;
 
   const getResultTypeIcon = (type: string) => {
@@ -196,7 +144,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
-      {/* Simplified Header */}
+      {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -332,14 +280,22 @@ const Home = () => {
         {/* Playbooks Grid */}
         {!searchQuery.trim() && (
           <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Available Playbooks</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold text-gray-900">Available Playbooks</h3>
+              <p className="text-sm text-gray-500">
+                {loading ? 'Loading...' : `${playbooks.length} playbook${playbooks.length !== 1 ? 's' : ''} available`}
+              </p>
+            </div>
             {loading ? (
               <div className="text-center py-8">
+                <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-orange-500" />
                 <p className="text-gray-600">Loading playbooks...</p>
               </div>
             ) : filteredPlaybooks.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-600">No playbooks found. Upload documents above to create your first playbook.</p>
+                <BookOpen className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+                <p className="text-gray-600 mb-2">No playbooks found.</p>
+                <p className="text-sm text-gray-500">Upload documents above to create your first playbook.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
