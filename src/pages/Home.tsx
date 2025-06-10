@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
 import { FileUpload } from "@/components/FileUpload";
 import { Leaderboard } from "@/components/Leaderboard";
+import { scanAndProcessPlaybooks, scanSpecificFile } from "@/services/pdf-parser";
 
 interface Playbook {
   id: string;
@@ -25,6 +26,7 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const [scanningFiles, setScanningFiles] = useState(false);
   const { isInitialized } = useDataInit();
 
   useEffect(() => {
@@ -124,6 +126,42 @@ const Home = () => {
     }
   };
 
+  const handleScanForNewFiles = async () => {
+    setScanningFiles(true);
+    try {
+      console.log('Manually scanning for new files...');
+      const newPlaybooks = await scanAndProcessPlaybooks();
+      
+      if (newPlaybooks && newPlaybooks.length > 0) {
+        console.log(`Found and processed ${newPlaybooks.length} new playbooks`);
+        fetchPlaybooks(); // Refresh the playbooks list
+      } else {
+        console.log('No new files found to process');
+      }
+    } catch (error) {
+      console.error('Error scanning for new files:', error);
+    } finally {
+      setScanningFiles(false);
+    }
+  };
+
+  const handleScanSpecificFile = async () => {
+    setScanningFiles(true);
+    try {
+      console.log('Scanning for digital_wind_planning.pdf specifically...');
+      const result = await scanSpecificFile('digital_wind_planning.pdf');
+      
+      if (result) {
+        console.log('Successfully processed digital_wind_planning.pdf:', result);
+        fetchPlaybooks(); // Refresh the playbooks list
+      }
+    } catch (error) {
+      console.error('Error scanning specific file:', error);
+    } finally {
+      setScanningFiles(false);
+    }
+  };
+
   const filteredPlaybooks = searchQuery.trim() ? [] : playbooks;
 
   const getResultTypeIcon = (type: string) => {
@@ -186,6 +224,37 @@ const Home = () => {
                   </div>
                 )}
               </div>
+              <Button 
+                onClick={handleScanForNewFiles}
+                disabled={scanningFiles}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                {scanningFiles ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Scanning...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Scan Files
+                  </>
+                )}
+              </Button>
+              <Button 
+                onClick={handleScanSpecificFile}
+                disabled={scanningFiles}
+                className="bg-green-500 hover:bg-green-600"
+              >
+                {scanningFiles ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  "Process Wind Planning"
+                )}
+              </Button>
             </div>
           </div>
         </div>
@@ -199,6 +268,14 @@ const Home = () => {
             Access and manage all your solar project execution playbooks in one centralized location. 
             Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
           </p>
+          {scanningFiles && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <div className="flex items-center">
+                <RefreshCw className="h-5 w-5 text-blue-500 animate-spin mr-2" />
+                <span className="text-blue-700">Scanning and processing files from storage...</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* File Upload Section */}
