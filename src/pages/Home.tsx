@@ -26,6 +26,7 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const [scanningFiles, setScanningFiles] = useState(false);
   const { isInitialized } = useDataInit();
 
   useEffect(() => {
