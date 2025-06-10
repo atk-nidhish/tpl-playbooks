@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +26,6 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const [scanningFiles, setScanningFiles] = useState(false);
   const { isInitialized } = useDataInit();
 
   useEffect(() => {
@@ -197,7 +195,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
-      {/* Header */}
+      {/* Simplified Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -210,7 +208,7 @@ const Home = () => {
                 <p className="text-sm text-gray-600">Interactive Playbook Management System</p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <div className="flex justify-center lg:justify-end">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
@@ -225,39 +223,6 @@ const Home = () => {
                   </div>
                 )}
               </div>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={handleScanForNewFiles}
-                  disabled={scanningFiles}
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
-                >
-                  {scanningFiles ? (
-                    <>
-                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                      Scanning...
-                    </>
-                  ) : (
-                    <>
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      Scan Files
-                    </>
-                  )}
-                </Button>
-                <Button 
-                  onClick={handleScanSpecificFile}
-                  disabled={scanningFiles}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  {scanningFiles ? (
-                    <>
-                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    "Process Wind Planning"
-                  )}
-                </Button>
-              </div>
             </div>
           </div>
         </div>
@@ -269,19 +234,11 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Your Playbook Library</h2>
           <p className="text-lg text-gray-600 mb-6">
             Access and manage all your solar project execution playbooks in one centralized location. 
-            Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
+            Upload documents below and they will be automatically processed into interactive playbooks with detailed process steps, RACI matrices, and process maps.
           </p>
-          {scanningFiles && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-              <div className="flex items-center">
-                <RefreshCw className="h-5 w-5 text-blue-500 animate-spin mr-2" />
-                <span className="text-blue-700">Scanning and processing files from storage...</span>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* File Upload Section */}
+        {/* Auto-Processing File Upload Section */}
         <div className="mb-8">
           <FileUpload onUploadComplete={fetchPlaybooks} />
         </div>
