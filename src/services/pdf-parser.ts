@@ -101,6 +101,7 @@ const createBasicPlaybook = async (fileName: string) => {
   const filename = fileName.toLowerCase();
   let phases = {};
   
+  // Use consistent phase structure matching existing playbooks
   if (filename.includes('commissioning')) {
     phases = {
       "phase_1": { name: "Pre-Commissioning", description: "Pre-commissioning planning and preparation" },
@@ -114,6 +115,24 @@ const createBasicPlaybook = async (fileName: string) => {
       "phase_2": { name: "Equipment Installation", description: "Equipment installation and setup" },
       "phase_3": { name: "Testing & Verification", description: "Installation testing and verification" },
       "phase_4": { name: "Completion", description: "Installation completion and handover" }
+    };
+  } else if (filename.includes('wind')) {
+    // Wind-specific structure to exactly match existing wind playbooks
+    phases = {
+      "phase_1": { name: "Wind Project Planning", description: "Initial wind project planning phase" },
+      "phase_2": { name: "Site Assessment", description: "Wind site assessment and evaluation" },
+      "phase_3": { name: "Design & Engineering", description: "Wind farm design and engineering" },
+      "phase_4": { name: "Construction", description: "Wind farm construction phase" },
+      "phase_5": { name: "Commissioning", description: "Wind turbine commissioning" }
+    };
+  } else if (filename.includes('solar')) {
+    // Solar-specific structure to exactly match existing solar playbooks
+    phases = {
+      "phase_1": { name: "Solar Project Planning", description: "Initial solar project planning phase" },
+      "phase_2": { name: "Site Preparation", description: "Solar site preparation activities" },
+      "phase_3": { name: "Panel Installation", description: "Solar panel installation phase" },
+      "phase_4": { name: "Electrical Work", description: "Electrical connections and testing" },
+      "phase_5": { name: "Final Inspection", description: "Final inspection and commissioning" }
     };
   } else {
     phases = {
@@ -145,32 +164,58 @@ const createBasicPlaybook = async (fileName: string) => {
 
   console.log('Created enhanced basic playbook:', playbook);
 
-  // Insert meaningful process steps for each phase
+  // Insert meaningful process steps for each phase - using consistent format matching existing playbooks
   const processStepsData = [];
   const raciData = [];
   
   Object.keys(phases).forEach((phaseId, index) => {
     const stepNumber = index + 1;
+    // Follow the exact same structure as existing process steps
     processStepsData.push({
       playbook_id: playbook.id,
       phase_id: phaseId,
       step_id: `${stepNumber}.1`,
       activity: `Execute ${phases[phaseId].name}`,
-      inputs: [`${phases[phaseId].name} requirements`, "Previous phase deliverables", "Technical documentation"],
-      outputs: [`${phases[phaseId].name} deliverables`, "Progress reports", "Quality documentation"],
-      timeline: `${stepNumber}-${stepNumber + 1} days`,
+      inputs: [`${phases[phaseId].name} requirements document`, "Previous phase deliverables", "Technical specifications"],
+      outputs: [`${phases[phaseId].name} completion report`, "Quality documentation", "Phase deliverables"],
+      timeline: `${stepNumber}-${stepNumber + 2} days`,
       responsible: "Technical Lead",
-      comments: `Key activity for ${phases[phaseId].name.toLowerCase()}. Based on document: ${fileName}`
+      comments: `Key activity for ${phases[phaseId].name.toLowerCase()}. Follow standard procedures as documented.`
     });
 
+    // Add secondary step to match format of existing playbooks
+    processStepsData.push({
+      playbook_id: playbook.id,
+      phase_id: phaseId,
+      step_id: `${stepNumber}.2`,
+      activity: `Verify ${phases[phaseId].name} Completion`,
+      inputs: [`${phases[phaseId].name} deliverables`, "Verification checklist", "Quality standards"],
+      outputs: ["Verification report", "Sign-off documentation", "Issue log"],
+      timeline: "1-2 days",
+      responsible: "QA Engineer",
+      comments: `Verification of ${phases[phaseId].name.toLowerCase()} outputs against requirements.`
+    });
+
+    // Create RACI entries that exactly match existing format
     raciData.push({
       playbook_id: playbook.id,
       phase_id: phaseId,
       step_id: `${stepNumber}.1`,
-      task: phases[phaseId].name,
+      task: `${phases[phaseId].name} Execution`,
       responsible: "Technical Lead",
       accountable: "Project Manager",
       consulted: "Subject Matter Expert",
+      informed: "Stakeholders"
+    });
+    
+    raciData.push({
+      playbook_id: playbook.id,
+      phase_id: phaseId,
+      step_id: `${stepNumber}.2`,
+      task: `${phases[phaseId].name} Verification`,
+      responsible: "QA Engineer",
+      accountable: "Technical Lead",
+      consulted: "Project Manager",
       informed: "Stakeholders"
     });
   });
@@ -181,8 +226,10 @@ const createBasicPlaybook = async (fileName: string) => {
       .from('process_steps')
       .insert(processStepsData);
 
-    if (!stepsError) {
-      console.log('Inserted enhanced process steps');
+    if (stepsError) {
+      console.error('Error inserting process steps:', stepsError);
+    } else {
+      console.log(`Inserted ${processStepsData.length} process steps`);
     }
   }
 
@@ -192,29 +239,50 @@ const createBasicPlaybook = async (fileName: string) => {
       .from('raci_matrix')
       .insert(raciData);
 
-    if (!raciError) {
-      console.log('Inserted enhanced RACI entries');
+    if (raciError) {
+      console.error('Error inserting RACI entries:', raciError);
+    } else {
+      console.log(`Inserted ${raciData.length} RACI entries`);
     }
   }
 
-  // Insert sample process map
-  const processMapData = Object.keys(phases).map((phaseId, index) => ({
-    playbook_id: playbook.id,
-    phase_id: phaseId,
-    step_id: `${index + 1}.1`,
-    step_type: index === 0 ? "start" : index === Object.keys(phases).length - 1 ? "end" : "process",
-    title: phases[phaseId].name,
-    description: phases[phaseId].description,
-    order_index: index + 1
-  }));
+  // Insert process map using consistent format with existing playbooks
+  const processMapData = Object.keys(phases).map((phaseId, index) => {
+    const orderIndex = index + 1;
+    let stepType = "process";
+    
+    // Match the existing pattern where first step is "start" and last is "end"
+    if (orderIndex === 1) {
+      stepType = "start";
+    } else if (orderIndex === Object.keys(phases).length) {
+      stepType = "end";
+    } else if (orderIndex % 3 === 0) {
+      // Add some decision points to match the variety in existing maps
+      stepType = "decision";
+    } else if (orderIndex % 4 === 0) {
+      stepType = "milestone";
+    }
+    
+    return {
+      playbook_id: playbook.id,
+      phase_id: phaseId,
+      step_id: `${orderIndex}`,
+      step_type: stepType,
+      title: phases[phaseId].name,
+      description: phases[phaseId].description,
+      order_index: orderIndex
+    };
+  });
 
   if (processMapData.length > 0) {
     const { error: mapError } = await supabase
       .from('process_map')
       .insert(processMapData);
 
-    if (!mapError) {
-      console.log('Inserted enhanced process map entries');
+    if (mapError) {
+      console.error('Error inserting process map entries:', mapError);
+    } else {
+      console.log(`Inserted ${processMapData.length} process map entries`);
     }
   }
 

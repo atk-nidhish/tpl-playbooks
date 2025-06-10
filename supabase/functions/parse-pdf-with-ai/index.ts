@@ -207,6 +207,7 @@ serve(async (req) => {
       try {
         console.log('Processing with AI for content-specific analysis...');
         
+        // Modified system prompt to ensure exact matching with existing data structure
         const aiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -218,38 +219,85 @@ serve(async (req) => {
             messages: [
               {
                 role: 'system',
-                content: `You are an expert at analyzing technical documents and creating structured playbooks based on actual document content. Extract and analyze the real content to create meaningful project phases and activities.
+                content: `You are an expert at analyzing technical documents and creating structured playbooks that EXACTLY match the existing database structure. Your output must maintain perfect consistency with the existing playbooks in both structure and formatting.
 
 Return a JSON object with this EXACT structure (no additional text):
 {
   "title": "Document Title Based on Content",
   "description": "Description based on actual document content and purpose",
   "phases": {
-    "phase_1": {"name": "Phase Name from Document", "description": "Phase description based on content"},
-    "phase_2": {"name": "Phase Name from Document", "description": "Phase description based on content"},
-    "phase_3": {"name": "Phase Name from Document", "description": "Phase description based on content"}
+    "phase_1": {"name": "Specific Phase 1 Name", "description": "Detailed phase description"},
+    "phase_2": {"name": "Specific Phase 2 Name", "description": "Detailed phase description"},
+    "phase_3": {"name": "Specific Phase 3 Name", "description": "Detailed phase description"},
+    "phase_4": {"name": "Specific Phase 4 Name", "description": "Detailed phase description"},
+    "phase_5": {"name": "Specific Phase 5 Name", "description": "Detailed phase description"}
   },
   "processSteps": [
     {
       "phase_id": "phase_1",
       "step_id": "1.1",
-      "activity": "Specific activity from document content",
-      "inputs": ["specific input1", "specific input2"],
-      "outputs": ["specific output1", "specific output2"],
-      "timeline": "realistic timeline",
-      "responsible": "role from document",
-      "comments": "specific details from document"
+      "activity": "Specific Step Activity Title",
+      "inputs": ["Specific Input 1", "Specific Input 2", "Specific Input 3"],
+      "outputs": ["Specific Output 1", "Specific Output 2", "Specific Output 3"],
+      "timeline": "X-Y days",
+      "responsible": "Specific Role Title",
+      "comments": "Detailed step comments"
+    },
+    {
+      "phase_id": "phase_1",
+      "step_id": "1.2",
+      "activity": "Secondary Step Activity Title",
+      "inputs": ["Specific Input 1", "Specific Input 2"],
+      "outputs": ["Specific Output 1", "Specific Output 2"],
+      "timeline": "X-Y days",
+      "responsible": "Specific Role Title",
+      "comments": "Detailed step comments"
     }
   ],
   "raciMatrix": [
     {
       "phase_id": "phase_1",
       "step_id": "1.1",
-      "task": "specific task from content",
-      "responsible": "role from document",
-      "accountable": "role from document",
-      "consulted": "role from document",
-      "informed": "role from document"
+      "task": "Step 1.1 Task Name",
+      "responsible": "Role 1",
+      "accountable": "Role 2",
+      "consulted": "Role 3",
+      "informed": "Role 4"
+    },
+    {
+      "phase_id": "phase_1",
+      "step_id": "1.2",
+      "task": "Step 1.2 Task Name",
+      "responsible": "Role 1", 
+      "accountable": "Role 2",
+      "consulted": "Role 3",
+      "informed": "Role 4"
+    }
+  ],
+  "processMap": [
+    {
+      "phase_id": "phase_1",
+      "step_id": "1",
+      "step_type": "start",
+      "title": "Process Start",
+      "description": "Starting point of the process flow",
+      "order_index": 1
+    },
+    {
+      "phase_id": "phase_2",
+      "step_id": "2",
+      "step_type": "process",
+      "title": "Main Process",
+      "description": "Core process activity",
+      "order_index": 2
+    },
+    {
+      "phase_id": "phase_5",
+      "step_id": "5",
+      "step_type": "end",
+      "title": "Process End",
+      "description": "End point of the process flow",
+      "order_index": 5
     }
   ]
 }`
@@ -260,11 +308,11 @@ Return a JSON object with this EXACT structure (no additional text):
 
 Document content extracted: ${extractedText.substring(0, 4000)}
 
-Create a structured playbook based on the ACTUAL CONTENT of this document. If the content mentions specific procedures, steps, or processes, use those. If it's about commissioning, create commissioning-specific phases. If it's about installation, create installation phases. Make the phases and activities reflect what's actually in the document, not generic templates.`
+Create a structured playbook that EXACTLY matches the format of existing playbooks in the system. Create 5 phases, each with at least 2 detailed process steps. Ensure that the first node in the process map has step_type "start" and the last has step_type "end". Generate process steps with realistic inputs, outputs, timelines and responsibilities. Use the actual content from the document to create meaningful phases.`
               }
             ],
             temperature: 0.2,
-            max_tokens: 2500
+            max_tokens: 4000
           })
         });
 
@@ -316,7 +364,9 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
                 .from('process_steps')
                 .insert(processStepsWithPlaybookId);
 
-              if (!stepsError) {
+              if (stepsError) {
+                console.error('Error inserting process steps:', stepsError);
+              } else {
                 console.log(`Inserted ${processStepsWithPlaybookId.length} content-specific process steps`);
               }
             }
@@ -332,8 +382,28 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
                 .from('raci_matrix')
                 .insert(raciWithPlaybookId);
 
-              if (!raciError) {
+              if (raciError) {
+                console.error('Error inserting RACI matrix:', raciError);
+              } else {
                 console.log(`Inserted ${raciWithPlaybookId.length} content-specific RACI entries`);
+              }
+            }
+            
+            // Insert content-specific process map entries
+            if (parsedData.processMap && Array.isArray(parsedData.processMap)) {
+              const processMapWithPlaybookId = parsedData.processMap.map(mapItem => ({
+                ...mapItem,
+                playbook_id: playbook.id
+              }));
+              
+              const { error: mapError } = await supabase
+                .from('process_map')
+                .insert(processMapWithPlaybookId);
+
+              if (mapError) {
+                console.error('Error inserting process map:', mapError);
+              } else {
+                console.log(`Inserted ${processMapWithPlaybookId.length} process map entries`);
               }
             }
 
@@ -345,7 +415,9 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
                 extractedTextLength: extractedText.length,
                 aiProcessed: true,
                 phasesCreated: Object.keys(parsedData.phases).length,
-                contentSource: "Document content analysis"
+                processStepsCreated: parsedData.processSteps?.length || 0,
+                raciEntriesCreated: parsedData.raciMatrix?.length || 0,
+                processMapEntriesCreated: parsedData.processMap?.length || 0
               }),
               { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
             );
@@ -385,6 +457,24 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
         "phase_3": { name: "System Integration", description: "System integration and connection procedures" },
         "phase_4": { name: "Testing & Verification", description: "Installation testing procedures from document" },
         "phase_5": { name: "Completion & Handover", description: "Installation completion procedures from document" }
+      };
+    } else if (lowerText.includes('wind') || filename.includes('wind')) {
+      documentType = "wind";
+      phases = {
+        "phase_1": { name: "Wind Project Planning", description: "Initial wind project planning phase" },
+        "phase_2": { name: "Site Assessment", description: "Wind site assessment and evaluation" },
+        "phase_3": { name: "Design & Engineering", description: "Wind farm design and engineering" },
+        "phase_4": { name: "Construction", description: "Wind farm construction phase" },
+        "phase_5": { name: "Commissioning", description: "Wind turbine commissioning" }
+      };
+    } else if (lowerText.includes('solar') || filename.includes('solar')) {
+      documentType = "solar";
+      phases = {
+        "phase_1": { name: "Solar Project Planning", description: "Initial solar project planning phase" },
+        "phase_2": { name: "Site Preparation", description: "Solar site preparation activities" },
+        "phase_3": { name: "Panel Installation", description: "Solar panel installation phase" },
+        "phase_4": { name: "Electrical Work", description: "Electrical connections and testing" },
+        "phase_5": { name: "Final Inspection", description: "Final inspection and commissioning" }
       };
     } else if (lowerText.includes('maintenance') || lowerText.includes('service') || 
                lowerText.includes('repair') || filename.includes('maintenance')) {
@@ -438,49 +528,104 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
     // Create content-aware process steps
     const processStepsData = [];
     const raciData = [];
+    const processMapData = [];
     
     Object.keys(phases).forEach((phaseId, index) => {
       const stepNumber = index + 1;
       const phase = phases[phaseId];
       
+      // Create primary step
       processStepsData.push({
         playbook_id: playbook.id,
         phase_id: phaseId,
         step_id: `${stepNumber}.1`,
-        activity: `Execute ${phase.name} - Content-Based Activities`,
-        inputs: [`${phase.name} requirements from document`, 'Document specifications', 'Previous phase outputs'],
-        outputs: [`${phase.name} deliverables per document`, 'Quality documentation', 'Compliance records'],
-        timeline: `${stepNumber * 2}-${(stepNumber * 2) + 1} days`,
+        activity: `Execute ${phase.name}`,
+        inputs: [`${phase.name} requirements document`, 'Project specifications', 'Standard operating procedures'],
+        outputs: [`${phase.name} completion report`, 'Technical documentation', 'Quality records'],
+        timeline: `${stepNumber * 2}-${(stepNumber * 2) + 2} days`,
         responsible: documentType === 'commissioning' ? 'Commissioning Engineer' : 
                     documentType === 'installation' ? 'Installation Technician' :
+                    documentType === 'wind' ? 'Wind Project Manager' :
+                    documentType === 'solar' ? 'Solar Project Engineer' :
                     documentType === 'maintenance' ? 'Maintenance Technician' :
                     documentType === 'testing' ? 'Test Engineer' : 'Technical Lead',
-        comments: `Content-specific activity from ${fileName}. ${phase.description}. Extracted text: ${extractedText.substring(0, 100)}...`
+        comments: `Primary activity for ${phase.name}. Execute according to standard ${documentType} procedures.`
+      });
+      
+      // Create secondary/verification step
+      processStepsData.push({
+        playbook_id: playbook.id,
+        phase_id: phaseId,
+        step_id: `${stepNumber}.2`,
+        activity: `Verify ${phase.name} Results`,
+        inputs: [`${phase.name} deliverables`, 'Verification checklist', 'Quality standards'],
+        outputs: ['Verification report', 'Sign-off documentation', 'Issue log'],
+        timeline: `1-2 days`,
+        responsible: 'QA Engineer',
+        comments: `Verification of ${phase.name} outputs against requirements.`
       });
 
+      // Create RACI entries that exactly match existing format
       raciData.push({
         playbook_id: playbook.id,
         phase_id: phaseId,
         step_id: `${stepNumber}.1`,
-        task: phase.name,
+        task: `${phase.name} Execution`,
         responsible: documentType === 'commissioning' ? 'Commissioning Engineer' : 
                     documentType === 'installation' ? 'Installation Technician' :
+                    documentType === 'wind' ? 'Wind Project Manager' :
+                    documentType === 'solar' ? 'Solar Project Engineer' :
                     documentType === 'maintenance' ? 'Maintenance Technician' :
                     documentType === 'testing' ? 'Test Engineer' : 'Technical Lead',
         accountable: 'Project Manager',
         consulted: 'Subject Matter Expert',
         informed: 'Stakeholders'
       });
+      
+      raciData.push({
+        playbook_id: playbook.id,
+        phase_id: phaseId,
+        step_id: `${stepNumber}.2`,
+        task: `${phase.name} Verification`,
+        responsible: 'QA Engineer',
+        accountable: 'Technical Lead',
+        consulted: 'Project Manager',
+        informed: 'Stakeholders'
+      });
+      
+      // Create process map entry
+      let stepType = "process";
+      if (index === 0) {
+        stepType = "start";
+      } else if (index === Object.keys(phases).length - 1) {
+        stepType = "end";
+      } else if (index % 3 === 0) {
+        stepType = "decision";
+      } else if (index % 4 === 0) {
+        stepType = "milestone";
+      }
+      
+      processMapData.push({
+        playbook_id: playbook.id,
+        phase_id: phaseId,
+        step_id: `${index + 1}`,
+        step_type: stepType,
+        title: phase.name,
+        description: phase.description,
+        order_index: index + 1
+      });
     });
 
-    // Insert enhanced process steps
+    // Insert process steps
     if (processStepsData.length > 0) {
       const { error: stepsError } = await supabase
         .from('process_steps')
         .insert(processStepsData);
 
-      if (!stepsError) {
-        console.log(`Inserted ${processStepsData.length} content-aware process steps`);
+      if (stepsError) {
+        console.error('Error inserting process steps:', stepsError);
+      } else {
+        console.log(`Inserted ${processStepsData.length} process steps`);
       }
     }
 
@@ -490,8 +635,23 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
         .from('raci_matrix')
         .insert(raciData);
 
-      if (!raciError) {
-        console.log(`Inserted ${raciData.length} content-aware RACI entries`);
+      if (raciError) {
+        console.error('Error inserting RACI matrix:', raciError);
+      } else {
+        console.log(`Inserted ${raciData.length} RACI entries`);
+      }
+    }
+    
+    // Insert process map
+    if (processMapData.length > 0) {
+      const { error: mapError } = await supabase
+        .from('process_map')
+        .insert(processMapData);
+
+      if (mapError) {
+        console.error('Error inserting process map:', mapError);
+      } else {
+        console.log(`Inserted ${processMapData.length} process map entries`);
       }
     }
 
@@ -504,8 +664,9 @@ Create a structured playbook based on the ACTUAL CONTENT of this document. If th
         aiProcessed: false,
         phasesCreated: Object.keys(phases).length,
         documentType: documentType,
-        contentSample: extractedText.substring(0, 200),
-        note: "Enhanced playbook created with document-specific content analysis"
+        processStepsCreated: processStepsData.length,
+        raciEntriesCreated: raciData.length,
+        processMapEntriesCreated: processMapData.length
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
