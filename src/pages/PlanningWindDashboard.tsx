@@ -17,7 +17,6 @@ const PlanningWindDashboard = () => {
   const [isInitializing, setIsInitializing] = useState(true);
 
   const playbookId = "a1b2c3d4-e5f6-7890-abcd-123456789012";
-  const playbookName = "planning-wind";
 
   useEffect(() => {
     const initializeData = async () => {
@@ -174,8 +173,7 @@ const PlanningWindDashboard = () => {
 
                 <TabsContent value="certification" className="mt-0">
                   <PlaybookCertification 
-                    playbookName={playbookName}
-                    playbookTitle="Planning - Wind"
+                    playbookId={playbookId}
                   />
                 </TabsContent>
               </div>

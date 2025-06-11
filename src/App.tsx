@@ -1,3 +1,4 @@
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -6,7 +7,7 @@ import AuthPage from "@/pages/AuthPage";
 import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import Playbook from "@/pages/Playbook";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import NotFound from "@/pages/NotFound";
 import CommissioningDashboard from "@/pages/CommissioningDashboard";
 import WindCPDashboard from "@/pages/WindCPDashboard";
