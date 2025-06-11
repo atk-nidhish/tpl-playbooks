@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wind, FileText, Award, Download, LogOut, User, Building, Sun } from "lucide-react";
+import { Wind, FileText, Award, Download, LogOut, User, Building, Sun, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -127,6 +127,15 @@ const Dashboard = () => {
       color: "from-blue-500 to-blue-600",
       status: "Available",
       route: "/wind-cp"
+    },
+    {
+      id: "wind-planning",
+      title: "Wind - Planning",
+      description: "Wind Project Planning",
+      icon: MapPin,
+      color: "from-green-500 to-green-600",
+      status: "Available",
+      route: "/wind-planning"
     },
     {
       id: "planning-solar",
