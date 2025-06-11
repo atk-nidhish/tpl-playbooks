@@ -7,13 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Wind, User, Mail, Lock, Building, IdCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   // Login state
@@ -32,14 +30,20 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
+      console.log('Attempting login for:', loginEmail);
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Login error:', error);
+        throw error;
+      }
 
       if (data.user) {
+        console.log('Login successful for user:', data.user.email);
         toast({
           title: "Login successful",
           description: "Welcome back!",
@@ -48,9 +52,10 @@ const AuthPage = () => {
         window.location.href = "/";
       }
     } catch (error: any) {
+      console.error('Login failed:', error);
       toast({
         title: "Login failed",
-        description: error.message,
+        description: error.message || "An error occurred during login",
         variant: "destructive",
       });
     } finally {
@@ -63,7 +68,11 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
+      console.log('Attempting registration for:', registerEmail);
+      
+      // Set the redirect URL to current origin
       const redirectUrl = `${window.location.origin}/`;
+      console.log('Using redirect URL:', redirectUrl);
       
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
@@ -78,13 +87,37 @@ const AuthPage = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Registration error:', error);
+        
+        // Provide more helpful error messages
+        if (error.message.includes('Failed to fetch')) {
+          throw new Error('Unable to connect to authentication service. Please check your internet connection and try again.');
+        } else if (error.message.includes('User already registered')) {
+          throw new Error('An account with this email already exists. Please try logging in instead.');
+        } else {
+          throw error;
+        }
+      }
 
       if (data.user) {
-        toast({
-          title: "Registration successful",
-          description: "Your account has been created! You can now login.",
-        });
+        console.log('Registration successful for user:', data.user.email);
+        
+        // Check if user needs email confirmation
+        if (!data.session) {
+          toast({
+            title: "Registration successful",
+            description: "Please check your email for a confirmation link, then try logging in.",
+          });
+        } else {
+          toast({
+            title: "Registration successful",
+            description: "Your account has been created and you are now logged in!",
+          });
+          // Force page reload for clean state
+          window.location.href = "/";
+          return;
+        }
         
         // Clear registration form
         setRegisterName("");
@@ -98,9 +131,10 @@ const AuthPage = () => {
         setActiveTab("login");
       }
     } catch (error: any) {
+      console.error('Registration failed:', error);
       toast({
         title: "Registration failed",
-        description: error.message,
+        description: error.message || "An error occurred during registration",
         variant: "destructive",
       });
     } finally {
