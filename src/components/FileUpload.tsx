@@ -1,18 +1,17 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, FileText, Loader2, CheckCircle, AlertCircle, Clock } from "lucide-react";
+import { Upload, FileText, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { processUploadedPlaybook } from "@/services/pdf-parser";
+import { scanAndProcessPlaybooks } from "@/services/pdf-parser";
 import { useToast } from "@/hooks/use-toast";
 
 export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void }) => {
   const [uploading, setUploading] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'processing' | 'success' | 'error'>('idle');
-  const [currentFile, setCurrentFile] = useState<string>('');
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [processedCount, setProcessedCount] = useState(0);
-  const [totalFiles, setTotalFiles] = useState(0);
   const { toast } = useToast();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,15 +20,12 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
 
     setUploading(true);
     setProcessing(false);
-    setUploadStatus('uploading');
+    setUploadStatus('idle');
     setProcessedCount(0);
-    setTotalFiles(files.length);
-    setCurrentFile('');
     
     try {
       const uploadedFiles = [];
       
-      // Upload all files first
       for (const file of Array.from(files)) {
         // Validate file type
         const isValidFile = file.type === 'application/pdf' || 
@@ -49,7 +45,6 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
         }
 
         console.log(`Uploading file: ${file.name}`);
-        setCurrentFile(file.name);
         
         // Upload to Supabase storage
         const { data, error } = await supabase.storage
@@ -73,58 +68,43 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
         return;
       }
 
-      // Switch to processing state
+      setUploadStatus('success');
       setUploading(false);
       setProcessing(true);
-      setUploadStatus('processing');
 
       toast({
         title: "Upload successful",
-        description: `${uploadedFiles.length} file(s) uploaded. Processing documents automatically...`,
+        description: `${uploadedFiles.length} file(s) uploaded successfully. Processing documents...`,
       });
 
-      // Process each uploaded file immediately
-      let successCount = 0;
-      for (const fileName of uploadedFiles) {
-        try {
-          setCurrentFile(fileName);
-          console.log(`Auto-processing uploaded file: ${fileName}`);
-          
-          const result = await processUploadedPlaybook(fileName);
-          
-          if (result) {
-            successCount++;
-            setProcessedCount(successCount);
-            console.log(`Successfully auto-processed: ${fileName}`, result);
-          }
-        } catch (processingError) {
-          console.error(`Error auto-processing ${fileName}:`, processingError);
-          // Still count as processed since we have fallback logic in processUploadedPlaybook
-          successCount++;
-          setProcessedCount(successCount);
-        }
-      }
-
-      setUploadStatus('success');
+      // Process uploaded files
+      console.log('Starting to process uploaded files...');
       
-      toast({
-        title: "Processing complete!",
-        description: `Successfully processed ${successCount} document(s) and created interactive playbooks!`,
-      });
-
-      // Force refresh the playbooks list after successful processing
-      if (onUploadComplete) {
-        console.log('Calling onUploadComplete to refresh playbooks...');
-        onUploadComplete();
-      }
-
-      // Add a small delay and call refresh again to ensure the UI updates
-      setTimeout(() => {
+      try {
+        await scanAndProcessPlaybooks();
+        setProcessedCount(uploadedFiles.length);
+        console.log('File processing completed successfully');
+        
+        toast({
+          title: "Processing complete!",
+          description: "Your documents have been processed and playbooks created successfully!",
+        });
+        
         if (onUploadComplete) {
-          console.log('Secondary refresh call to ensure playbooks are visible...');
           onUploadComplete();
         }
-      }, 2000);
+      } catch (processingError) {
+        console.error('Error processing files:', processingError);
+        setProcessedCount(uploadedFiles.length); // Still count as processed since we have fallback
+        toast({
+          title: "Processing completed",
+          description: "Your documents have been processed with basic playbook structures. You can now view your playbooks!",
+        });
+        
+        if (onUploadComplete) {
+          onUploadComplete();
+        }
+      }
 
     } catch (error) {
       console.error('Error in file upload process:', error);
@@ -137,42 +117,29 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
     } finally {
       setUploading(false);
       setProcessing(false);
-      setCurrentFile('');
       // Reset the file input
       event.target.value = '';
     }
   };
 
   const getStatusIcon = () => {
-    if (uploading) {
-      return <Upload className="h-4 w-4 animate-pulse text-blue-500" />;
+    if (uploading || processing) {
+      return <Loader2 className="h-4 w-4 animate-spin" />;
     }
-    if (processing) {
-      return <Loader2 className="h-4 w-4 animate-spin text-orange-500" />;
-    }
-    if (uploadStatus === 'success') {
+    if (uploadStatus === 'success' && processedCount > 0) {
       return <CheckCircle className="h-4 w-4 text-green-500" />;
     }
     if (uploadStatus === 'error') {
       return <AlertCircle className="h-4 w-4 text-red-500" />;
     }
-    return <Clock className="h-4 w-4 text-gray-400" />;
+    return null;
   };
 
   const getStatusText = () => {
-    if (uploading && currentFile) return `Uploading: ${currentFile}`;
     if (uploading) return 'Uploading files...';
-    if (processing && currentFile) return `Processing: ${currentFile}`;
     if (processing) return 'Processing documents and creating playbooks...';
-    if (uploadStatus === 'success') return `Successfully processed ${processedCount}/${totalFiles} document(s)!`;
+    if (uploadStatus === 'success' && processedCount > 0) return `Successfully processed ${processedCount} document(s)!`;
     if (uploadStatus === 'error') return 'Upload failed. Please try again.';
-    return 'Ready to upload documents';
-  };
-
-  const getProgressText = () => {
-    if (uploadStatus === 'processing' || uploadStatus === 'success') {
-      return `${processedCount}/${totalFiles} files processed`;
-    }
     return '';
   };
 
@@ -181,32 +148,22 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Upload className="h-5 w-5 text-orange-500" />
-          Upload & Auto-Process Documents
+          Upload Documents
         </CardTitle>
         <CardDescription>
-          Upload PDF or Word documents to automatically create interactive playbooks. 
-          Files are processed immediately after upload and will appear in the playbooks section below.
+          Upload PDF or Word documents to automatically create interactive playbooks with process steps, RACI matrices, and process maps
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors relative ${
-            uploading || processing 
-              ? 'border-orange-300 bg-orange-50' 
-              : 'border-orange-200 hover:border-orange-300'
-          }`}>
-            <FileText className={`h-12 w-12 mx-auto mb-4 ${
-              uploading || processing ? 'text-orange-500' : 'text-orange-400'
-            }`} />
+          <div className="border-2 border-dashed border-orange-200 rounded-lg p-6 text-center hover:border-orange-300 transition-colors relative">
+            <FileText className="h-12 w-12 text-orange-400 mx-auto mb-4" />
             <div className="space-y-2">
               <p className="text-sm text-gray-600">
-                {uploading || processing 
-                  ? 'Processing in progress...' 
-                  : 'Drag and drop files here, or click to browse'
-                }
+                Drag and drop files here, or click to browse
               </p>
               <p className="text-xs text-gray-500">
-                Supports: PDF, DOCX, DOC files • Auto-processing enabled
+                Supports: PDF, DOCX, DOC files
               </p>
             </div>
             <input
@@ -219,47 +176,22 @@ export const FileUpload = ({ onUploadComplete }: { onUploadComplete?: () => void
             />
           </div>
           
-          {uploadStatus !== 'idle' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-2 p-3 bg-gray-50 rounded-lg">
-                {getStatusIcon()}
-                <span className="text-sm font-medium">
-                  {getStatusText()}
-                </span>
-              </div>
-              
-              {(processing || uploadStatus === 'success') && totalFiles > 0 && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs text-gray-600">
-                    <span>Progress</span>
-                    <span>{getProgressText()}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-300" 
-                      style={{ width: `${(processedCount / totalFiles) * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
+          {(uploading || processing || uploadStatus !== 'idle') && (
+            <div className="flex items-center justify-center gap-2 p-3 bg-gray-50 rounded-lg">
+              {getStatusIcon()}
+              <span className="text-sm font-medium">
+                {getStatusText()}
+              </span>
             </div>
           )}
           
-          {uploadStatus === 'success' && (
-            <div className="text-center space-y-3">
-              <div className="text-sm text-green-600 font-medium">
-                ✅ All documents processed successfully! Your new playbooks should now be visible in the playbooks section below.
-              </div>
+          {uploadStatus === 'success' && processedCount > 0 && (
+            <div className="text-center">
               <Button 
-                onClick={() => {
-                  setUploadStatus('idle');
-                  setProcessedCount(0);
-                  setTotalFiles(0);
-                }}
-                variant="outline"
-                className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                onClick={() => window.location.reload()}
+                className="bg-orange-500 hover:bg-orange-600"
               >
-                Upload More Documents
+                View Your Playbooks
               </Button>
             </div>
           )}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,7 +44,6 @@ const Home = () => {
 
   const fetchPlaybooks = async () => {
     try {
-      console.log('Fetching playbooks...');
       const { data, error } = await supabase
         .from('playbooks')
         .select('*')
@@ -56,7 +56,6 @@ const Home = () => {
         index === self.findIndex(p => p.title === playbook.title)
       ) || [];
       
-      console.log('Fetched playbooks:', uniquePlaybooks.length);
       setPlaybooks(uniquePlaybooks);
     } catch (error) {
       console.error('Error fetching playbooks:', error);
@@ -110,6 +109,21 @@ const Home = () => {
     }
   };
 
+  const deleteAllPlaybooks = async () => {
+    try {
+      // Delete all data from related tables first
+      await supabase.from('process_steps').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('raci_matrix').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('process_map').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('playbooks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      console.log('All playbooks and related data deleted');
+      fetchPlaybooks();
+    } catch (error) {
+      console.error('Error deleting playbooks:', error);
+    }
+  };
+
   const filteredPlaybooks = searchQuery.trim() ? [] : playbooks;
 
   const getResultTypeIcon = (type: string) => {
@@ -145,9 +159,9 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white/80 backdrop-blur-md border-b border-orange-200 sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
                 <Sun className="h-6 w-6 text-white" />
@@ -157,14 +171,14 @@ const Home = () => {
                 <p className="text-sm text-gray-600">Interactive Playbook Management System</p>
               </div>
             </div>
-            <div className="flex justify-center lg:justify-end">
+            <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search across all playbooks..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-full sm:w-80 bg-white"
+                  className="pl-10 w-80 bg-white/90"
                 />
                 {isSearching && (
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -183,11 +197,11 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Your Playbook Library</h2>
           <p className="text-lg text-gray-600 mb-6">
             Access and manage all your solar project execution playbooks in one centralized location. 
-            Upload documents below and they will be automatically processed into interactive playbooks with detailed process steps, RACI matrices, and process maps.
+            Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
           </p>
         </div>
 
-        {/* Auto-Processing File Upload Section */}
+        {/* File Upload Section */}
         <div className="mb-8">
           <FileUpload onUploadComplete={fetchPlaybooks} />
         </div>
@@ -280,22 +294,14 @@ const Home = () => {
         {/* Playbooks Grid */}
         {!searchQuery.trim() && (
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-gray-900">Available Playbooks</h3>
-              <p className="text-sm text-gray-500">
-                {loading ? 'Loading...' : `${playbooks.length} playbook${playbooks.length !== 1 ? 's' : ''} available`}
-              </p>
-            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Available Playbooks</h3>
             {loading ? (
               <div className="text-center py-8">
-                <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-orange-500" />
                 <p className="text-gray-600">Loading playbooks...</p>
               </div>
             ) : filteredPlaybooks.length === 0 ? (
               <div className="text-center py-8">
-                <BookOpen className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-gray-600 mb-2">No playbooks found.</p>
-                <p className="text-sm text-gray-500">Upload documents above to create your first playbook.</p>
+                <p className="text-gray-600">No playbooks found. Upload documents above to create your first playbook.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
