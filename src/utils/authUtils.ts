@@ -26,19 +26,18 @@ export const testSupabaseConnection = async () => {
     console.log('Testing Supabase connection...');
     console.log('Supabase URL:', 'https://iryousvyjqlbeyjsswxj.supabase.co');
     
-    // Try a simple request to test connectivity
-    const response = await fetch('https://iryousvyjqlbeyjsswxj.supabase.co/rest/v1/', {
-      method: 'GET',
-      headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyeW91c3Z5anFsYmV5anNzd3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNjA3MzQsImV4cCI6MjA2MzgzNjczNH0.PyvWJ13ELlIAZtMrQLy_Ifn0jQ6i43lsfHt3zIoQxRU',
-        'Content-Type': 'application/json'
-      }
-    });
+    // Use Supabase client to test connectivity - this avoids CORS issues
+    const { error } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
     
-    console.log('Connection test response status:', response.status);
-    console.log('Connection test response ok:', response.ok);
+    // If there's no error or it's just a table-not-found error, connection is working
+    const isConnected = !error || error.code === 'PGRST116'; // Table not found is OK for connection test
     
-    return response.ok;
+    console.log('Connection test result:', isConnected ? 'SUCCESS' : 'FAILED');
+    if (error && error.code !== 'PGRST116') {
+      console.log('Connection test error:', error);
+    }
+    
+    return isConnected;
   } catch (error) {
     console.error('Connection test failed:', error);
     return false;
