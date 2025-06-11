@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,10 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Wind, User, Mail, Lock, Building, IdCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { cleanupAuthState, testSupabaseConnection } from "@/utils/authUtils";
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [connectionStatus, setConnectionStatus] = useState<boolean | null>(null);
   const { toast } = useToast();
 
   // Login state
@@ -25,34 +26,88 @@ const AuthPage = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
+  useEffect(() => {
+    // Test connection on component mount
+    const checkConnection = async () => {
+      const isConnected = await testSupabaseConnection();
+      setConnectionStatus(isConnected);
+      if (!isConnected) {
+        toast({
+          title: "Connection Issue",
+          description: "Having trouble connecting to authentication service. Please try again.",
+          variant: "destructive",
+        });
+      }
+    };
+    
+    checkConnection();
+  }, [toast]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      console.log('Attempting login for:', loginEmail);
+      console.log('=== LOGIN ATTEMPT ===');
+      console.log('Email:', loginEmail);
+      console.log('Current URL:', window.location.href);
+      console.log('Navigator online:', navigator.onLine);
       
+      // Clean up any corrupted auth state first
+      cleanupAuthState();
+      
+      // Attempt global sign out first to clear any existing sessions
+      try {
+        console.log('Attempting global sign out before login...');
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (signOutError) {
+        console.log('Sign out error (continuing anyway):', signOutError);
+      }
+      
+      console.log('Initiating sign in with password...');
       const { data, error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       });
 
+      console.log('Sign in response:', { data, error });
+
       if (error) {
-        console.error('Login error:', error);
-        throw error;
+        console.error('Login error details:', {
+          message: error.message,
+          status: error.status,
+          code: error.code || 'no-code'
+        });
+        
+        // Provide more specific error messages
+        if (error.message.includes('Failed to fetch')) {
+          throw new Error('Unable to connect to authentication service. Please check your internet connection and ensure your browser allows connections to Supabase.');
+        } else if (error.message.includes('Invalid login credentials')) {
+          throw new Error('Invalid email or password. Please check your credentials and try again.');
+        } else if (error.message.includes('Email not confirmed')) {
+          throw new Error('Please check your email and click the confirmation link before logging in.');
+        } else {
+          throw error;
+        }
       }
 
       if (data.user) {
         console.log('Login successful for user:', data.user.email);
+        console.log('Session created:', !!data.session);
+        
         toast({
           title: "Login successful",
           description: "Welcome back!",
         });
-        // Force page reload to ensure clean state
+        
+        // Force page reload for clean state
+        console.log('Redirecting to home page...');
         window.location.href = "/";
       }
     } catch (error: any) {
-      console.error('Login failed:', error);
+      console.error('Login failed with error:', error);
+      console.error('Error stack:', error.stack);
+      
       toast({
         title: "Login failed",
         description: error.message || "An error occurred during login",
@@ -68,12 +123,19 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
-      console.log('Attempting registration for:', registerEmail);
+      console.log('=== REGISTRATION ATTEMPT ===');
+      console.log('Email:', registerEmail);
+      console.log('Current URL:', window.location.href);
+      console.log('Navigator online:', navigator.onLine);
+      
+      // Clean up any corrupted auth state first
+      cleanupAuthState();
       
       // Set the redirect URL to current origin
       const redirectUrl = `${window.location.origin}/`;
       console.log('Using redirect URL:', redirectUrl);
       
+      console.log('Initiating sign up...');
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
         password: registerPassword,
@@ -87,14 +149,22 @@ const AuthPage = () => {
         },
       });
 
+      console.log('Sign up response:', { data, error });
+
       if (error) {
-        console.error('Registration error:', error);
+        console.error('Registration error details:', {
+          message: error.message,
+          status: error.status,
+          code: error.code || 'no-code'
+        });
         
         // Provide more helpful error messages
         if (error.message.includes('Failed to fetch')) {
-          throw new Error('Unable to connect to authentication service. Please check your internet connection and try again.');
+          throw new Error('Unable to connect to authentication service. Please check your internet connection and ensure your browser allows connections to Supabase.');
         } else if (error.message.includes('User already registered')) {
           throw new Error('An account with this email already exists. Please try logging in instead.');
+        } else if (error.message.includes('Password should be at least 6 characters')) {
+          throw new Error('Password must be at least 6 characters long.');
         } else {
           throw error;
         }
@@ -102,6 +172,8 @@ const AuthPage = () => {
 
       if (data.user) {
         console.log('Registration successful for user:', data.user.email);
+        console.log('Session created:', !!data.session);
+        console.log('Email confirmation required:', !data.session);
         
         // Check if user needs email confirmation
         if (!data.session) {
@@ -115,6 +187,7 @@ const AuthPage = () => {
             description: "Your account has been created and you are now logged in!",
           });
           // Force page reload for clean state
+          console.log('Redirecting to home page...');
           window.location.href = "/";
           return;
         }
@@ -131,7 +204,9 @@ const AuthPage = () => {
         setActiveTab("login");
       }
     } catch (error: any) {
-      console.error('Registration failed:', error);
+      console.error('Registration failed with error:', error);
+      console.error('Error stack:', error.stack);
+      
       toast({
         title: "Registration failed",
         description: error.message || "An error occurred during registration",
@@ -154,6 +229,11 @@ const AuthPage = () => {
             <CardDescription className="text-gray-600">
               Access playbooks and project execution guides
             </CardDescription>
+            {connectionStatus === false && (
+              <div className="text-red-600 text-sm mt-2">
+                ⚠️ Connection issue detected
+              </div>
+            )}
           </div>
         </CardHeader>
         <CardContent>
@@ -198,7 +278,7 @@ const AuthPage = () => {
                 <Button 
                   type="submit" 
                   className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
-                  disabled={isLoading}
+                  disabled={isLoading || connectionStatus === false}
                 >
                   {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
@@ -286,7 +366,7 @@ const AuthPage = () => {
                 <Button 
                   type="submit" 
                   className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
-                  disabled={isLoading}
+                  disabled={isLoading || connectionStatus === false}
                 >
                   {isLoading ? "Creating account..." : "Create Account"}
                 </Button>

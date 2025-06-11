@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,8 +17,7 @@ interface CertificationData {
 }
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [downloadingCert, setDownloadingCert] = useState(false);
   const [userCertifications, setUserCertifications] = useState<CertificationData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,11 +43,6 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/');
   };
 
   const generateCertificate = (userName: string, department: string) => {
@@ -128,48 +120,22 @@ const Dashboard = () => {
 
   const playbooks = [
     {
-      id: "wind-commissioning",
-      title: "Wind Commissioning & Performance",
-      description: "Complete wind turbine commissioning and performance optimization playbook",
-      chapters: 5,
-      image: "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
-      route: "/wind-cp-dashboard",
+      id: "wind-cp",
+      title: "Wind - C&P",
+      description: "Contracting & Procurement",
       icon: Wind,
-      color: "from-blue-500 to-cyan-600",
-      status: "Available"
-    },
-    {
-      id: "commissioning",
-      title: "Commissioning Activities",
-      description: "Comprehensive commissioning procedures and checklists for renewable energy projects",
-      chapters: 4,
-      image: "/lovable-uploads/80b2c685-97ca-460f-8b5f-ef4312be4cd9.png",
-      route: "/commissioning-dashboard",
-      icon: Award,
-      color: "from-green-500 to-emerald-600",
-      status: "Available"
+      color: "from-blue-500 to-blue-600",
+      status: "Available",
+      route: "/wind-cp"
     },
     {
       id: "planning-solar",
       title: "Planning - Solar",
-      description: "Solar project planning playbook covering scope, cost, quality, regulatory, and risk management",
-      chapters: 6,
-      image: "/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png",
-      route: "/planning-solar-dashboard",
+      description: "Solar Project Planning",
       icon: Sun,
-      color: "from-yellow-500 to-orange-600",
-      status: "Available"
-    },
-    {
-      id: "planning-wind",
-      title: "Planning - Wind",
-      description: "Wind project planning playbook covering all aspects from bidding to execution",
-      chapters: 6,
-      image: "/lovable-uploads/b8a0d568-9703-4696-bb00-ea27bca372f1.png",
-      route: "/planning-wind-dashboard",
-      icon: Wind,
       color: "from-orange-500 to-yellow-500",
-      status: "Available"
+      status: "Available",
+      route: "/planning-solar"
     }
   ];
 
