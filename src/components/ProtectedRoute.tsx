@@ -22,8 +22,10 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   if (!user) {
+    console.log('User not authenticated, showing auth page');
     return <AuthPage />;
   }
 
+  console.log('User authenticated:', user.email);
   return <>{children}</>;
 };

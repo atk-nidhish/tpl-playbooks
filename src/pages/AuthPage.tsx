@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { Wind, User, Mail, Lock, Building, IdCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { cleanupAuthState, performGlobalSignOut } from "@/utils/authUtils";
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,24 +31,58 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
+      console.log('Starting login process for:', loginEmail);
+      
+      // Clean up existing state first
+      cleanupAuthState();
+      
+      // Attempt global sign out to clear any existing sessions
+      await performGlobalSignOut(supabase);
+      
+      // Small delay to ensure cleanup is complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
+        email: loginEmail.trim(),
         password: loginPassword,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Login error:', error);
+        throw error;
+      }
+
+      console.log('Login successful:', data.user?.email);
 
       if (data.user) {
         toast({
           title: "Login successful",
           description: "Welcome back!",
         });
-        navigate("/");
+        
+        // Force page reload for clean state
+        window.location.href = '/';
       }
     } catch (error: any) {
+      console.error('Login failed:', error);
+      
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      
+      if (error.message?.includes('Invalid login credentials')) {
+        errorMessage = "Invalid email or password. Please check your credentials.";
+      } else if (error.message?.includes('Email not confirmed')) {
+        errorMessage = "Please check your email and confirm your account before logging in.";
+      } else if (error.message?.includes('Too many requests')) {
+        errorMessage = "Too many login attempts. Please wait a moment before trying again.";
+      } else if (error.message?.includes('Failed to fetch')) {
+        errorMessage = "Connection error. Please check your internet connection and try again.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Login failed",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -61,11 +95,22 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
+      console.log('Starting registration process for:', registerEmail);
+      
+      // Clean up existing state first
+      cleanupAuthState();
+      
+      // Attempt global sign out to clear any existing sessions
+      await performGlobalSignOut(supabase);
+
+      const redirectUrl = `${window.location.origin}/`;
+      console.log('Registration redirect URL:', redirectUrl);
+
       const { data, error } = await supabase.auth.signUp({
-        email: registerEmail,
+        email: registerEmail.trim(),
         password: registerPassword,
         options: {
-          emailRedirectTo: undefined, // Disable email verification
+          emailRedirectTo: redirectUrl,
           data: {
             full_name: registerName,
             department: registerDepartment,
@@ -74,13 +119,19 @@ const AuthPage = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Registration error:', error);
+        throw error;
+      }
+
+      console.log('Registration successful:', data.user?.email);
 
       if (data.user) {
         toast({
           title: "Registration successful",
           description: "You can now login with your credentials.",
         });
+        
         // Switch to login tab and prefill email
         setLoginEmail(registerEmail);
         setRegisterName("");
@@ -88,11 +139,33 @@ const AuthPage = () => {
         setRegisterEmployeeId("");
         setRegisterEmail("");
         setRegisterPassword("");
+        
+        // Switch to login tab
+        const loginTab = document.querySelector('[value="login"]') as HTMLElement;
+        if (loginTab) {
+          loginTab.click();
+        }
       }
     } catch (error: any) {
+      console.error('Registration failed:', error);
+      
+      let errorMessage = "Registration failed. Please try again.";
+      
+      if (error.message?.includes('User already registered')) {
+        errorMessage = "An account with this email already exists. Please try logging in instead.";
+      } else if (error.message?.includes('Password should be at least')) {
+        errorMessage = "Password must be at least 6 characters long.";
+      } else if (error.message?.includes('Unable to validate email address')) {
+        errorMessage = "Please enter a valid email address.";
+      } else if (error.message?.includes('Failed to fetch')) {
+        errorMessage = "Connection error. Please check your internet connection and try again.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Registration failed",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -135,6 +208,7 @@ const AuthPage = () => {
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -150,6 +224,7 @@ const AuthPage = () => {
                       onChange={(e) => setLoginPassword(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -177,6 +252,7 @@ const AuthPage = () => {
                       onChange={(e) => setRegisterName(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -192,6 +268,7 @@ const AuthPage = () => {
                       onChange={(e) => setRegisterDepartment(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -207,6 +284,7 @@ const AuthPage = () => {
                       onChange={(e) => setRegisterEmployeeId(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -222,6 +300,7 @@ const AuthPage = () => {
                       onChange={(e) => setRegisterEmail(e.target.value)}
                       className="pl-10"
                       required
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -238,6 +317,7 @@ const AuthPage = () => {
                       className="pl-10"
                       required
                       minLength={6}
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
