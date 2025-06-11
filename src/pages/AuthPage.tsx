@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -43,7 +44,8 @@ const AuthPage = () => {
           title: "Login successful",
           description: "Welcome back!",
         });
-        navigate("/");
+        // Force page reload to ensure clean state
+        window.location.href = "/";
       }
     } catch (error: any) {
       toast({
@@ -61,11 +63,13 @@ const AuthPage = () => {
     setIsLoading(true);
 
     try {
+      const redirectUrl = `${window.location.origin}/`;
+      
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
         password: registerPassword,
         options: {
-          emailRedirectTo: undefined, // Disable email verification
+          emailRedirectTo: redirectUrl,
           data: {
             full_name: registerName,
             department: registerDepartment,
@@ -79,15 +83,19 @@ const AuthPage = () => {
       if (data.user) {
         toast({
           title: "Registration successful",
-          description: "You can now login with your credentials.",
+          description: "Your account has been created! You can now login.",
         });
-        // Switch to login tab and prefill email
-        setLoginEmail(registerEmail);
+        
+        // Clear registration form
         setRegisterName("");
         setRegisterDepartment("");
         setRegisterEmployeeId("");
         setRegisterEmail("");
         setRegisterPassword("");
+        
+        // Switch to login tab and prefill email
+        setLoginEmail(registerEmail);
+        setActiveTab("login");
       }
     } catch (error: any) {
       toast({
@@ -115,7 +123,7 @@ const AuthPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="login" className="space-y-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="register">Register</TabsTrigger>
