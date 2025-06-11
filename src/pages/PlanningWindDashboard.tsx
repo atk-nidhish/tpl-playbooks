@@ -17,6 +17,31 @@ const PlanningWindDashboard = () => {
   const [isInitializing, setIsInitializing] = useState(true);
 
   const playbookId = "a1b2c3d4-e5f6-7890-abcd-123456789012";
+  const playbookName = "Planning - Wind";
+
+  const chapters = [
+    {
+      id: "chapter-1",
+      name: "Plan Integration Management",
+      shortName: "Chapter 1",
+      subChapters: [
+        { id: "section-1.1", name: "Project Plan Preparation During Bidding", shortName: "1.1" },
+        { id: "section-1.2", name: "Project Schedule and Execution Approach", shortName: "1.2" },
+        { id: "section-1.3", name: "Land Finalization Plan", shortName: "1.3" },
+        { id: "section-1.4", name: "Engineering Plan", shortName: "1.4" },
+        { id: "section-1.5", name: "Procurement Plan", shortName: "1.5" },
+        { id: "section-1.6", name: "Construction Plan", shortName: "1.6" },
+        { id: "section-1.7", name: "Commissioning Plan", shortName: "1.7" },
+        { id: "section-1.8", name: "Plan Integration", shortName: "1.8" },
+        { id: "section-1.9", name: "Plan Update", shortName: "1.9" }
+      ]
+    },
+    { id: "chapter-2", name: "Scope Management Plan", shortName: "Chapter 2" },
+    { id: "chapter-3", name: "Cost Management Plan", shortName: "Chapter 3" },
+    { id: "chapter-4", name: "Quality Management Plan", shortName: "Chapter 4" },
+    { id: "chapter-5", name: "Statutory Approval Management Plan", shortName: "Chapter 5" },
+    { id: "chapter-6", name: "Risk Management Plan", shortName: "Chapter 6" }
+  ];
 
   useEffect(() => {
     const initializeData = async () => {
@@ -174,6 +199,8 @@ const PlanningWindDashboard = () => {
                 <TabsContent value="certification" className="mt-0">
                   <PlaybookCertification 
                     playbookId={playbookId}
+                    playbookName={playbookName}
+                    chapters={chapters}
                   />
                 </TabsContent>
               </div>
