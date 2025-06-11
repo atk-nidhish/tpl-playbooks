@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
-import { ArrowLeft, MapPin, Users, CheckCircle, Clock, Award, BookOpen } from "lucide-react";
+import { Leaderboard } from "@/components/Leaderboard";
+import { ArrowLeft, MapPin, Search, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Chapter {
@@ -25,7 +26,9 @@ const WindPlanningDashboard = () => {
   const navigate = useNavigate();
   const [activePhase, setActivePhase] = useState("section-1-1");
   const [currentTab, setCurrentTab] = useState("processes");
+  const [searchQuery, setSearchQuery] = useState("");
   const [playbook, setPlaybook] = useState<any>(null);
+  const [playbookId, setPlaybookId] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,6 +45,7 @@ const WindPlanningDashboard = () => {
 
       if (error) throw error;
       setPlaybook(data);
+      setPlaybookId(data.id);
     } catch (error) {
       console.error('Error fetching playbook:', error);
     } finally {
@@ -90,8 +94,22 @@ const WindPlanningDashboard = () => {
       id: "chapter-6",
       name: "Chapter 6 - Risk Management Plan",
       shortName: "Ch 6: Risk"
+    },
+    {
+      id: "certification",
+      name: "Playbook Certification",
+      shortName: "Certification"
+    },
+    {
+      id: "leaderboard",
+      name: "Certification Leaderboard",
+      shortName: "Leaderboard"
     }
   ];
+
+  const handleNavigateToRaci = () => {
+    setCurrentTab("raci");
+  };
 
   const getCurrentChapter = () => {
     for (const chapter of chapters) {
@@ -116,6 +134,113 @@ const WindPlanningDashboard = () => {
       </div>
     );
   }
+
+  // Handle leaderboard section
+  if (activePhase === "leaderboard") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-teal-50">
+        <header className="bg-white/95 backdrop-blur-md border-b border-green-200 shadow-sm sticky top-0 z-50">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/")}
+                  className="flex items-center space-x-2 hover:bg-green-50 border-green-200"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to Dashboard</span>
+                </Button>
+                <div className="flex items-center space-x-3">
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 p-2 rounded-lg shadow-lg">
+                    <MapPin className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
+                    <p className="text-sm text-gray-600">Wind Project Planning Playbook</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <ModernNavigation
+          chapters={chapters}
+          activePhase={activePhase}
+          onPhaseChange={setActivePhase}
+        />
+
+        <div className="container mx-auto px-6 py-8">
+          <Leaderboard />
+        </div>
+      </div>
+    );
+  }
+
+  // Handle certification section
+  if (activePhase === "certification") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-teal-50">
+        <header className="bg-white/95 backdrop-blur-md border-b border-green-200 shadow-sm sticky top-0 z-50">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/")}
+                  className="flex items-center space-x-2 hover:bg-green-50 border-green-200"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to Dashboard</span>
+                </Button>
+                <div className="flex items-center space-x-3">
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 p-2 rounded-lg shadow-lg">
+                    <MapPin className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Wind - Planning</h1>
+                    <p className="text-sm text-gray-600">Wind Project Planning Playbook</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <ModernNavigation
+          chapters={chapters}
+          activePhase={activePhase}
+          onPhaseChange={setActivePhase}
+        />
+
+        <div className="container mx-auto px-6 py-8">
+          <PlaybookCertification 
+            playbookId={playbookId}
+            playbookName="Wind - Planning"
+            chapters={chapters}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const getProcessMapImage = (phaseId: string) => {
+    // Placeholder for process map images - can be updated when images are available
+    return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
+  };
+
+  const downloadProcessMap = (phaseId: string) => {
+    const imageUrl = getProcessMapImage(phaseId);
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `Process-Map-${phaseId}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-teal-50">
@@ -144,6 +269,15 @@ const WindPlanningDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search processes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-80 bg-white/90"
+                />
+              </div>
               <Badge variant="secondary" className="bg-green-100 text-green-800 font-semibold">
                 Interactive Playbook
               </Badge>
@@ -161,142 +295,61 @@ const WindPlanningDashboard = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
-        {/* Chapter Header */}
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-gradient-to-r from-green-400 to-teal-500 p-2 rounded-lg">
-              <BookOpen className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">{currentChapter.name}</h2>
-              <p className="text-gray-600">Comprehensive planning procedures and guidelines</p>
-            </div>
-          </div>
-
-          {/* Progress and Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Progress</p>
-                    <p className="text-lg font-bold text-green-600">12%</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5 text-blue-500" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Est. Time</p>
-                    <p className="text-lg font-bold text-blue-600">2-3 weeks</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-purple-500" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Team Size</p>
-                    <p className="text-lg font-bold text-purple-600">8-12</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Award className="h-5 w-5 text-orange-500" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Complexity</p>
-                    <p className="text-lg font-bold text-orange-600">Advanced</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Progress value={12} className="w-full h-2 bg-green-100" />
-        </div>
-
         {/* Content Tabs */}
         <ModernTabs value={currentTab} onValueChange={setCurrentTab}>
           <TabsContent value="processes" className="space-y-6">
-            <Card className="bg-white/95 backdrop-blur-md border-green-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 border-b border-green-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  Process Steps
-                </CardTitle>
-                <CardDescription>
-                  Detailed step-by-step procedures for {currentChapter.name}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <ProcessSteps 
-                  phaseId={activePhase} 
-                  playbookName="wind-planning"
-                />
-              </CardContent>
-            </Card>
+            <ProcessSteps 
+              playbookId={playbookId} 
+              activePhase={activePhase} 
+              searchQuery={searchQuery}
+              onNavigateToRaci={handleNavigateToRaci}
+            />
           </TabsContent>
 
           <TabsContent value="raci" className="space-y-6">
-            <Card className="bg-white/95 backdrop-blur-md border-green-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 border-b border-green-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
-                  <Users className="h-5 w-5 text-green-600" />
-                  RACI Matrix
-                </CardTitle>
-                <CardDescription>
-                  Responsibility assignment matrix for {currentChapter.name}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <RACIMatrix 
-                  phaseId={activePhase} 
-                  playbookName="wind-planning"
-                />
-              </CardContent>
-            </Card>
+            <RACIMatrix 
+              playbookId={playbookId} 
+              activePhase={activePhase} 
+              searchQuery={searchQuery}
+            />
           </TabsContent>
 
           <TabsContent value="process-map" className="space-y-6">
-            <Card className="bg-white/95 backdrop-blur-md border-green-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 border-b border-green-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
-                  <MapPin className="h-5 w-5 text-green-600" />
-                  Process Map
-                </CardTitle>
-                <CardDescription>
-                  Visual workflow diagram for {currentChapter.name}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <ProcessMap 
-                  phaseId={activePhase} 
-                  playbookName="wind-planning"
-                />
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              <Card className="bg-white/95 backdrop-blur-md border-green-200 shadow-lg">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <MapPin className="h-5 w-5 text-green-600" />
+                        Process Map - {activePhase}
+                      </CardTitle>
+                      <CardDescription>
+                        Visual representation of the complete process flow
+                      </CardDescription>
+                    </div>
+                    <Button 
+                      onClick={() => downloadProcessMap(activePhase)}
+                      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="flex justify-center">
+                    <img 
+                      src={getProcessMapImage(activePhase)}
+                      alt={`Process Map for ${activePhase}`}
+                      className="max-w-full h-auto rounded-lg shadow-lg border border-green-200"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </ModernTabs>
-
-        {/* Certification Section */}
-        <div className="mt-12">
-          <PlaybookCertification 
-            playbookId={playbook?.id}
-            playbookName="Wind - Planning"
-            onCertificationComplete={() => {
-              console.log('Certification completed for Wind Planning');
-            }}
-          />
-        </div>
       </div>
     </div>
   );

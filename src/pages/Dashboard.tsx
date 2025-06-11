@@ -1,152 +1,19 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wind, FileText, Award, Download, LogOut, User, Building, Sun, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-
-interface CertificationData {
-  id: string;
-  user_name: string;
-  user_department: string;
-  playbook_name: string;
-  score: number;
-  completed_at: string;
-}
+import { FileText, Wind, Sun, Play, MapPin } from "lucide-react";
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
-  const [downloadingCert, setDownloadingCert] = useState(false);
-  const [userCertifications, setUserCertifications] = useState<CertificationData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchUserCertifications();
-  }, [user]);
-
-  const fetchUserCertifications = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('certification_scores')
-        .select('*')
-        .order('completed_at', { ascending: false });
-
-      if (error) throw error;
-      
-      // For now, we'll show all certifications since we don't have user-specific filtering
-      // In a real app, you'd filter by user_id or user_name
-      setUserCertifications(data || []);
-    } catch (error) {
-      console.error('Error fetching certifications:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const generateCertificate = (userName: string, department: string) => {
-    // Create a canvas to generate the certificate image
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size
-    canvas.width = 800;
-    canvas.height = 600;
-    
-    // Background
-    ctx!.fillStyle = '#f8fafc';
-    ctx!.fillRect(0, 0, 800, 600);
-    
-    // Border
-    ctx!.strokeStyle = '#fb923c';
-    ctx!.lineWidth = 8;
-    ctx!.strokeRect(20, 20, 760, 560);
-    
-    // Title
-    ctx!.fillStyle = '#1f2937';
-    ctx!.font = 'bold 48px Arial';
-    ctx!.textAlign = 'center';
-    ctx!.fillText('Certificate of Completion', 400, 120);
-    
-    // Subtitle
-    ctx!.font = 'bold 24px Arial';
-    ctx!.fillStyle = '#fb923c';
-    ctx!.fillText('Wind C&P Playbook', 400, 160);
-    
-    // User name
-    ctx!.font = 'bold 36px Arial';
-    ctx!.fillStyle = '#1f2937';
-    ctx!.fillText(`${userName}`, 400, 280);
-    
-    // Department
-    ctx!.font = '20px Arial';
-    ctx!.fillStyle = '#6b7280';
-    ctx!.fillText(`Department: ${department}`, 400, 320);
-    
-    // Completion text
-    ctx!.font = '18px Arial';
-    ctx!.fillText('has successfully completed the', 400, 380);
-    ctx!.fillText('Wind Contracting & Procurement Playbook', 400, 410);
-    
-    // Date
-    const currentDate = new Date().toLocaleDateString();
-    ctx!.fillText(`Date: ${currentDate}`, 400, 480);
-    
-    return canvas.toDataURL('image/png');
-  };
-
-  const handleDownloadCertificate = async () => {
-    setDownloadingCert(true);
-    
+    // Simulate loading data
     setTimeout(() => {
-      const userName = user?.user_metadata?.full_name || user?.email || 'Participant';
-      const department = user?.user_metadata?.department || 'Wind Energy';
-      
-      // Generate certificate
-      const certificateDataUrl = generateCertificate(userName, department);
-      
-      // Create a download link
-      const link = document.createElement('a');
-      link.href = certificateDataUrl;
-      link.download = 'Wind-CP-Certificate.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setDownloadingCert(false);
-    }, 1000);
-  };
-
-  const playbooks = [
-    {
-      id: "wind-cp",
-      title: "Wind - C&P",
-      description: "Contracting & Procurement",
-      icon: Wind,
-      color: "from-blue-500 to-blue-600",
-      status: "Available",
-      route: "/wind-cp"
-    },
-    {
-      id: "wind-planning",
-      title: "Wind - Planning",
-      description: "Wind Project Planning",
-      icon: MapPin,
-      color: "from-green-500 to-green-600",
-      status: "Available",
-      route: "/wind-planning"
-    },
-    {
-      id: "planning-solar",
-      title: "Planning - Solar",
-      description: "Solar Project Planning",
-      icon: Sun,
-      color: "from-orange-500 to-yellow-500",
-      status: "Available",
-      route: "/planning-solar"
-    }
-  ];
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -155,151 +22,188 @@ const Dashboard = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                <FileText className="h-6 w-6 text-white" />
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl shadow-lg">
+                <FileText className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Playbook Portal</h1>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Playbook Portal
+                </h1>
+                <p className="text-gray-600">Your Interactive Learning Hub</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              {user && (
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <User className="h-4 w-4" />
-                    <span>{user.user_metadata?.full_name || user.email}</span>
-                  </div>
-                  {user.user_metadata?.department && (
-                    <div className="flex items-center space-x-1">
-                      <Building className="h-4 w-4" />
-                      <span>{user.user_metadata.department}</span>
-                    </div>
-                  )}
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={signOut}
-                    className="flex items-center space-x-1"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              )}
+              <Badge variant="secondary" className="bg-blue-100 text-blue-800 px-3 py-1">
+                v2.0
+              </Badge>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h2>
-          <p className="text-gray-600">Access your playbooks and track your certifications</p>
+      {/* Main Content */}
+      <main className="container mx-auto px-6 py-12">
+        {/* Welcome Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Welcome to Your Playbook Portal
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Access comprehensive playbooks designed to guide you through complex processes with interactive learning experiences, step-by-step guidance, and certification opportunities.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Playbooks Section */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-6 w-6 text-blue-600" />
-              <h3 className="text-2xl font-bold text-gray-900">Playbooks</h3>
-            </div>
-            
-            <div className="grid gap-6">
-              {playbooks.map((playbook) => {
-                const IconComponent = playbook.icon;
-                return (
-                  <Card key={playbook.id} className="group hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-blue-200">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className={`bg-gradient-to-r ${playbook.color} p-3 rounded-lg shadow-lg`}>
-                            <IconComponent className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-gray-900">{playbook.title}</CardTitle>
-                            <CardDescription className="text-gray-600">{playbook.description}</CardDescription>
-                          </div>
-                        </div>
-                        <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          {playbook.status}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <Link to={playbook.route}>
-                        <Button className={`w-full bg-gradient-to-r ${playbook.color} hover:opacity-90 text-white shadow-lg hover:shadow-xl transition-all duration-300`}>
-                          Access Playbook
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
+        {/* Playbooks Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {/* Wind - C&P Playbook */}
+          <Card className="group relative overflow-hidden bg-white/90 backdrop-blur-sm border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <CardHeader className="relative z-10 pb-4">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Wind className="h-8 w-8 text-white" />
+                </div>
+                <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+              </div>
+              <CardTitle className="text-2xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors">
+                Wind - C&P
+              </CardTitle>
+              <CardDescription className="text-gray-600 text-base leading-relaxed">
+                Contracting & Procurement Playbook
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative z-10 pt-0">
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                Master the contracting and procurement processes for wind energy projects with comprehensive guidelines and best practices.
+              </p>
+              <Link to="/wind-cp" className="block">
+                <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform group-hover:scale-105 shadow-lg">
+                  <Play className="mr-2 h-5 w-5" />
+                  Access Playbook
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
 
-          {/* Certificates Section */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-2">
-              <Award className="h-6 w-6 text-green-600" />
-              <h3 className="text-2xl font-bold text-gray-900">Certifications</h3>
-            </div>
-            
-            <div className="grid gap-6">
-              {loading ? (
-                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-gray-600">Loading certifications...</p>
-                  </CardContent>
-                </Card>
-              ) : userCertifications.length === 0 ? (
-                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-gray-600">No certifications earned yet. Complete a playbook to earn your first certification!</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                userCertifications.slice(0, 3).map((cert) => (
-                  <Card key={cert.id} className="group hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-green-200">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-3 rounded-lg shadow-lg">
-                            <Award className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-gray-900">{cert.playbook_name}</CardTitle>
-                            <CardDescription className="text-gray-600">
-                              Score: {cert.score}% - {cert.user_name}
-                            </CardDescription>
-                            <p className="text-sm text-green-600 mt-1">
-                              Completed: {new Date(cert.completed_at).toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-                        <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          Earned
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <Button 
-                        onClick={handleDownloadCertificate}
-                        disabled={downloadingCert}
-                        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        {downloadingCert ? "Generating..." : "Download Certificate"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
-            </div>
-          </div>
+          {/* Planning - Solar Playbook */}
+          <Card className="group relative overflow-hidden bg-white/90 backdrop-blur-sm border-2 border-orange-200 hover:border-orange-400 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-yellow-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <CardHeader className="relative z-10 pb-4">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-3 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Sun className="h-8 w-8 text-white" />
+                </div>
+                <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+              </div>
+              <CardTitle className="text-2xl font-bold text-gray-900 group-hover:text-orange-700 transition-colors">
+                Planning - Solar
+              </CardTitle>
+              <CardDescription className="text-gray-600 text-base leading-relaxed">
+                Solar Project Planning
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative z-10 pt-0">
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                Comprehensive planning framework for solar energy projects from conception to commissioning.
+              </p>
+              <Link to="/planning-solar" className="block">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform group-hover:scale-105 shadow-lg">
+                  <Play className="mr-2 h-5 w-5" />
+                  Access Playbook
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Wind - Planning Playbook */}
+          <Card className="group relative overflow-hidden bg-white/90 backdrop-blur-sm border-2 border-green-200 hover:border-green-400 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-teal-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <CardHeader className="relative z-10 pb-4">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <MapPin className="h-8 w-8 text-white" />
+                </div>
+                <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+              </div>
+              <CardTitle className="text-2xl font-bold text-gray-900 group-hover:text-green-700 transition-colors">
+                Wind - Planning
+              </CardTitle>
+              <CardDescription className="text-gray-600 text-base leading-relaxed">
+                Wind Project Planning
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative z-10 pt-0">
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                Comprehensive wind project planning playbook covering all phases from integration management to risk management.
+              </p>
+              <Link to="/wind-planning" className="block">
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform group-hover:scale-105 shadow-lg">
+                  <Play className="mr-2 h-5 w-5" />
+                  Access Playbook
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+
+        {/* Features Section */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
+            Key Features
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Interactive Learning Modules */}
+            <Card className="bg-white/90 backdrop-blur-sm border border-blue-200 hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-gray-900">
+                  Interactive Learning Modules
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Engaging content that adapts to your learning pace.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                Explore interactive lessons, quizzes, and simulations designed to reinforce your understanding of key concepts and best practices.
+              </CardContent>
+            </Card>
+
+            {/* Step-by-Step Guidance */}
+            <Card className="bg-white/90 backdrop-blur-sm border border-blue-200 hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-gray-900">
+                  Step-by-Step Guidance
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Clear, actionable steps for every process.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                Follow detailed, step-by-step instructions that guide you through each process, ensuring accuracy and efficiency in your project execution.
+              </CardContent>
+            </Card>
+
+            {/* Certification Programs */}
+            <Card className="bg-white/90 backdrop-blur-sm border border-blue-200 hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-gray-900">
+                  Certification Programs
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Validate your expertise with industry-recognized certifications.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                Earn certifications that demonstrate your proficiency and commitment to excellence in project management and execution.
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="text-center text-gray-500 py-8 border-t border-blue-200">
+          <p>&copy; 2024 Lovable. All rights reserved.</p>
+        </footer>
+      </main>
     </div>
   );
 };
