@@ -3,12 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind, LogOut, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
 import { FileUpload } from "@/components/FileUpload";
 import { Leaderboard } from "@/components/Leaderboard";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Playbook {
   id: string;
@@ -26,6 +27,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const { isInitialized } = useDataInit();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     if (isInitialized) {
@@ -229,6 +231,23 @@ const Home = () => {
                   </div>
                 )}
               </div>
+              {user && (
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <User className="h-4 w-4" />
+                    <span>{user.email}</span>
+                  </div>
+                  <Button
+                    onClick={signOut}
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center space-x-1 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign Out</span>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
