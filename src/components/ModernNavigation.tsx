@@ -50,8 +50,14 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
+  const handleSubChapterClick = (subChapterId: string) => {
+    onPhaseChange(subChapterId);
+    // Auto-collapse Chapter 1 after subsection selection
+    setExpandedChapters([]);
+  };
+
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-green-100 shadow-sm relative z-40">
+    <nav className="bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-sm relative z-40">
       <div className="container mx-auto px-6">
         <div className="flex items-center gap-1 py-4 flex-wrap">
           {chapters.map((chapter) => {
@@ -73,8 +79,8 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                   }}
                   className={`
                     ${isActive 
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-400 shadow-lg' 
-                      : 'bg-white/90 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 text-gray-700 border-green-200 hover:border-green-300 hover:shadow-md'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white border-blue-400 shadow-lg' 
+                      : 'bg-white/90 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 text-gray-700 border-blue-200 hover:border-blue-300 hover:shadow-md'
                     }
                     transition-all duration-300 font-bold text-xs px-3 py-2 rounded-xl
                     ${hasSubChapters ? 'pr-6' : ''}
@@ -95,24 +101,24 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-green-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white border border-blue-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => {
                       return (
                         <Button
                           key={subChapter.id}
                           variant="ghost"
                           size="sm"
-                          onClick={() => onPhaseChange(subChapter.id)}
+                          onClick={() => handleSubChapterClick(subChapter.id)}
                           className={`
-                            w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-green-50 last:border-b-0 relative
+                            w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-blue-50 last:border-b-0 relative
                             ${activePhase === subChapter.id 
-                              ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 font-semibold' 
-                              : 'text-gray-600 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-700'
+                              ? 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 font-semibold' 
+                              : 'text-gray-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700'
                             }
                             transition-all duration-200 h-auto min-h-[60px] leading-tight
                           `}
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mr-3 flex-shrink-0 mt-1" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 mr-3 flex-shrink-0 mt-1" />
                           <span className="text-wrap break-words whitespace-normal">{subChapter.name}</span>
                         </Button>
                       );
