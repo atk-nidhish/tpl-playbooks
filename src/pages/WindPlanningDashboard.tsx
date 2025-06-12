@@ -92,7 +92,10 @@ const WindPlanningDashboard = () => {
     {
       id: "chapter-2",
       name: "Chapter 2 - Scope Management Plan",
-      shortName: "Ch 2: Scope"
+      shortName: "Ch 2: Scope",
+      subChapters: [
+        { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "2.1 Scope Mgmt" }
+      ]
     },
     {
       id: "chapter-3",
@@ -252,6 +255,8 @@ const WindPlanningDashboard = () => {
       return "/lovable-uploads/47e7e779-539c-4951-b246-84c726cc68fc.png";
     } else if (phaseId === "section-1-2") {
       return "/lovable-uploads/39d791f6-decc-4af3-91c2-17aec32bce79.png";
+    } else if (phaseId === "section-2-1") {
+      return "/lovable-uploads/bec003c8-ff06-464d-820f-9b21e6f2086f.png";
     }
     // Fallback for other phases
     return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
