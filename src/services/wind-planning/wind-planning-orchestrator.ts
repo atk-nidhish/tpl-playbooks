@@ -10,6 +10,8 @@ import { section1_8Data } from './section-1-8-data';
 import { section1_9Data } from './section-1-9-data';
 import { section2_1Data } from './section-2-1-data';
 import { chapter3Data } from './chapter-3-data';
+import { chapter4Data } from './chapter-4-data';
+import { chapter5Data } from './chapter-5-data';
 
 export const createWindPlanningPlaybook = async (): Promise<string> => {
   console.log('Creating Wind Planning Playbook...');
@@ -132,11 +134,11 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
       },
       'chapter-4': {
         name: 'Chapter 4 - Quality Management Plan',
-        description: 'Placeholder for quality management planning content'
+        description: 'This chapter covers quality management planning and control processes'
       },
       'chapter-5': {
         name: 'Chapter 5 - Statutory Approval Management Plan',
-        description: 'Placeholder for statutory approval management content'
+        description: 'This chapter covers statutory approval management and regulatory compliance'
       },
       'chapter-6': {
         name: 'Chapter 6 - Risk Management Plan',
@@ -226,6 +228,18 @@ const insertPlaybookData = async (playbookId: string) => {
       ...step,
       playbook_id: playbookId,
       phase_id: 'chapter-3'
+    })),
+    // Map chapter 4 data
+    ...chapter4Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'chapter-4'
+    })),
+    // Map chapter 5 data
+    ...chapter5Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'chapter-5'
     }))
   ];
 
@@ -287,6 +301,18 @@ const insertPlaybookData = async (playbookId: string) => {
       ...raci,
       playbook_id: playbookId,
       phase_id: 'chapter-3'
+    })),
+    // Map chapter 4 data
+    ...chapter4Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'chapter-4'
+    })),
+    // Map chapter 5 data
+    ...chapter5Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'chapter-5'
     }))
   ];
 
@@ -348,6 +374,18 @@ const insertPlaybookData = async (playbookId: string) => {
       ...map,
       playbook_id: playbookId,
       phase_id: 'chapter-3'
+    })),
+    // Map chapter 4 data
+    ...chapter4Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'chapter-4'
+    })),
+    // Map chapter 5 data
+    ...chapter5Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'chapter-5'
     }))
   ];
 
