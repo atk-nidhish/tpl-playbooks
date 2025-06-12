@@ -50,9 +50,14 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const handleSubChapterClick = (subChapterId: string) => {
+  const handleSubChapterClick = (subChapterId: string, event: React.MouseEvent) => {
+    // Stop event propagation to prevent any interference
+    event.stopPropagation();
+    event.preventDefault();
+    
     // Navigate to the section first
     onPhaseChange(subChapterId);
+    
     // Force immediate collapse of all dropdowns
     setExpandedChapters([]);
   };
@@ -109,10 +114,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                           key={subChapter.id}
                           variant="ghost"
                           size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSubChapterClick(subChapter.id);
-                          }}
+                          onClick={(e) => handleSubChapterClick(subChapter.id, e)}
                           className={`
                             w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-blue-50 last:border-b-0 relative
                             ${activePhase === subChapter.id 
