@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +13,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ArrowLeft, MapPin, Search, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { createWindPlanningPlaybook } from "@/services/wind-planning-playbook-seeder";
+import { createWindPlanningPlaybook } from "@/services/wind-planning/wind-planning-orchestrator";
 
 interface Chapter {
   id: string;
