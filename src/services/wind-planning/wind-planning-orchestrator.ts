@@ -7,7 +7,31 @@ import { section2_1Data } from './section-2-1-data';
 export const createWindPlanningPlaybook = async (): Promise<string> => {
   console.log('Creating Wind Planning Playbook...');
 
-  // Create the playbook with properly ordered phases
+  // First, check if playbook already exists
+  const { data: existingPlaybook } = await supabase
+    .from('playbooks')
+    .select('id')
+    .eq('name', 'wind-planning')
+    .single();
+
+  if (existingPlaybook) {
+    console.log('Wind Planning Playbook already exists, clearing existing data...');
+    
+    // Clear existing data for this playbook
+    await supabase.from('process_steps').delete().eq('playbook_id', existingPlaybook.id);
+    await supabase.from('raci_matrix').delete().eq('playbook_id', existingPlaybook.id);
+    await supabase.from('process_map').delete().eq('playbook_id', existingPlaybook.id);
+    
+    const playbookId = existingPlaybook.id;
+    
+    // Insert fresh data
+    await insertPlaybookData(playbookId);
+    
+    console.log('Successfully updated Wind Planning Playbook data');
+    return playbookId;
+  }
+
+  // Create new playbook if it doesn't exist
   const playbookData = {
     name: 'wind-planning',
     title: 'Wind - Planning',
@@ -42,6 +66,13 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
   const playbookId = playbook.id;
   console.log(`Created playbook with ID: ${playbookId}`);
 
+  await insertPlaybookData(playbookId);
+
+  console.log('Successfully created Wind Planning Playbook with all data');
+  return playbookId;
+};
+
+const insertPlaybookData = async (playbookId: string) => {
   // Prepare all process steps with playbook_id and phase_id
   const allProcessSteps = [
     ...section1_1Data.processSteps.map(step => ({
@@ -99,41 +130,52 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     }))
   ];
 
+  console.log(`Inserting ${allProcessSteps.length} process steps...`);
+  console.log(`Inserting ${allRaciMatrix.length} RACI entries...`);
+  console.log(`Inserting ${allProcessMap.length} process map entries...`);
+
   try {
     // Insert process steps
-    const { error: stepsError } = await supabase
-      .from('process_steps')
-      .insert(allProcessSteps);
+    if (allProcessSteps.length > 0) {
+      const { error: stepsError } = await supabase
+        .from('process_steps')
+        .insert(allProcessSteps);
 
-    if (stepsError) {
-      console.error('Error inserting process steps:', stepsError);
-      throw stepsError;
+      if (stepsError) {
+        console.error('Error inserting process steps:', stepsError);
+        throw stepsError;
+      }
+      console.log('Successfully inserted process steps');
     }
 
     // Insert RACI matrix
-    const { error: raciError } = await supabase
-      .from('raci_matrix')
-      .insert(allRaciMatrix);
+    if (allRaciMatrix.length > 0) {
+      const { error: raciError } = await supabase
+        .from('raci_matrix')
+        .insert(allRaciMatrix);
 
-    if (raciError) {
-      console.error('Error inserting RACI matrix:', raciError);
-      throw raciError;
+      if (raciError) {
+        console.error('Error inserting RACI matrix:', raciError);
+        throw raciError;
+      }
+      console.log('Successfully inserted RACI matrix');
     }
 
     // Insert process map
-    const { error: mapError } = await supabase
-      .from('process_map')
-      .insert(allProcessMap);
+    if (allProcessMap.length > 0) {
+      const { error: mapError } = await supabase
+        .from('process_map')
+        .insert(allProcessMap);
 
-    if (mapError) {
-      console.error('Error inserting process map:', mapError);
-      throw mapError;
+      if (mapError) {
+        console.error('Error inserting process map:', mapError);
+        throw mapError;
+      }
+      console.log('Successfully inserted process map');
     }
 
-    console.log('Successfully created Wind Planning Playbook with sections 1.1, 1.2, and 2.1 data');
-    return playbookId;
   } catch (error) {
-    console.error('Error creating Wind Planning Playbook:', error);
+    console.error('Error inserting playbook data:', error);
     throw error;
   }
 };
