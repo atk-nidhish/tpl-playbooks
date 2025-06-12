@@ -35,7 +35,7 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
   const playbookId = playbook.id;
   console.log(`Created playbook with ID: ${playbookId}`);
 
-  // Process Steps for Section 1.1
+  // Process Steps for Section 1.1 - ALL 7 STEPS (S, P1, P2, P3, P4, P5, P6, E)
   const processSteps_1_1 = [
     {
       playbook_id: playbookId,
@@ -117,32 +117,10 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     {
       playbook_id: playbookId,
       phase_id: 'section-1-1',
-      step_id: 'P7',
-      activity: 'BP seeks review and approval on the Final L1 Plan from COO',
-      inputs: ['Final L1 Plan'],
-      outputs: [],
-      timeline: '1',
-      responsible: 'Bid Planner',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'section-1-1',
-      step_id: 'P8',
-      activity: 'BP incorporates any changes recommended by COO in the final L1 Plan',
-      inputs: [],
-      outputs: ['Final L1 Plan (Template Provided)'],
-      timeline: '1',
-      responsible: 'Bid Planner',
-      comments: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'section-1-1',
       step_id: 'E',
-      activity: 'BP shares the Final L1 Plan with Bid Incharge for bid submission',
-      inputs: [],
-      outputs: [],
+      activity: 'BP seeks review and approval on the Final L1 Plan from COO and incorporates any changes recommended by COO in the final L1 Plan, then shares the Final L1 Plan with Bid Incharge for bid submission',
+      inputs: ['Final L1 Plan'],
+      outputs: ['Final L1 Plan (Template Provided)'],
       timeline: 'Total 7-8 days',
       responsible: 'Bid Planner',
       comments: ''
@@ -285,7 +263,7 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     }
   ];
 
-  // RACI Matrix for Section 1.1
+  // RACI Matrix for Section 1.1 - ALL 7 STEPS (S, P1, P2, P3, P4, P5, P6, E)
   const raciMatrix_1_1 = [
     {
       playbook_id: playbookId,
@@ -360,32 +338,12 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     {
       playbook_id: playbookId,
       phase_id: 'section-1-1',
-      step_id: 'P7',
-      task: 'Seek review and approval on the Final L1 Plan from COO',
-      responsible: 'Bid Planner',
-      accountable: 'Bid Planner',
-      consulted: '',
-      informed: 'COO'
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'section-1-1',
-      step_id: 'P8',
-      task: 'Incorporate COO\'s recommendations in the final L1 Plan',
-      responsible: 'Bid Planner',
-      accountable: 'Bid Planner',
-      consulted: '',
-      informed: ''
-    },
-    {
-      playbook_id: playbookId,
-      phase_id: 'section-1-1',
       step_id: 'E',
-      task: 'Share the Final L1 Plan with Bid Incharge for bid submission',
+      task: 'Seek review and approval on the Final L1 Plan from COO, incorporate recommendations, and share with Bid Incharge for bid submission',
       responsible: 'Bid Planner',
-      accountable: '',
+      accountable: 'Bid Planner',
       consulted: '',
-      informed: 'Bid Incharge'
+      informed: 'COO, Bid Incharge'
     }
   ];
 
@@ -554,20 +512,38 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     {
       playbook_id: playbookId,
       phase_id: 'section-1-1',
-      step_id: 'P7',
-      step_type: 'decision',
-      title: 'COO Review and Approval',
-      description: 'BP seeks review and approval on the Final L1 Plan from COO',
+      step_id: 'P4',
+      step_type: 'process',
+      title: 'Share Final L1 Plan with functional leads',
+      description: 'BP shares the Final L1 Plan with functional leads for inputs',
       order_index: 5
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1-1',
+      step_id: 'P5',
+      step_type: 'process',
+      title: 'Evaluate feedback and incorporate modifications',
+      description: 'BP evaluates feedback from functional teams and incorporates necessary modifications',
+      order_index: 6
+    },
+    {
+      playbook_id: playbookId,
+      phase_id: 'section-1-1',
+      step_id: 'P6',
+      step_type: 'process',
+      title: 'Seek sign-off from functional leads',
+      description: 'BP shares the Final L1 Plan for sign off by the functional leads',
+      order_index: 7
     },
     {
       playbook_id: playbookId,
       phase_id: 'section-1-1',
       step_id: 'E',
       step_type: 'end',
-      title: 'Share Final L1 Plan for bid submission',
-      description: 'BP shares the Final L1 Plan with Bid Incharge for bid submission',
-      order_index: 6
+      title: 'COO approval and final submission',
+      description: 'BP seeks review and approval from COO and shares Final L1 Plan for bid submission',
+      order_index: 8
     }
   ];
 
