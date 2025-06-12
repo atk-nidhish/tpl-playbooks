@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +23,64 @@ interface Chapter {
   shortName: string;
   subChapters?: Chapter[];
 }
+
+// Define chapters at the top level
+const chapters: Chapter[] = [
+  {
+    id: "chapter-1",
+    name: "Chapter 1 - Plan Integration Management",
+    shortName: "Ch 1: Integration",
+    subChapters: [
+      { id: "section-1-1", name: "Section 1.1 - Project Plan Preparation During Bidding", shortName: "1.1 Plan Prep" },
+      { id: "section-1-2", name: "Section 1.2 - Project Schedule and Execution Approach", shortName: "1.2 Schedule" },
+      { id: "section-1-3", name: "Section 1.3 - Land Finalization Plan", shortName: "1.3 Land Plan" },
+      { id: "section-1-4", name: "Section 1.4 - Engineering Plan", shortName: "1.4 Engineering" },
+      { id: "section-1-5", name: "Section 1.5 - Procurement Plan", shortName: "1.5 Procurement" },
+      { id: "section-1-6", name: "Section 1.6 - Construction Plan", shortName: "1.6 Construction" },
+      { id: "section-1-7", name: "Section 1.7 - Commissioning Plan", shortName: "1.7 Commissioning" },
+      { id: "section-1-8", name: "Section 1.8 - Plan Integration", shortName: "1.8 Integration" },
+      { id: "section-1-9", name: "Section 1.9 - Plan Update", shortName: "1.9 Updates" }
+    ]
+  },
+  {
+    id: "chapter-2",
+    name: "Chapter 2 - Scope Management Plan",
+    shortName: "Ch 2: Scope",
+    subChapters: [
+      { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "2.1 Scope Mgmt" }
+    ]
+  },
+  {
+    id: "chapter-3",
+    name: "Chapter 3 - Cost Management Plan",
+    shortName: "Ch 3: Cost"
+  },
+  {
+    id: "chapter-4",
+    name: "Chapter 4 - Quality Management Plan",
+    shortName: "Ch 4: Quality"
+  },
+  {
+    id: "chapter-5",
+    name: "Chapter 5 - Statutory Approval Management Plan",
+    shortName: "Ch 5: Approvals"
+  },
+  {
+    id: "chapter-6",
+    name: "Chapter 6 - Risk Management Plan",
+    shortName: "Ch 6: Risk"
+  },
+  {
+    id: "certification",
+    name: "Playbook Certification",
+    shortName: "Certification"
+  },
+  {
+    id: "leaderboard",
+    name: "Certification Leaderboard",
+    shortName: "Leaderboard"
+  }
+];
 
 const WindPlanningDashboard = () => {
   const navigate = useNavigate();
@@ -224,63 +283,6 @@ const WindPlanningDashboard = () => {
       </div>
     );
   }
-
-  const chapters: Chapter[] = [
-    {
-      id: "chapter-1",
-      name: "Chapter 1 - Plan Integration Management",
-      shortName: "Ch 1: Integration",
-      subChapters: [
-        { id: "section-1-1", name: "Section 1.1 - Project Plan Preparation During Bidding", shortName: "1.1 Plan Prep" },
-        { id: "section-1-2", name: "Section 1.2 - Project Schedule and Execution Approach", shortName: "1.2 Schedule" },
-        { id: "section-1-3", name: "Section 1.3 - Land Finalization Plan", shortName: "1.3 Land Plan" },
-        { id: "section-1-4", name: "Section 1.4 - Engineering Plan", shortName: "1.4 Engineering" },
-        { id: "section-1-5", name: "Section 1.5 - Procurement Plan", shortName: "1.5 Procurement" },
-        { id: "section-1-6", name: "Section 1.6 - Construction Plan", shortName: "1.6 Construction" },
-        { id: "section-1-7", name: "Section 1.7 - Commissioning Plan", shortName: "1.7 Commissioning" },
-        { id: "section-1-8", name: "Section 1.8 - Plan Integration", shortName: "1.8 Integration" },
-        { id: "section-1-9", name: "Section 1.9 - Plan Update", shortName: "1.9 Updates" }
-      ]
-    },
-    {
-      id: "chapter-2",
-      name: "Chapter 2 - Scope Management Plan",
-      shortName: "Ch 2: Scope",
-      subChapters: [
-        { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "2.1 Scope Mgmt" }
-      ]
-    },
-    {
-      id: "chapter-3",
-      name: "Chapter 3 - Cost Management Plan",
-      shortName: "Ch 3: Cost"
-    },
-    {
-      id: "chapter-4",
-      name: "Chapter 4 - Quality Management Plan",
-      shortName: "Ch 4: Quality"
-    },
-    {
-      id: "chapter-5",
-      name: "Chapter 5 - Statutory Approval Management Plan",
-      shortName: "Ch 5: Approvals"
-    },
-    {
-      id: "chapter-6",
-      name: "Chapter 6 - Risk Management Plan",
-      shortName: "Ch 6: Risk"
-    },
-    {
-      id: "certification",
-      name: "Playbook Certification",
-      shortName: "Certification"
-    },
-    {
-      id: "leaderboard",
-      name: "Certification Leaderboard",
-      shortName: "Leaderboard"
-    }
-  ];
 
   const getProcessMapImage = (phaseId: string) => {
     // Use the process map images from the uploaded screenshots
