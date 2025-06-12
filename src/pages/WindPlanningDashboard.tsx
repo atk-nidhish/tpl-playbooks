@@ -270,6 +270,10 @@ const WindPlanningDashboard = () => {
       return "/lovable-uploads/47e7e779-539c-4951-b246-84c726cc68fc.png";
     } else if (phaseId === "section-1-2") {
       return "/lovable-uploads/39d791f6-decc-4af3-91c2-17aec32bce79.png";
+    } else if (phaseId === "section-1-3") {
+      return "/lovable-uploads/fb200bf5-9c5f-4531-a2b5-28211a5cd58d.png";
+    } else if (phaseId === "section-1-4") {
+      return "/lovable-uploads/24724d00-6df0-446b-a7a7-b50904c3c720.png";
     } else if (phaseId === "section-2-1") {
       return "/lovable-uploads/bec003c8-ff06-464d-820f-9b21e6f2086f.png";
     }
