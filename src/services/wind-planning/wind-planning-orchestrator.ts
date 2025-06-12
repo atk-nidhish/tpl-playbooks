@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { section1_1Data } from './section-1-1-data';
 import { section1_2Data } from './section-1-2-data';
@@ -72,41 +71,74 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     title: 'Wind - Planning',
     description: 'Wind Project Planning Playbook',
     phases: {
+      'chapter-1': {
+        name: 'Chapter 1 - Plan Integration Management',
+        description: 'Comprehensive plan integration management for wind projects'
+      },
       'section-1-1': {
         name: 'Section 1.1 - Project Plan Preparation During Bidding',
-        description: 'This section covers Planning for project phases from RFP participation to conceptualization up to execution & delivery'
+        description: 'This section covers Planning for project phases from RFP participation to conceptualization up to execution & delivery',
+        parent: 'chapter-1'
       },
       'section-1-2': {
         name: 'Section 1.2 - Project Schedule and Execution Approach',
-        description: 'This section covers project schedule development and execution approach planning'
+        description: 'This section covers project schedule development and execution approach planning',
+        parent: 'chapter-1'
       },
       'section-1-3': {
         name: 'Section 1.3 - Land Finalization Plan',
-        description: 'Plan to be created only if Land Parcel hasn\'t already been leased yet'
+        description: 'Plan to be created only if Land Parcel hasn\'t already been leased yet',
+        parent: 'chapter-1'
       },
       'section-1-4': {
         name: 'Section 1.4 - Engineering Plan',
-        description: 'This section covers engineering execution planning and quality requirements'
+        description: 'This section covers engineering execution planning and quality requirements',
+        parent: 'chapter-1'
       },
       'section-1-5': {
         name: 'Section 1.5 - Procurement Plan',
-        description: 'This section covers procurement planning and package strategy development'
+        description: 'This section covers procurement planning and package strategy development',
+        parent: 'chapter-1'
       },
       'section-1-6': {
         name: 'Section 1.6 - Construction Plan',
-        description: 'This section covers construction management planning and execution approach'
+        description: 'This section covers construction management planning and execution approach',
+        parent: 'chapter-1'
       },
       'section-1-7': {
         name: 'Section 1.7 - Commissioning Plan',
-        description: 'This section covers commissioning planning and pre-commissioning activities'
+        description: 'This section covers commissioning planning and pre-commissioning activities',
+        parent: 'chapter-1'
       },
       'section-1-8': {
         name: 'Section 1.8 - Plan Integration',
-        description: 'This section covers integration of all detailed plans into a comprehensive project schedule'
+        description: 'This section covers integration of all detailed plans into a comprehensive project schedule',
+        parent: 'chapter-1'
       },
-      'section-2-1': {
-        name: 'Section 2.1 - Scope Management Plan',
-        description: 'This section covers the development of Work Breakdown Structure (WBS) and project scope management'
+      'section-1-9': {
+        name: 'Section 1.9 - Placeholder Section',
+        description: 'Placeholder for future content',
+        parent: 'chapter-1'
+      },
+      'chapter-2': {
+        name: 'Chapter 2 - Scope Management Plan',
+        description: 'This chapter covers the development of Work Breakdown Structure (WBS) and project scope management'
+      },
+      'chapter-3': {
+        name: 'Chapter 3 - Cost Management Plan',
+        description: 'Placeholder for cost management planning content'
+      },
+      'chapter-4': {
+        name: 'Chapter 4 - Quality Management Plan',
+        description: 'Placeholder for quality management planning content'
+      },
+      'chapter-5': {
+        name: 'Chapter 5 - Statutory Approval Management Plan',
+        description: 'Placeholder for statutory approval management content'
+      },
+      'chapter-6': {
+        name: 'Chapter 6 - Risk Management Plan',
+        description: 'Placeholder for risk management planning content'
       }
     }
   };
@@ -176,10 +208,11 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    // Map section 2.1 data to chapter-2
     ...section2_1Data.processSteps.map(step => ({
       ...step,
       playbook_id: playbookId,
-      phase_id: 'section-2-1'
+      phase_id: 'section-2-1' // Keep original phase_id for data retrieval but it will be accessed via chapter-2
     }))
   ];
 
@@ -225,10 +258,11 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    // Map section 2.1 data to chapter-2
     ...section2_1Data.raciMatrix.map(raci => ({
       ...raci,
       playbook_id: playbookId,
-      phase_id: 'section-2-1'
+      phase_id: 'section-2-1' // Keep original phase_id for data retrieval
     }))
   ];
 
@@ -274,10 +308,11 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    // Map section 2.1 data to chapter-2
     ...section2_1Data.processMap.map(map => ({
       ...map,
       playbook_id: playbookId,
-      phase_id: 'section-2-1'
+      phase_id: 'section-2-1' // Keep original phase_id for data retrieval
     }))
   ];
 

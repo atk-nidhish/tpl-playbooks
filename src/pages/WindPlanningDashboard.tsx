@@ -49,49 +49,81 @@ const WindPlanningDashboard = () => {
 
   const chapters = [
     {
-      id: 'section-1-1',
-      name: 'Section 1.1 - Project Plan Preparation During Bidding',
-      shortName: 'Section 1.1 - Project Plan Prep'
+      id: 'chapter-1',
+      name: 'Chapter 1 - Plan Integration Management',
+      shortName: 'Chapter 1',
+      subChapters: [
+        {
+          id: 'section-1-1',
+          name: 'Section 1.1 - Project Plan Preparation During Bidding',
+          shortName: 'Section 1.1'
+        },
+        {
+          id: 'section-1-2',
+          name: 'Section 1.2 - Project Schedule and Execution Approach',
+          shortName: 'Section 1.2'
+        },
+        {
+          id: 'section-1-3',
+          name: 'Section 1.3 - Land Finalization Plan',
+          shortName: 'Section 1.3'
+        },
+        {
+          id: 'section-1-4',
+          name: 'Section 1.4 - Engineering Plan',
+          shortName: 'Section 1.4'
+        },
+        {
+          id: 'section-1-5',
+          name: 'Section 1.5 - Procurement Plan',
+          shortName: 'Section 1.5'
+        },
+        {
+          id: 'section-1-6',
+          name: 'Section 1.6 - Construction Plan',
+          shortName: 'Section 1.6'
+        },
+        {
+          id: 'section-1-7',
+          name: 'Section 1.7 - Commissioning Plan',
+          shortName: 'Section 1.7'
+        },
+        {
+          id: 'section-1-8',
+          name: 'Section 1.8 - Plan Integration',
+          shortName: 'Section 1.8'
+        },
+        {
+          id: 'section-1-9',
+          name: 'Section 1.9 - Placeholder Section',
+          shortName: 'Section 1.9'
+        }
+      ]
     },
     {
-      id: 'section-1-2',
-      name: 'Section 1.2 - Project Schedule and Execution Approach',
-      shortName: 'Section 1.2 - Schedule & Execution'
+      id: 'chapter-2',
+      name: 'Chapter 2 - Scope Management Plan',
+      shortName: 'Chapter 2'
     },
     {
-      id: 'section-1-3',
-      name: 'Section 1.3 - Land Finalization Plan',
-      shortName: 'Section 1.3 - Land Finalization'
+      id: 'chapter-3',
+      name: 'Chapter 3 - Cost Management Plan',
+      shortName: 'Chapter 3'
     },
     {
-      id: 'section-1-4',
-      name: 'Section 1.4 - Engineering Plan',
-      shortName: 'Section 1.4 - Engineering Plan'
+      id: 'chapter-4',
+      name: 'Chapter 4 - Quality Management Plan',
+      shortName: 'Chapter 4'
     },
     {
-      id: 'section-1-5',
-      name: 'Section 1.5 - Procurement Plan',
-      shortName: 'Section 1.5 - Procurement Plan'
+      id: 'chapter-5',
+      name: 'Chapter 5 - Statutory Approval Management Plan',
+      shortName: 'Chapter 5'
     },
     {
-      id: 'section-1-6',
-      name: 'Section 1.6 - Construction Plan',
-      shortName: 'Section 1.6 - Construction Plan'
-    },
-    {
-      id: 'section-1-7',
-      name: 'Section 1.7 - Commissioning Plan',
-      shortName: 'Section 1.7 - Commissioning Plan'
-    },
-    {
-      id: 'section-1-8',
-      name: 'Section 1.8 - Plan Integration',
-      shortName: 'Section 1.8 - Plan Integration'
-    },
-    {
-      id: 'section-2-1',
-      name: 'Section 2.1 - Scope Management Plan',
-      shortName: 'Section 2.1 - Scope Management'
+      id: 'chapter-6',
+      name: 'Chapter 6 - Risk Management Plan',
+      shortName: 'Chapter 6'
     },
     {
       id: 'certification',
@@ -114,7 +146,15 @@ const WindPlanningDashboard = () => {
     'section-1-6': '/lovable-uploads/c001ac3c-9c89-4a42-bff5-1398d7d09a81.png',
     'section-1-7': '/lovable-uploads/f739e138-b2b3-4141-a9c7-ac28baffb6f5.png',
     'section-1-8': '/lovable-uploads/417ddd1a-6c8f-4dc9-97ef-ee95d52436f6.png',
-    'section-2-1': '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png'
+    'chapter-2': '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png'
+  };
+
+  // Map the current activePhase to the correct data source
+  const getDataPhaseId = (phaseId: string) => {
+    if (phaseId === 'chapter-2') {
+      return 'section-2-1'; // Chapter 2 uses section-2-1 data
+    }
+    return phaseId;
   };
 
   const handleRefreshData = async () => {
@@ -299,65 +339,79 @@ const WindPlanningDashboard = () => {
       />
 
       <div className="container mx-auto px-6 py-8">
-        <ModernTabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsContent value="processes">
-            <ProcessSteps 
-              playbookId={playbookId || ''} 
-              activePhase={activePhase} 
-              searchQuery={searchQuery}
-              onNavigateToRaci={handleNavigateToRaci}
-            />
-          </TabsContent>
+        {/* Show placeholder message for chapters without data */}
+        {(['chapter-3', 'chapter-4', 'chapter-5', 'chapter-6', 'section-1-9'].includes(activePhase)) ? (
+          <Card className="bg-white/90 backdrop-blur-sm border-green-200">
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-600">
+                This section is ready for data population. Please provide the content for {
+                  chapters.find(ch => ch.id === activePhase)?.name || 
+                  chapters.find(ch => ch.subChapters?.some(sub => sub.id === activePhase))?.subChapters?.find(sub => sub.id === activePhase)?.name
+                }.
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <ModernTabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsContent value="processes">
+              <ProcessSteps 
+                playbookId={playbookId || ''} 
+                activePhase={getDataPhaseId(activePhase)} 
+                searchQuery={searchQuery}
+                onNavigateToRaci={handleNavigateToRaci}
+              />
+            </TabsContent>
 
-          <TabsContent value="raci">
-            <RACIMatrix 
-              playbookId={playbookId || ''} 
-              activePhase={activePhase} 
-              searchQuery={searchQuery}
-            />
-          </TabsContent>
+            <TabsContent value="raci">
+              <RACIMatrix 
+                playbookId={playbookId || ''} 
+                activePhase={getDataPhaseId(activePhase)} 
+                searchQuery={searchQuery}
+              />
+            </TabsContent>
 
-          <TabsContent value="process-map">
-            <div className="space-y-6">
-              <Card className="bg-white/90 backdrop-blur-sm border-green-200">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        Process Map - {activePhase}
-                      </CardTitle>
-                      <CardDescription>
-                        Visual representation of the complete process flow
-                      </CardDescription>
-                    </div>
-                    <Button 
-                      onClick={() => downloadProcessMap(activePhase)}
-                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="flex justify-center">
-                    {processMapImages[activePhase as keyof typeof processMapImages] ? (
-                      <img 
-                        src={processMapImages[activePhase as keyof typeof processMapImages]}
-                        alt={`Process Map for ${activePhase}`}
-                        className="max-w-full h-auto rounded-lg shadow-lg border border-green-200"
-                      />
-                    ) : (
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">No process map available for this section</p>
+            <TabsContent value="process-map">
+              <div className="space-y-6">
+                <Card className="bg-white/90 backdrop-blur-sm border-green-200">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          Process Map - {activePhase}
+                        </CardTitle>
+                        <CardDescription>
+                          Visual representation of the complete process flow
+                        </CardDescription>
                       </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </ModernTabs>
+                      <Button 
+                        onClick={() => downloadProcessMap(activePhase)}
+                        className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="flex justify-center">
+                      {processMapImages[activePhase as keyof typeof processMapImages] ? (
+                        <img 
+                          src={processMapImages[activePhase as keyof typeof processMapImages]}
+                          alt={`Process Map for ${activePhase}`}
+                          className="max-w-full h-auto rounded-lg shadow-lg border border-green-200"
+                        />
+                      ) : (
+                        <div className="text-center py-8">
+                          <p className="text-gray-500">No process map available for this section</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </ModernTabs>
+        )}
       </div>
     </div>
   );

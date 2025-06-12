@@ -29,6 +29,17 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
 
   const isExpanded = (chapterId: string) => expandedChapters.includes(chapterId);
 
+  // Auto-expand Chapter 1 if any of its subsections are active
+  useEffect(() => {
+    const chapter1 = chapters.find(ch => ch.id === 'chapter-1');
+    if (chapter1 && chapter1.subChapters) {
+      const isSubsectionActive = chapter1.subChapters.some(sub => sub.id === activePhase);
+      if (isSubsectionActive && !expandedChapters.includes('chapter-1')) {
+        setExpandedChapters(['chapter-1']);
+      }
+    }
+  }, [activePhase, chapters, expandedChapters]);
+
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
@@ -40,7 +51,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   }, []);
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm relative z-40">
+    <nav className="bg-white/95 backdrop-blur-md border-b border-green-100 shadow-sm relative z-40">
       <div className="container mx-auto px-6">
         <div className="flex items-center gap-1 py-4 flex-wrap">
           {chapters.map((chapter) => {
@@ -62,8 +73,8 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                   }}
                   className={`
                     ${isActive 
-                      ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-orange-400 shadow-lg' 
-                      : 'bg-white/90 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 text-gray-700 border-orange-200 hover:border-orange-300 hover:shadow-md'
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-400 shadow-lg' 
+                      : 'bg-white/90 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 text-gray-700 border-green-200 hover:border-green-300 hover:shadow-md'
                     }
                     transition-all duration-300 font-bold text-xs px-3 py-2 rounded-xl
                     ${hasSubChapters ? 'pr-6' : ''}
@@ -84,7 +95,7 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                 
                 {/* Sub-chapters dropdown */}
                 {hasSubChapters && isExpanded(chapter.id) && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-orange-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 bg-white border border-green-200 rounded-xl shadow-2xl z-[9999] min-w-[500px] max-w-[700px] overflow-hidden">
                     {chapter.subChapters?.map((subChapter) => {
                       return (
                         <Button
@@ -93,15 +104,15 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                           size="sm"
                           onClick={() => onPhaseChange(subChapter.id)}
                           className={`
-                            w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-orange-50 last:border-b-0 relative
+                            w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-green-50 last:border-b-0 relative
                             ${activePhase === subChapter.id 
-                              ? 'bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 font-semibold' 
-                              : 'text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:text-orange-700'
+                              ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 font-semibold' 
+                              : 'text-gray-600 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-700'
                             }
                             transition-all duration-200 h-auto min-h-[60px] leading-tight
                           `}
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 mr-3 flex-shrink-0 mt-1" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mr-3 flex-shrink-0 mt-1" />
                           <span className="text-wrap break-words whitespace-normal">{subChapter.name}</span>
                         </Button>
                       );
