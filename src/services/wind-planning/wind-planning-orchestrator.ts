@@ -7,7 +7,9 @@ import { section1_5Data } from './section-1-5-data';
 import { section1_6Data } from './section-1-6-data';
 import { section1_7Data } from './section-1-7-data';
 import { section1_8Data } from './section-1-8-data';
+import { section1_9Data } from './section-1-9-data';
 import { section2_1Data } from './section-2-1-data';
+import { chapter3Data } from './chapter-3-data';
 
 export const createWindPlanningPlaybook = async (): Promise<string> => {
   console.log('Creating Wind Planning Playbook...');
@@ -116,8 +118,8 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
         parent: 'chapter-1'
       },
       'section-1-9': {
-        name: 'Section 1.9 - Placeholder Section',
-        description: 'Placeholder for future content',
+        name: 'Section 1.9 - Plan Update',
+        description: 'This section covers plan update and schedule management throughout the project lifecycle',
         parent: 'chapter-1'
       },
       'chapter-2': {
@@ -126,7 +128,7 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
       },
       'chapter-3': {
         name: 'Chapter 3 - Cost Management Plan',
-        description: 'Placeholder for cost management planning content'
+        description: 'This chapter covers cost breakdown structure development and project cost management'
       },
       'chapter-4': {
         name: 'Chapter 4 - Quality Management Plan',
@@ -208,11 +210,22 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    ...section1_9Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'section-1-9'
+    })),
     // Map section 2.1 data to chapter-2
     ...section2_1Data.processSteps.map(step => ({
       ...step,
       playbook_id: playbookId,
       phase_id: 'section-2-1' // Keep original phase_id for data retrieval but it will be accessed via chapter-2
+    })),
+    // Map chapter 3 data
+    ...chapter3Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'chapter-3'
     }))
   ];
 
@@ -258,11 +271,22 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    ...section1_9Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'section-1-9'
+    })),
     // Map section 2.1 data to chapter-2
     ...section2_1Data.raciMatrix.map(raci => ({
       ...raci,
       playbook_id: playbookId,
       phase_id: 'section-2-1' // Keep original phase_id for data retrieval
+    })),
+    // Map chapter 3 data
+    ...chapter3Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'chapter-3'
     }))
   ];
 
@@ -308,11 +332,22 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-8'
     })),
+    ...section1_9Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'section-1-9'
+    })),
     // Map section 2.1 data to chapter-2
     ...section2_1Data.processMap.map(map => ({
       ...map,
       playbook_id: playbookId,
       phase_id: 'section-2-1' // Keep original phase_id for data retrieval
+    })),
+    // Map chapter 3 data
+    ...chapter3Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'chapter-3'
     }))
   ];
 

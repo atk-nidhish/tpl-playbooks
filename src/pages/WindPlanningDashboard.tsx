@@ -95,7 +95,7 @@ const WindPlanningDashboard = () => {
         },
         {
           id: 'section-1-9',
-          name: 'Section 1.9 - Placeholder Section',
+          name: 'Section 1.9 - Plan Update',
           shortName: 'Section 1.9'
         }
       ]
@@ -147,8 +147,10 @@ const WindPlanningDashboard = () => {
     'section-1-6': '/lovable-uploads/c001ac3c-9c89-4a42-bff5-1398d7d09a81.png',
     'section-1-7': '/lovable-uploads/f739e138-b2b3-4141-a9c7-ac28baffb6f5.png',
     'section-1-8': '/lovable-uploads/417ddd1a-6c8f-4dc9-97ef-ee95d52436f6.png',
+    'section-1-9': '/lovable-uploads/990d1667-520a-4fd3-985f-2556234eba0b.png',
     // Chapter 2 now uses section-2-1 data but displays as chapter-2
-    'chapter-2': '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png'
+    'chapter-2': '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png',
+    'chapter-3': '/lovable-uploads/71524ea3-8a3b-4d64-9b58-fcd71dd2686b.png'
   };
 
   // Map the current activePhase to the correct data source
@@ -342,7 +344,7 @@ const WindPlanningDashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Show placeholder message for chapters without data */}
-        {(['chapter-3', 'chapter-4', 'chapter-5', 'chapter-6', 'section-1-9'].includes(activePhase)) ? (
+        {(['chapter-4', 'chapter-5', 'chapter-6'].includes(activePhase)) ? (
           <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
             <CardContent className="p-8 text-center">
               <p className="text-gray-600">
