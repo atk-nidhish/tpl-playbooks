@@ -11,7 +11,7 @@ import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
-import { ArrowLeft, MapPin, Search, Download, RefreshCw } from "lucide-react";
+import { ArrowLeft, MapPin, Search, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { createWindPlanningPlaybook } from "@/services/wind-planning/wind-planning-orchestrator";
 import { toast } from "sonner";
@@ -31,7 +31,6 @@ const WindPlanningDashboard = () => {
   const [playbook, setPlaybook] = useState<any>(null);
   const [playbookId, setPlaybookId] = useState<string>("");
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     initializePlaybook();
@@ -85,23 +84,6 @@ const WindPlanningDashboard = () => {
       toast.error("Failed to initialize Wind Planning playbook");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const refreshPlaybookData = async () => {
-    setRefreshing(true);
-    try {
-      console.log('Manually refreshing Wind Planning playbook data...');
-      await createWindPlanningPlaybook();
-      toast.success("Playbook data refreshed successfully!");
-      
-      // Force a page refresh to reload components
-      window.location.reload();
-    } catch (error) {
-      console.error('Error refreshing playbook data:', error);
-      toast.error("Failed to refresh playbook data");
-    } finally {
-      setRefreshing(false);
     }
   };
 
@@ -332,16 +314,6 @@ const WindPlanningDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={refreshPlaybookData}
-                disabled={refreshing}
-                className="flex items-center space-x-2 hover:bg-green-50 border-green-200"
-              >
-                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                <span>Refresh Data</span>
-              </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input

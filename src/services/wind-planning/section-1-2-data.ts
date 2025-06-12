@@ -6,7 +6,6 @@ export const section1_2Data = {
       activity: 'The Bid Incharge notifies the Chief Projects about any bid being won',
       inputs: [],
       outputs: [],
-      timeline: '',
       responsible: 'Bid Incharge',
       comments: ''
     },
@@ -15,7 +14,6 @@ export const section1_2Data = {
       activity: 'Chief Projects designates a Project Planner (PP) and Project Manager (PM) for the project',
       inputs: [],
       outputs: [],
-      timeline: '1',
       responsible: 'Chief Projects',
       comments: ''
     },
@@ -24,7 +22,6 @@ export const section1_2Data = {
       activity: 'Bid Incharge shares the Final L1 Plan and Final Bid Report¹ (FBR) with Chief Projects',
       inputs: [],
       outputs: [],
-      timeline: '',
       responsible: 'Bid Incharge',
       comments: ''
     },
@@ -33,34 +30,30 @@ export const section1_2Data = {
       activity: 'Chief Projects shares the Final L1 Plan and Final Bid Report with Project Planner and Project Manager, to initiate the development of Project Schedule (PS) and Project Execution Approach (PEA) respectively',
       inputs: ['Final L1 Plan', 'FBR'],
       outputs: [],
-      timeline: '',
       responsible: 'Chief Projects',
       comments: ''
     },
     {
       step_id: 'P4A',
-      activity: 'Project Planner prepares the preliminary Project Schedule by leveraging the Wind Project Master Plan and modifying it to align with project requirements',
+      activity: 'Project Planner prepares the preliminary Project Schedule by leveraging the Wind Project Master Plan and modifying it to align with project requirements. To understand project requirements, Project Planner and Project Manager analyze key milestones, critical timelines, land availability, and other details by reviewing the Final L1 Plan and Final Bid Report. The project timeline is broken down into specific tasks with start and end dates, along with intermediate deadlines for key deliverables. Each phase is detailed to account for task dependencies, and critical path activities. The Plan includes float for potential risks and delays. PS must align with the L1 schedule submitted during bid stage. Any deviations must be communicated by the Project Planner to the Project Manager for review and necessary action',
       inputs: ['Wind Project Master Plan'],
       outputs: ['Preliminary PS'],
-      timeline: '2 (P4A to occur P4B to occur parallelly)',
       responsible: 'Project Planner',
       comments: ''
     },
     {
       step_id: 'P4B',
-      activity: 'Project Manager leverages the Final Bid Report¹ to develop Project Execution Approach², which provides a high-level overview of the entire project',
+      activity: 'Project Manager leverages the Final Bid Report¹ to develop Project Execution Approach², which provides a high-level overview of the entire project. Scope of the project (scope matrix). Land availability and high-level requirements, specifying the type, size, and amount of land needed; if land parcel has already been identified for the project, details of the land parcel to also be a part of PEA (in consultation with Land Team). Budgeting, including the value engineering target, to optimize cost-efficiency without compromising quality (in consultation with Commercial Team and Engineering Team). Regulatory compliance requirements, necessary permits, environmental considerations, and safety regulations (in consultation with Regulatory Team)',
       inputs: [],
       outputs: ['Scope Matrix (Template Provided)'],
-      timeline: '2 (P4A and P4B to occur parallelly)',
       responsible: 'Project Manager',
       comments: ''
     },
     {
       step_id: 'P5',
-      activity: 'Project Planner reviews Project Schedule with Project Manager to ensure alignment. Any modifications identified during this review are incorporated.',
+      activity: 'Project Planner reviews Project Schedule with Project Manager to ensure alignment. Any modifications identified during this review are incorporated. In case of any discrepancies between the Project Manager and Project Planner, the Project Manager takes the final decision',
       inputs: [],
       outputs: [],
-      timeline: '1',
       responsible: 'Project Planner',
       comments: ''
     },
@@ -69,7 +62,6 @@ export const section1_2Data = {
       activity: 'Project Planner and Project Manager circulate Project Schedule and Project Execution Approach respectively to functional leads³ for review, to seek alignment and address potential conflicts or gaps at an early stage',
       inputs: [],
       outputs: [],
-      timeline: '2',
       responsible: 'Project Planner, Project Manager',
       comments: ''
     },
@@ -78,7 +70,6 @@ export const section1_2Data = {
       activity: 'Project Planner, in consultation with Project Manager, assesses the feedback received from functional leads and adjusts the Project Schedule accordingly',
       inputs: [],
       outputs: [],
-      timeline: '2 (P7A and P7B to occur parallelly)',
       responsible: 'Project Planner',
       comments: ''
     },
@@ -87,7 +78,6 @@ export const section1_2Data = {
       activity: 'Project Manager incorporates necessary changes in Project Execution Approach',
       inputs: [],
       outputs: ['PEA (includes scope matrix) (Template Provided)'],
-      timeline: '2 (P7A and P7B to occur parallelly)',
       responsible: 'Project Manager',
       comments: ''
     },
@@ -96,7 +86,6 @@ export const section1_2Data = {
       activity: 'Project Planner seeks sign-off on Project Schedule from functional leads',
       inputs: [],
       outputs: ['PS (Template Provided)'],
-      timeline: '1',
       responsible: 'Project Planner',
       comments: ''
     },
@@ -105,7 +94,6 @@ export const section1_2Data = {
       activity: 'Project Planner retains finalized Project Schedule, and Project Manager shares Project Execution Approach with Project Planner for future cross-functional¹ coordination',
       inputs: [],
       outputs: [],
-      timeline: 'Total – 9 – 11 days',
       responsible: 'Project Planner',
       comments: ''
     }

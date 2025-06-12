@@ -6,7 +6,6 @@ export const section1_1Data = {
       activity: 'Bid Incharge¹ appoints Bid Planner² (BP) and shares the Bid Summary³ with BP for the development of Final L1 Plan',
       inputs: [],
       outputs: [],
-      timeline: '',
       responsible: 'Bid Incharge',
       comments: ''
     },
@@ -15,7 +14,6 @@ export const section1_1Data = {
       activity: 'BP analyses the Bid Summary and develops the delivery milestones and timeline for the project',
       inputs: ['Bid Summary'],
       outputs: ['Delivery Milestones & Timeline (Template Provided)'],
-      timeline: '1',
       responsible: 'Bid Planner',
       comments: ''
     },
@@ -24,7 +22,6 @@ export const section1_1Data = {
       activity: 'BP develops the Preliminary L1 Plan by updating the Wind Project Master Plan to meet the delivery milestones and timelines for the project',
       inputs: ['Wind Project Master Plan'],
       outputs: ['Preliminary L1 Plan'],
-      timeline: '1',
       responsible: 'Bid Planner',
       comments: ''
     },
@@ -33,7 +30,6 @@ export const section1_1Data = {
       activity: 'BP updates the Preliminary L1 Plan based on the Preliminary Feasibility Report⁴ shared by the Land Team, to draft the Final L1 Plan',
       inputs: ['PFR'],
       outputs: [],
-      timeline: '1',
       responsible: 'Bid Planner',
       comments: ''
     },
@@ -42,7 +38,6 @@ export const section1_1Data = {
       activity: 'BP shares the Final L1 Plan with functional leads⁵ for inputs',
       inputs: [],
       outputs: [],
-      timeline: '2',
       responsible: 'Bid Planner',
       comments: ''
     },
@@ -51,7 +46,6 @@ export const section1_1Data = {
       activity: 'BP evaluates feedback from the functional teams and incorporates necessary modifications to the Final L1 Plan',
       inputs: [],
       outputs: [],
-      timeline: '2',
       responsible: 'Bid Planner',
       comments: ''
     },
@@ -60,16 +54,30 @@ export const section1_1Data = {
       activity: 'BP shares the Final L1 Plan for sign off by the functional leads',
       inputs: [],
       outputs: [],
-      timeline: '1',
+      responsible: 'Bid Planner',
+      comments: ''
+    },
+    {
+      step_id: 'P7',
+      activity: 'BP seeks review and approval on the Final L1 Plan from COO',
+      inputs: ['Final L1 Plan'],
+      outputs: [],
+      responsible: 'Bid Planner',
+      comments: ''
+    },
+    {
+      step_id: 'P8',
+      activity: 'BP incorporates any changes recommended by COO in the final L1 Plan',
+      inputs: [],
+      outputs: ['Final L1 Plan (Template Provided)'],
       responsible: 'Bid Planner',
       comments: ''
     },
     {
       step_id: 'E',
-      activity: 'BP seeks review and approval on the Final L1 Plan from COO and incorporates any changes recommended by COO in the final L1 Plan, then shares the Final L1 Plan with Bid Incharge for bid submission',
-      inputs: ['Final L1 Plan'],
-      outputs: ['Final L1 Plan (Template Provided)'],
-      timeline: 'Total 7-8 days',
+      activity: 'BP shares the Final L1 Plan with Bid Incharge for bid submission',
+      inputs: [],
+      outputs: [],
       responsible: 'Bid Planner',
       comments: ''
     }
@@ -133,12 +141,28 @@ export const section1_1Data = {
       informed: 'Functional Leads'
     },
     {
-      step_id: 'E',
-      task: 'Seek review and approval on the Final L1 Plan from COO, incorporate recommendations, and share with Bid Incharge for bid submission',
+      step_id: 'P7',
+      task: 'Seek review and approval on the Final L1 Plan from COO',
       responsible: 'Bid Planner',
       accountable: 'Bid Planner',
       consulted: '',
-      informed: 'COO, Bid Incharge'
+      informed: 'COO'
+    },
+    {
+      step_id: 'P8',
+      task: 'Incorporate COO\'s recommendations in the final L1 Plan',
+      responsible: 'Bid Planner',
+      accountable: 'Bid Planner',
+      consulted: '',
+      informed: ''
+    },
+    {
+      step_id: 'E',
+      task: 'Share the Final L1 Plan with Bid Incharge for bid submission',
+      responsible: 'Bid Planner',
+      accountable: '',
+      consulted: '',
+      informed: 'Bid Incharge'
     }
   ],
 
@@ -193,11 +217,25 @@ export const section1_1Data = {
       order_index: 7
     },
     {
+      step_id: 'P7',
+      step_type: 'process',
+      title: 'COO review and approval',
+      description: 'BP seeks review and approval from COO on the Final L1 Plan',
+      order_index: 8
+    },
+    {
+      step_id: 'P8',
+      step_type: 'process',
+      title: 'Incorporate COO recommendations',
+      description: 'BP incorporates any changes recommended by COO in the final L1 Plan',
+      order_index: 9
+    },
+    {
       step_id: 'E',
       step_type: 'end',
-      title: 'COO approval and final submission',
-      description: 'BP seeks review and approval from COO and shares Final L1 Plan for bid submission',
-      order_index: 8
+      title: 'Final submission to Bid Incharge',
+      description: 'BP shares the Final L1 Plan with Bid Incharge for bid submission',
+      order_index: 10
     }
   ]
 };
