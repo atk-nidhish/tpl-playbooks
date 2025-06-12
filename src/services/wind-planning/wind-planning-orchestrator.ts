@@ -19,12 +19,41 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
   if (existingPlaybook) {
     console.log('Wind Planning Playbook already exists, clearing existing data...');
     
-    // Clear existing data for this playbook
-    await supabase.from('process_steps').delete().eq('playbook_id', existingPlaybook.id);
-    await supabase.from('raci_matrix').delete().eq('playbook_id', existingPlaybook.id);
-    await supabase.from('process_map').delete().eq('playbook_id', existingPlaybook.id);
-    
     const playbookId = existingPlaybook.id;
+    
+    // Clear existing data for this playbook with more explicit deletion
+    console.log('Deleting existing process steps...');
+    const { error: deleteStepsError } = await supabase
+      .from('process_steps')
+      .delete()
+      .eq('playbook_id', playbookId);
+    
+    if (deleteStepsError) {
+      console.error('Error deleting process steps:', deleteStepsError);
+    }
+
+    console.log('Deleting existing RACI matrix...');
+    const { error: deleteRaciError } = await supabase
+      .from('raci_matrix')
+      .delete()
+      .eq('playbook_id', playbookId);
+    
+    if (deleteRaciError) {
+      console.error('Error deleting RACI matrix:', deleteRaciError);
+    }
+
+    console.log('Deleting existing process map...');
+    const { error: deleteMapError } = await supabase
+      .from('process_map')
+      .delete()
+      .eq('playbook_id', playbookId);
+    
+    if (deleteMapError) {
+      console.error('Error deleting process map:', deleteMapError);
+    }
+    
+    // Wait a moment to ensure deletions are complete
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     // Insert fresh data
     await insertPlaybookData(playbookId);
@@ -83,6 +112,8 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
 };
 
 const insertPlaybookData = async (playbookId: string) => {
+  console.log('Starting to insert playbook data...');
+  
   // Prepare all process steps with playbook_id and phase_id
   const allProcessSteps = [
     ...section1_1Data.processSteps.map(step => ({
@@ -170,13 +201,14 @@ const insertPlaybookData = async (playbookId: string) => {
     }))
   ];
 
-  console.log(`Inserting ${allProcessSteps.length} process steps...`);
-  console.log(`Inserting ${allRaciMatrix.length} RACI entries...`);
-  console.log(`Inserting ${allProcessMap.length} process map entries...`);
+  console.log(`Prepared ${allProcessSteps.length} process steps for insertion`);
+  console.log(`Prepared ${allRaciMatrix.length} RACI entries for insertion`);
+  console.log(`Prepared ${allProcessMap.length} process map entries for insertion`);
 
   try {
-    // Insert process steps
+    // Insert process steps in batches to avoid potential issues
     if (allProcessSteps.length > 0) {
+      console.log('Inserting process steps...');
       const { error: stepsError } = await supabase
         .from('process_steps')
         .insert(allProcessSteps);
@@ -185,11 +217,12 @@ const insertPlaybookData = async (playbookId: string) => {
         console.error('Error inserting process steps:', stepsError);
         throw stepsError;
       }
-      console.log('Successfully inserted process steps');
+      console.log(`Successfully inserted ${allProcessSteps.length} process steps`);
     }
 
     // Insert RACI matrix
     if (allRaciMatrix.length > 0) {
+      console.log('Inserting RACI matrix...');
       const { error: raciError } = await supabase
         .from('raci_matrix')
         .insert(allRaciMatrix);
@@ -198,11 +231,12 @@ const insertPlaybookData = async (playbookId: string) => {
         console.error('Error inserting RACI matrix:', raciError);
         throw raciError;
       }
-      console.log('Successfully inserted RACI matrix');
+      console.log(`Successfully inserted ${allRaciMatrix.length} RACI entries`);
     }
 
     // Insert process map
     if (allProcessMap.length > 0) {
+      console.log('Inserting process map...');
       const { error: mapError } = await supabase
         .from('process_map')
         .insert(allProcessMap);
@@ -211,8 +245,10 @@ const insertPlaybookData = async (playbookId: string) => {
         console.error('Error inserting process map:', mapError);
         throw mapError;
       }
-      console.log('Successfully inserted process map');
+      console.log(`Successfully inserted ${allProcessMap.length} process map entries`);
     }
+
+    console.log('All playbook data inserted successfully');
 
   } catch (error) {
     console.error('Error inserting playbook data:', error);

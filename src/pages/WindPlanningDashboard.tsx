@@ -11,7 +11,7 @@ import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
-import { ArrowLeft, MapPin, Search, Download } from "lucide-react";
+import { ArrowLeft, MapPin, Search, Download, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { createWindPlanningPlaybook } from "@/services/wind-planning/wind-planning-orchestrator";
 import { toast } from "sonner";
@@ -31,6 +31,7 @@ const WindPlanningDashboard = () => {
   const [playbook, setPlaybook] = useState<any>(null);
   const [playbookId, setPlaybookId] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     initializePlaybook();
@@ -87,62 +88,22 @@ const WindPlanningDashboard = () => {
     }
   };
 
-  const chapters: Chapter[] = [
-    {
-      id: "chapter-1",
-      name: "Chapter 1 - Plan Integration Management",
-      shortName: "Ch 1: Integration",
-      subChapters: [
-        { id: "section-1-1", name: "Section 1.1 - Project Plan Preparation During Bidding", shortName: "1.1 Plan Prep" },
-        { id: "section-1-2", name: "Section 1.2 - Project Schedule and Execution Approach", shortName: "1.2 Schedule" },
-        { id: "section-1-3", name: "Section 1.3 - Land Finalization Plan", shortName: "1.3 Land Plan" },
-        { id: "section-1-4", name: "Section 1.4 - Engineering Plan", shortName: "1.4 Engineering" },
-        { id: "section-1-5", name: "Section 1.5 - Procurement Plan", shortName: "1.5 Procurement" },
-        { id: "section-1-6", name: "Section 1.6 - Construction Plan", shortName: "1.6 Construction" },
-        { id: "section-1-7", name: "Section 1.7 - Commissioning Plan", shortName: "1.7 Commissioning" },
-        { id: "section-1-8", name: "Section 1.8 - Plan Integration", shortName: "1.8 Integration" },
-        { id: "section-1-9", name: "Section 1.9 - Plan Update", shortName: "1.9 Updates" }
-      ]
-    },
-    {
-      id: "chapter-2",
-      name: "Chapter 2 - Scope Management Plan",
-      shortName: "Ch 2: Scope",
-      subChapters: [
-        { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "2.1 Scope Mgmt" }
-      ]
-    },
-    {
-      id: "chapter-3",
-      name: "Chapter 3 - Cost Management Plan",
-      shortName: "Ch 3: Cost"
-    },
-    {
-      id: "chapter-4",
-      name: "Chapter 4 - Quality Management Plan",
-      shortName: "Ch 4: Quality"
-    },
-    {
-      id: "chapter-5",
-      name: "Chapter 5 - Statutory Approval Management Plan",
-      shortName: "Ch 5: Approvals"
-    },
-    {
-      id: "chapter-6",
-      name: "Chapter 6 - Risk Management Plan",
-      shortName: "Ch 6: Risk"
-    },
-    {
-      id: "certification",
-      name: "Playbook Certification",
-      shortName: "Certification"
-    },
-    {
-      id: "leaderboard",
-      name: "Certification Leaderboard",
-      shortName: "Leaderboard"
+  const handleRefreshData = async () => {
+    setRefreshing(true);
+    try {
+      console.log('Manually refreshing Wind Planning playbook data...');
+      await createWindPlanningPlaybook();
+      toast.success("Playbook data refreshed successfully!");
+      
+      // Force a page reload to ensure all components get fresh data
+      window.location.reload();
+    } catch (error) {
+      console.error('Error refreshing playbook data:', error);
+      toast.error("Failed to refresh playbook data");
+    } finally {
+      setRefreshing(false);
     }
-  ];
+  };
 
   const handleNavigateToRaci = () => {
     setCurrentTab("raci");
@@ -264,6 +225,63 @@ const WindPlanningDashboard = () => {
     );
   }
 
+  const chapters: Chapter[] = [
+    {
+      id: "chapter-1",
+      name: "Chapter 1 - Plan Integration Management",
+      shortName: "Ch 1: Integration",
+      subChapters: [
+        { id: "section-1-1", name: "Section 1.1 - Project Plan Preparation During Bidding", shortName: "1.1 Plan Prep" },
+        { id: "section-1-2", name: "Section 1.2 - Project Schedule and Execution Approach", shortName: "1.2 Schedule" },
+        { id: "section-1-3", name: "Section 1.3 - Land Finalization Plan", shortName: "1.3 Land Plan" },
+        { id: "section-1-4", name: "Section 1.4 - Engineering Plan", shortName: "1.4 Engineering" },
+        { id: "section-1-5", name: "Section 1.5 - Procurement Plan", shortName: "1.5 Procurement" },
+        { id: "section-1-6", name: "Section 1.6 - Construction Plan", shortName: "1.6 Construction" },
+        { id: "section-1-7", name: "Section 1.7 - Commissioning Plan", shortName: "1.7 Commissioning" },
+        { id: "section-1-8", name: "Section 1.8 - Plan Integration", shortName: "1.8 Integration" },
+        { id: "section-1-9", name: "Section 1.9 - Plan Update", shortName: "1.9 Updates" }
+      ]
+    },
+    {
+      id: "chapter-2",
+      name: "Chapter 2 - Scope Management Plan",
+      shortName: "Ch 2: Scope",
+      subChapters: [
+        { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "2.1 Scope Mgmt" }
+      ]
+    },
+    {
+      id: "chapter-3",
+      name: "Chapter 3 - Cost Management Plan",
+      shortName: "Ch 3: Cost"
+    },
+    {
+      id: "chapter-4",
+      name: "Chapter 4 - Quality Management Plan",
+      shortName: "Ch 4: Quality"
+    },
+    {
+      id: "chapter-5",
+      name: "Chapter 5 - Statutory Approval Management Plan",
+      shortName: "Ch 5: Approvals"
+    },
+    {
+      id: "chapter-6",
+      name: "Chapter 6 - Risk Management Plan",
+      shortName: "Ch 6: Risk"
+    },
+    {
+      id: "certification",
+      name: "Playbook Certification",
+      shortName: "Certification"
+    },
+    {
+      id: "leaderboard",
+      name: "Certification Leaderboard",
+      shortName: "Leaderboard"
+    }
+  ];
+
   const getProcessMapImage = (phaseId: string) => {
     // Use the process map images from the uploaded screenshots
     if (phaseId === "section-1-1") {
@@ -318,6 +336,16 @@ const WindPlanningDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRefreshData}
+                disabled={refreshing}
+                className="flex items-center space-x-2 hover:bg-green-50 border-green-200"
+              >
+                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                <span>{refreshing ? 'Refreshing...' : 'Refresh Data'}</span>
+              </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
