@@ -14,6 +14,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ArrowLeft, MapPin, Search, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { createWindPlanningPlaybook } from "@/services/wind-planning-playbook-seeder";
 
 interface Chapter {
   id: string;
@@ -32,22 +33,40 @@ const WindPlanningDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPlaybook();
+    initializePlaybook();
   }, []);
 
-  const fetchPlaybook = async () => {
+  const initializePlaybook = async () => {
     try {
+      // First, try to fetch existing playbook
       const { data, error } = await supabase
         .from('playbooks')
         .select('*')
         .eq('name', 'wind-planning')
         .single();
 
-      if (error) throw error;
-      setPlaybook(data);
-      setPlaybookId(data.id);
+      if (error && error.code === 'PGRST116') {
+        // Playbook doesn't exist, create it
+        console.log('Wind Planning playbook not found, creating it...');
+        const newPlaybookId = await createWindPlanningPlaybook();
+        setPlaybookId(newPlaybookId);
+        
+        // Fetch the newly created playbook
+        const { data: newData } = await supabase
+          .from('playbooks')
+          .select('*')
+          .eq('id', newPlaybookId)
+          .single();
+        
+        setPlaybook(newData);
+      } else if (error) {
+        throw error;
+      } else {
+        setPlaybook(data);
+        setPlaybookId(data.id);
+      }
     } catch (error) {
-      console.error('Error fetching playbook:', error);
+      console.error('Error initializing playbook:', error);
     } finally {
       setLoading(false);
     }
@@ -228,7 +247,13 @@ const WindPlanningDashboard = () => {
   }
 
   const getProcessMapImage = (phaseId: string) => {
-    // Placeholder for process map images - can be updated when images are available
+    // Use the process map images from the uploaded screenshots
+    if (phaseId === "section-1-1") {
+      return "/lovable-uploads/47e7e779-539c-4951-b246-84c726cc68fc.png";
+    } else if (phaseId === "section-1-2") {
+      return "/lovable-uploads/39d791f6-decc-4af3-91c2-17aec32bce79.png";
+    }
+    // Fallback for other phases
     return "/lovable-uploads/02ea28df-7aa0-437b-8db2-15769af9665c.png";
   };
 
