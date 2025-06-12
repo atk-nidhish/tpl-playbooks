@@ -51,8 +51,9 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
   }, []);
 
   const handleSubChapterClick = (subChapterId: string) => {
+    // Navigate to the section first
     onPhaseChange(subChapterId);
-    // Auto-collapse Chapter 1 after subsection selection
+    // Force immediate collapse of all dropdowns
     setExpandedChapters([]);
   };
 
@@ -108,7 +109,10 @@ export const ModernNavigation = ({ chapters, activePhase, onPhaseChange }: Moder
                           key={subChapter.id}
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleSubChapterClick(subChapter.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSubChapterClick(subChapter.id);
+                          }}
                           className={`
                             w-full justify-start text-left px-4 py-4 text-xs rounded-none border-b border-blue-50 last:border-b-0 relative
                             ${activePhase === subChapter.id 

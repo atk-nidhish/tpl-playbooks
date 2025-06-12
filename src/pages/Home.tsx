@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
@@ -154,6 +154,49 @@ const Home = () => {
       default:
         return 'Result';
     }
+  };
+
+  // Helper function to get the appropriate icon and color for wind playbooks
+  const getPlaybookIcon = (title: string) => {
+    if (title.toLowerCase().includes('wind')) {
+      return <Wind className="h-4 w-4 text-blue-500" />;
+    }
+    return <Sun className="h-4 w-4 text-orange-500" />;
+  };
+
+  // Helper function to get the appropriate link for wind playbooks
+  const getPlaybookLink = (playbook: Playbook) => {
+    if (playbook.title.toLowerCase().includes('wind') && playbook.title.toLowerCase().includes('planning')) {
+      return '/wind-planning';
+    }
+    if (playbook.title.toLowerCase().includes('wind') && playbook.title.toLowerCase().includes('commissioning')) {
+      return '/wind-cp';
+    }
+    return `/playbook/${playbook.id}`;
+  };
+
+  // Helper function to get border color for wind playbooks
+  const getPlaybookBorderColor = (title: string) => {
+    if (title.toLowerCase().includes('wind')) {
+      return 'border-blue-200 hover:border-blue-300';
+    }
+    return 'border-orange-200 hover:border-orange-300';
+  };
+
+  // Helper function to get text color for wind playbooks
+  const getPlaybookTextColor = (title: string) => {
+    if (title.toLowerCase().includes('wind')) {
+      return 'group-hover:text-blue-600';
+    }
+    return 'group-hover:text-orange-600';
+  };
+
+  // Helper function to get badge color for wind playbooks
+  const getPlaybookBadgeColor = (title: string) => {
+    if (title.toLowerCase().includes('wind')) {
+      return 'bg-blue-50 text-blue-700 border-blue-200';
+    }
+    return 'bg-orange-50 text-orange-700 border-orange-200';
   };
 
   return (
@@ -308,16 +351,16 @@ const Home = () => {
                 {filteredPlaybooks.map((playbook) => (
                   <Card 
                     key={playbook.id}
-                    className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group"
+                    className={`cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm ${getPlaybookBorderColor(playbook.title)} group`}
                   >
-                    <Link to={`/playbook/${playbook.id}`}>
+                    <Link to={getPlaybookLink(playbook)}>
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
+                          <CardTitle className={`text-lg ${getPlaybookTextColor(playbook.title)} transition-colors`}>
                             {playbook.title}
                           </CardTitle>
                           <div className="flex gap-2">
-                            <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                            <Badge variant="outline" className={getPlaybookBadgeColor(playbook.title)}>
                               {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
                             </Badge>
                           </div>
@@ -329,8 +372,8 @@ const Home = () => {
                       <CardContent>
                         <div className="flex items-center justify-between text-sm text-gray-600">
                           <span>ID: {playbook.name}</span>
-                          <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
-                            <FileText className="h-3 w-3" />
+                          <span className={`flex items-center gap-1 ${getPlaybookTextColor(playbook.title)} transition-colors`}>
+                            {getPlaybookIcon(playbook.title)}
                             Interactive
                             <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                           </span>
