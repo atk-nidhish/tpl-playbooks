@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, FileInput, Package, Clock, Users } from "lucide-react";
+import { Settings, ArrowRight, FileInput, Package, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProcessStep {
@@ -165,7 +165,6 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
           {filteredSteps.map((step, index) => {
             const hasInputs = step.inputs && step.inputs.length > 0;
             const hasOutputs = step.outputs && step.outputs.length > 0;
-            const hasTimeline = step.timeline && step.timeline.trim() !== "";
             
             return (
               <Card key={step.id} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-md transition-all duration-300">
@@ -177,20 +176,20 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900 mb-2 text-sm">{step.activity}</h3>
 
-                      {/* Only show fields when they have content */}
-                      {(hasInputs || hasOutputs || hasTimeline) && (
-                        <div className="grid grid-cols-3 gap-1 mb-2">
+                      {/* Only show inputs and outputs - timeline removed */}
+                      {(hasInputs || hasOutputs) && (
+                        <div className="grid grid-cols-2 gap-2 mb-2">
                           {/* Inputs - Only show if has content */}
                           {hasInputs && (
-                            <div className="p-1 bg-blue-50 border border-blue-200 rounded text-xs">
-                              <div className="flex items-center gap-0.5 mb-0.5">
-                                <FileInput className="h-2 w-2 text-blue-500" />
+                            <div className="p-2 bg-blue-50 border border-blue-200 rounded text-xs">
+                              <div className="flex items-center gap-1 mb-1">
+                                <FileInput className="h-3 w-3 text-blue-500" />
                                 <span className="font-medium text-blue-800">Inputs:</span>
                               </div>
                               <div className="text-blue-700 leading-tight">
-                                <div className="space-y-0.5">
+                                <div className="space-y-1">
                                   {step.inputs.map((input, idx) => (
-                                    <div key={idx} className="text-[10px] truncate" title={input}>
+                                    <div key={idx} className="text-xs" title={input}>
                                       {idx + 1}. {input}
                                     </div>
                                   ))}
@@ -201,31 +200,20 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
 
                           {/* Outputs - Only show if has content */}
                           {hasOutputs && (
-                            <div className="p-1 bg-green-50 border border-green-200 rounded text-xs">
-                              <div className="flex items-center gap-0.5 mb-0.5">
-                                <Package className="h-2 w-2 text-green-500" />
+                            <div className="p-2 bg-green-50 border border-green-200 rounded text-xs">
+                              <div className="flex items-center gap-1 mb-1">
+                                <Package className="h-3 w-3 text-green-500" />
                                 <span className="font-medium text-green-800">Outputs:</span>
                               </div>
                               <div className="text-green-700 leading-tight">
-                                <div className="space-y-0.5">
+                                <div className="space-y-1">
                                   {step.outputs.map((output, idx) => (
-                                    <div key={idx} className="text-[10px] truncate" title={output}>
+                                    <div key={idx} className="text-xs" title={output}>
                                       {idx + 1}. {output}
                                     </div>
                                   ))}
                                 </div>
                               </div>
-                            </div>
-                          )}
-                          
-                          {/* Timeline - Only show if has content */}
-                          {hasTimeline && (
-                            <div className="p-1 bg-yellow-50 border border-yellow-200 rounded text-xs">
-                              <div className="flex items-center gap-0.5 mb-0.5">
-                                <Clock className="h-2 w-2 text-yellow-600" />
-                                <span className="font-medium text-yellow-800">Timeline:</span>
-                              </div>
-                              <p className="text-yellow-700 leading-tight text-[10px]">{step.timeline}</p>
                             </div>
                           )}
                         </div>
