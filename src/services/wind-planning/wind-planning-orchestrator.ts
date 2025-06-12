@@ -12,6 +12,7 @@ import { section2_1Data } from './section-2-1-data';
 import { chapter3Data } from './chapter-3-data';
 import { chapter4Data } from './chapter-4-data';
 import { chapter5Data } from './chapter-5-data';
+import { chapter6Data } from './chapter-6-data';
 
 export const createWindPlanningPlaybook = async (): Promise<string> => {
   console.log('Creating Wind Planning Playbook...');
@@ -240,6 +241,12 @@ const insertPlaybookData = async (playbookId: string) => {
       ...step,
       playbook_id: playbookId,
       phase_id: 'chapter-5'
+    })),
+    // Map chapter 6 data
+    ...chapter6Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'chapter-6'
     }))
   ];
 
@@ -313,6 +320,12 @@ const insertPlaybookData = async (playbookId: string) => {
       ...raci,
       playbook_id: playbookId,
       phase_id: 'chapter-5'
+    })),
+    // Map chapter 6 data
+    ...chapter6Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'chapter-6'
     }))
   ];
 
@@ -386,6 +399,12 @@ const insertPlaybookData = async (playbookId: string) => {
       ...map,
       playbook_id: playbookId,
       phase_id: 'chapter-5'
+    })),
+    // Map chapter 6 data
+    ...chapter6Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'chapter-6'
     }))
   ];
 

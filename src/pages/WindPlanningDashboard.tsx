@@ -138,20 +138,21 @@ const WindPlanningDashboard = () => {
 
   // Updated process map images mapping to handle new chapter structure
   const processMapImages = {
-    'section-1-1': '/lovable-uploads/24724d00-6df0-446b-a7a7-b50904c3c720.png',
-    'section-1-2': '/lovable-uploads/80b2c685-97ca-460f-8b5f-ef4312be4cd9.png',
-    'section-1-3': '/lovable-uploads/7c770988-9bc7-44c4-b83c-875d7731fe58.png',
-    'section-1-4': '/lovable-uploads/5988e549-2352-4c27-9380-24fdc2e14575.png',
+    'section-1-1': '/lovable-uploads/6a60cd5c-2dea-4592-a338-8babe56afddf.png',
+    'section-1-2': '/lovable-uploads/93b739af-e179-4e21-b6ee-2d05fe2d70b9.png',
+    'section-1-3': '/lovable-uploads/208ba3ad-70d3-40c6-a913-c90d2e872f83.png',
+    'section-1-4': '/lovable-uploads/db4a7cc6-f9f4-455b-98f5-a3cca9dd4a3a.png',
     'section-1-5': '/lovable-uploads/cf1df77d-9d73-477d-a4ce-0951cf30cd2d.png',
     'section-1-6': '/lovable-uploads/c001ac3c-9c89-4a42-bff5-1398d7d09a81.png',
     'section-1-7': '/lovable-uploads/f739e138-b2b3-4141-a9c7-ac28baffb6f5.png',
     'section-1-8': '/lovable-uploads/417ddd1a-6c8f-4dc9-97ef-ee95d52436f6.png',
     'section-1-9': '/lovable-uploads/990d1667-520a-4fd3-985f-2556234eba0b.png',
     // Chapter 2 now uses section-2-1 data but displays as chapter-2
-    'chapter-2': '/lovable-uploads/7850b53b-86d8-44eb-8325-17ac3366fc82.png',
+    'chapter-2': '/lovable-uploads/02d22a7c-d35a-4a8c-bfb1-f6b57bb4f0e9.png',
     'chapter-3': '/lovable-uploads/71524ea3-8a3b-4d64-9b58-fcd71dd2686b.png',
     'chapter-4': '/lovable-uploads/5e46933c-2d70-4645-9dff-41e747b607c8.png',
-    'chapter-5': '/lovable-uploads/fdfc5fa1-d50b-48ce-9551-e1f9090574ef.png'
+    'chapter-5': '/lovable-uploads/fdfc5fa1-d50b-48ce-9551-e1f9090574ef.png',
+    'chapter-6': '/lovable-uploads/05ae2d85-98ee-4574-b819-b450220f32ba.png'
   };
 
   // Map the current activePhase to the correct data source
@@ -345,7 +346,8 @@ const WindPlanningDashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Show placeholder message for chapters without data */}
-        {(['chapter-6'].includes(activePhase)) ? (
+        {/* Chapter 6 is now populated, so no placeholder needed */}
+        {false ? (
           <Card className="bg-white/90 backdrop-blur-sm border-blue-200">
             <CardContent className="p-8 text-center">
               <p className="text-gray-600">
