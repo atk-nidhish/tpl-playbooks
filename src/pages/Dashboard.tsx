@@ -43,8 +43,8 @@ const Dashboard = () => {
       <main className="container mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h2>
-          <p className="text-gray-600">Access your playbooks and track your certifications</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
+          <p className="text-gray-600">Access Solar and Wind Project Execution playbooks </p>
         </div>
 
         {/* Content Grid */}
