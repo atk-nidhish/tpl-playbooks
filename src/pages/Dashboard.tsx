@@ -163,7 +163,7 @@ const Dashboard = () => {
               </Card> */}
 
               {/* Second Certification */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="bg-green-600 p-2 rounded-lg">
@@ -183,7 +183,7 @@ const Dashboard = () => {
                     Download Certificate
                   </Button>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div> 
           </div>
         </div>
