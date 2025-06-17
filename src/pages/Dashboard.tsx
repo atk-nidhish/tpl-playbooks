@@ -49,7 +49,7 @@ const Dashboard = () => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Playbooks Section */}
+          {/* Wind Playbooks Section */}
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <FileText className="h-6 w-6 text-blue-600" />
@@ -81,35 +81,11 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Wind - Planning Playbook */}
               
-
-                {/* Wind - C&P Playbook */}
-              <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-blue-600 p-2 rounded-lg">
-                        <Wind className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">C&P - Wind</CardTitle>
-                  <CardDescription className="text-gray-600">Wind Project Planning Contracting & Procurement</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Link to="/wind-cp">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Access Playbook
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
             </div>
           </div>
 
-          {/* Certifications Section */}
+          {/* Wind Playbooks Section */}
           <div>
             {/* <div className="flex items-center space-x-2 mb-6">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
@@ -119,11 +95,11 @@ const Dashboard = () => {
             </div> */}
             <div className="flex items-center space-x-2 mb-6">
               <FileText className="h-6 w-6 text-blue-600" />
-              <h3 className="text-xl font-semibold text-gray-900">Solar Playbooks</h3>
+              <h3 className="text-xl font-semibold text-gray-900">Wind Playbooks</h3>
             </div>
             
             <div className="space-y-4">
-            
+            {/* Wind - Planning Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center space-x-3 mb-2">
@@ -139,6 +115,29 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/wind-planning">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Access Playbook
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Wind - C&P Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">C&P - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Planning Contracting & Procurement</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Link to="/wind-cp">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                       Access Playbook
                     </Button>
