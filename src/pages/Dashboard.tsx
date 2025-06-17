@@ -108,7 +108,7 @@ const Dashboard = () => {
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
-                      <div className="bg-green-600 p-2 rounded-lg">
+                      <div className="bg-blue-600 p-2 rounded-lg">
                         <MapPin className="h-6 w-6 text-white" />
                       </div>
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
@@ -119,7 +119,7 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/wind-planning">
-                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                       Access Playbook
                     </Button>
                   </Link>
