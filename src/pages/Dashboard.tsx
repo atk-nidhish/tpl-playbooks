@@ -133,8 +133,8 @@ const Dashboard = () => {
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">C&P - Wind</CardTitle>
-                  <CardDescription className="text-gray-600">Wind Project Planning Contracting & Procurement</CardDescription>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Contracting & Procurement - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Contracting & Procurement</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/wind-cp">
