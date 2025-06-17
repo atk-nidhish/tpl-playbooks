@@ -84,7 +84,7 @@ const Dashboard = () => {
               {/* Wind - Planning Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-3 mb-2">
                     <div className="flex items-center space-x-3">
                       <div className="bg-blue-600 p-2 rounded-lg">
                         <Wind className="h-6 w-6 text-white" />
