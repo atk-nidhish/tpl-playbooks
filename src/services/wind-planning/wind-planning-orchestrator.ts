@@ -6,6 +6,8 @@ import { section1_3Data } from './section-1-3-data';
 import { section1_4Data } from './section-1-4-data';
 import { section1_5Data } from './section-1-5-data';
 import { section1_6Data } from './section-1-6-data';
+import { section1_7Data } from './section-1-7-data';
+import { section1_8Data } from './section-1-8-data';
 import { section2_1Data } from './section-2-1-data';
 
 export const createWindPlanningPlaybook = async (): Promise<string> => {
@@ -94,6 +96,14 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
         name: 'Section 1.6 - Construction Plan',
         description: 'This section covers construction management planning and execution approach'
       },
+      'section-1-7': {
+        name: 'Section 1.7 - Commissioning Plan',
+        description: 'This section covers commissioning planning and pre-commissioning activities'
+      },
+      'section-1-8': {
+        name: 'Section 1.8 - Plan Integration',
+        description: 'This section covers integration of all detailed plans into a comprehensive project schedule'
+      },
       'section-2-1': {
         name: 'Section 2.1 - Scope Management Plan',
         description: 'This section covers the development of Work Breakdown Structure (WBS) and project scope management'
@@ -156,6 +166,16 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-6'
     })),
+    ...section1_7Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'section-1-7'
+    })),
+    ...section1_8Data.processSteps.map(step => ({
+      ...step,
+      playbook_id: playbookId,
+      phase_id: 'section-1-8'
+    })),
     ...section2_1Data.processSteps.map(step => ({
       ...step,
       playbook_id: playbookId,
@@ -195,6 +215,16 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-6'
     })),
+    ...section1_7Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'section-1-7'
+    })),
+    ...section1_8Data.raciMatrix.map(raci => ({
+      ...raci,
+      playbook_id: playbookId,
+      phase_id: 'section-1-8'
+    })),
     ...section2_1Data.raciMatrix.map(raci => ({
       ...raci,
       playbook_id: playbookId,
@@ -233,6 +263,16 @@ const insertPlaybookData = async (playbookId: string) => {
       ...map,
       playbook_id: playbookId,
       phase_id: 'section-1-6'
+    })),
+    ...section1_7Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'section-1-7'
+    })),
+    ...section1_8Data.processMap.map(map => ({
+      ...map,
+      playbook_id: playbookId,
+      phase_id: 'section-1-8'
     })),
     ...section2_1Data.processMap.map(map => ({
       ...map,
