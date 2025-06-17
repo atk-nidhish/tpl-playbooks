@@ -183,8 +183,8 @@ const Dashboard = () => {
                     Download Certificate
                   </Button>
                 </CardContent>
-              </Card>
-            </div> */}
+              </Card> */}
+            </div> 
           </div>
         </div>
       </main>
