@@ -1,9 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
@@ -199,6 +200,132 @@ const Home = () => {
             Access and manage all your solar project execution playbooks in one centralized location. 
             Each playbook contains detailed process steps, RACI matrices, and process maps to guide your project execution.
           </p>
+        </div>
+
+        {/* Quick Access Cards - Feature Playbooks */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Featured Playbooks</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link to="/wind-planning">
+              <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-blue-200 hover:border-blue-300 group">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg">
+                      <Wind className="h-6 w-6 text-white" />
+                    </div>
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                      Planning
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                    Wind-Planning
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Comprehensive wind project planning framework with detailed processes
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <span>8 Chapters</span>
+                    <span className="flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+                      Interactive
+                      <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/wind-cp">
+              <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-blue-200 hover:border-blue-300 group">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg">
+                      <Wind className="h-6 w-6 text-white" />
+                    </div>
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                      Construction
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                    Wind - C&P
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Wind construction and procurement execution framework
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <span>8 Chapters</span>
+                    <span className="flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+                      Interactive
+                      <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/planning-solar">
+              <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="bg-gradient-to-r from-orange-400 to-yellow-400 p-2 rounded-lg">
+                      <Sun className="h-6 w-6 text-white" />
+                    </div>
+                    <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                      Solar
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
+                    Planning - Solar
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Solar project planning and development processes
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <span>Multiple Phases</span>
+                    <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
+                      Interactive
+                      <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/commissioning-dashboard">
+              <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-green-200 hover:border-green-300 group">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="bg-gradient-to-r from-green-400 to-green-500 p-2 rounded-lg">
+                      <Zap className="h-6 w-6 text-white" />
+                    </div>
+                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                      Commissioning
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-lg group-hover:text-green-600 transition-colors">
+                    Commissioning
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Complete commissioning processes and procedures
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <span>Full Framework</span>
+                    <span className="flex items-center gap-1 group-hover:text-green-600 transition-colors">
+                      Interactive
+                      <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
         </div>
 
         {/* File Upload Section */}
