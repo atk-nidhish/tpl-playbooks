@@ -43,25 +43,3 @@ export const testSupabaseConnection = async () => {
     return false;
   }
 };
-
-export const forceSignOut = async () => {
-  try {
-    console.log('Force signing out user...');
-    
-    // Clean up auth state first
-    cleanupAuthState();
-    
-    // Attempt global sign out
-    const { error } = await supabase.auth.signOut({ scope: 'global' });
-    if (error) {
-      console.error('Sign out error:', error);
-    }
-    
-    // Force a complete page reload to ensure clean state
-    window.location.reload();
-  } catch (error) {
-    console.error('Error during force sign out:', error);
-    // Force reload anyway
-    window.location.reload();
-  }
-};

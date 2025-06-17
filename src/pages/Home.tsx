@@ -3,13 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight, Wind, LogOut, User } from "lucide-react";
+import { Search, Sun, BookOpen, FileText, RefreshCw, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataInit } from "@/hooks/useDataInit";
 import { FileUpload } from "@/components/FileUpload";
 import { Leaderboard } from "@/components/Leaderboard";
-import { useAuth } from "@/hooks/useAuth";
 
 interface Playbook {
   id: string;
@@ -27,7 +26,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const { isInitialized } = useDataInit();
-  const { user, signOut } = useAuth();
 
   useEffect(() => {
     if (isInitialized) {
@@ -158,49 +156,6 @@ const Home = () => {
     }
   };
 
-  // Helper function to get the appropriate icon and color for wind playbooks
-  const getPlaybookIcon = (title: string) => {
-    if (title.toLowerCase().includes('wind')) {
-      return <Wind className="h-4 w-4 text-blue-500" />;
-    }
-    return <Sun className="h-4 w-4 text-orange-500" />;
-  };
-
-  // Helper function to get the appropriate link for wind playbooks
-  const getPlaybookLink = (playbook: Playbook) => {
-    if (playbook.title.toLowerCase().includes('wind') && playbook.title.toLowerCase().includes('planning')) {
-      return '/wind-planning';
-    }
-    if (playbook.title.toLowerCase().includes('wind') && playbook.title.toLowerCase().includes('commissioning')) {
-      return '/wind-cp';
-    }
-    return `/playbook/${playbook.id}`;
-  };
-
-  // Helper function to get border color for wind playbooks
-  const getPlaybookBorderColor = (title: string) => {
-    if (title.toLowerCase().includes('wind')) {
-      return 'border-blue-200 hover:border-blue-300';
-    }
-    return 'border-orange-200 hover:border-orange-300';
-  };
-
-  // Helper function to get text color for wind playbooks
-  const getPlaybookTextColor = (title: string) => {
-    if (title.toLowerCase().includes('wind')) {
-      return 'group-hover:text-blue-600';
-    }
-    return 'group-hover:text-orange-600';
-  };
-
-  // Helper function to get badge color for wind playbooks
-  const getPlaybookBadgeColor = (title: string) => {
-    if (title.toLowerCase().includes('wind')) {
-      return 'bg-blue-50 text-blue-700 border-blue-200';
-    }
-    return 'bg-orange-50 text-orange-700 border-orange-200';
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-blue-50">
       {/* Header */}
@@ -231,23 +186,6 @@ const Home = () => {
                   </div>
                 )}
               </div>
-              {user && (
-                <div className="flex items-center space-x-2">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <User className="h-4 w-4" />
-                    <span>{user.email}</span>
-                  </div>
-                  <Button
-                    onClick={signOut}
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center space-x-1 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -370,16 +308,16 @@ const Home = () => {
                 {filteredPlaybooks.map((playbook) => (
                   <Card 
                     key={playbook.id}
-                    className={`cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm ${getPlaybookBorderColor(playbook.title)} group`}
+                    className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white/90 backdrop-blur-sm border-orange-200 hover:border-orange-300 group"
                   >
-                    <Link to={getPlaybookLink(playbook)}>
+                    <Link to={`/playbook/${playbook.id}`}>
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className={`text-lg ${getPlaybookTextColor(playbook.title)} transition-colors`}>
+                          <CardTitle className="text-lg group-hover:text-orange-600 transition-colors">
                             {playbook.title}
                           </CardTitle>
                           <div className="flex gap-2">
-                            <Badge variant="outline" className={getPlaybookBadgeColor(playbook.title)}>
+                            <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
                               {playbook.phases ? Object.keys(playbook.phases).length : 0} phases
                             </Badge>
                           </div>
@@ -391,8 +329,8 @@ const Home = () => {
                       <CardContent>
                         <div className="flex items-center justify-between text-sm text-gray-600">
                           <span>ID: {playbook.name}</span>
-                          <span className={`flex items-center gap-1 ${getPlaybookTextColor(playbook.title)} transition-colors`}>
-                            {getPlaybookIcon(playbook.title)}
+                          <span className="flex items-center gap-1 group-hover:text-orange-600 transition-colors">
+                            <FileText className="h-3 w-3" />
                             Interactive
                             <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                           </span>

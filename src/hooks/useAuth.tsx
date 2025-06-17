@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { forceSignOut } from "@/utils/authUtils";
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -32,12 +31,15 @@ export const useAuth = () => {
 
   const signOut = async () => {
     try {
-      console.log('Initiating sign out...');
-      await forceSignOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Error signing out:", error);
+      } else {
+        // Force page reload for clean state
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Error during sign out:", error);
-      // Force reload as fallback
-      window.location.reload();
     }
   };
 

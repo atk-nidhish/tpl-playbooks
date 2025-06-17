@@ -12,7 +12,6 @@ import CommissioningDashboard from "./pages/CommissioningDashboard";
 import WindCPDashboard from "./pages/WindCPDashboard";
 import PlanningSolarDashboard from "./pages/PlanningSolarDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
-import AuthPage from "./pages/AuthPage";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +30,6 @@ const App = () => (
               </ProtectedRoute>
             } 
           />
-          <Route path="/auth" element={<AuthPage />} />
           <Route path="/legacy" element={<Index />} />
           <Route 
             path="/commissioning" 

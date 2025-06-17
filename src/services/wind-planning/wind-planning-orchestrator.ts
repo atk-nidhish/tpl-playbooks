@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { section1_1Data } from './section-1-1-data';
 import { section1_2Data } from './section-1-2-data';
@@ -5,14 +6,7 @@ import { section1_3Data } from './section-1-3-data';
 import { section1_4Data } from './section-1-4-data';
 import { section1_5Data } from './section-1-5-data';
 import { section1_6Data } from './section-1-6-data';
-import { section1_7Data } from './section-1-7-data';
-import { section1_8Data } from './section-1-8-data';
-import { section1_9Data } from './section-1-9-data';
 import { section2_1Data } from './section-2-1-data';
-import { chapter3Data } from './chapter-3-data';
-import { chapter4Data } from './chapter-4-data';
-import { chapter5Data } from './chapter-5-data';
-import { chapter6Data } from './chapter-6-data';
 
 export const createWindPlanningPlaybook = async (): Promise<string> => {
   console.log('Creating Wind Planning Playbook...');
@@ -76,74 +70,33 @@ export const createWindPlanningPlaybook = async (): Promise<string> => {
     title: 'Wind - Planning',
     description: 'Wind Project Planning Playbook',
     phases: {
-      'chapter-1': {
-        name: 'Chapter 1 - Plan Integration Management',
-        description: 'Comprehensive plan integration management for wind projects'
-      },
       'section-1-1': {
         name: 'Section 1.1 - Project Plan Preparation During Bidding',
-        description: 'This section covers Planning for project phases from RFP participation to conceptualization up to execution & delivery',
-        parent: 'chapter-1'
+        description: 'This section covers Planning for project phases from RFP participation to conceptualization up to execution & delivery'
       },
       'section-1-2': {
         name: 'Section 1.2 - Project Schedule and Execution Approach',
-        description: 'This section covers project schedule development and execution approach planning',
-        parent: 'chapter-1'
+        description: 'This section covers project schedule development and execution approach planning'
       },
       'section-1-3': {
         name: 'Section 1.3 - Land Finalization Plan',
-        description: 'Plan to be created only if Land Parcel hasn\'t already been leased yet',
-        parent: 'chapter-1'
+        description: 'Plan to be created only if Land Parcel hasn\'t already been leased yet'
       },
       'section-1-4': {
         name: 'Section 1.4 - Engineering Plan',
-        description: 'This section covers engineering execution planning and quality requirements',
-        parent: 'chapter-1'
+        description: 'This section covers engineering execution planning and quality requirements'
       },
       'section-1-5': {
         name: 'Section 1.5 - Procurement Plan',
-        description: 'This section covers procurement planning and package strategy development',
-        parent: 'chapter-1'
+        description: 'This section covers procurement planning and package strategy development'
       },
       'section-1-6': {
         name: 'Section 1.6 - Construction Plan',
-        description: 'This section covers construction management planning and execution approach',
-        parent: 'chapter-1'
+        description: 'This section covers construction management planning and execution approach'
       },
-      'section-1-7': {
-        name: 'Section 1.7 - Commissioning Plan',
-        description: 'This section covers commissioning planning and pre-commissioning activities',
-        parent: 'chapter-1'
-      },
-      'section-1-8': {
-        name: 'Section 1.8 - Plan Integration',
-        description: 'This section covers integration of all detailed plans into a comprehensive project schedule',
-        parent: 'chapter-1'
-      },
-      'section-1-9': {
-        name: 'Section 1.9 - Plan Update',
-        description: 'This section covers plan update and schedule management throughout the project lifecycle',
-        parent: 'chapter-1'
-      },
-      'chapter-2': {
-        name: 'Chapter 2 - Scope Management Plan',
-        description: 'This chapter covers the development of Work Breakdown Structure (WBS) and project scope management'
-      },
-      'chapter-3': {
-        name: 'Chapter 3 - Cost Management Plan',
-        description: 'This chapter covers cost breakdown structure development and project cost management'
-      },
-      'chapter-4': {
-        name: 'Chapter 4 - Quality Management Plan',
-        description: 'This chapter covers quality management planning and control processes'
-      },
-      'chapter-5': {
-        name: 'Chapter 5 - Statutory Approval Management Plan',
-        description: 'This chapter covers statutory approval management and regulatory compliance'
-      },
-      'chapter-6': {
-        name: 'Chapter 6 - Risk Management Plan',
-        description: 'Placeholder for risk management planning content'
+      'section-2-1': {
+        name: 'Section 2.1 - Scope Management Plan',
+        description: 'This section covers the development of Work Breakdown Structure (WBS) and project scope management'
       }
     }
   };
@@ -203,50 +156,10 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-6'
     })),
-    ...section1_7Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'section-1-7'
-    })),
-    ...section1_8Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'section-1-8'
-    })),
-    ...section1_9Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'section-1-9'
-    })),
-    // Map section 2.1 data to chapter-2
     ...section2_1Data.processSteps.map(step => ({
       ...step,
       playbook_id: playbookId,
-      phase_id: 'section-2-1' // Keep original phase_id for data retrieval but it will be accessed via chapter-2
-    })),
-    // Map chapter 3 data
-    ...chapter3Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'chapter-3'
-    })),
-    // Map chapter 4 data
-    ...chapter4Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'chapter-4'
-    })),
-    // Map chapter 5 data
-    ...chapter5Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'chapter-5'
-    })),
-    // Map chapter 6 data
-    ...chapter6Data.processSteps.map(step => ({
-      ...step,
-      playbook_id: playbookId,
-      phase_id: 'chapter-6'
+      phase_id: 'section-2-1'
     }))
   ];
 
@@ -282,50 +195,10 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-6'
     })),
-    ...section1_7Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'section-1-7'
-    })),
-    ...section1_8Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'section-1-8'
-    })),
-    ...section1_9Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'section-1-9'
-    })),
-    // Map section 2.1 data to chapter-2
     ...section2_1Data.raciMatrix.map(raci => ({
       ...raci,
       playbook_id: playbookId,
-      phase_id: 'section-2-1' // Keep original phase_id for data retrieval
-    })),
-    // Map chapter 3 data
-    ...chapter3Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'chapter-3'
-    })),
-    // Map chapter 4 data
-    ...chapter4Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'chapter-4'
-    })),
-    // Map chapter 5 data
-    ...chapter5Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'chapter-5'
-    })),
-    // Map chapter 6 data
-    ...chapter6Data.raciMatrix.map(raci => ({
-      ...raci,
-      playbook_id: playbookId,
-      phase_id: 'chapter-6'
+      phase_id: 'section-2-1'
     }))
   ];
 
@@ -361,50 +234,10 @@ const insertPlaybookData = async (playbookId: string) => {
       playbook_id: playbookId,
       phase_id: 'section-1-6'
     })),
-    ...section1_7Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'section-1-7'
-    })),
-    ...section1_8Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'section-1-8'
-    })),
-    ...section1_9Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'section-1-9'
-    })),
-    // Map section 2.1 data to chapter-2
     ...section2_1Data.processMap.map(map => ({
       ...map,
       playbook_id: playbookId,
-      phase_id: 'section-2-1' // Keep original phase_id for data retrieval
-    })),
-    // Map chapter 3 data
-    ...chapter3Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'chapter-3'
-    })),
-    // Map chapter 4 data
-    ...chapter4Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'chapter-4'
-    })),
-    // Map chapter 5 data
-    ...chapter5Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'chapter-5'
-    })),
-    // Map chapter 6 data
-    ...chapter6Data.processMap.map(map => ({
-      ...map,
-      playbook_id: playbookId,
-      phase_id: 'chapter-6'
+      phase_id: 'section-2-1'
     }))
   ];
 
