@@ -57,28 +57,6 @@ const Dashboard = () => {
             </div>
             
             <div className="space-y-4">
-              {/* Wind - C&P Playbook */}
-              <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-blue-600 p-2 rounded-lg">
-                        <Wind className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Wind - C&P</CardTitle>
-                  <CardDescription className="text-gray-600">Contracting & Procurement</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Link to="/wind-cp">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Access Playbook
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
 
               {/* Planning - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
@@ -119,6 +97,29 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/wind-planning">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Access Playbook
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+                {/* Wind - C&P Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Wind - C&P</CardTitle>
+                  <CardDescription className="text-gray-600">Contracting & Procurement</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Link to="/wind-cp">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                       Access Playbook
                     </Button>
