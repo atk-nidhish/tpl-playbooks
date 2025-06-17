@@ -44,7 +44,123 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showUserForm, setShowUserForm] = useState(true);
 
-  const certificationQuestions: CertificationQuestion[] = [
+  // Determine if this is Wind Planning playbook to show correct questions
+  const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
+
+  const windPlanningQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for appointing the Bid Planner (BP) and sharing the Bid Summary for Final L1 Plan development?",
+      options: [
+        "Bid Planner",
+        "Bid Incharge",
+        "Land Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 2,
+      question: "What document serves as the input for developing the Preliminary L1 Plan?",
+      options: [
+        "Final L1 Plan",
+        "Wind Project Master Plan",
+        "Preliminary Feasibility Report"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 3,
+      question: "Who is accountable for analyzing the bid summary and developing delivery milestones and timeline for the project?",
+      options: [
+        "Land Manager",
+        "Bid Planner",
+        "Chief Projects"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 4,
+      question: "Who is responsible for sharing the Final L1 Plan with functional leads for inputs?",
+      options: [
+        "Chief Projects",
+        "Bid Planner",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 5,
+      question: "What document is used as an input for the development of the Project Schedule (PS)?",
+      options: [
+        "Preliminary L1 Plan",
+        "Final L1 Plan",
+        "Land Finalization Plan"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 6,
+      question: "Who is accountable for preparing the draft Project Schedule (PS) by leveraging the Wind Project Master Plan?",
+      options: [
+        "Chief Projects",
+        "Project Planner",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 7,
+      question: "What is the output of the process step where the Project Manager develops the Project Execution Approach (PEA)?",
+      options: [
+        "Project Schedule",
+        "Scope Matrix",
+        "Preliminary L1 Plan"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for preparing the Basic Engineering Scope (BES)?",
+      options: [
+        "Chief Engineering",
+        "Project Engineering Managers (PEMs)",
+        "Quality Managers"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 9,
+      question: "What document serves as the input for the development of the Engineering Execution Plans (EEPs)?",
+      options: [
+        "Project Schedule",
+        "Basic Engineering Scope",
+        "Final L1 Plan"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    },
+    {
+      id: 10,
+      question: "Who is accountable for sharing the Project Schedule (PS) and Project Execution Approach (PEA) with the engineering team?",
+      options: [
+        "Chief Engineering",
+        "Project Planner",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
+    }
+  ];
+
+  const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
       question: "Who is responsible for taking physical control of land covering a minimum of 20 WTG sites and PSS?",
@@ -156,6 +272,9 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
       chapter: "Wind C&P Process"
     }
   ];
+
+  // Use Wind Planning questions if this is the Wind Planning playbook, otherwise use default questions
+  const certificationQuestions = isWindPlanning ? windPlanningQuestions : defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
     setUserInfo(submittedUserInfo);
@@ -306,6 +425,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                 currentQuestion={currentQuestion}
                 totalQuestions={certificationQuestions.length}
                 chapter={certificationQuestions[currentQuestion].chapter}
+                playbookType={playbookName}
               />
 
               <QuizQuestion
@@ -313,6 +433,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                 options={certificationQuestions[currentQuestion].options}
                 selectedAnswer={selectedAnswers[currentQuestion]}
                 onAnswerSelect={handleAnswerSelect}
+                playbookType={playbookName}
               />
 
               <QuizNavigation
@@ -321,6 +442,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                 hasSelectedAnswer={selectedAnswers[currentQuestion] !== undefined}
                 onPrevious={handlePreviousQuestion}
                 onNext={handleNextQuestion}
+                playbookType={playbookName}
               />
             </div>
           ) : (
@@ -331,6 +453,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
               playbookName={playbookName}
               playbookId={playbookId}
               onResetQuiz={resetQuiz}
+              playbookType={playbookName}
             />
           )}
         </CardContent>
