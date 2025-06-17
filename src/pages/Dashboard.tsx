@@ -130,17 +130,17 @@ const Dashboard = () => {
           </div>
 
           {/* Certifications Section */}
-          {/* <div>
-            <div className="flex items-center space-x-2 mb-6">
+          <div>
+            {/* <div className="flex items-center space-x-2 mb-6">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">🏆</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900">Certifications</h3>
             </div> */}
             
-            {/* <div className="space-y-4">
+            <div className="space-y-4">
               {/* First Certification */}
-              {/* <Card className="bg-white border border-gray-200">
+               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="bg-green-600 p-2 rounded-lg">
@@ -160,7 +160,7 @@ const Dashboard = () => {
                     Download Certificate
                   </Button>
                 </CardContent>
-              </Card> */}
+              </Card>
 
               {/* Second Certification */}
               <Card className="bg-white border border-gray-200">
