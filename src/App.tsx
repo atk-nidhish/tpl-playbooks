@@ -32,14 +32,14 @@ const App = () => (
             } 
           />
           <Route path="/legacy" element={<Index />} />
-          <Route 
+          {/* <Route 
             path="/commissioning" 
             element={
               <ProtectedRoute>
                 <CommissioningDashboard />
               </ProtectedRoute>
             } 
-          />
+          /> */}
           <Route 
             path="/wind-cp" 
             element={
