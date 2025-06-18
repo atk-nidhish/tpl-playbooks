@@ -24,14 +24,12 @@ interface ProcessStep {
 
 interface RACIMatrixProps {
   playbookId: string;
-  activePhase?: string;
-  searchQuery?: string;
+  activePhase: string;
+  searchQuery: string;
   onNavigateToQuiz?: () => void;
-  chapters?: any[];
-  isLoading?: boolean;
 }
 
-export const RACIMatrix = ({ playbookId, activePhase, searchQuery = "", onNavigateToQuiz, chapters, isLoading }: RACIMatrixProps) => {
+export const RACIMatrix = ({ playbookId, activePhase, searchQuery, onNavigateToQuiz }: RACIMatrixProps) => {
   const [raciData, setRaciData] = useState<RACIData[]>([]);
   const [processSteps, setProcessSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +127,7 @@ export const RACIMatrix = ({ playbookId, activePhase, searchQuery = "", onNaviga
     return stepId;
   };
 
-  if (loading || isLoading) {
+  if (loading) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-600">Loading RACI matrix...</p>
