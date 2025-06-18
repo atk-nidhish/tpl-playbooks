@@ -70,8 +70,8 @@ const Dashboard = () => {
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Engineering - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Planning</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/planning-solar">
@@ -93,8 +93,8 @@ const Dashboard = () => {
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Contracting & Procurement - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Contracting & Procurement</CardDescription>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Engineering - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/planning-solar">
