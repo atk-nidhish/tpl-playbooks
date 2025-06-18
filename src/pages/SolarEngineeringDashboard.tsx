@@ -1,16 +1,34 @@
 
+
+
+
+
+// import { Badge } from "@/components/ui/badge";
+// import { FileText, ArrowLeft, BookOpen, Grid3X3, Users, Award } from "lucide-react";
+// import { ModernTabs, TabsContent } from "@/components/ModernTabs";
+// import { ProcessSteps } from "@/components/ProcessSteps";
+// import { RACIMatrix } from "@/components/RACIMatrix";
+// import { ProcessMap } from "@/components/ProcessMap";
+// import { PlaybookCertification } from "@/components/PlaybookCertification";
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { FileText, ArrowLeft, BookOpen, Grid3X3, Users, Award } from "lucide-react";
-import { ModernTabs, TabsContent } from "@/components/ModernTabs";
+import { Input } from "@/components/ui/input";
+import { TabsContent } from "@/components/ui/tabs";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
-import { ProcessMap } from "@/components/ProcessMap";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
+import { Leaderboard } from "@/components/Leaderboard";
+import { ModernNavigation } from "@/components/ModernNavigation";
+import { ModernTabs } from "@/components/ModernTabs";
 import { seedSolarEngineeringData } from "@/services/solar-engineering-playbook-seeder";
+import { Home, Map, Zap } from "lucide-react";
+import { toast } from "sonner";
+import { Link } from "react-router-dom";
+
+
+
 
 const SolarEngineeringDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
