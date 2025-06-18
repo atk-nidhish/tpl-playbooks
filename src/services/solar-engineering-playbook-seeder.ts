@@ -14,118 +14,162 @@ export const seedSolarEngineeringData = async () => {
     await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID);
     await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID);
 
-    // Process steps for Chapter 1 - Basic Engineering Design Preparation (from images)
+    // Process steps for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
     const processStepsChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "S",
-        activity: "Chief Business Development notifies the Solar Engineering Head (SEH) about bids won",
+        activity: "Bid Incharge shares Bid Summary with Solar Engineering Head (SEH) and requests them to develop Basic Engineering Design, which is to be included in the bid submission",
         inputs: [],
         outputs: [],
         timeline: "-",
-        responsible: "BD Team",
-        comments: "Initial notification step to start the basic engineering design preparation process"
+        responsible: "Bid Incharge",
+        comments: "Initial step to start basic engineering design preparation process"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P1",
-        activity: "SEH appoints Project Engineering Manager(s) (PEMs) for the project - SEH may appoint separate PEMs for civil, electrical, and plant design engineering",
+        activity: "SEH assigns the Engineering Manager (EM) to develop Basic Engineering Design. SEH shares the Bid Summary with the EM",
         inputs: [],
         outputs: [],
         timeline: "-",
         responsible: "SEH",
-        comments: "Appointment of dedicated project engineering managers for different disciplines"
+        comments: "Assignment of Engineering Manager for basic engineering design development"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P2",
-        activity: "SEH designates a Lead PEM to facilitate cross-functional coordination and external communication. If multiple PEMs are appointed, one is designated as the Lead PEM. If only one PEM is appointed, they automatically assume the role of Lead PEM",
-        inputs: [],
-        outputs: [],
-        timeline: "-",
-        responsible: "SEH",
-        comments: "Designation of Lead PEM for coordination and communication"
+        activity: "EM analyzes the Bid Summary to define the basic engineering design requirements based on – shortlisted land parcel specifications, target solar energy output, and feasibility of grid interconnection",
+        inputs: ["Bid Summary"],
+        outputs: ["Basic Engineering Design Requirement"],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Analysis of bid summary to define engineering requirements"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P3",
-        activity: "Lead PEM collects project details from BD Team",
-        inputs: ["Project bid documents", "Technical specifications", "Site information"],
-        outputs: ["Project details compilation"],
-        timeline: "0.5 days",
-        responsible: "Lead PEM",
-        comments: "Collection of all project-related documentation and information"
+        activity: "EM develops the bid-specific Basic Engineering Design based on the requirements defined in P2 and leverage the Basic Engineering Design Library",
+        inputs: ["Basic Engineering Design Library", "Basic Engineering Design Requirement"],
+        outputs: ["Basic Engineering Design"],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Development of bid-specific basic engineering design using library resources"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P4",
-        activity: "Lead PEM reviews project details and creates Basic Engineering Design Requirements",
-        inputs: ["Project details compilation"],
-        outputs: ["Basic Engineering Design Requirements"],
-        timeline: "1 day",
-        responsible: "Lead PEM",
-        comments: "Analysis of project requirements and creation of engineering design specifications"
+        activity: "EM defines the Guaranteed Technical Particulars (GTP) based on the Basic Engineering Design for the project",
+        inputs: ["Basic Engineering Design"],
+        outputs: ["Guaranteed Technical Particulars (GTP)"],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Definition of guaranteed technical specifications based on engineering design"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P5",
-        activity: "Lead PEM shares Basic Engineering Design Requirements with PEMs for review and feedback",
-        inputs: ["Basic Engineering Design Requirements"],
-        outputs: ["Reviewed requirements with feedback"],
-        timeline: "0.5 days",
-        responsible: "Lead PEM",
-        comments: "Collaborative review to ensure completeness and accuracy"
+        activity: "EM develops preliminary Bill of Quantities (BoQ) and Bill of Services (BoS) leveraging GTP and Basic Engineering Design for the project",
+        inputs: ["Basic Engineering Design", "GTP"],
+        outputs: ["Preliminary BoQ", "Preliminary BoS"],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Development of preliminary quantities and services based on design and GTP"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P6",
-        activity: "Lead PEM finalizes Basic Engineering Design Requirements incorporating feedback",
-        inputs: ["Reviewed requirements with feedback"],
-        outputs: ["Final Basic Engineering Design Requirements"],
-        timeline: "0.5 days",
-        responsible: "Lead PEM",
-        comments: "Incorporation of feedback and finalization of requirements"
+        activity: "EM seeks review and approval from SEH on the following outputs – Basic Engineering Design, GTP, Preliminary BoQ and BoS",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Review and approval request for all outputs from SEH"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "P7",
-        activity: "Lead PEM creates preliminary project schedule and milestone plan",
-        inputs: ["Final Basic Engineering Design Requirements"],
-        outputs: ["Preliminary project schedule", "Milestone plan"],
-        timeline: "1 day",
-        responsible: "Lead PEM",
-        comments: "Development of initial project timeline and key milestones"
+        activity: "SEH reviews the outputs (Basic Engineering Design, GTP and Preliminary BoQ and BoS) – If modifications are required, SEH recommends changes. If modifications are not required, SEH grants approval",
+        inputs: ["Basic Engineering Design", "GTP", "Preliminary BoQ", "Preliminary BoS"],
+        outputs: ["Basic Engineering Modifications"],
+        timeline: "0.5",
+        responsible: "SEH",
+        comments: "Review of outputs with conditional approval or modification recommendations"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.1",
+        step_id: "P8",
+        activity: "If SEH recommends any modifications to the outputs shared, EM incorporates those and reshares the outputs for approval",
+        inputs: ["Basic Engineering Modifications"],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "EM",
+        comments: "Incorporation of recommended modifications if any"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.1",
+        step_id: "P9",
+        activity: "SEH seeks further review and approval from MD on the outputs (Basic Engineering Design, GTP and Preliminary BoQ and BoS)",
+        inputs: [],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "SEH",
+        comments: "Escalation to MD for final review and approval"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.1",
+        step_id: "P10",
+        activity: "If MD recommends any modifications, SEH notifies the same to EM, who incorporates those and shares the finalized outputs with SEH",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "SEH",
+        comments: "Handling MD modifications through EM if required"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.1",
+        step_id: "P11",
+        activity: "SEH shares the Basic Engineering Design, GTP, Preliminary BoQ, and BoS with Bid Incharge for bid submission. SEH shares the preliminary BoQ and BoS with the Procurement Lead for procurement cost estimation, for the commercial bid",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "SEH",
+        comments: "Final sharing of outputs with Bid Incharge and Procurement Lead"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.1",
         step_id: "E",
-        activity: "Lead PEM submits Basic Engineering Design Requirements and project schedule to SEH for approval",
-        inputs: ["Final Basic Engineering Design Requirements", "Preliminary project schedule"],
-        outputs: ["Approved design requirements and schedule"],
-        timeline: "Total: 3.5 days",
-        responsible: "Lead PEM",
-        comments: "Final approval from SEH to proceed with detailed engineering"
+        activity: "SEH adds the finalized Basic Engineering Design Document to the Basic Engineering Design library for future reference",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – approx. 4.5 weeks",
+        responsible: "SEH",
+        comments: "Final archiving of design documents in library for future use"
       }
     ];
 
-    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from images)
+    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
     const raciMatrixChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "S",
-        task: "Notify the Solar Engineering Head when a bid is won",
-        responsible: "BD Team",
-        accountable: "BD Team",
+        task: "Share Bid Summary with Solar Engineering Head (SEH) & request for the development of Basic Engineering Design",
+        responsible: "Bid Incharge",
+        accountable: "Bid Incharge",
         consulted: "",
         informed: "SEH"
       },
@@ -133,93 +177,133 @@ export const seedSolarEngineeringData = async () => {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P1",
-        task: "Appoint Project Engineering Manager(s) to oversee project engineering activities",
+        task: "Appoint Engineering Manager (EM) for the preparation of Basic Engineering Design & share Bid Summary",
         responsible: "SEH",
         accountable: "SEH",
         consulted: "",
-        informed: "PEM(s)"
+        informed: "EM"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P2",
-        task: "Designate a Lead PEM for cross-functional coordination and external communication",
-        responsible: "SEH",
-        accountable: "SEH",
+        task: "Analyze Bid Summary to define basic engineering design requirements",
+        responsible: "EM",
+        accountable: "EM",
         consulted: "",
-        informed: "Lead PEM"
+        informed: ""
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P3",
-        task: "Collect project details from BD Team",
-        responsible: "Lead PEM",
-        accountable: "Lead PEM",
-        consulted: "BD Team",
+        task: "Develop Basic Engineering Design by leveraging Basic Engineering Design Library",
+        responsible: "EM",
+        accountable: "EM",
+        consulted: "",
         informed: "SEH"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P4",
-        task: "Review project details and create Basic Engineering Design Requirements",
-        responsible: "Lead PEM",
-        accountable: "Lead PEM",
+        task: "Define Guaranteed Technical Particulars (GTP)",
+        responsible: "EM",
+        accountable: "",
         consulted: "",
-        informed: "SEH, PEMs"
+        informed: "SEH"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P5",
-        task: "Review Basic Engineering Design Requirements and provide feedback",
-        responsible: "Lead PEM",
-        accountable: "Lead PEM",
-        consulted: "PEMs",
+        task: "Draft preliminary Bill of Quantities (BoQ) & Bill of Services (BoS)",
+        responsible: "EM",
+        accountable: "",
+        consulted: "",
         informed: "SEH"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
         step_id: "P6",
-        task: "Finalize Basic Engineering Design Requirements incorporating feedback",
-        responsible: "Lead PEM",
-        accountable: "Lead PEM",
+        task: "Submit the prepared outputs (Basic Engineering Design, GTP and Preliminary BoQ and BoS) to SEH for review and approval",
+        responsible: "EM",
+        accountable: "EM",
         consulted: "",
-        informed: "SEH, PEMs"
-      },
-      {
-        playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
-        step_id: "P7",
-        task: "Create preliminary project schedule and milestone plan",
-        responsible: "Lead PEM",
-        accountable: "Lead PEM",
-        consulted: "PEMs",
         informed: "SEH"
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.2",
-        step_id: "E",
-        task: "Submit Basic Engineering Design Requirements and project schedule for approval",
-        responsible: "Lead PEM",
+        step_id: "P7",
+        task: "Review the outputs received and recommend modifications or approve",
+        responsible: "SEH",
         accountable: "SEH",
         consulted: "",
-        informed: "PEMs"
+        informed: "EM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.2",
+        step_id: "P8",
+        task: "Implement the recommended modifications and reshare the revised outputs for approval",
+        responsible: "EM",
+        accountable: "EM",
+        consulted: "",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.2",
+        step_id: "P9",
+        task: "Seek further review and approval from MD on the outputs",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "MD",
+        informed: "MD"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.2",
+        step_id: "P10",
+        task: "If MD recommends any modifications, notify the required changes to EM. Incorporate the changes recommended by MD and share the finalized outputs with SEH",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: "EM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.2",
+        step_id: "P11",
+        task: "Share the final outputs with Bid Incharge for submission. Share preliminary BoQ & BoS with Procurement Lead for procurement cost estimation",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: "Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.2",
+        step_id: "E",
+        task: "Archive final design documents in Engineering Library",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: ""
       }
     ];
 
-    // Process map for Chapter 1 - Basic Engineering Design Preparation (from images)
+    // Process map for Chapter 1 - Basic Engineering Design Preparation (using the process map image)
     const processMapChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.3",
         step_id: "Start",
         step_type: "start",
-        title: "Begin Basic Engineering Design Preparation",
-        description: "BD Team notifies SEH about bid win to start basic engineering design preparation",
+        title: "Bid Summary Sharing",
+        description: "Bid Incharge shares Bid Summary with SEH and requests Basic Engineering Design development",
         order_index: 1
       },
       {
@@ -227,8 +311,8 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P1",
         step_type: "process",
-        title: "Appoint Project Engineering Managers",
-        description: "SEH appoints PEM(s) for project engineering activities",
+        title: "Assign Engineering Manager",
+        description: "SEH assigns Engineering Manager and shares Bid Summary",
         order_index: 2
       },
       {
@@ -236,8 +320,8 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P2",
         step_type: "process",
-        title: "Designate Lead PEM",
-        description: "SEH designates Lead PEM for coordination and communication",
+        title: "Analyze Requirements",
+        description: "EM analyzes Bid Summary to define basic engineering design requirements",
         order_index: 3
       },
       {
@@ -245,8 +329,8 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P3",
         step_type: "process",
-        title: "Collect Project Details",
-        description: "Lead PEM collects project details from BD Team",
+        title: "Develop Basic Design",
+        description: "EM develops bid-specific Basic Engineering Design using library",
         order_index: 4
       },
       {
@@ -254,8 +338,8 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P4",
         step_type: "process",
-        title: "Create Design Requirements",
-        description: "Lead PEM reviews project details and creates Basic Engineering Design Requirements",
+        title: "Define GTP",
+        description: "EM defines Guaranteed Technical Particulars based on Basic Engineering Design",
         order_index: 5
       },
       {
@@ -263,8 +347,8 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P5",
         step_type: "process",
-        title: "Review Requirements",
-        description: "Lead PEM shares requirements with PEMs for review and feedback",
+        title: "Develop BoQ & BoS",
+        description: "EM develops preliminary Bill of Quantities and Bill of Services",
         order_index: 6
       },
       {
@@ -272,27 +356,63 @@ export const seedSolarEngineeringData = async () => {
         phase_id: "section-1.3",
         step_id: "P6",
         step_type: "process",
-        title: "Finalize Requirements",
-        description: "Lead PEM finalizes requirements incorporating feedback",
+        title: "Submit for Review",
+        description: "EM submits outputs to SEH for review and approval",
         order_index: 7
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.3",
         step_id: "P7",
-        step_type: "process",
-        title: "Create Project Schedule",
-        description: "Lead PEM creates preliminary project schedule and milestone plan",
+        step_type: "decision",
+        title: "SEH Review",
+        description: "SEH reviews outputs and recommends changes or grants approval",
         order_index: 8
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.3",
+        step_id: "P8",
+        step_type: "process",
+        title: "Incorporate Changes",
+        description: "EM incorporates recommended modifications if any",
+        order_index: 9
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.3",
+        step_id: "P9",
+        step_type: "process",
+        title: "MD Review Request",
+        description: "SEH seeks further review and approval from MD",
+        order_index: 10
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.3",
+        step_id: "P10",
+        step_type: "process",
+        title: "Handle MD Feedback",
+        description: "Process MD modifications through EM if required",
+        order_index: 11
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-1.3",
+        step_id: "P11",
+        step_type: "process",
+        title: "Final Distribution",
+        description: "SEH shares final outputs with Bid Incharge and Procurement Lead",
+        order_index: 12
       },
       {
         playbook_id: PLAYBOOK_ID,
         phase_id: "section-1.3",
         step_id: "End",
         step_type: "end",
-        title: "Submit for Approval",
-        description: "Lead PEM submits requirements and schedule to SEH for approval",
-        order_index: 9
+        title: "Archive Documents",
+        description: "SEH archives finalized Basic Engineering Design in library",
+        order_index: 13
       }
     ];
 
