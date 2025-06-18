@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,17 +12,39 @@ interface TabData {
 }
 
 interface ModernTabsProps {
-  tabs: TabData[];
+  tabs?: TabData[];
   defaultTab?: string;
   activePhase?: string;
   onPhaseChange?: (phase: string) => void;
   phases?: any[];
+  children?: React.ReactNode;
+  value?: string;
+  onValueChange?: (value: string) => void;
 }
 
-export const ModernTabs = ({ tabs, defaultTab, activePhase, onPhaseChange, phases }: ModernTabsProps) => {
+export const ModernTabs = ({ 
+  tabs, 
+  defaultTab, 
+  activePhase, 
+  onPhaseChange, 
+  phases,
+  children,
+  value,
+  onValueChange
+}: ModernTabsProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTab, setSelectedTab] = useState(defaultTab || tabs[0]?.id || "");
+  const [selectedTab, setSelectedTab] = useState(defaultTab || tabs?.[0]?.id || "");
 
+  // If children are provided, use the wrapper pattern
+  if (children) {
+    return (
+      <Tabs value={value || selectedTab} onValueChange={onValueChange || setSelectedTab}>
+        {children}
+      </Tabs>
+    );
+  }
+
+  // Otherwise, use the original tabs pattern
   return (
     <div className="space-y-6">
       {/* Phase Selection */}
@@ -74,7 +95,7 @@ export const ModernTabs = ({ tabs, defaultTab, activePhase, onPhaseChange, phase
       {/* Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
         <TabsList className="bg-white/90 backdrop-blur-sm border border-orange-200 p-1">
-          {tabs.map((tab) => (
+          {tabs?.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
@@ -86,7 +107,7 @@ export const ModernTabs = ({ tabs, defaultTab, activePhase, onPhaseChange, phase
           ))}
         </TabsList>
 
-        {tabs.map((tab) => (
+        {tabs?.map((tab) => (
           <TabsContent key={tab.id} value={tab.id} className="space-y-6">
             {tab.content}
           </TabsContent>
@@ -95,3 +116,6 @@ export const ModernTabs = ({ tabs, defaultTab, activePhase, onPhaseChange, phase
     </div>
   );
 };
+
+// Export TabsContent for use in other components
+export { TabsContent };
