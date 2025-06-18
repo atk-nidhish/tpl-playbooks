@@ -39,9 +39,6 @@ const Dashboard = () => {
   const handleSolarCommissioningClick = () => {
     window.open('/solar-commissioning.pdf', '_blank');
   };
-
-
-
   
   // Wind Click Handling
   const handleWindPlanningClick = () => {
@@ -82,11 +79,6 @@ const Dashboard = () => {
               <h1 className="text-2xl font-semibold text-gray-900">Playbook Portal</h1>
             </div>
             <div className="flex items-center space-x-4">
-              {/* <span className="text-gray-600">👤 A</span>
-              <span className="text-gray-600">📊 X</span> */}
-              {/* <Button variant="ghost" className="text-gray-600">
-                ↗️ Sign Out
-              </Button> */}
             </div>
           </div>
         </div>
