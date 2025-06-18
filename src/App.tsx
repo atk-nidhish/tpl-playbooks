@@ -13,10 +13,6 @@ import WindCPDashboard from "./pages/WindCPDashboard";
 import PlanningSolarDashboard from "./pages/PlanningSolarDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
 import SolarEngineeringDashboard from "./pages/SolarEngineeringDashboard";
-import SolarPredevelopmentDashboard from "./pages/SolarPredevelopmentDashboard";
-import SolarContractingDashboard from "./pages/SolarContractingDashboard";
-import SolarConstructionDashboard from "./pages/SolarConstructionDashboard";
-import SolarCommissioningDashboard from "./pages/SolarCommissioningDashboard";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +32,14 @@ const App = () => (
             } 
           />
           <Route path="/legacy" element={<Index />} />
+          {/* <Route 
+            path="/commissioning" 
+            element={
+              <ProtectedRoute>
+                <CommissioningDashboard />
+              </ProtectedRoute>
+            } 
+          /> */}
           <Route 
             path="/wind-cp" 
             element={
@@ -65,38 +69,6 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <SolarEngineeringDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/solar-predevelopment" 
-            element={
-              <ProtectedRoute>
-                <SolarPredevelopmentDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/solar-contracting" 
-            element={
-              <ProtectedRoute>
-                <SolarContractingDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/solar-construction" 
-            element={
-              <ProtectedRoute>
-                <SolarConstructionDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/solar-commissioning" 
-            element={
-              <ProtectedRoute>
-                <SolarCommissioningDashboard />
               </ProtectedRoute>
             } 
           />

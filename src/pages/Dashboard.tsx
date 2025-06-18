@@ -20,52 +20,20 @@ const Dashboard = () => {
   const handleSolarPlanningClick = () => {
     window.open('/solar-planning.pdf', '_blank');
   };  
-  const handleSolarPredevClick = () => {
-    window.open('/solar-predev.pdf', '_blank');
-  };
+  // const handleSolarPredevClick = () => {
+  //   window.open('/solar-predev.pdf', '_blank');
+  // };
   
   const handleSolarEngineeringClick = () => {
     window.open('/solar-engineering.pdf', '_blank');
   };
 
-  const handleSolarContractingClick = () => {
-    window.open('/solar-cp.pdf', '_blank');
-  };  
-  const handleSolarConstructionClick = () => {
-    window.open('/solar-construction.pdf', '_blank');
-  };
-  
-  const handleSolarCommissioningClick = () => {
-    window.open('/solar-commissioning.pdf', '_blank');
-  };
-
-
-  
   // Wind Click Handling
   const handleWindPlanningClick = () => {
     window.open('/wind-planning.pdf', '_blank');
-  };
+  };  
 
-  // Placeholder handlers for new Solar playbooks
-  // const handleSolarPredevelopmentClick = () => {
-  //   // Placeholder - will be implemented later
-  //   console.log('Solar Predevelopment playbook accessed');
-  // };
 
-  // const handleSolarContractingClick = () => {
-  //   // Placeholder - will be implemented later
-  //   console.log('Solar Contracting & Procurement playbook accessed');
-  // };
-
-  // const handleSolarConstructionClick = () => {
-  //   // Placeholder - will be implemented later
-  //   console.log('Solar Construction Management playbook accessed');
-  // };
-
-  // const handleSolarCommissioningClick = () => {
-  //   // Placeholder - will be implemented later
-  //   console.log('Solar Commissioning playbook accessed');
-  // };
 
   
   return (
@@ -81,6 +49,11 @@ const Dashboard = () => {
               <h1 className="text-2xl font-semibold text-gray-900">Playbook Portal</h1>
             </div>
             <div className="flex items-center space-x-4">
+              {/* <span className="text-gray-600">👤 A</span>
+              <span className="text-gray-600">📊 X</span> */}
+              {/* <Button variant="ghost" className="text-gray-600">
+                ↗️ Sign Out
+              </Button> */}
             </div>
           </div>
         </div>
@@ -97,6 +70,8 @@ const Dashboard = () => {
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
+
+          
           {/* Solar Playbooks Section */}
           <div>
             <div className="flex items-center space-x-2 mb-6">
@@ -139,71 +114,8 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Predevelopment - Solar Playbook */}
-              <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Predevelopment</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarPredevClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Link to="/solar-predev" className="flex-1">
-                      <Button 
-                        className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      >
-                        Certification Quiz
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
 
-              
-              {/* Predevelopment - Solar Playbook */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Predevelopment</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarPredevelopmentClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Button 
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Certification Quiz
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card> */}
-              
+    
               {/* Engineering - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
@@ -236,102 +148,6 @@ const Dashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-
-              
-              {/* Contracting & Procurement - Solar Playbook */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Contracting & Procurement - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Contracting & Procurement</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarContractingClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Button 
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Certification Quiz
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card> */}
-
-              {/* Construction Management - Solar Playbook */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Construction Management - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Construction Management</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarConstructionClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Button 
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Certification Quiz
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card> */}
-
-              {/* Commissioning - Solar Playbook */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Commissioning - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Commissioning</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarCommissioningClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Button 
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Certification Quiz
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card> */}
-    
-              
             </div>
           </div>
 
@@ -376,6 +192,32 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
+
+
+              
+            {/* Wind - Planning Playbook */}
+              {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Planning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Link to="/wind-planning">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Access Playbook
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card> */}
+
               {/* Wind - C&P Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
@@ -398,6 +240,51 @@ const Dashboard = () => {
                   </Link>
                 </CardContent>
               </Card>
+              {/* First Certification */}
+               {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="bg-green-600 p-2 rounded-lg">
+                      <span className="text-white text-sm">🏆</span>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
+                  </div>
+                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
+                  <div className="text-sm text-gray-600">
+                    <div>Score: 90% - NP1</div>
+                    <div className="text-green-600">Completed: 6/11/2025</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Certificate
+                  </Button>
+                </CardContent>
+              </Card> */}
+
+              {/* Second Certification */}
+              {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="bg-green-600 p-2 rounded-lg">
+                      <span className="text-white text-sm">🏆</span>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
+                  </div>
+                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
+                  <div className="text-sm text-gray-600">
+                    <div>Score: 100% - NP</div>
+                    <div className="text-green-600">Completed: 6/10/2025</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Certificate
+                  </Button>
+                </CardContent>
+              </Card> */}
             </div> 
           </div>
         </div>
