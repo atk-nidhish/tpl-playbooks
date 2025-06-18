@@ -57,7 +57,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/planning-solar" 
+            path="/solar-planning" 
             element={
               <ProtectedRoute>
                 <PlanningSolarDashboard />
