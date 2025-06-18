@@ -36,6 +36,10 @@ const Dashboard = () => {
     window.open('/solar-construction.pdf', '_blank');
   };
 
+  const handleSolarCommissioningClick = () => {
+    window.open('/solar-commissioning.pdf', '_blank');
+  };
+
 
 
   
@@ -236,13 +240,46 @@ const Dashboard = () => {
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Construction - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Construction</CardDescription>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Construction Management- Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Construction Management</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="flex gap-2">
                     <Button 
                       onClick={handleSolarConstructionClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-engineering" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+               {/* Commissioning - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Commissioning- Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Commissioning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarCommissioningClick}
                       className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
                     >
                       Access Playbook
