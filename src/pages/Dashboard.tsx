@@ -101,12 +101,19 @@ const Dashboard = () => {
                   <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <Button 
-                    onClick={handleSolarEngineeringClick}
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                  >
-                    Access Playbook
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarEngineeringClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Button 
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      Certification Quiz
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
