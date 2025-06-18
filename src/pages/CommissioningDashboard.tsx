@@ -1,8 +1,8 @@
 
-// import { CommissioningDashboard } from "@/components/CommissioningDashboard";
+import { CommissioningDashboard } from "@/components/CommissioningDashboard";
 
-// const CommissioningDashboardPage = () => {
-//   return <CommissioningDashboard />;
-// };
+const CommissioningDashboardPage = () => {
+  return <CommissioningDashboard />;
+};
 
-// export default CommissioningDashboardPage;
+export default CommissioningDashboardPage;

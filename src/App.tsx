@@ -8,11 +8,10 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
 import Playbook from "./pages/Playbook";
-// import CommissioningDashboard from "./pages/CommissioningDashboard";
+import CommissioningDashboard from "./pages/CommissioningDashboard";
 import WindCPDashboard from "./pages/WindCPDashboard";
 import PlanningSolarDashboard from "./pages/PlanningSolarDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
-import SolarEngineeringDashboard from "./pages/SolarEngineeringDashboard";
 
 const queryClient = new QueryClient();
 
@@ -32,14 +31,14 @@ const App = () => (
             } 
           />
           <Route path="/legacy" element={<Index />} />
-          {/* <Route 
+          <Route 
             path="/commissioning" 
             element={
               <ProtectedRoute>
                 <CommissioningDashboard />
               </ProtectedRoute>
             } 
-          /> */}
+          />
           <Route 
             path="/wind-cp" 
             element={
@@ -61,14 +60,6 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <PlanningSolarDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/engineering-solar" 
-            element={
-              <ProtectedRoute>
-                <SolarEngineeringDashboard />
               </ProtectedRoute>
             } 
           />
