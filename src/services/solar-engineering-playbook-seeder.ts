@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const seedSolarEngineeringData = async () => {
   console.log('Starting Solar Engineering playbook data seeding...');
   
-  const PLAYBOOK_ID = "solar-engineering-2024";
+  // Use a proper UUID for the playbook_id
+  const PLAYBOOK_ID = "550e8400-e29b-41d4-a716-446655440001";
   
   try {
     // Clear existing data for this playbook

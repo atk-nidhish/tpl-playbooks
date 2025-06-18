@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import { Home, Map, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
-const PLAYBOOK_ID = "solar-engineering-2024";
+const PLAYBOOK_ID = "550e8400-e29b-41d4-a716-446655440001";
 
 export default function SolarEngineeringDashboard() {
   const [activePhase, setActivePhase] = useState("chapter-1");
