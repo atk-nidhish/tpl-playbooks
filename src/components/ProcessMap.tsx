@@ -15,10 +15,13 @@ interface ProcessMapStep {
 
 interface ProcessMapProps {
   playbookId: string;
-  activePhase: string;
+  activePhase?: string;
+  chapters?: any[];
+  processMapImages?: any;
+  isLoading?: boolean;
 }
 
-export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
+export const ProcessMap = ({ playbookId, activePhase, chapters, processMapImages, isLoading }: ProcessMapProps) => {
   const [processFlow, setProcessFlow] = useState<ProcessMapStep[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -85,7 +88,7 @@ export const ProcessMap = ({ playbookId, activePhase }: ProcessMapProps) => {
     }
   };
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-600">Loading process map...</p>

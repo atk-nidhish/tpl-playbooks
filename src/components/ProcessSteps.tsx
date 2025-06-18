@@ -18,12 +18,14 @@ interface ProcessStep {
 
 interface ProcessStepsProps {
   playbookId: string;
-  activePhase: string;
-  searchQuery: string;
+  activePhase?: string;
+  searchQuery?: string;
   onNavigateToRaci?: () => void;
+  chapters?: any[];
+  isLoading?: boolean;
 }
 
-export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateToRaci }: ProcessStepsProps) => {
+export const ProcessSteps = ({ playbookId, activePhase, searchQuery = "", onNavigateToRaci, chapters, isLoading }: ProcessStepsProps) => {
   const [steps, setSteps] = useState<ProcessStep[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -107,7 +109,7 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
     return stepId;
   };
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-600">Loading process steps...</p>

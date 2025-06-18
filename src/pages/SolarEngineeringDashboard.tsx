@@ -15,6 +15,8 @@ import { seedSolarEngineeringData } from "@/services/solar-engineering-playbook-
 const SolarEngineeringDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
+  const [activePhase, setActivePhase] = useState('chapter-1');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Define the playbook structure based on the table of contents
   const chapters = [
@@ -141,7 +143,8 @@ const SolarEngineeringDashboard = () => {
       content: (
         <ProcessSteps 
           playbookId={playbookId}
-          chapters={chapters}
+          activePhase={activePhase}
+          searchQuery={searchQuery}
           isLoading={isLoading}
         />
       )
@@ -153,7 +156,8 @@ const SolarEngineeringDashboard = () => {
       content: (
         <RACIMatrix 
           playbookId={playbookId}
-          chapters={chapters}
+          activePhase={activePhase}
+          searchQuery={searchQuery}
           isLoading={isLoading}
         />
       )
@@ -165,7 +169,7 @@ const SolarEngineeringDashboard = () => {
       content: (
         <ProcessMap 
           playbookId={playbookId}
-          chapters={chapters}
+          activePhase={activePhase}
           processMapImages={processMapImages}
           isLoading={isLoading}
         />
@@ -251,7 +255,12 @@ const SolarEngineeringDashboard = () => {
           </Card>
         </div>
 
-        <ModernTabs tabs={tabsData} />
+        <ModernTabs 
+          tabs={tabsData} 
+          phases={chapters}
+          activePhase={activePhase}
+          onPhaseChange={setActivePhase}
+        />
       </main>
     </div>
   );
