@@ -22,6 +22,12 @@ const Dashboard = () => {
       available: true
     },
     {
+      title: "Engineering - Solar",
+      description: "Solar Engineering Execution",
+      linkTo: "/engineering-solar",
+      available: true
+    },
+    {
       title: "Contracting & Procurement - Solar",
       description: "Solar Project Contracting & Procurement",
       linkTo: "/planning-solar",
