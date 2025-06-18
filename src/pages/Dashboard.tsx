@@ -98,6 +98,7 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <Link to="/planning-solar">
+                  {/* <Link to="/planning-solar"> */}
                     <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                       Access Playbook
                     </Button>
