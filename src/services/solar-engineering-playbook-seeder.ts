@@ -161,11 +161,11 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
-    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
+    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots) - Updated to use section-1.1
     const raciMatrixChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "S",
         task: "Share Bid Summary with Solar Engineering Head (SEH) & request for the development of Basic Engineering Design",
         responsible: "Bid Incharge",
@@ -175,7 +175,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P1",
         task: "Appoint Engineering Manager (EM) for the preparation of Basic Engineering Design & share Bid Summary",
         responsible: "SEH",
@@ -185,7 +185,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P2",
         task: "Analyze Bid Summary to define basic engineering design requirements",
         responsible: "EM",
@@ -195,7 +195,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P3",
         task: "Develop Basic Engineering Design by leveraging Basic Engineering Design Library",
         responsible: "EM",
@@ -205,7 +205,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P4",
         task: "Define Guaranteed Technical Particulars (GTP)",
         responsible: "EM",
@@ -215,7 +215,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P5",
         task: "Draft preliminary Bill of Quantities (BoQ) & Bill of Services (BoS)",
         responsible: "EM",
@@ -225,7 +225,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P6",
         task: "Submit the prepared outputs (Basic Engineering Design, GTP and Preliminary BoQ and BoS) to SEH for review and approval",
         responsible: "EM",
@@ -235,7 +235,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P7",
         task: "Review the outputs received and recommend modifications or approve",
         responsible: "SEH",
@@ -245,7 +245,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P8",
         task: "Implement the recommended modifications and reshare the revised outputs for approval",
         responsible: "EM",
@@ -255,7 +255,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P9",
         task: "Seek further review and approval from MD on the outputs",
         responsible: "SEH",
@@ -265,7 +265,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P10",
         task: "If MD recommends any modifications, notify the required changes to EM. Incorporate the changes recommended by MD and share the finalized outputs with SEH",
         responsible: "SEH",
@@ -275,7 +275,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "P11",
         task: "Share the final outputs with Bid Incharge for submission. Share preliminary BoQ & BoS with Procurement Lead for procurement cost estimation",
         responsible: "SEH",
@@ -285,7 +285,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.2",
+        phase_id: "section-1.1",
         step_id: "E",
         task: "Archive final design documents in Engineering Library",
         responsible: "SEH",
