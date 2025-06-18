@@ -48,7 +48,25 @@ const Dashboard = () => {
     window.open('/wind-planning.pdf', '_blank');
   };  
 
+  const handleWindPredevClick = () => {
+    window.open('/wind-predev.pdf', '_blank');
+  };
+  
+  const handleWindEngineeringClick = () => {
+    window.open('/wind-engineering.pdf', '_blank');
+  };
 
+  const handleWindContractingClick = () => {
+    window.open('/wind-cp.pdf', '_blank');
+  };
+
+  const handleWindConstructionClick = () => {
+    window.open('/wind-construction.pdf', '_blank');
+  };
+
+  const handleWindCommissioningClick = () => {
+    window.open('/wind-commissioning.pdf', '_blank');
+  };
 
   
   return (
@@ -306,6 +324,7 @@ const Dashboard = () => {
             </div>
             
             <div className="space-y-4">
+              
           {/* Wind - Planning Playbook */}
             <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
@@ -341,29 +360,6 @@ const Dashboard = () => {
 
 
 
-              
-            {/* Wind - Planning Playbook */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-blue-600 p-2 rounded-lg">
-                        <Wind className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Wind</CardTitle>
-                  <CardDescription className="text-gray-600">Wind Project Planning</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Link to="/wind-planning">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Access Playbook
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card> */}
 
               {/* Wind - C&P Playbook */}
               <Card className="bg-white border border-gray-200">
@@ -387,51 +383,7 @@ const Dashboard = () => {
                   </Link>
                 </CardContent>
               </Card>
-              {/* First Certification */}
-               {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="bg-green-600 p-2 rounded-lg">
-                      <span className="text-white text-sm">🏆</span>
-                    </div>
-                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
-                  </div>
-                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
-                  <div className="text-sm text-gray-600">
-                    <div>Score: 90% - NP1</div>
-                    <div className="text-green-600">Completed: 6/11/2025</div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Certificate
-                  </Button>
-                </CardContent>
-              </Card> */}
-
-              {/* Second Certification */}
-              {/* <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="bg-green-600 p-2 rounded-lg">
-                      <span className="text-white text-sm">🏆</span>
-                    </div>
-                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
-                  </div>
-                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
-                  <div className="text-sm text-gray-600">
-                    <div>Score: 100% - NP</div>
-                    <div className="text-green-600">Completed: 6/10/2025</div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Certificate
-                  </Button>
-                </CardContent>
-              </Card> */}
+              
             </div> 
           </div>
         </div>
