@@ -82,7 +82,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* C&P - Solar Playbook */}
+              {/* Engineering - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
@@ -97,7 +97,7 @@ const Dashboard = () => {
                   <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <Link to="/planning-solar">
+                  <Link to="">
                   {/* <Link to="/planning-solar"> */}
                     <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                       Access Playbook
