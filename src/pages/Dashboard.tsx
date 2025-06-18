@@ -358,11 +358,42 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-
+            {/* Wind - Predev Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Predevelopment</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindPredevClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
 
 
               {/* Wind - C&P Playbook */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
@@ -382,7 +413,7 @@ const Dashboard = () => {
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
+              </Card> */}
               
             </div> 
           </div>
