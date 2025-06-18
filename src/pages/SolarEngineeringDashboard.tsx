@@ -168,7 +168,7 @@ export default function SolarEngineeringDashboard() {
                   <Home className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Wrench className="h-6 w-6 text-white" />
+                  <Zap className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">Engineering - Solar</h1>
@@ -204,7 +204,7 @@ export default function SolarEngineeringDashboard() {
                   <Home className="h-5 w-5 text-gray-600" />
                 </Link>
                 <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                  <Wrench className="h-6 w-6 text-white" />
+                  <Zap className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">Engineering - Solar</h1>
@@ -242,7 +242,7 @@ export default function SolarEngineeringDashboard() {
                 <Home className="h-5 w-5 text-gray-600" />
               </Link>
               <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-lg">
-                <Wrench className="h-6 w-6 text-white" />
+                <Zap className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Engineering - Solar</h1>
