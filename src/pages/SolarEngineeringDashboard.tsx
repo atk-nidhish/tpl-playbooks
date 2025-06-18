@@ -5,13 +5,13 @@ import { Home } from "lucide-react";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 
 const SolarEngineeringDashboard = () => {
-  const chapters = [
-    { id: "2.1", name: "Basic Engineering", shortName: "Basic Eng" },
-    { id: "2.2A", name: "Detailed Engineering - Civil", shortName: "DE Civil" },
-    { id: "2.2B", name: "Detailed Engineering - Electrical", shortName: "DE Electrical" },
-    { id: "2.3", name: "Engineering Review & Approval", shortName: "Review" },
-    { id: "2.4", name: "Drawing Management", shortName: "Drawings" }
-  ];
+  // const chapters = [
+  //   { id: "2.1", name: "Basic Engineering", shortName: "Basic Eng" },
+  //   { id: "2.2A", name: "Detailed Engineering - Civil", shortName: "DE Civil" },
+  //   { id: "2.2B", name: "Detailed Engineering - Electrical", shortName: "DE Electrical" },
+  //   { id: "2.3", name: "Engineering Review & Approval", shortName: "Review" },
+  //   { id: "2.4", name: "Drawing Management", shortName: "Drawings" }
+  // ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
