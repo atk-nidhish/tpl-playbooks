@@ -73,7 +73,7 @@ const Dashboard = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gray-600 p-2 rounded-lg">
+              <div className="bg-gray-400 p-2 rounded-lg">
                 <FileText className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl font-semibold text-gray-900">Project NavSaksham Playbook Portal</h1>
