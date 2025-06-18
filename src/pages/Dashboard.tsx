@@ -17,7 +17,7 @@ const Dashboard = () => {
   }, []);
 
   const handleSolarEngineeringClick = () => {
-    window.open('/solar-planning.pdf', '_blank');
+    window.open('/solar-engineering.pdf', '_blank');
   };
 
   return (
