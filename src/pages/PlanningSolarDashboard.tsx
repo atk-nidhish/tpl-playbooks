@@ -6,11 +6,20 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 
 const PlanningSolarDashboard = () => {
   const chapters = [
-    { id: "2.1", name: "Basic Engineering", shortName: "Basic Eng" },
-    { id: "2.2A", name: "Detailed Engineering - Civil", shortName: "DE Civil" },
-    { id: "2.2B", name: "Detailed Engineering - Electrical", shortName: "DE Electrical" },
-    { id: "2.3", name: "Engineering Review & Approval", shortName: "Review" },
-    { id: "2.4", name: "Drawing Management", shortName: "Drawings" }
+    { id: "1.1", name: "Project Plan Preparation During Bidding", shortName: "Plan Prep" },
+    { id: "1.2", name: "Project Schedule and Execution Approach", shortName: "Schedule" },
+    { id: "1.3", name: "Land Finalization Plan", shortName: "Land Plan" },
+    { id: "1.4", name: "Engineering Plan", shortName: "Eng Plan" },
+    { id: "1.5", name: "Procurement Plan", shortName: "Procurement" },
+    { id: "1.6", name: "Construction Plan", shortName: "Construction" },
+    { id: "1.7", name: "Commissioning Plan", shortName: "Commissioning" },
+    { id: "1.8", name: "Plan Integration", shortName: "Integration" },
+    { id: "1.9", name: "Plan Update", shortName: "Updates" },
+    { id: "2.1", name: "Scope Management Plan", shortName: "Scope Mgmt" },
+    { id: "3.1", name: "Cost Management Plan", shortName: "Cost Mgmt" },
+    { id: "4.1", name: "Quality Management Plan", shortName: "Quality Mgmt" },
+    { id: "5.1", name: "Statutory Approval Management Plan", shortName: "Statutory" },
+    { id: "6.1", name: "Risk Management Plan", shortName: "Risk Mgmt" }
   ];
 
   return (
