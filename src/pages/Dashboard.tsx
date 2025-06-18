@@ -205,7 +205,7 @@ const Dashboard = () => {
 
               
               {/* Contracting & Procurement - Solar Playbook */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
@@ -233,10 +233,10 @@ const Dashboard = () => {
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Construction Management - Solar Playbook */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
@@ -264,10 +264,10 @@ const Dashboard = () => {
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Commissioning - Solar Playbook */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
@@ -295,7 +295,7 @@ const Dashboard = () => {
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
     
               
             </div>
