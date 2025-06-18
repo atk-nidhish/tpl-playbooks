@@ -6,11 +6,15 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 
 const WindPlanningDashboard = () => {
   const chapters = [
-    { id: "2.1", name: "Basic Engineering", shortName: "Basic Eng" },
-    { id: "2.2A", name: "Detailed Engineering - Civil", shortName: "DE Civil" },
-    { id: "2.2B", name: "Detailed Engineering - Electrical", shortName: "DE Electrical" },
-    { id: "2.3", name: "Engineering Review & Approval", shortName: "Review" },
-    { id: "2.4", name: "Drawing Management", shortName: "Drawings" }
+    { id: "section-1-1", name: "Section 1.1 - Project Plan Preparation During Bidding", shortName: "Section 1.1" },
+    { id: "section-1-2", name: "Section 1.2 - Project Schedule and Execution Approach", shortName: "Section 1.2" },
+    { id: "section-1-3", name: "Section 1.3 - Land Finalization Plan", shortName: "Section 1.3" },
+    { id: "section-1-4", name: "Section 1.4 - Engineering Plan", shortName: "Section 1.4" },
+    { id: "section-1-5", name: "Section 1.5 - Procurement Plan", shortName: "Section 1.5" },
+    { id: "section-1-6", name: "Section 1.6 - Construction Plan", shortName: "Section 1.6" },
+    { id: "section-1-7", name: "Section 1.7 - Commissioning Plan", shortName: "Section 1.7" },
+    { id: "section-1-8", name: "Section 1.8 - Plan Integration", shortName: "Section 1.8" },
+    { id: "section-2-1", name: "Section 2.1 - Scope Management Plan", shortName: "Section 2.1" }
   ];
 
   return (
