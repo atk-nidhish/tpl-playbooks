@@ -19,7 +19,7 @@ export const seedSolarEngineeringData = async () => {
     // Wait a moment to ensure deletions are complete
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Process steps for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
+    // Process steps for Chapter 1 - Basic Engineering Design Preparation
     const processStepsChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -166,11 +166,342 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
-    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
+    // Process steps for Chapter 2.1 - Owner's Engineer Finalization
+    const processStepsChapter21 = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "S",
+        activity: "Chief Business Development notifies the Solar Engineering Head (SEH) about bids won",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "BD Team",
+        comments: "Initial notification of bid win to start engineering process"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P1",
+        activity: "SEH appoints Project Engineering Manager(s) (PEMs) for the project. SEH may appoint separate PEMs for civil, electrical, and plant design engineering",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "SEH",
+        comments: "Assignment of Project Engineering Managers for different disciplines"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P2",
+        activity: "SEH designates a Lead PEM to facilitate cross-functional coordination and external communication. If multiple PEMs are appointed, one is designated as the Lead PEM. If only one PEM is appointed, they automatically assume the role of Lead PEM",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "SEH",
+        comments: "Designation of Lead PEM for coordination and communication"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P3",
+        activity: "Lead PEM drafts the Owner's Engineer (OE) Requirements List, leveraging Basic Engineering Design to determine: Capability Requirements: Expertise, qualifications, and software skills required; Staffing Requirements: Number of engineers required; Final L1 Plan to identify: Engagement Duration: Estimated duration for which OE is required; Design Verification Turnaround: Expected turnaround for design verification, aligned with the project schedule",
+        inputs: ["Basic Engineering Design"],
+        outputs: ["OE Requirement List (draft)", "Final L1 Plan"],
+        timeline: "0.5",
+        responsible: "Lead PEM",
+        comments: "Drafting OE requirements based on basic engineering design"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P4",
+        activity: "Lead PEM conducts a joint discussion with other PEM(s) to review the OE Requirement List, to ensure completeness and address any specific needs. Lead PEM amends the OE Requirement List, if required",
+        inputs: ["OE Requirement List (draft)"],
+        outputs: ["OE Requirement List (final)"],
+        timeline: "0.5",
+        responsible: "Lead PEM",
+        comments: "Review and finalization of OE requirements with other PEMs"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P5",
+        activity: "Lead PEM shares the OE Requirement List with the Procurement Lead to initiate the RFQ process and obtain technical details from empaneled OEs",
+        inputs: ["OE Requirement List (final)"],
+        outputs: ["RFQ Responses for OE"],
+        timeline: "-",
+        responsible: "Lead PEM",
+        comments: "Initiation of RFQ process with Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P6",
+        activity: "Procurement Lead conducts the RFQ process, and shares the responses with Lead PEM for technical evaluation",
+        inputs: ["OE Requirement List (final)"],
+        outputs: ["RFQ Responses for OE"],
+        timeline: "•",
+        responsible: "Procurement Lead",
+        comments: "Procurement conducts RFQ and shares responses for evaluation"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P7",
+        activity: "Lead PEM conducts technical evaluation of the responses and shortlists OEs. For specific requirements incorporated in P4, Lead PEM conducts a joint discussion with other PEMs for evaluation",
+        inputs: ["RFQ Responses for OE"],
+        outputs: ["Shortlist of OE"],
+        timeline: "up to 5 OE responses",
+        responsible: "Lead PEM",
+        comments: "Technical evaluation and shortlisting of Owner's Engineers"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P8",
+        activity: "Lead PEM shares the Shortlist of OEs with the Procurement Lead",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Lead PEM",
+        comments: "Sharing shortlist with Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P9",
+        activity: "Procurement Lead assesses the shortlisted responses based on appropriate evaluation criteria and hires an OE",
+        inputs: ["Shortlist of OE"],
+        outputs: [],
+        timeline: "•",
+        responsible: "Procurement Lead",
+        comments: "Final assessment and hiring of Owner's Engineer"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P10",
+        activity: "Procurement Lead notifies (via email) Lead PEM of the hired OE",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Procurement Lead",
+        comments: "Notification of hired OE to Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "P11",
+        activity: "Lead PEM communicates (via email) the appointment of OE to other PEM(s) and SEH",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Lead PEM",
+        comments: "Communication of OE appointment to team"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.1",
+        step_id: "E",
+        activity: "Lead PEM conducts a kick-off discussion with OE to discuss detailed project requirements, scope, and deliverables timeline (as detailed in OE Requirement List (final))",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 1.5 – 2 weeks",
+        responsible: "Lead PEM",
+        comments: "Kick-off discussion with hired Owner's Engineer"
+      }
+    ];
+
+    // Process steps for Chapter 2.2A - Site Survey Consultant Finalization
+    const processStepsChapter22A = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "S",
+        activity: "Project Manager notifies Solar Engineering Head (SEH) about the finalized Land Parcels for the project, and shares Land Demarcation Summary for conducting Preliminary Works",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Manager",
+        comments: "Initial notification about land parcels for preliminary works"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P1",
+        activity: "SEH shares the Land Demarcation Summary with Lead PEM and directs them to commence preliminary works",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "SEH",
+        comments: "Sharing land information and directing preliminary works commencement"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P2",
+        activity: "Lead PEM prepares the Preliminary Works Requirement Document, which specifies – List of tests/surveys to be conducted; Number of blocks for testing; Standard block size as defined in Basic Engineering Design; other pertinent technical requirements (e.g., software), and; deliverable timeline, as aligned in Engineering Execution Plan",
+        inputs: ["Land Demarcation Summary"],
+        outputs: ["Preliminary Works Requirement Document"],
+        timeline: "0.5",
+        responsible: "Lead PEM",
+        comments: "Preparation of preliminary works requirements document"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P3",
+        activity: "Lead PEM shares the Preliminary Works Requirement Document with the Procurement Lead, requesting them to initiate the RFQ process and obtain technical details from empaneled Site Survey Consultants (SSC)",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Lead PEM",
+        comments: "Sharing requirements with Procurement Lead for RFQ initiation"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P4",
+        activity: "Procurement Lead conducts the RFQ process, and shares the vendor responses with Lead PEM for technical evaluation",
+        inputs: ["Preliminary Works Requirement Document"],
+        outputs: ["RFQ Responses for SSC"],
+        timeline: "•",
+        responsible: "Procurement Lead",
+        comments: "RFQ process for Site Survey Consultants"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P5",
+        activity: "Lead PEM conducts technical evaluation of the responses and creates a Shortlist of SSC",
+        inputs: ["RFQ Responses for SSC"],
+        outputs: ["Shortlist of SSC"],
+        timeline: "0.5",
+        responsible: "Lead PEM",
+        comments: "Technical evaluation and shortlisting of Site Survey Consultants"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P6",
+        activity: "Lead PEM shares the SSC Shortlist with the Procurement Lead",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Lead PEM",
+        comments: "Sharing shortlist with Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "P7",
+        activity: "Procurement Lead assesses the shortlisted SSC and hires one based on appropriate evaluation criteria",
+        inputs: [],
+        outputs: [],
+        timeline: "•",
+        responsible: "Procurement Lead",
+        comments: "Assessment and hiring of Site Survey Consultant"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.1",
+        step_id: "E",
+        activity: "Procurement Lead informs Project Manager of the hired SSC, who further coordinates with SSC for Preliminary Works execution",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 1 – 1.5 weeks",
+        responsible: "Procurement Lead",
+        comments: "Final notification and coordination for preliminary works execution"
+      }
+    ];
+
+    // Process steps for Chapter 2.2B - Preliminary Works Execution
+    const processStepsChapter22B = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "S",
+        activity: "Procurement Lead informs Project Manager of the hired SSC",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Procurement Lead",
+        comments: "Initial notification of hired Site Survey Consultant"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "P1",
+        activity: "Project Manager, in consultation with Lead PEM, conducts a meeting with the hired SSC to discuss detailed requirements (as detailed in Preliminary Works Requirement Document) and shares following inputs for conducting Preliminary Works – Detailed Feasibility Report of Land Parcel; Land Demarcation Summary",
+        inputs: ["Preliminary Works Requirement Document"],
+        outputs: [],
+        timeline: "0.5",
+        responsible: "Project Manager",
+        comments: "Meeting with SSC to discuss requirements and share inputs"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "P2",
+        activity: "Project Manager liaises with the hired SSC to ensure timely submission of all deliverables, as detailed in Preliminary Works Requirement Document. Project Manager facilitates the provision of any additional inputs/ data required to conduct the assessments",
+        inputs: [],
+        outputs: [],
+        timeline: "1.5",
+        responsible: "Project Manager",
+        comments: "Ongoing liaison and support for SSC deliverables"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "P3",
+        activity: "Project Manager receives preliminary works deliverables from SSC",
+        inputs: [],
+        outputs: ["Preliminary Works Deliverables"],
+        timeline: "",
+        responsible: "Project Manager",
+        comments: "Receipt of preliminary works deliverables from SSC"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "P4",
+        activity: "Project Manager consolidates preliminary works deliverables received from the SSC",
+        inputs: ["Preliminary Works Deliverables"],
+        outputs: ["Preliminary Works Deliverables Compilation"],
+        timeline: "",
+        responsible: "Project Manager",
+        comments: "Consolidation of all preliminary works deliverables"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "P5",
+        activity: "Project Manager shares a copy of Preliminary Works Deliverables Compilation with EPC Contractor, Owner's Engineer (OE), and Project Engineering Manager(s) to support Detailed Engineering Design preparation",
+        inputs: [],
+        outputs: [],
+        timeline: "-",
+        responsible: "Project Manager",
+        comments: "Distribution of deliverables to support detailed engineering design"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.1",
+        step_id: "E",
+        activity: "Project Manager maintains all original report documents of Preliminary Works Deliverables Compilation with themselves for record-keeping",
+        inputs: [],
+        outputs: [],
+        timeline: "Total – 2 – 2.5 weeks",
+        responsible: "Project Manager",
+        comments: "Record-keeping of all preliminary works documents"
+      }
+    ];
+
+    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation
     const raciMatrixChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "S",
         task: "Share Bid Summary with Solar Engineering Head (SEH) & request for the development of Basic Engineering Design",
         responsible: "Bid Incharge",
@@ -180,7 +511,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P1",
         task: "Appoint Engineering Manager (EM) for the preparation of Basic Engineering Design & share Bid Summary",
         responsible: "SEH",
@@ -190,7 +521,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P2",
         task: "Analyze Bid Summary to define basic engineering design requirements",
         responsible: "EM",
@@ -200,7 +531,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P3",
         task: "Develop Basic Engineering Design by leveraging Basic Engineering Design Library",
         responsible: "EM",
@@ -210,7 +541,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P4",
         task: "Define Guaranteed Technical Particulars (GTP)",
         responsible: "EM",
@@ -220,7 +551,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P5",
         task: "Draft preliminary Bill of Quantities (BoQ) & Bill of Services (BoS)",
         responsible: "EM",
@@ -230,7 +561,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P6",
         task: "Submit the prepared outputs (Basic Engineering Design, GTP and Preliminary BoQ and BoS) to SEH for review and approval",
         responsible: "EM",
@@ -240,7 +571,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P7",
         task: "Review the outputs received and recommend modifications or approve",
         responsible: "SEH",
@@ -250,7 +581,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P8",
         task: "Implement the recommended modifications and reshare the revised outputs for approval",
         responsible: "EM",
@@ -260,7 +591,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P9",
         task: "Seek further review and approval from MD on the outputs",
         responsible: "SEH",
@@ -270,7 +601,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P10",
         task: "If MD recommends any modifications, notify the required changes to EM. Incorporate the changes recommended by MD and share the finalized outputs with SEH",
         responsible: "SEH",
@@ -280,7 +611,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "P11",
         task: "Share the final outputs with Bid Incharge for submission. Share preliminary BoQ & BoS with Procurement Lead for procurement cost estimation",
         responsible: "SEH",
@@ -290,7 +621,7 @@ export const seedSolarEngineeringData = async () => {
       },
       {
         playbook_id: PLAYBOOK_ID,
-        phase_id: "section-1.1",
+        phase_id: "section-1.2",
         step_id: "E",
         task: "Archive final design documents in Engineering Library",
         responsible: "SEH",
@@ -300,7 +631,309 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
-    // Process map for Chapter 1 - Basic Engineering Design Preparation (using the process map image)
+    // RACI matrix for Chapter 2.1 - Owner's Engineer Finalization
+    const raciMatrixChapter21 = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "S",
+        task: "Notify the Solar Engineering Head when a bid is won",
+        responsible: "BD Team",
+        accountable: "BD Team",
+        consulted: "",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P1",
+        task: "Appoint Project Engineering Manager(s) to oversee project engineering activities",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: "PEM(s)"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P2",
+        task: "Designate a Lead PEM for cross-functional coordination and external communication",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: "Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P3",
+        task: "Draft the Owner's Engineer Requirement List leveraging Basic Engineering Design and Final L1 Plan",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P4",
+        task: "Review the Owner's Engineer Requirement List with other Project Engineering Manager(s) to ensure completeness and address specific project needs",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "Other PEM(s)",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P5",
+        task: "Submit the Owner's Engineer Requirement List to the Procurement Lead to initiate the RFQ process and obtain technical details from empaneled Owner's Engineer",
+        responsible: "Lead PEM",
+        accountable: "SEH",
+        consulted: "",
+        informed: "Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P6",
+        task: "Conduct the RFQ process and shares received responses with the Lead PEM for technical evaluation",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: "Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P7",
+        task: "Conducts technical evaluation of the responses received and create a Shortlist of Owner's Engineers",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "Other PEMs",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P8",
+        task: "Share the shortlist of Owner's Engineers with the Procurement Lead",
+        responsible: "Lead PEM",
+        accountable: "",
+        consulted: "",
+        informed: "Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P9",
+        task: "Assess the shortlisted responses based on appropriate evaluation criteria and hire an OE",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P10",
+        task: "Notify Lead PEM of the selected Owner's Engineer",
+        responsible: "Procurement Lead",
+        accountable: "",
+        consulted: "",
+        informed: "Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "P11",
+        task: "Inform Solar Engineering Head and other PEM(s) of the selected Owner's Engineer",
+        responsible: "Lead PEM",
+        accountable: "",
+        consulted: "",
+        informed: "SEH, Other PEM(s)"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.1.2",
+        step_id: "E",
+        task: "Conduct kick-off meeting with OE to align on scope, timelines, and deliverables",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "Other PEMs",
+        informed: "SEH"
+      }
+    ];
+
+    // RACI matrix for Chapter 2.2A - Site Survey Consultant Finalization
+    const raciMatrixChapter22A = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "S",
+        task: "Notify Solar Engineering Head about the finalized Land Parcels for the project and share Land Demarcation Summary",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P1",
+        task: "Share Land Demarcation Summary with Lead PEM and direct initiation of preliminary works",
+        responsible: "SEH",
+        accountable: "SEH",
+        consulted: "",
+        informed: "Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P2",
+        task: "Prepare the Preliminary Works Requirement Document",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "",
+        informed: "SEH"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P3",
+        task: "Share the Preliminary Works Requirement Document with the Procurement Lead to initiate the RFQ process",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "",
+        informed: "Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P4",
+        task: "Conduct RFQ process and share received responses with Lead PEM for technical evaluation",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: "Lead PEM"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P5",
+        task: "Conduct technical evaluation of responses and shortlist Site Survey Consultants",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P6",
+        task: "Share the Shortlist of Site Survey Consultants with the Procurement Lead",
+        responsible: "Lead PEM",
+        accountable: "Lead PEM",
+        consulted: "",
+        informed: "Procurement Lead"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "P7",
+        task: "Assess the shortlisted Site Survey Consultants and hire one based on appropriate evaluation criteria",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2a.2",
+        step_id: "E",
+        task: "Notify Project Manager of the hired Site Survey Consultant",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: "Project Manager"
+      }
+    ];
+
+    // RACI matrix for Chapter 2.2B - Preliminary Works Execution
+    const raciMatrixChapter22B = [
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "S",
+        task: "Notify Project Manager of the hired Site Survey Consultant",
+        responsible: "Procurement Lead",
+        accountable: "Procurement Lead",
+        consulted: "",
+        informed: "Project Manager"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "P1",
+        task: "Conduct discussion with Site Survey Consultant to share detailed requirements & inputs",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "Lead PEM",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "P2",
+        task: "Liaise with the hired Site Survey Consultant to ensure timely submission of all deliverables",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "P3",
+        task: "Receive deliverables from Site Survey Consultants",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "P4",
+        task: "Consolidate all deliverables received from Site Survey Consultants into one compilation",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: ""
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "P5",
+        task: "Consolidate all deliverables & share with EPC, OE, and PEM(s)",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: "PEM(s)"
+      },
+      {
+        playbook_id: PLAYBOOK_ID,
+        phase_id: "section-2.2b.2",
+        step_id: "E",
+        task: "Archive original preliminary works reports for record-keeping",
+        responsible: "Project Manager",
+        accountable: "Project Manager",
+        consulted: "",
+        informed: ""
+      }
+    ];
+
+    // Process map for Chapter 1 - Basic Engineering Design Preparation
     const processMapChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -421,9 +1054,28 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
+    // Combine all data arrays
+    const allProcessSteps = [
+      ...processStepsChapter1,
+      ...processStepsChapter21,
+      ...processStepsChapter22A,
+      ...processStepsChapter22B
+    ];
+
+    const allRaciMatrix = [
+      ...raciMatrixChapter1,
+      ...raciMatrixChapter21,
+      ...raciMatrixChapter22A,
+      ...raciMatrixChapter22B
+    ];
+
+    const allProcessMap = [
+      ...processMapChapter1
+    ];
+
     // Insert process steps with error handling
     console.log('Inserting process steps...');
-    for (const step of processStepsChapter1) {
+    for (const step of allProcessSteps) {
       const { error } = await supabase
         .from('process_steps')
         .insert(step);
@@ -436,7 +1088,7 @@ export const seedSolarEngineeringData = async () => {
 
     // Insert RACI matrix with error handling
     console.log('Inserting RACI matrix...');
-    for (const raci of raciMatrixChapter1) {
+    for (const raci of allRaciMatrix) {
       const { error } = await supabase
         .from('raci_matrix')
         .insert(raci);
@@ -449,7 +1101,7 @@ export const seedSolarEngineeringData = async () => {
 
     // Insert process map with error handling
     console.log('Inserting process map...');
-    for (const mapStep of processMapChapter1) {
+    for (const mapStep of allProcessMap) {
       const { error } = await supabase
         .from('process_map')
         .insert(mapStep);
@@ -460,7 +1112,7 @@ export const seedSolarEngineeringData = async () => {
       }
     }
 
-    console.log('Solar Engineering playbook Chapter 1 data seeded successfully!');
+    console.log('Solar Engineering playbook data seeded successfully!');
     
   } catch (error) {
     console.error('Error seeding Solar Engineering playbook data:', error);
