@@ -159,7 +159,7 @@ export const seedSolarEngineeringData = async () => {
         activity: "Lead PEM drafts the Owner's Engineer (OE) Requirements List, leveraging Basic Engineering Design to determine: Capability Requirements (Expertise, qualifications, and software skills required), Staffing Requirements (Number of engineers required), Final L1 Plan to identify Engagement Duration and Design Verification Turnaround",
         inputs: ["Basic Engineering Design", "Final L1 Plan"],
         outputs: ["OE Requirement List (draft)"],
-        timeline: "0.5",
+        timeline: "0.5 days",
         responsible: "Lead PEM",
         comments: "Comprehensive requirements definition for Owner's Engineer selection"
       },
@@ -170,7 +170,7 @@ export const seedSolarEngineeringData = async () => {
         activity: "Lead PEM conducts a joint discussion with other PEM(s) to review the OE Requirement List, to ensure completeness and address any specific needs. Lead PEM amends the OE Requirement List, if required",
         inputs: ["OE Requirement List (draft)"],
         outputs: ["OE Requirement List (final)"],
-        timeline: "0.5",
+        timeline: "0.5 days",
         responsible: "Lead PEM",
         comments: "Collaborative review and finalization of OE requirements"
       },
@@ -192,7 +192,7 @@ export const seedSolarEngineeringData = async () => {
         activity: "Procurement Lead conducts the RFQ process, and shares the responses with Lead PEM for technical evaluation",
         inputs: ["OE Requirement List (final)"],
         outputs: ["RFP Responses for OE"],
-        timeline: "●",
+        timeline: "Variable",
         responsible: "Procurement Lead",
         comments: "RFQ process execution and response collection"
       },
@@ -203,7 +203,7 @@ export const seedSolarEngineeringData = async () => {
         activity: "Lead PEM conducts technical evaluation of the responses and shortlists OEs. For specific requirements incorporated in P4, Lead PEM conducts a joint discussion with other PEMs for evaluation",
         inputs: ["RFP Responses for OE"],
         outputs: ["Shortlist of OE (Template Provided)"],
-        timeline: "● (up to 5 OE responses)",
+        timeline: "Variable (up to 5 OE responses)",
         responsible: "Lead PEM",
         comments: "Technical evaluation and shortlisting of qualified OEs"
       },
@@ -225,7 +225,7 @@ export const seedSolarEngineeringData = async () => {
         activity: "Procurement Lead assesses the shortlisted responses based on appropriate evaluation criteria and hire an OE",
         inputs: ["Shortlist of OE"],
         outputs: [],
-        timeline: "●",
+        timeline: "Variable",
         responsible: "Procurement Lead",
         comments: "Final evaluation and selection of Owner's Engineer"
       },
