@@ -130,7 +130,7 @@ export default function SolarEngineeringDashboard() {
   ];
 
   const processMapImages = {
-    "section-1.3": "/lovable-uploads/placeholder-process-map.png",
+    "section-1.3": "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
     "section-2.1.3": "/lovable-uploads/placeholder-process-map.png",
     "section-2.2a.3": "/lovable-uploads/placeholder-process-map.png",
     "section-2.2b.3": "/lovable-uploads/placeholder-process-map.png",

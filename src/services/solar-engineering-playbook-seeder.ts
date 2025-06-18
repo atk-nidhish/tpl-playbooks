@@ -8,11 +8,16 @@ export const seedSolarEngineeringData = async () => {
   const PLAYBOOK_ID = "550e8400-e29b-41d4-a716-446655440001";
   
   try {
-    // Clear existing data for this playbook
+    // Clear existing data for this playbook more thoroughly
     console.log('Clearing existing Solar Engineering data...');
+    
+    // Delete all existing data for this playbook to avoid duplicates
     await supabase.from('process_steps').delete().eq('playbook_id', PLAYBOOK_ID);
     await supabase.from('raci_matrix').delete().eq('playbook_id', PLAYBOOK_ID);
     await supabase.from('process_map').delete().eq('playbook_id', PLAYBOOK_ID);
+
+    // Wait a moment to ensure deletions are complete
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Process steps for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
     const processStepsChapter1 = [
@@ -161,7 +166,7 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
-    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots) - Updated to use section-1.1
+    // RACI matrix for Chapter 1 - Basic Engineering Design Preparation (from screenshots)
     const raciMatrixChapter1 = [
       {
         playbook_id: PLAYBOOK_ID,
@@ -416,37 +421,43 @@ export const seedSolarEngineeringData = async () => {
       }
     ];
 
-    // Insert process steps
+    // Insert process steps with error handling
     console.log('Inserting process steps...');
-    const { error: stepsError } = await supabase
-      .from('process_steps')
-      .insert(processStepsChapter1);
+    for (const step of processStepsChapter1) {
+      const { error } = await supabase
+        .from('process_steps')
+        .insert(step);
 
-    if (stepsError) {
-      console.error('Error inserting process steps:', stepsError);
-      throw stepsError;
+      if (error) {
+        console.error('Error inserting process step:', error);
+        throw error;
+      }
     }
 
-    // Insert RACI matrix
+    // Insert RACI matrix with error handling
     console.log('Inserting RACI matrix...');
-    const { error: raciError } = await supabase
-      .from('raci_matrix')
-      .insert(raciMatrixChapter1);
+    for (const raci of raciMatrixChapter1) {
+      const { error } = await supabase
+        .from('raci_matrix')
+        .insert(raci);
 
-    if (raciError) {
-      console.error('Error inserting RACI matrix:', raciError);
-      throw raciError;
+      if (error) {
+        console.error('Error inserting RACI entry:', error);
+        throw error;
+      }
     }
 
-    // Insert process map
+    // Insert process map with error handling
     console.log('Inserting process map...');
-    const { error: mapError } = await supabase
-      .from('process_map')
-      .insert(processMapChapter1);
+    for (const mapStep of processMapChapter1) {
+      const { error } = await supabase
+        .from('process_map')
+        .insert(mapStep);
 
-    if (mapError) {
-      console.error('Error inserting process map:', mapError);
-      throw mapError;
+      if (error) {
+        console.error('Error inserting process map step:', error);
+        throw error;
+      }
     }
 
     console.log('Solar Engineering playbook Chapter 1 data seeded successfully!');
