@@ -20,9 +20,9 @@ const Dashboard = () => {
   const handleSolarPlanningClick = () => {
     window.open('/solar-planning.pdf', '_blank');
   };  
-  // const handleSolarPredevClick = () => {
-  //   window.open('/solar-predev.pdf', '_blank');
-  // };
+  const handleSolarPredevClick = () => {
+    window.open('/solar-predev.pdf', '_blank');
+  };
   
   const handleSolarEngineeringClick = () => {
     window.open('/solar-engineering.pdf', '_blank');
@@ -114,7 +114,38 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-
+            {/* Predev - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Predevelopment</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarPredevClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
     
               {/* Engineering - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
