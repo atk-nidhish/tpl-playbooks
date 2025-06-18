@@ -46,6 +46,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   // Determine playbook type
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
+  const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -349,7 +350,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Site Functional Head"
       ],
       correctAnswer: 0,
-      chapter: "Wind C&P Process"
+        chapter: "Wind C&P Process"
     },
     {
       id: 8,
@@ -386,9 +387,123 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const solarEngineeringQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "What is the primary objective of basic engineering design preparation in solar projects?",
+      options: [
+        "To finalize the construction contractor",
+        "To establish fundamental design parameters and requirements",
+        "To complete detailed engineering drawings"
+      ],
+      correctAnswer: 1,
+      chapter: "Basic Engineering Design Preparation"
+    },
+    {
+      id: 2,
+      question: "Who is typically responsible for the finalization of the Owner's Engineer?",
+      options: [
+        "Project Manager",
+        "Chief Engineering",
+        "Site Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Owner's Engineer Finalization"
+    },
+    {
+      id: 3,
+      question: "What is the main deliverable from site survey consultant finalization?",
+      options: [
+        "Construction drawings",
+        "Site survey report and consultant selection",
+        "Equipment procurement list"
+      ],
+      correctAnswer: 1,
+      chapter: "Site Survey Consultant Finalization"
+    },
+    {
+      id: 4,
+      question: "During preliminary works execution, what is the key input required?",
+      options: [
+        "Final construction permits",
+        "Site survey report and basic design requirements",
+        "Equipment delivery schedule"
+      ],
+      correctAnswer: 1,
+      chapter: "Preliminary Works Execution"
+    },
+    {
+      id: 5,
+      question: "What is the typical timeline for detailed engineering design preparation?",
+      options: [
+        "2 weeks",
+        "4 weeks",
+        "8 weeks"
+      ],
+      correctAnswer: 1,
+      chapter: "Detailed Engineering Design Preparation"
+    },
+    {
+      id: 6,
+      question: "Who is accountable for the sign-off of detailed engineering design?",
+      options: [
+        "Engineering Manager",
+        "Project Director",
+        "Site Engineer"
+      ],
+      correctAnswer: 1,
+      chapter: "Sign-Off for Detailed Engineering Design"
+    },
+    {
+      id: 7,
+      question: "What is the primary focus of issue resolution for detailed engineering design?",
+      options: [
+        "Cost optimization",
+        "Identifying and resolving design issues",
+        "Schedule acceleration"
+      ],
+      correctAnswer: 1,
+      chapter: "Issue Resolution for Detailed Engineering Design"
+    },
+    {
+      id: 8,
+      question: "Who is typically responsible for assessing OE empanelment requirements?",
+      options: [
+        "Quality Manager",
+        "Project Manager",
+        "Financial Controller"
+      ],
+      correctAnswer: 0,
+      chapter: "Assessment of OE Empanelment Requirements"
+    },
+    {
+      id: 9,
+      question: "What is the key output from the OE empanelment assessment process?",
+      options: [
+        "Construction schedule",
+        "OE assessment report",
+        "Budget allocation"
+      ],
+      correctAnswer: 1,
+      chapter: "Assessment of OE Empanelment Requirements"
+    },
+    {
+      id: 10,
+      question: "In the RACI matrix for engineering processes, who is typically 'Consulted' for technical decisions?",
+      options: [
+        "Administrative staff",
+        "Technical specialists and experts",
+        "Financial team"
+      ],
+      correctAnswer: 1,
+      chapter: "Engineering Process Management"
+    }
+  ];
+
   // Select appropriate questions based on playbook type
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
-                                isWindPlanning ? windPlanningQuestions : 
+                                isWindPlanning ? windPlanningQuestions :
+                                isSolarEngineering ? solarEngineeringQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
