@@ -13,7 +13,6 @@ interface CertificationQuestion {
   question: string;
   options: string[];
   correctAnswer: number;
-  chapter: string;
 }
 
 interface Chapter {
@@ -58,8 +57,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Incharge",
         "Chief Projects"
       ],
-      correctAnswer: 1,
-      chapter: "Solar Planning Process"
+      correctAnswer: 1
     },
     {
       id: 2,
@@ -69,8 +67,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Schedule",
         "Solar Project Master Plan"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Planning Process"
+      correctAnswer: 2
     },
     {
       id: 3,
@@ -80,8 +77,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Chief PMO"
       ],
-      correctAnswer: 0,
-      chapter: "Solar Planning Process"
+      correctAnswer: 0
     },
     {
       id: 4,
@@ -91,8 +87,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Procurement Plan",
         "Master WBS Solar"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Planning Process"
+      correctAnswer: 2
     },
     {
       id: 5,
@@ -102,8 +97,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Cost Controller",
         "Project Planner"
       ],
-      correctAnswer: 1,
-      chapter: "Solar Planning Process"
+      correctAnswer: 1
     },
     {
       id: 6,
@@ -113,8 +107,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Quality Management Plan",
         "Scope Matrix"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Planning Process"
+      correctAnswer: 2
     },
     {
       id: 7,
@@ -124,8 +117,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Project Planner"
       ],
-      correctAnswer: 0,
-      chapter: "Solar Planning Process"
+      correctAnswer: 0
     },
     {
       id: 8,
@@ -135,8 +127,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Regulatory",
         "Chief PMO"
       ],
-      correctAnswer: 1,
-      chapter: "Solar Planning Process"
+      correctAnswer: 1
     },
     {
       id: 9,
@@ -146,8 +137,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Risk Head"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Planning Process"
+      correctAnswer: 2
     },
     {
       id: 10,
@@ -157,8 +147,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Quality Management Plan",
         "Project Execution Approach"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Planning Process"
+      correctAnswer: 2
     }
   ];
 
@@ -171,8 +160,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner", 
         "Chief Projects"
       ],
-      correctAnswer: 0,
-      chapter: "Basic Engineering"
+      correctAnswer: 0
     },
     {
       id: 2,
@@ -182,8 +170,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Final L1 Plan",
         "Engineering Execution Plans"
       ],
-      correctAnswer: 1,
-      chapter: "Basic Engineering"
+      correctAnswer: 1
     },
     {
       id: 3,
@@ -193,8 +180,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Engineering Managers (PEMs)",
         "Project Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Basic Engineering"
+      correctAnswer: 1
     },
     {
       id: 4,
@@ -204,8 +190,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Engineering Execution Plans",
         "Final L1 Plan"
       ],
-      correctAnswer: 1,
-      chapter: "Basic Engineering"
+      correctAnswer: 1
     },
     {
       id: 5,
@@ -215,8 +200,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Survey Team",
         "Site Manager"
       ],
-      correctAnswer: 0,
-      chapter: "Detailed Engineering - Civil"
+      correctAnswer: 0
     },
     {
       id: 6,
@@ -226,8 +210,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Geotechnical Investigation Report",
         "Both Survey Report and Geotechnical Investigation Report"
       ],
-      correctAnswer: 2,
-      chapter: "Detailed Engineering - Civil"
+      correctAnswer: 2
     },
     {
       id: 7,
@@ -237,8 +220,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Electrical PEM",
         "Chief Engineering"
       ],
-      correctAnswer: 1,
-      chapter: "Detailed Engineering - Electrical"
+      correctAnswer: 1
     },
     {
       id: 8,
@@ -248,8 +230,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Basic Engineering Scope",
         "Project Schedule"
       ],
-      correctAnswer: 1,
-      chapter: "Detailed Engineering - Electrical"
+      correctAnswer: 1
     },
     {
       id: 9,
@@ -259,8 +240,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Engineering",
         "Quality Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Engineering Review & Approval"
+      correctAnswer: 1
     },
     {
       id: 10,
@@ -270,8 +250,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Drawing Management System",
         "Project Management System"
       ],
-      correctAnswer: 1,
-      chapter: "Drawing Management"
+      correctAnswer: 1
     }
   ];
 
@@ -284,8 +263,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Incharge",
         "Land Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 2,
@@ -295,8 +273,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Wind Project Master Plan",
         "Preliminary Feasibility Report"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 3,
@@ -306,8 +283,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Planner",
         "Chief Projects"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 4,
@@ -317,8 +293,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Planner",
         "Project Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 5,
@@ -328,8 +303,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Final L1 Plan",
         "Land Finalization Plan"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 6,
@@ -339,8 +313,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Project Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 7,
@@ -350,8 +323,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Scope Matrix",
         "Preliminary L1 Plan"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 8,
@@ -361,8 +333,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Engineering Managers (PEMs)",
         "Quality Managers"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 9,
@@ -372,8 +343,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Basic Engineering Scope",
         "Final L1 Plan"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     },
     {
       id: 10,
@@ -383,8 +353,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Project Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind Planning Process"
+      correctAnswer: 1
     }
   ];
 
@@ -397,8 +366,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Land Officer",
         "Land Manager"
       ],
-      correctAnswer: 0,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 0
     },
     {
       id: 2,
@@ -408,8 +376,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Financial Feasibility Report",
         "Annual Growth Outlook"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 3,
@@ -419,8 +386,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Procurement Lead",
         "Chief Land Officer"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 4,
@@ -430,8 +396,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Business Development",
         "Land Manager"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 5,
@@ -441,8 +406,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Engineering Manager",
         "Land Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 1
     },
     {
       id: 6,
@@ -452,8 +416,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Land Manager",
         "Commercial Manager"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 7,
@@ -463,8 +426,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Substation Shortlist",
         "Detailed Feasibility Reports (DFRs)"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 8,
@@ -474,8 +436,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Final Sanitized FFRs",
         "List of Technically Feasible Land Parcels"
       ],
-      correctAnswer: 1,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 1
     },
     {
       id: 9,
@@ -485,8 +446,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Land Manager",
         "Procurement Lead"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     },
     {
       id: 10,
@@ -496,8 +456,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Procurement Lead",
         "Land Manager"
       ],
-      correctAnswer: 2,
-      chapter: "Solar Predevelopment Process"
+      correctAnswer: 2
     }
   ];
 
@@ -510,8 +469,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Site Manager",
         "Project Manager"
       ],
-      correctAnswer: 2,
-      chapter: "Wind C&P Process"
+      correctAnswer: 2
     },
     {
       id: 2,
@@ -521,8 +479,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Grant of Connectivity and Developer Permission",
         "Notice to Proceed (NTP)"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 3,
@@ -532,8 +489,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Regulatory Approvals Head",
         "Site QHSSE Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 4,
@@ -543,8 +499,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Notice to Proceed",
         "BOCW License"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 5,
@@ -554,8 +509,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Contractor SPOC",
         "Site Manager"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 6,
@@ -565,8 +519,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Health and Fitness Certificates",
         "Contractor Mobilization Checklist"
       ],
-      correctAnswer: 2,
-      chapter: "Wind C&P Process"
+      correctAnswer: 2
     },
     {
       id: 7,
@@ -576,8 +529,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Site Functional Head"
       ],
-      correctAnswer: 0,
-      chapter: "Wind C&P Process"
+      correctAnswer: 0
     },
     {
       id: 8,
@@ -587,8 +539,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Job Completion Certificate",
         "Daily Progress Report (DPR)"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 9,
@@ -598,8 +549,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Site QHSSE Manager",
         "Contractor SPOC"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     },
     {
       id: 10,
@@ -609,8 +559,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Job Completion Certificate",
         "Notice to Proceed"
       ],
-      correctAnswer: 1,
-      chapter: "Wind C&P Process"
+      correctAnswer: 1
     }
   ];
 
@@ -769,7 +718,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
               <QuizProgress
                 currentQuestion={currentQuestion}
                 totalQuestions={certificationQuestions.length}
-                chapter={certificationQuestions[currentQuestion].chapter}
                 playbookType={playbookName}
               />
 
