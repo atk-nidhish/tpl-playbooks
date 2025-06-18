@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
 
-const SolarEngineeringDashboard = () => {
+const PredevSolarDashboard = () => {
   const chapters = [
     { id: "2.1", name: "Basic Engineering", shortName: "Basic Eng" },
     { id: "2.2A", name: "Detailed Engineering - Civil", shortName: "DE Civil" },
@@ -19,8 +19,8 @@ const SolarEngineeringDashboard = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">Solar Engineering Certification</h1>
-              <p className="text-xl text-gray-600">Test your knowledge of solar project engineering processes</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">Solar Predevelopment Certification</h1>
+              <p className="text-xl text-gray-600">Test your knowledge of solar project predevelopment processes</p>
             </div>
             <Link to="/">
               <Button 
@@ -35,8 +35,8 @@ const SolarEngineeringDashboard = () => {
         </div>
 
         <PlaybookCertification 
-          playbookId="solar-engineering"
-          playbookName="Engineering - Solar"
+          playbookId="solar-predev"
+          playbookName="Predevelopment - Solar"
           chapters={chapters}
         />
       </div>
@@ -44,4 +44,4 @@ const SolarEngineeringDashboard = () => {
   );
 };
 
-export default SolarEngineeringDashboard;
+export default PredevSolarDashboard;

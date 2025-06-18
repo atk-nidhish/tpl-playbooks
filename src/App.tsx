@@ -73,6 +73,14 @@ const App = () => (
             } 
           />
           <Route 
+            path="/solar-predev" 
+            element={
+              <ProtectedRoute>
+                <PredevSolarDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
             path="/playbook/:id" 
             element={
               <ProtectedRoute>
