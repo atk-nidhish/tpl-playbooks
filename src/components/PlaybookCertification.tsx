@@ -46,6 +46,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   // Determine playbook type
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
+  const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -157,6 +158,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
       ],
       correctAnswer: 2,
       chapter: "Solar Planning Process"
+    }
+  ];
+
+  const solarEngineeringQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for sharing the approved Final L1 Plan with the Chief Engineering for engineering execution?",
+      options: [
+        "Project Manager",
+        "Project Planner", 
+        "Chief Projects"
+      ],
+      correctAnswer: 0,
+      chapter: "Basic Engineering"
+    },
+    {
+      id: 2,
+      question: "What document serves as the input for developing the Basic Engineering Scope (BES)?",
+      options: [
+        "Project Schedule",
+        "Final L1 Plan",
+        "Engineering Execution Plans"
+      ],
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
+    },
+    {
+      id: 3,
+      question: "Who is accountable for preparing the Basic Engineering Scope (BES) by leveraging the Solar Project Master Plan?",
+      options: [
+        "Chief Engineering",
+        "Project Engineering Managers (PEMs)",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
+    },
+    {
+      id: 4,
+      question: "What is the output when PEMs develop Engineering Execution Plans (EEPs) for their respective disciplines?",
+      options: [
+        "Basic Engineering Scope",
+        "Engineering Execution Plans",
+        "Final L1 Plan"
+      ],
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for conducting Civil Site Survey and sharing the survey report?",
+      options: [
+        "Civil PEM",
+        "Survey Team",
+        "Site Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Detailed Engineering - Civil"
+    },
+    {
+      id: 6,
+      question: "What document serves as input for Civil Design activities?",
+      options: [
+        "Survey Report",
+        "Geotechnical Investigation Report",
+        "Both Survey Report and Geotechnical Investigation Report"
+      ],
+      correctAnswer: 2,
+      chapter: "Detailed Engineering - Civil"
+    },
+    {
+      id: 7,
+      question: "Who is accountable for developing electrical design and drawings for solar projects?",
+      options: [
+        "Civil PEM",
+        "Electrical PEM",
+        "Chief Engineering"
+      ],
+      correctAnswer: 1,
+      chapter: "Detailed Engineering - Electrical"
+    },
+    {
+      id: 8,
+      question: "What is the primary input document for electrical design activities?",
+      options: [
+        "Civil Design",
+        "Basic Engineering Scope",
+        "Project Schedule"
+      ],
+      correctAnswer: 1,
+      chapter: "Detailed Engineering - Electrical"
+    },
+    {
+      id: 9,
+      question: "Who is responsible for reviewing and approving all engineering deliverables?",
+      options: [
+        "Project Manager",
+        "Chief Engineering",
+        "Quality Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Engineering Review & Approval"
+    },
+    {
+      id: 10,
+      question: "What system is used for managing and controlling engineering drawings?",
+      options: [
+        "Document Management System",
+        "Drawing Management System",
+        "Project Management System"
+      ],
+      correctAnswer: 1,
+      chapter: "Drawing Management"
     }
   ];
 
@@ -389,6 +503,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   // Select appropriate questions based on playbook type
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
                                 isWindPlanning ? windPlanningQuestions : 
+                                isSolarEngineering ? solarEngineeringQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {

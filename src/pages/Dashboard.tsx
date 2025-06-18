@@ -108,11 +108,13 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Button 
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Certification Quiz
-                    </Button>
+                    <Link to="/solar-engineering" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
