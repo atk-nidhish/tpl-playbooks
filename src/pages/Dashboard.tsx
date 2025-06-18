@@ -165,7 +165,7 @@ const Dashboard = () => {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
                       <div className="bg-blue-600 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
+                        <Wind className="h-6 w-6 text-white" />
                       </div>
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
