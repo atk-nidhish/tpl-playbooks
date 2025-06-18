@@ -28,6 +28,14 @@ const Dashboard = () => {
     window.open('/solar-engineering.pdf', '_blank');
   };
 
+  // Wind Click Handling
+  const handleWindPlanningClick = () => {
+    window.open('/wind-planning.pdf', '_blank');
+  };  
+
+
+
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -73,7 +81,7 @@ const Dashboard = () => {
             
             <div className="space-y-4">
 
-            {/* NEW - Planning - Solar Playbook */}
+            {/* Planning - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
@@ -107,7 +115,7 @@ const Dashboard = () => {
               </Card>
 
 
-              
+    
               {/* Engineering - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
@@ -145,20 +153,50 @@ const Dashboard = () => {
 
           {/* Wind Playbooks Section */}
           <div>
-            {/* <div className="flex items-center space-x-2 mb-6">
-              <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">🏆</span>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900">Certifications</h3>
-            </div> */}
             <div className="flex items-center space-x-2 mb-6">
               <FileText className="h-6 w-6 text-blue-600" />
               <h3 className="text-xl font-semibold text-gray-900">Wind Playbooks</h3>
             </div>
             
             <div className="space-y-4">
+          {/* Wind - Planning Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Planning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindPlanningClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+
+
+              
             {/* Wind - Planning Playbook */}
-              <Card className="bg-white border border-gray-200">
+              {/* <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="flex items-center space-x-3">
@@ -178,7 +216,7 @@ const Dashboard = () => {
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Wind - C&P Playbook */}
               <Card className="bg-white border border-gray-200">
