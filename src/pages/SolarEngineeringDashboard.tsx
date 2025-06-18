@@ -130,14 +130,14 @@ export default function SolarEngineeringDashboard() {
   ];
 
   const processMapImages = {
-    "section-1.3": "/lovable-uploads/dbb9feef-9d7f-4850-8177-22dca61ec0d7.png",
-    "section-2.1.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-2.2a.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-2.2b.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-3.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-4.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-5.3": "/lovable-uploads/placeholder-process-map.png",
-    "section-6.3": "/lovable-uploads/placeholder-process-map.png"
+    "section-1.3": "/lovable-uploads/776ef11f-66ec-4e2c-8024-830bd5534b6f.png",
+    "section-2.1.3": "/lovable-uploads/8afa588c-513a-427d-9698-bd8b716ae69d.png",
+    "section-2.2a.3": "/lovable-uploads/018734f3-18e1-4b5d-8870-4de1b714079b.png",
+    "section-2.2b.3": "/lovable-uploads/c4685210-b560-4a92-a71b-c3ceb0b54481.png",
+    "section-3.3": "/lovable-uploads/f0edc356-89e2-4558-b871-9057633f8d0a.png",
+    "section-4.3": "/lovable-uploads/d0d4b66a-2d4a-4b7c-8b18-ba5712e03c14.png",
+    "section-5.3": "/lovable-uploads/a74aa8ba-69e8-423a-b1d7-90aa2f2a309a.png",
+    "section-6.3": "/lovable-uploads/7b0925c9-71e9-46ac-bed6-10cb599bb823.png"
   };
 
   const navigateToRaci = () => {
