@@ -179,7 +179,7 @@ const SolarEngineeringDashboard = () => {
           onPhaseChange={setActivePhase}
           value={activeTab}
           onValueChange={setActiveTab}
-        />
+        >
           <TabsContent value="process-steps">
             <ProcessSteps 
               playbookId={playbookId}
