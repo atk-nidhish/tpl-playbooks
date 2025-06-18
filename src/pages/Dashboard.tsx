@@ -20,9 +20,9 @@ const Dashboard = () => {
   const handleSolarPlanningClick = () => {
     window.open('/solar-planning.pdf', '_blank');
   };  
-  const handleSolarPredevClick = () => {
-    window.open('/solar-predev.pdf', '_blank');
-  };
+  // const handleSolarPredevClick = () => {
+  //   window.open('/solar-predev.pdf', '_blank');
+  // };
   
   const handleSolarEngineeringClick = () => {
     window.open('/solar-engineering.pdf', '_blank');
@@ -49,6 +49,11 @@ const Dashboard = () => {
               <h1 className="text-2xl font-semibold text-gray-900">Playbook Portal</h1>
             </div>
             <div className="flex items-center space-x-4">
+              {/* <span className="text-gray-600">👤 A</span>
+              <span className="text-gray-600">📊 X</span> */}
+              {/* <Button variant="ghost" className="text-gray-600">
+                ↗️ Sign Out
+              </Button> */}
             </div>
           </div>
         </div>
@@ -109,38 +114,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-            {/* Predev - Solar Playbook */}
-              <Card className="bg-white border border-gray-200">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
-                      </div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Solar</CardTitle>
-                  <CardDescription className="text-gray-600">Solar Project Predevelopment</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleSolarPredevClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Access Playbook
-                    </Button>
-                    <Link to="/solar-predev" className="flex-1">
-                      <Button 
-                        className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      >
-                        Certification Quiz
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+
     
               {/* Engineering - Solar Playbook */}
               <Card className="bg-white border border-gray-200">
@@ -219,8 +193,33 @@ const Dashboard = () => {
               </Card>
 
 
-              {/* Wind - C&P Playbook */}
+
+              
+            {/* Wind - Planning Playbook */}
               {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Planning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Link to="/wind-planning">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Access Playbook
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card> */}
+
+              {/* Wind - C&P Playbook */}
+              <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
@@ -240,8 +239,52 @@ const Dashboard = () => {
                     </Button>
                   </Link>
                 </CardContent>
+              </Card>
+              {/* First Certification */}
+               {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="bg-green-600 p-2 rounded-lg">
+                      <span className="text-white text-sm">🏆</span>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
+                  </div>
+                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
+                  <div className="text-sm text-gray-600">
+                    <div>Score: 90% - NP1</div>
+                    <div className="text-green-600">Completed: 6/11/2025</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Certificate
+                  </Button>
+                </CardContent>
               </Card> */}
-             
+
+              {/* Second Certification */}
+              {/* <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="bg-green-600 p-2 rounded-lg">
+                      <span className="text-white text-sm">🏆</span>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 border-green-300">Earned</Badge>
+                  </div>
+                  <CardTitle className="text-lg font-semibold text-gray-900">Wind - C&P Certification</CardTitle>
+                  <div className="text-sm text-gray-600">
+                    <div>Score: 100% - NP</div>
+                    <div className="text-green-600">Completed: 6/10/2025</div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Certificate
+                  </Button>
+                </CardContent>
+              </Card> */}
             </div> 
           </div>
         </div>

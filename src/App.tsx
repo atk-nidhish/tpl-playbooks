@@ -32,6 +32,14 @@ const App = () => (
             } 
           />
           <Route path="/legacy" element={<Index />} />
+          {/* <Route 
+            path="/commissioning" 
+            element={
+              <ProtectedRoute>
+                <CommissioningDashboard />
+              </ProtectedRoute>
+            } 
+          /> */}
           <Route 
             path="/wind-cp" 
             element={
@@ -64,14 +72,6 @@ const App = () => (
               </ProtectedRoute>
             } 
           />
-          {/* <Route 
-            path="/solar-predev" 
-            element={
-              <ProtectedRoute>
-                <PredevSolarDashboard />
-              </ProtectedRoute>
-            }  
-          /> */}
           <Route 
             path="/playbook/:id" 
             element={

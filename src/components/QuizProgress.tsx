@@ -4,15 +4,20 @@ import { Badge } from "@/components/ui/badge";
 interface QuizProgressProps {
   currentQuestion: number;
   totalQuestions: number;
+  chapter: string;
   playbookType?: string;
 }
 
-export const QuizProgress = ({ currentQuestion, totalQuestions, playbookType = "solar" }: QuizProgressProps) => {
+export const QuizProgress = ({ currentQuestion, totalQuestions, chapter, playbookType = "solar" }: QuizProgressProps) => {
   const isWindPlaybook = playbookType.toLowerCase().includes('wind');
   
   const gradientClass = isWindPlaybook 
     ? "bg-gradient-to-r from-blue-500 to-blue-600" 
     : "bg-gradient-to-r from-orange-500 to-yellow-500";
+  
+  const badgeClass = isWindPlaybook 
+    ? "bg-blue-50 text-blue-700 border-blue-200" 
+    : "bg-orange-50 text-orange-700 border-orange-200";
 
   return (
     <div className="space-y-4">
@@ -28,6 +33,11 @@ export const QuizProgress = ({ currentQuestion, totalQuestions, playbookType = "
           ></div>
         </div>
       </div>
+
+      {/* Chapter Badge */}
+      <Badge variant="outline" className={badgeClass}>
+        {chapter}
+      </Badge>
     </div>
   );
 };

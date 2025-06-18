@@ -13,6 +13,7 @@ interface CertificationQuestion {
   question: string;
   options: string[];
   correctAnswer: number;
+  chapter: string;
 }
 
 interface Chapter {
@@ -46,7 +47,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
-  const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -57,7 +57,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Incharge",
         "Chief Projects"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
     },
     {
       id: 2,
@@ -67,7 +68,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Schedule",
         "Solar Project Master Plan"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
     },
     {
       id: 3,
@@ -77,7 +79,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Chief PMO"
       ],
-      correctAnswer: 0
+      correctAnswer: 0,
+      chapter: "Solar Planning Process"
     },
     {
       id: 4,
@@ -87,7 +90,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Procurement Plan",
         "Master WBS Solar"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
     },
     {
       id: 5,
@@ -97,7 +101,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Cost Controller",
         "Project Planner"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
     },
     {
       id: 6,
@@ -107,7 +112,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Quality Management Plan",
         "Scope Matrix"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
     },
     {
       id: 7,
@@ -117,7 +123,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Project Planner"
       ],
-      correctAnswer: 0
+      correctAnswer: 0,
+      chapter: "Solar Planning Process"
     },
     {
       id: 8,
@@ -127,7 +134,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Regulatory",
         "Chief PMO"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
     },
     {
       id: 9,
@@ -137,7 +145,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Risk Head"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
     },
     {
       id: 10,
@@ -147,7 +156,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Quality Management Plan",
         "Project Execution Approach"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
     }
   ];
 
@@ -160,7 +170,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner", 
         "Chief Projects"
       ],
-      correctAnswer: 0
+      correctAnswer: 0,
+      chapter: "Basic Engineering"
     },
     {
       id: 2,
@@ -170,7 +181,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Final L1 Plan",
         "Engineering Execution Plans"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
     },
     {
       id: 3,
@@ -180,7 +192,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Engineering Managers (PEMs)",
         "Project Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
     },
     {
       id: 4,
@@ -190,7 +203,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Engineering Execution Plans",
         "Final L1 Plan"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Basic Engineering"
     },
     {
       id: 5,
@@ -200,7 +214,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Survey Team",
         "Site Manager"
       ],
-      correctAnswer: 0
+      correctAnswer: 0,
+      chapter: "Detailed Engineering - Civil"
     },
     {
       id: 6,
@@ -210,7 +225,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Geotechnical Investigation Report",
         "Both Survey Report and Geotechnical Investigation Report"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Detailed Engineering - Civil"
     },
     {
       id: 7,
@@ -220,7 +236,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Electrical PEM",
         "Chief Engineering"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Detailed Engineering - Electrical"
     },
     {
       id: 8,
@@ -230,7 +247,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Basic Engineering Scope",
         "Project Schedule"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Detailed Engineering - Electrical"
     },
     {
       id: 9,
@@ -240,7 +258,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Chief Engineering",
         "Quality Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Engineering Review & Approval"
     },
     {
       id: 10,
@@ -250,7 +269,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Drawing Management System",
         "Project Management System"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Drawing Management"
     }
   ];
 
@@ -263,7 +283,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Incharge",
         "Land Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 2,
@@ -273,7 +294,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Wind Project Master Plan",
         "Preliminary Feasibility Report"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 3,
@@ -283,7 +305,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Planner",
         "Chief Projects"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 4,
@@ -293,7 +316,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Bid Planner",
         "Project Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 5,
@@ -303,7 +327,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Final L1 Plan",
         "Land Finalization Plan"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 6,
@@ -313,7 +338,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Project Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 7,
@@ -323,7 +349,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Scope Matrix",
         "Preliminary L1 Plan"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 8,
@@ -333,7 +360,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Engineering Managers (PEMs)",
         "Quality Managers"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 9,
@@ -343,7 +371,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Basic Engineering Scope",
         "Final L1 Plan"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     },
     {
       id: 10,
@@ -353,110 +382,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Planner",
         "Project Manager"
       ],
-      correctAnswer: 1
-    }
-  ];
-
-  const solarPredevelopmentQuestions: CertificationQuestion[] = [
-    {
-      id: 1,
-      question: "Who is responsible for preparing the Pre-development Intelligence Report (PDIR)?",
-      options: [
-        "Chief Land & Connectivity",
-        "Chief Land Officer",
-        "Land Manager"
-      ],
-      correctAnswer: 0
-    },
-    {
-      id: 2,
-      question: "What document serves as an input for the Chief Land & Connectivity to prepare the PDIR?",
-      options: [
-        "Substation Shortlist",
-        "Financial Feasibility Report",
-        "Annual Growth Outlook"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 3,
-      question: "Who is accountable to appoint a Land Manager to lead Land Leasing and Evacuation Capacity Reservation activities?",
-      options: [
-        "Chief Land & Connectivity",
-        "Procurement Lead",
-        "Chief Land Officer"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 4,
-      question: "Who is responsible for sharing the Substation Application List and Grid Study with the Procurement Lead?",
-      options: [
-        "Chief Land Officer",
-        "Chief Business Development",
-        "Land Manager"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 5,
-      question: "Who is responsible for preparing the Detailed Feasibility Report (DFR) for internal assessment of shortlisted land parcels?",
-      options: [
-        "Chief Land Officer",
-        "Engineering Manager",
-        "Land Manager"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 6,
-      question: "Who is responsible for preparing the Financial Feasibility Report (FFR) for each technically feasible land parcel?",
-      options: [
-        "Chief Land Officer",
-        "Land Manager",
-        "Commercial Manager"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 7,
-      question: "What document serves as an input for the Commercial Manager to prepare the Financial Feasibility Report (FFR)?",
-      options: [
-        "Annual Growth Outlook",
-        "Substation Shortlist",
-        "Detailed Feasibility Reports (DFRs)"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 8,
-      question: "What is the output of the process step where the Land Manager coordinates with the respective Land Aggregator to negotiate with landowners?",
-      options: [
-        "Substation Shortlist",
-        "Final Sanitized FFRs",
-        "List of Technically Feasible Land Parcels"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 9,
-      question: "Who is responsible for securing Evacuation Capacity in the shortlisted substations?",
-      options: [
-        "Chief Land Officer",
-        "Land Manager",
-        "Procurement Lead"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 10,
-      question: "Who is responsible for initiating the comprehensive Due Diligence process to verify land ownership?",
-      options: [
-        "Chief Land Officer",
-        "Procurement Lead",
-        "Land Manager"
-      ],
-      correctAnswer: 2
+      correctAnswer: 1,
+      chapter: "Wind Planning Process"
     }
   ];
 
@@ -469,7 +396,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Site Manager",
         "Project Manager"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
     },
     {
       id: 2,
@@ -479,7 +407,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Grant of Connectivity and Developer Permission",
         "Notice to Proceed (NTP)"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 3,
@@ -489,7 +418,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Regulatory Approvals Head",
         "Site QHSSE Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 4,
@@ -499,7 +429,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Notice to Proceed",
         "BOCW License"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 5,
@@ -509,7 +440,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Contractor SPOC",
         "Site Manager"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 6,
@@ -519,7 +451,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Health and Fitness Certificates",
         "Contractor Mobilization Checklist"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
     },
     {
       id: 7,
@@ -529,7 +462,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Project Manager",
         "Site Functional Head"
       ],
-      correctAnswer: 0
+      correctAnswer: 0,
+      chapter: "Wind C&P Process"
     },
     {
       id: 8,
@@ -539,7 +473,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Job Completion Certificate",
         "Daily Progress Report (DPR)"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 9,
@@ -549,7 +484,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Site QHSSE Manager",
         "Contractor SPOC"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     },
     {
       id: 10,
@@ -559,7 +495,8 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
         "Job Completion Certificate",
         "Notice to Proceed"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
     }
   ];
 
@@ -567,7 +504,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
                                 isWindPlanning ? windPlanningQuestions : 
                                 isSolarEngineering ? solarEngineeringQuestions :
-                                isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
@@ -718,6 +654,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
               <QuizProgress
                 currentQuestion={currentQuestion}
                 totalQuestions={certificationQuestions.length}
+                chapter={certificationQuestions[currentQuestion].chapter}
                 playbookType={playbookName}
               />
 

@@ -18,7 +18,7 @@ const WindPlanningDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-75 to-blue-100">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
       <div className="container mx-auto px-6 py-8">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -29,7 +29,7 @@ const WindPlanningDashboard = () => {
             <Link to="/">
               <Button 
                 variant="outline" 
-                className="flex items-center gap-2 border-blue-200 hover:bg-blue-50"
+                className="flex items-center gap-2 border-orange-200 hover:bg-orange-50"
               >
                 <Home className="h-4 w-4" />
                 Return to Homepage
