@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { PlaybookCertification } from "@/components/PlaybookCertification";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
+import { SolarPdfProcessor } from "@/components/SolarPdfProcessor";
 import { seedSolarEngineeringData } from "@/services/solar-engineering-playbook-seeder";
 import { Home, Map, Zap } from "lucide-react";
 import { toast } from "sonner";
@@ -270,6 +272,11 @@ export default function SolarEngineeringDashboard() {
       />
 
       <div className="container mx-auto px-6 py-8">
+        {/* Add PDF processor at the top */}
+        <div className="mb-8">
+          <SolarPdfProcessor />
+        </div>
+
         <ModernTabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="processes">
             <ProcessSteps 
