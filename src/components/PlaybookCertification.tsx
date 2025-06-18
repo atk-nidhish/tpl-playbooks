@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award } from "lucide-react";
@@ -44,8 +43,122 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showUserForm, setShowUserForm] = useState(true);
 
-  // Determine if this is Wind Planning playbook to show correct questions
+  // Determine playbook type
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
+  const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
+
+  const solarPlanningQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for appointing the Bid Planner (BP) and sharing the Bid Summary for Final L1 Plan development?",
+      options: [
+        "Bid Planner",
+        "Bid Incharge",
+        "Chief Projects"
+      ],
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 2,
+      question: "What document serves as the input for developing the Preliminary L1 Plan?",
+      options: [
+        "Final L1 Plan",
+        "Project Schedule",
+        "Solar Project Master Plan"
+      ],
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 3,
+      question: "Who is accountable for defining the Work Breakdown Structure (WBS) elements based on the approved control philosophy?",
+      options: [
+        "Schedule Head",
+        "Project Planner",
+        "Chief PMO"
+      ],
+      correctAnswer: 0,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 4,
+      question: "What document serves as the input for defining the elements of the WBS?",
+      options: [
+        "Project Execution Approach",
+        "Project Procurement Plan",
+        "Master WBS Solar"
+      ],
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for assigning the budget cost to the CBS elements based on the project budget?",
+      options: [
+        "Chief PMO",
+        "Cost Controller",
+        "Project Planner"
+      ],
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 6,
+      question: "What document serves as the input for assigning the scope to all elements defined in CBS?",
+      options: [
+        "Project Schedule",
+        "Project Quality Management Plan",
+        "Scope Matrix"
+      ],
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 7,
+      question: "Who is responsible for reviewing the Project Schedule to establish an understanding of the project calendar for PQMP?",
+      options: [
+        "Chief QHSSE",
+        "Project Manager",
+        "Project Planner"
+      ],
+      correctAnswer: 0,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for appointing the Regulatory Manager (RM) for the project?",
+      options: [
+        "Project Manager",
+        "Chief Regulatory",
+        "Chief PMO"
+      ],
+      correctAnswer: 1,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 9,
+      question: "Who is responsible for conducting the Risk Review Workshop where Functional Leads collectively identify the risks?",
+      options: [
+        "Project Planner",
+        "Project Manager",
+        "Risk Head"
+      ],
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
+    },
+    {
+      id: 10,
+      question: "What document serves as the input for initiating the development of the Risk Management Plan?",
+      options: [
+        "Project Procurement Plan",
+        "Project Quality Management Plan",
+        "Project Execution Approach"
+      ],
+      correctAnswer: 2,
+      chapter: "Solar Planning Process"
+    }
+  ];
 
   const windPlanningQuestions: CertificationQuestion[] = [
     {
@@ -273,8 +386,10 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
-  // Use Wind Planning questions if this is the Wind Planning playbook, otherwise use default questions
-  const certificationQuestions = isWindPlanning ? windPlanningQuestions : defaultQuestions;
+  // Select appropriate questions based on playbook type
+  const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
+                                isWindPlanning ? windPlanningQuestions : 
+                                defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
     setUserInfo(submittedUserInfo);
