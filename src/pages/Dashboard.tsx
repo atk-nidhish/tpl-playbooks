@@ -98,7 +98,7 @@ const Dashboard = () => {
           {/* Solar Playbooks Section */}
           <div>
             <div className="flex items-center space-x-2 mb-6">
-              <FileText className="h-6 w-6 text-blue-600" />
+              <FileText className="h-6 w-6 text-orange-600" />
               <h3 className="text-xl font-semibold text-gray-900">Solar Playbooks</h3>
             </div>
             
