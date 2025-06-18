@@ -1,9 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, ArrowRight, FileInput, Package, Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ProcessStepCard } from "./ProcessStepCard";
+import { ProcessStepsHeader } from "./ProcessStepsHeader";
 
 interface ProcessStep {
   id: string;
@@ -101,12 +103,6 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
     step.outputs?.some(output => output.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const getStepDisplayId = (stepId: string) => {
-    if (stepId === "S" || stepId === "Start") return "Start";
-    if (stepId === "E" || stepId === "End") return "End";
-    return stepId;
-  };
-
   if (loading) {
     return (
       <div className="text-center py-8">
@@ -127,20 +123,11 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-orange-500" />
-            Process Steps - {activePhase}
-          </CardTitle>
-          <CardDescription>
-            Complete process steps with inputs, outputs, and execution requirements
-          </CardDescription>
-          <div className="text-sm text-gray-500">
-            Found {steps.length} total steps, showing {filteredSteps.length} matching steps
-          </div>
-        </CardHeader>
-      </Card>
+      <ProcessStepsHeader
+        activePhase={activePhase}
+        totalSteps={steps.length}
+        filteredSteps={filteredSteps.length}
+      />
 
       {filteredSteps.length === 0 ? (
         <Card className="bg-white/90 backdrop-blur-sm border-orange-200">
@@ -162,68 +149,9 @@ export const ProcessSteps = ({ playbookId, activePhase, searchQuery, onNavigateT
         </Card>
       ) : (
         <div className="grid gap-3">
-          {filteredSteps.map((step, index) => {
-            const hasInputs = step.inputs && step.inputs.length > 0;
-            const hasOutputs = step.outputs && step.outputs.length > 0;
-            
-            return (
-              <Card key={step.id} className="bg-white/90 backdrop-blur-sm border-orange-200 hover:shadow-md transition-all duration-300">
-                <CardHeader className="pb-2">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-lg">
-                      {getStepDisplayId(step.step_id)}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 mb-2 text-sm">{step.activity}</h3>
-
-                      {/* Only show inputs and outputs - timeline removed */}
-                      {(hasInputs || hasOutputs) && (
-                        <div className="grid grid-cols-2 gap-2 mb-2">
-                          {/* Inputs - Only show if has content */}
-                          {hasInputs && (
-                            <div className="p-2 bg-blue-50 border border-blue-200 rounded text-xs">
-                              <div className="flex items-center gap-1 mb-1">
-                                <FileInput className="h-3 w-3 text-blue-500" />
-                                <span className="font-medium text-blue-800">Inputs:</span>
-                              </div>
-                              <div className="text-blue-700 leading-tight">
-                                <div className="space-y-1">
-                                  {step.inputs.map((input, idx) => (
-                                    <div key={idx} className="text-xs" title={input}>
-                                      {idx + 1}. {input}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Outputs - Only show if has content */}
-                          {hasOutputs && (
-                            <div className="p-2 bg-green-50 border border-green-200 rounded text-xs">
-                              <div className="flex items-center gap-1 mb-1">
-                                <Package className="h-3 w-3 text-green-500" />
-                                <span className="font-medium text-green-800">Outputs:</span>
-                              </div>
-                              <div className="text-green-700 leading-tight">
-                                <div className="space-y-1">
-                                  {step.outputs.map((output, idx) => (
-                                    <div key={idx} className="text-xs" title={output}>
-                                      {idx + 1}. {output}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            );
-          })}
+          {filteredSteps.map((step) => (
+            <ProcessStepCard key={step.id} step={step} />
+          ))}
 
           {/* Navigation Button at the end */}
           {filteredSteps.length > 0 && onNavigateToRaci && (
