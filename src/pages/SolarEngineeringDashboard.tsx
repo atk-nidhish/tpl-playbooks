@@ -10,7 +10,7 @@ import { Leaderboard } from "@/components/Leaderboard";
 import { ModernNavigation } from "@/components/ModernNavigation";
 import { ModernTabs } from "@/components/ModernTabs";
 import { seedSolarEngineeringData } from "@/services/solar-engineering-playbook-seeder";
-import { Home, Map, Wrench } from "lucide-react";
+import { Home, Map, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
