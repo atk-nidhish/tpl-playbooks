@@ -35,8 +35,8 @@ const PredevSolarDashboard = () => {
         </div>
 
         <PlaybookCertification 
-          playbookId="solar-predev"
-          playbookName="Predevelopment - Solar"
+          playbookId="solar-planning"
+          playbookName="Planning - Solar"
           chapters={chapters}
         />
       </div>
@@ -44,4 +44,4 @@ const PredevSolarDashboard = () => {
   );
 };
 
-export default PredevSolarDashboard;
+export default PlanningSolarDashboard;
