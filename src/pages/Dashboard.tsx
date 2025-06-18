@@ -16,6 +16,10 @@ const Dashboard = () => {
     }, 500);
   }, []);
 
+  const handleSolarEngineeringClick = () => {
+    window.open('/solar-planning.pdf', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -97,12 +101,12 @@ const Dashboard = () => {
                   <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <Link to="">
-                  {/* <Link to="/planning-solar"> */}
-                    <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
-                      Access Playbook
-                    </Button>
-                  </Link>
+                  <Button 
+                    onClick={handleSolarEngineeringClick}
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                  >
+                    Access Playbook
+                  </Button>
                 </CardContent>
               </Card>
             </div>
