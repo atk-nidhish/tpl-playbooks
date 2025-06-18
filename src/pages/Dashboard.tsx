@@ -87,10 +87,10 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         {/* Welcome Section */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
           <p className="text-gray-600">Solar and Wind Project Execution Playbooks </p>
-        </div>
+        </div> */}
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
