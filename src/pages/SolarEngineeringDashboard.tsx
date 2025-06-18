@@ -29,7 +29,6 @@ import { Link } from "react-router-dom";
 
 
 
-
 const SolarEngineeringDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
@@ -105,7 +104,6 @@ const SolarEngineeringDashboard = () => {
         setIsLoading(false);
       }
     };
-
     initializeData();
   }, []);
 
@@ -181,7 +179,7 @@ const SolarEngineeringDashboard = () => {
           onPhaseChange={setActivePhase}
           value={activeTab}
           onValueChange={setActiveTab}
-        >
+        />
           <TabsContent value="process-steps">
             <ProcessSteps 
               playbookId={playbookId}
