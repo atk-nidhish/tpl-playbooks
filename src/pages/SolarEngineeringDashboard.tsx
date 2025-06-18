@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, ArrowLeft, BookOpen, Grid3X3, Users, Award } from "lucide-react";
-import { ModernTabs } from "@/components/ModernTabs";
+import { ModernTabs, TabsContent } from "@/components/ModernTabs";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { RACIMatrix } from "@/components/RACIMatrix";
 import { ProcessMap } from "@/components/ProcessMap";
@@ -15,107 +15,63 @@ import { seedSolarEngineeringData } from "@/services/solar-engineering-playbook-
 const SolarEngineeringDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
-  const [activePhase, setActivePhase] = useState('chapter-1');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activePhase, setActivePhase] = useState('1-1');
+  const [activeTab, setActiveTab] = useState('process-steps');
 
-  // Define the playbook structure based on the table of contents
-  const chapters = [
+  // Define the playbook structure to match Planning Solar format
+  const phases = [
     {
-      id: 'chapter-1',
-      name: 'Chapter 1 - Basic Engineering Design Preparation',
-      shortName: 'Ch 1',
-      subChapters: [
-        { id: 'chapter-1-1', name: '1.1 Process Steps', shortName: '1.1' },
-        { id: 'chapter-1-2', name: '1.2 RACI', shortName: '1.2' },
-        { id: 'chapter-1-3', name: '1.3 Process Map', shortName: '1.3' }
-      ]
+      id: '1-1',
+      name: 'Section 1.1 - Basic Engineering Design Preparation',
+      shortName: '1.1',
+      description: 'Basic Engineering Design Preparation process'
     },
     {
-      id: 'chapter-2-1',
-      name: 'Chapter 2.1 - Owner\'s Engineer Finalization',
-      shortName: 'Ch 2.1',
-      subChapters: [
-        { id: 'chapter-2-1-1', name: '2.1.1 Process Steps', shortName: '2.1.1' },
-        { id: 'chapter-2-1-2', name: '2.1.2 RACI', shortName: '2.1.2' },
-        { id: 'chapter-2-1-3', name: '2.1.3 Process Map', shortName: '2.1.3' }
-      ]
+      id: '2-1-1',
+      name: 'Section 2.1.1 - Owner\'s Engineer Finalization',
+      shortName: '2.1.1',
+      description: 'Owner\'s Engineer Finalization process'
     },
     {
-      id: 'chapter-2-2a',
-      name: 'Chapter 2.2A - Site Survey Consultant Finalization',
-      shortName: 'Ch 2.2A',
-      subChapters: [
-        { id: 'chapter-2-2a-1', name: '2.2A.1 Process Steps', shortName: '2.2A.1' },
-        { id: 'chapter-2-2a-2', name: '2.2A.2 RACI', shortName: '2.2A.2' },
-        { id: 'chapter-2-2a-3', name: '2.2A.3 Process Map', shortName: '2.2A.3' }
-      ]
+      id: '2-2a-1',
+      name: 'Section 2.2A.1 - Site Survey Consultant Finalization',
+      shortName: '2.2A.1',
+      description: 'Site Survey Consultant Finalization process'
     },
     {
-      id: 'chapter-2-2b',
-      name: 'Chapter 2.2B - Preliminary Works Execution',
-      shortName: 'Ch 2.2B',
-      subChapters: [
-        { id: 'chapter-2-2b-1', name: '2.2B.1 Process Steps', shortName: '2.2B.1' },
-        { id: 'chapter-2-2b-2', name: '2.2B.2 RACI', shortName: '2.2B.2' },
-        { id: 'chapter-2-2b-3', name: '2.2B.3 Process Map', shortName: '2.2B.3' }
-      ]
+      id: '2-2b-1',
+      name: 'Section 2.2B.1 - Preliminary Works Execution',
+      shortName: '2.2B.1',
+      description: 'Preliminary Works Execution process'
     },
     {
-      id: 'chapter-3',
-      name: 'Chapter 3 - Detailed Engineering Design Preparation',
-      shortName: 'Ch 3',
-      subChapters: [
-        { id: 'chapter-3-1', name: '3.1 Process Steps', shortName: '3.1' },
-        { id: 'chapter-3-2', name: '3.2 RACI', shortName: '3.2' },
-        { id: 'chapter-3-3', name: '3.3 Process Map', shortName: '3.3' }
-      ]
+      id: '3-1',
+      name: 'Section 3.1 - Detailed Engineering Design Preparation',
+      shortName: '3.1',
+      description: 'Detailed Engineering Design Preparation process'
     },
     {
-      id: 'chapter-4',
-      name: 'Chapter 4 - Sign-Off for Detailed Engineering Design',
-      shortName: 'Ch 4',
-      subChapters: [
-        { id: 'chapter-4-1', name: '4.1 Process Steps', shortName: '4.1' },
-        { id: 'chapter-4-2', name: '4.2 RACI', shortName: '4.2' },
-        { id: 'chapter-4-3', name: '4.3 Process Map', shortName: '4.3' }
-      ]
+      id: '4-1',
+      name: 'Section 4.1 - Sign-Off for Detailed Engineering Design',
+      shortName: '4.1',
+      description: 'Sign-Off for Detailed Engineering Design process'
     },
     {
-      id: 'chapter-5',
-      name: 'Chapter 5 - Issue Resolution for Detailed Engineering Design',
-      shortName: 'Ch 5',
-      subChapters: [
-        { id: 'chapter-5-1', name: '5.1 Process Steps', shortName: '5.1' },
-        { id: 'chapter-5-2', name: '5.2 RACI', shortName: '5.2' },
-        { id: 'chapter-5-3', name: '5.3 Process Map', shortName: '5.3' }
-      ]
+      id: '5-1',
+      name: 'Section 5.1 - Issue Resolution for Detailed Engineering Design',
+      shortName: '5.1',
+      description: 'Issue Resolution for Detailed Engineering Design process'
     },
     {
-      id: 'chapter-6',
-      name: 'Chapter 6 - Assessment of OE Empanelment Requirements',
-      shortName: 'Ch 6',
-      subChapters: [
-        { id: 'chapter-6-1', name: '6.1 Process Steps', shortName: '6.1' },
-        { id: 'chapter-6-2', name: '6.2 RACI', shortName: '6.2' },
-        { id: 'chapter-6-3', name: '6.3 Process Map', shortName: '6.3' }
-      ]
+      id: '6-1',
+      name: 'Section 6.1 - Assessment of OE Empanelment Requirements',
+      shortName: '6.1',
+      description: 'Assessment of OE Empanelment Requirements process'
     }
   ];
 
   const playbookId = "solar-engineering-playbook-2024";
   const playbookName = "Engineering - Solar";
-
-  // Process map images (placeholder - would need actual images)
-  const processMapImages = {
-    'chapter-1-3': '/placeholder.svg',
-    'chapter-2-1-3': '/placeholder.svg',
-    'chapter-2-2a-3': '/placeholder.svg',
-    'chapter-2-2b-3': '/placeholder.svg',
-    'chapter-3-3': '/placeholder.svg',
-    'chapter-4-3': '/placeholder.svg',
-    'chapter-5-3': '/placeholder.svg',
-    'chapter-6-3': '/placeholder.svg'
-  };
 
   useEffect(() => {
     const initializeData = async () => {
@@ -134,60 +90,6 @@ const SolarEngineeringDashboard = () => {
 
     initializeData();
   }, []);
-
-  const tabsData = [
-    {
-      id: "process-steps",
-      label: "Process Steps",
-      icon: <BookOpen className="h-4 w-4" />,
-      content: (
-        <ProcessSteps 
-          playbookId={playbookId}
-          activePhase={activePhase}
-          searchQuery={searchQuery}
-          isLoading={isLoading}
-        />
-      )
-    },
-    {
-      id: "raci-matrix",
-      label: "RACI Matrix", 
-      icon: <Grid3X3 className="h-4 w-4" />,
-      content: (
-        <RACIMatrix 
-          playbookId={playbookId}
-          activePhase={activePhase}
-          searchQuery={searchQuery}
-          isLoading={isLoading}
-        />
-      )
-    },
-    {
-      id: "process-map",
-      label: "Process Map",
-      icon: <FileText className="h-4 w-4" />,
-      content: (
-        <ProcessMap 
-          playbookId={playbookId}
-          activePhase={activePhase}
-          processMapImages={processMapImages}
-          isLoading={isLoading}
-        />
-      )
-    },
-    {
-      id: "certification",
-      label: "Certification",
-      icon: <Award className="h-4 w-4" />,
-      content: (
-        <PlaybookCertification
-          playbookId={playbookId}
-          playbookName={playbookName}
-          chapters={chapters}
-        />
-      )
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50">
@@ -235,12 +137,12 @@ const SolarEngineeringDashboard = () => {
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div className="text-center p-3 bg-orange-50 rounded-lg">
-                  <div className="font-semibold text-orange-700">6 Chapters</div>
+                  <div className="font-semibold text-orange-700">8 Sections</div>
                   <div className="text-gray-600">Complete Coverage</div>
                 </div>
                 <div className="text-center p-3 bg-orange-50 rounded-lg">
-                  <div className="font-semibold text-orange-700">24 Sub-Sections</div>
-                  <div className="text-gray-600">Detailed Breakdown</div>
+                  <div className="font-semibold text-orange-700">Process Steps</div>
+                  <div className="text-gray-600">Detailed Workflows</div>
                 </div>
                 <div className="text-center p-3 bg-orange-50 rounded-lg">
                   <div className="font-semibold text-orange-700">Process Maps</div>
@@ -256,11 +158,44 @@ const SolarEngineeringDashboard = () => {
         </div>
 
         <ModernTabs 
-          tabs={tabsData} 
-          phases={chapters}
+          phases={phases}
           activePhase={activePhase}
           onPhaseChange={setActivePhase}
-        />
+          value={activeTab}
+          onValueChange={setActiveTab}
+        >
+          <TabsContent value="process-steps">
+            <ProcessSteps 
+              playbookId={playbookId}
+              activePhase={activePhase}
+              isLoading={isLoading}
+            />
+          </TabsContent>
+          
+          <TabsContent value="raci-matrix">
+            <RACIMatrix 
+              playbookId={playbookId}
+              activePhase={activePhase}
+              isLoading={isLoading}
+            />
+          </TabsContent>
+          
+          <TabsContent value="process-map">
+            <ProcessMap 
+              playbookId={playbookId}
+              activePhase={activePhase}
+              isLoading={isLoading}
+            />
+          </TabsContent>
+          
+          <TabsContent value="certification">
+            <PlaybookCertification
+              playbookId={playbookId}
+              playbookName={playbookName}
+              chapters={phases}
+            />
+          </TabsContent>
+        </ModernTabs>
       </main>
     </div>
   );
