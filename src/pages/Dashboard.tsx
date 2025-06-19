@@ -1,194 +1,515 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Book, GraduationCap, Award, Sun, Wind, HardHat, Construction, PackageCheck } from "lucide-react";
+
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { FileText, Wind, Sun, MapPin, Download } from "lucide-react";
 
 const Dashboard = () => {
-  const playbooks = [
-    {
-      title: "Solar Planning",
-      description: "A complete guide to solar planning process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-planning",
-      certificationPath: "/solar-planning",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Solar Predevelopment",
-      description: "A complete guide to solar predevelopment process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-predevelopment",
-      certificationPath: "/solar-predevelopment",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Solar Engineering",
-      description: "A complete guide to solar engineering process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-engineering",
-      certificationPath: "/solar-engineering",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Solar Contracting",
-      description: "A complete guide to solar contracting process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-contracting",
-      certificationPath: "/solar-contracting",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Solar Construction",
-      description: "A complete guide to solar construction process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-construction",
-      certificationPath: "/solar-construction",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Solar Commissioning",
-      description: "A complete guide to solar commissioning process",
-      icon: Sun,
-      playbookPath: "/playbook/solar-commissioning",
-      certificationPath: "/solar-commissioning",
-      iconBg: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      cardBg: "bg-gradient-to-br from-yellow-50 to-orange-50",
-      borderColor: "border-orange-200",
-      hoverBg: "hover:bg-orange-50",
-      type: "solar"
-    },
-    {
-      title: "Wind Planning",
-      description: "A complete guide to wind planning process",
-      icon: Wind,
-      playbookPath: "/playbook/wind-planning",
-      certificationPath: "/wind-planning",
-      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-      cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-      borderColor: "border-blue-200",
-      hoverBg: "hover:bg-blue-50",
-      type: "wind"
-    },
-    {
-      title: "Wind Predevelopment",
-      description: "A complete guide to wind predevelopment process",
-      icon: Wind,
-      playbookPath: "/playbook/wind-predevelopment",
-      certificationPath: "/wind-predevelopment",
-      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-      cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-      borderColor: "border-blue-200",
-      hoverBg: "hover:bg-blue-50",
-      type: "wind"
-    },
-    {
-      title: "Wind Engineering",
-      description: "A complete guide to wind engineering process",
-      icon: Wind,
-      playbookPath: "/playbook/wind-engineering",
-      certificationPath: "/wind-engineering",
-      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-      cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-      borderColor: "border-blue-200",
-      hoverBg: "hover:bg-blue-50",
-      type: "wind"
-    },
-    // {
-    //   title: "Wind C&P",
-    //   description: "A complete guide to wind contracting and procurement process",
-    //   icon: Wind,
-    //   playbookPath: "/playbook/wind-cp-dashboard",
-    //   certificationPath: "/wind-cp-dashboard",
-    //   iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-    //   cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-    //   borderColor: "border-blue-200",
-    //   hoverBg: "hover:bg-blue-50",
-    //   type: "wind"
-    // },
-    {
-      title: "Wind - C&P Certification",
-      description: "A complete guide to wind contracting and procurement certification",
-      icon: Award,
-      playbookPath: "/playbook/wind-cp",
-      certificationPath: "/wind-cp",
-      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-      cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-      borderColor: "border-blue-200",
-      hoverBg: "hover:bg-blue-50",
-      type: "wind"
-    },
-    {
-      title: "Construction Management - Wind",
-      description: "Complete guide for Wind construction project management, site mobilization, and quality control",
-      icon: HardHat,
-      playbookPath: "/wind-construction",
-      certificationPath: "/wind-construction",
-      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600",
-      cardBg: "bg-gradient-to-br from-blue-50 to-indigo-50",
-      borderColor: "border-blue-200",
-      hoverBg: "hover:bg-blue-50",
-      type: "wind"
-    },
-    {
-      title: "Commissioning",
-      description: "A complete guide to commissioning process",
-      icon: PackageCheck,
-      playbookPath: "/playbook/commissioning",
-      certificationPath: "/commissioning",
-      iconBg: "bg-gradient-to-r from-green-500 to-green-600",
-      cardBg: "bg-gradient-to-br from-green-50 to-emerald-50",
-      borderColor: "border-green-200",
-      hoverBg: "hover:bg-green-50",
-      type: "general"
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulate loading data
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+
+  // Solar Click Handling
+  const handleSolarPlanningClick = () => {
+    window.open('/solar-planning.pdf', '_blank');
+  };  
+  const handleSolarPredevClick = () => {
+    window.open('/solar-predevelopment.pdf', '_blank');
+  };
+  
+  const handleSolarEngineeringClick = () => {
+    window.open('/solar-engineering.pdf', '_blank');
+  };
+
+  const handleSolarContractingClick = () => {
+    window.open('/solar-contracting.pdf', '_blank');
+  };
+
+  const handleSolarConstructionClick = () => {
+    window.open('/solar-construction.pdf', '_blank');
+  };
+
+  const handleSolarCommissioningClick = () => {
+    window.open('/solar-commissioning.pdf', '_blank');
+  };
+  
+  // Wind Click Handling
+  const handleWindPlanningClick = () => {
+    window.open('/wind-planning.pdf', '_blank');
+  };  
+
+  const handleWindPredevClick = () => {
+    window.open('/wind-predev.pdf', '_blank');
+  };
+  
+  const handleWindEngineeringClick = () => {
+    window.open('/wind-engineering.pdf', '_blank');
+  };
+
+  const handleWindContractingClick = () => {
+    window.open('/wind-cp.pdf', '_blank');
+  };
+
+  const handleWindConstructionClick = () => {
+    window.open('/wind-construction.pdf', '_blank');
+  };
+
+  const handleWindCommissioningClick = () => {
+    window.open('/wind-commissioning.pdf', '_blank');
+  };
+
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-500">
-      <header className="bg-white/80 backdrop-blur-md border-b border-zinc-200">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b">
         <div className="container mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-zinc-900">Dashboard</h1>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="bg-gray-500 p-2 rounded-lg">
+                <FileText className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900">Project NavSaksham Playbook Portal</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+            </div>
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {playbooks.map((playbook, index) => (
-            <Link to={playbook.certificationPath} key={index}>
-              <Card className={`transition-all duration-300 ${playbook.cardBg} ${playbook.borderColor} ${playbook.hoverBg} hover:shadow-md`}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className={`${playbook.iconBg} p-2 rounded-lg`}>
-                      <playbook.icon className="h-6 w-6 text-white" />
+      {/* Main Content */}
+      <main className="container mx-auto px-6 py-8">
+        {/* Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Solar Playbooks Section */}
+          <div>
+            <div className="flex items-center space-x-2 mb-6">
+              <FileText className="h-6 w-6 text-orange-600" />
+              <h3 className="text-xl font-semibold text-gray-900">Solar Playbooks</h3>
+            </div>
+            
+            <div className="space-y-4">
+
+            {/* Planning - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
-                    <CardTitle className="text-lg font-semibold text-zinc-900">{playbook.title}</CardTitle>
                   </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Planning</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-zinc-600">{playbook.description}</CardDescription>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarPlanningClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
-            </Link>
-          ))}
+
+            {/* Predev - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Predevelopment</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarPredevClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-predevelopment" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+    
+              {/* Engineering - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Engineering - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Engineering</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarEngineeringClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-engineering" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              
+              {/* C&P - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Contracting and Procurement - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Contracting and Procurement</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarContractingClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-contracting" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Construction - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Construction Management - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Construction Management</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarConstructionClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-construction" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+               {/* Commissioning - Solar Playbook */}
+              <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-orange-500 p-2 rounded-lg">
+                        <Sun className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Commissioning - Solar</CardTitle>
+                  <CardDescription className="text-gray-600">Solar Project Commissioning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSolarCommissioningClick}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/solar-commissioning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+              
+            </div>
+          </div>
+
+          {/* Wind Playbooks Section */}
+          <div>
+            <div className="flex items-center space-x-2 mb-6">
+              <FileText className="h-6 w-6 text-blue-600" />
+              <h3 className="text-xl font-semibold text-gray-900">Wind Playbooks</h3>
+            </div>
+            
+            <div className="space-y-4">
+              
+          {/* Wind - Planning Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Planning - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Planning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindPlanningClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+            {/* Wind - Predev Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Predevelopment - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Predevelopment</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindPredevClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-predevelopment" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+             {/* Wind - Engineering Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Engineering - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Engineering</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindEngineeringClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-engineering" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              
+            {/* Wind - C&P Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Contracting and Procurement - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Contracting and Procurement</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindContractingClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-cp" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+             {/* Wind - Construction Management Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Construction Management - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Construction Management</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindConstructionClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card> 
+
+             {/* Wind - Commissioning Playbook */}
+            <Card className="bg-white border border-gray-200">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-600 p-2 rounded-lg">
+                        <Wind className="h-6 w-6 text-white" />
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">Commissioning - Wind</CardTitle>
+                  <CardDescription className="text-gray-600">Wind Project Commissioning</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleWindCommissioningClick}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Access Playbook
+                    </Button>
+                    <Link to="/wind-planning" className="flex-1">
+                      <Button 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Certification Quiz
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card> 
+              
+            </div> 
+          </div>
         </div>
       </main>
     </div>

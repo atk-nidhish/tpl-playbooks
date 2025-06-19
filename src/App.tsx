@@ -19,7 +19,6 @@ import WindPredevelopmentDashboard from "./pages/WindPredevelopmentDashboard";
 import WindEngineeringDashboard from "./pages/WindEngineeringDashboard";
 // import WindCPDashboard from "./pages/WindCPDashboard";
 import WindCPCertificationDashboard from "./pages/WindCPCertificationDashboard";
-import WindConstructionCertificationDashboard from "./pages/WindConstructionCertificationDashboard";
 import CommissioningDashboard from "./pages/CommissioningDashboard";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
@@ -91,11 +90,6 @@ function App() {
               <Route path="/wind-cp" element={
                 <ProtectedRoute>
                   <WindCPCertificationDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-construction" element={
-                <ProtectedRoute>
-                  <WindConstructionCertificationDashboard />
                 </ProtectedRoute>
               } />
               <Route path="/commissioning" element={

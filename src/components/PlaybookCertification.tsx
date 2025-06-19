@@ -54,7 +54,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isSolarContracting = playbookName.toLowerCase().includes('contracting') && playbookName.toLowerCase().includes('solar');
   const isSolarConstruction = playbookName.toLowerCase().includes('construction') && playbookName.toLowerCase().includes('solar');
   const isSolarCommissioning = playbookName.toLowerCase().includes('commissioning') && playbookName.toLowerCase().includes('solar');
-  const isWindConstruction = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('construction');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -847,119 +846,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
-  const windConstructionQuestions: CertificationQuestion[] = [
-    {
-      id: 1,
-      question: "What document serves as the input for the Project Manager to physical control of land parcels?",
-      options: [
-        "BOCW Application Documents",
-        "Signed Contractor PO and Scope of Work",
-        "Final FMB of Land"
-      ],
-      correctAnswer: 2,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 2,
-      question: "Who is accountable for providing the Grant of Connectivity and Developer Permission to the PM?",
-      options: [
-        "Project Manager",
-        "Regulatory Approvals Head",
-        "Contractor SPOC"
-      ],
-      correctAnswer: 1,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 3,
-      question: "Who completes the set-up of the site office and mobilization of site vehicles?",
-      options: [
-        "Site Manager",
-        "Project Manager",
-        "Site Admin Manager"
-      ],
-      correctAnswer: 2,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 4,
-      question: "What document serves as the input for the site mobilization plan?",
-      options: [
-        "Health and Fitness Certificates",
-        "Site Mobilization Checklist",
-        "Daily Progress Report"
-      ],
-      correctAnswer: 1,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 5,
-      question: "Who is responsible for conducting the safety induction of all the site manpower and issuing ID cards to them?",
-      options: [
-        "Site QHSSE Manager",
-        "Site Manager",
-        "Contractor SPOC"
-      ],
-      correctAnswer: 0,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 6,
-      question: "Who directs Site Functional Heads to distribute jobs within their package to their engineers?",
-      options: [
-        "Site Manager",
-        "Site Engineer",
-        "Project Manager"
-      ],
-      correctAnswer: 0,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 7,
-      question: "What document serves as the input for the work completion plan?",
-      options: [
-        "Manpower Availability Schedule",
-        "Site Mobilization Plan",
-        "Construction Management Plan"
-      ],
-      correctAnswer: 2,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 8,
-      question: "What document does the Site Functional Head raise to the Site Quality Head?",
-      options: [
-        "Quality Deviation List",
-        "Quality Inspection Notice",
-        "Job Completion Certificate"
-      ],
-      correctAnswer: 1,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 9,
-      question: "Who reviews the status of action items from previous MoM and collects updates from Site Functional Heads?",
-      options: [
-        "Site Engineer",
-        "Project Manager",
-        "Site Manager"
-      ],
-      correctAnswer: 2,
-      chapter: "Construction Management - Wind"
-    },
-    {
-      id: 10,
-      question: "Who is responsible for recording the MoM and sharing it with all the attendees post the meeting?",
-      options: [
-        "Project Manager",
-        "Site Planner",
-        "Site Manager"
-      ],
-      correctAnswer: 1,
-      chapter: "Construction Management - Wind"
-    }
-  ];
-
   const solarContractingQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -1418,7 +1304,6 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isWindPredevelopment ? windPredevelopmentQuestions :
                                 isWindEngineering ? windEngineeringQuestions :
                                 isWindCP ? windCPQuestions :
-                                isWindConstruction ? windConstructionQuestions :
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
