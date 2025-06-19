@@ -50,6 +50,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
   const isSolarContracting = playbookName.toLowerCase().includes('contracting') && playbookName.toLowerCase().includes('solar');
   const isSolarConstruction = playbookName.toLowerCase().includes('construction') && playbookName.toLowerCase().includes('solar');
+  const isSolarCommissioning = playbookName.toLowerCase().includes('commissioning') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -729,6 +730,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const solarCommissioningQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who ensures signatures on the punch point list from the EPC Engineer and respective Site Functional Head?",
+      options: [
+        "Site QHSSE",
+        "EPC SPOC",
+        "Site Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Commissioning Process"
+    },
+    {
+      id: 2,
+      question: "What document is to be prepared after closing all the critical punch points during the Construction Inspection process?",
+      options: [
+        "Inspection Checklist",
+        "Punch Point List",
+        "Compliance Report"
+      ],
+      correctAnswer: 2,
+      chapter: "Commissioning Process"
+    },
+    {
+      id: 3,
+      question: "Who is responsible for notifying the Site Electrical Lead (SEL) to initiate the pre-commissioning tests of the DC Block?",
+      options: [
+        "Site Manager",
+        "Project Manager",
+        "Chief O&M"
+      ],
+      correctAnswer: 0,
+      chapter: "Testing and Procedures"
+    },
+    {
+      id: 4,
+      question: "Who prepares and shares the testing procedure and pre-commissioning checklist with the SEL?",
+      options: [
+        "Site Manager",
+        "EPC SPOC",
+        "Chief O&M"
+      ],
+      correctAnswer: 1,
+      chapter: "Testing and Procedures"
+    },
+    {
+      id: 5,
+      question: "What document is required as an input for the RLDC User Registration process?",
+      options: [
+        "Inspection checklist",
+        "Grid Code Compliance Report",
+        "Pre-commissioning checklist"
+      ],
+      correctAnswer: 1,
+      chapter: "Regulatory Compliance"
+    },
+    {
+      id: 6,
+      question: "Who is responsible for notifying the CEIG to approve the plant drawings and conduct an inspection for Electrical Safety Approval (ESA)?",
+      options: [
+        "Project Manager",
+        "Chief Regulatory",
+        "Regulatory Approvals Head (RAH)"
+      ],
+      correctAnswer: 2,
+      chapter: "Regulatory Compliance"
+    },
+    {
+      id: 7,
+      question: "Who is responsible for sharing the Grid charge code for FTC with the Project Manager?",
+      options: [
+        "Site Manager",
+        "Regulatory Approvals Head (RAH)",
+        "Chief O&M"
+      ],
+      correctAnswer: 1,
+      chapter: "Regulatory Compliance"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for conducting the performance test?",
+      options: [
+        "Site Manager",
+        "Chief O&M",
+        "EPC SPOC"
+      ],
+      correctAnswer: 2,
+      chapter: "Testing and Procedures"
+    },
+    {
+      id: 9,
+      question: "What document is required as an input for the Project Handover process to the O&M Team?",
+      options: [
+        "Project Handover Checklist",
+        "Compliance Report",
+        "Grid Code Compliance Report"
+      ],
+      correctAnswer: 0,
+      chapter: "Project Handover"
+    },
+    {
+      id: 10,
+      question: "Who is responsible for conducting Knowledge Transfer (KT) sessions with the O&M team and providing the plant HOTO?",
+      options: [
+        "Project Manager",
+        "Site Manager",
+        "Chief O&M"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Handover"
+    }
+  ];
+
   const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -849,6 +963,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
                                 isSolarConstruction ? solarConstructionQuestions :
+                                isSolarCommissioning ? solarCommissioningQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {

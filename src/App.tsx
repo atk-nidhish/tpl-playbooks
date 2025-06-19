@@ -14,6 +14,7 @@ import PlanningSolarDashboard from "./pages/PlanningSolarDashboard";
 import SolarPredevelopmentDashboard from "./pages/SolarPredevelopmentDashboard";
 import SolarContractingDashboard from "./pages/SolarContractingDashboard";
 import SolarConstructionDashboard from "./pages/SolarConstructionDashboard";
+import SolarCommissioningDashboard from "./pages/SolarCommissioningDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
 import SolarEngineeringDashboard from "./pages/SolarEngineeringDashboard";
 
@@ -80,6 +81,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <SolarConstructionDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/solar-commissioning" 
+            element={
+              <ProtectedRoute>
+                <SolarCommissioningDashboard />
               </ProtectedRoute>
             } 
           />
