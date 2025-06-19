@@ -49,6 +49,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
   const isSolarContracting = playbookName.toLowerCase().includes('contracting') && playbookName.toLowerCase().includes('solar');
+  const isSolarConstruction = playbookName.toLowerCase().includes('construction') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -615,6 +616,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const solarConstructionQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for hiring a Third-Party Engineer to conduct Geo-tech activities?",
+      options: [
+        "Procurement Lead",
+        "Project Manager",
+        "Site Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Site Mobilization"
+    },
+    {
+      id: 2,
+      question: "Who is responsible for applying for the BOCW license and sharing it with the Project Manager and Regulatory Approvals Head?",
+      options: [
+        "EPC SPOC",
+        "Site Functional Head",
+        "Site QHSSE Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Site Mobilization"
+    },
+    {
+      id: 3,
+      question: "Who instructs the Site Admin Manager to set up the site office, guest house, and mobilize site vehicles?",
+      options: [
+        "Site Manager",
+        "Site Functional Head",
+        "Project Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Site Mobilization"
+    },
+    {
+      id: 4,
+      question: "What document is required as an input for creating the manpower availability schedule?",
+      options: [
+        "Work Completion Plan",
+        "Daily Progress Report",
+        "Site Mobilization Plan"
+      ],
+      correctAnswer: 2,
+      chapter: "Site Mobilization"
+    },
+    {
+      id: 5,
+      question: "Who provides the final sign-off on the site mobilization plan?",
+      options: [
+        "Project Manager",
+        "Site Functional Heads",
+        "Site Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Site Mobilization"
+    },
+    {
+      id: 6,
+      question: "Who is responsible for conducting the safety induction of machinery and verifying the machinery documents?",
+      options: [
+        "Site Functional Head",
+        "Site Manager",
+        "Site QHSSE Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Quality & Safety"
+    },
+    {
+      id: 7,
+      question: "Who is responsible for creating the work completion plan for a given job and sharing it with the respective Site Functional Head?",
+      options: [
+        "Site Manager",
+        "Site Planner",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Construction Execution"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for recording daily progress and unresolved issues and sharing them with the Site Functional Head?",
+      options: [
+        "Site Engineer",
+        "Project Manager",
+        "Site Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Construction Execution"
+    },
+    {
+      id: 9,
+      question: "Who is responsible for conducting an inspection of the completed work and creating a list of deviations?",
+      options: [
+        "Site Manager",
+        "Site QHSSE Lead",
+        "Site Functional Head"
+      ],
+      correctAnswer: 1,
+      chapter: "Quality & Safety"
+    },
+    {
+      id: 10,
+      question: "What document is issued by the Site QHSSE Lead to the EPC SPOC upon successful inspection of the completed work?",
+      options: [
+        "Job Completion Certificate",
+        "Quality Deviation List",
+        "Daily Progress Report"
+      ],
+      correctAnswer: 0,
+      chapter: "Quality & Safety"
+    }
+  ];
+
   const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -734,6 +848,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
+                                isSolarConstruction ? solarConstructionQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
