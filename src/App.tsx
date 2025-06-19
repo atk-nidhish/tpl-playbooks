@@ -11,6 +11,7 @@ import Playbook from "./pages/Playbook";
 import CommissioningDashboard from "./pages/CommissioningDashboard";
 import WindCPDashboard from "./pages/WindCPDashboard";
 import PlanningSolarDashboard from "./pages/PlanningSolarDashboard";
+import SolarPredevelopmentDashboard from "./pages/SolarPredevelopmentDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
 import SolarEngineeringDashboard from "./pages/SolarEngineeringDashboard";
 
@@ -32,14 +33,6 @@ const App = () => (
             } 
           />
           <Route path="/legacy" element={<Index />} />
-          {/* <Route 
-            path="/commissioning" 
-            element={
-              <ProtectedRoute>
-                <CommissioningDashboard />
-              </ProtectedRoute>
-            } 
-          /> */}
           <Route 
             path="/wind-cp" 
             element={
@@ -61,6 +54,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <PlanningSolarDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/solar-predevelopment" 
+            element={
+              <ProtectedRoute>
+                <SolarPredevelopmentDashboard />
               </ProtectedRoute>
             } 
           />

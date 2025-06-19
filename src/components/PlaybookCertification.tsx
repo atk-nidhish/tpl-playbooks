@@ -47,6 +47,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
+  const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -271,6 +272,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
       ],
       correctAnswer: 1,
       chapter: "Drawing Management"
+    }
+  ];
+
+  const solarPredevelopmentQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for preparing the Pre-development Intelligence Report (PDIR)?",
+      options: [
+        "Chief Land & Connectivity",
+        "Chief Land Officer",
+        "Land Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Predevelopment Intelligence Report"
+    },
+    {
+      id: 2,
+      question: "What document serves as an input for the Chief Land & Connectivity to prepare the PDIR?",
+      options: [
+        "Substation Shortlist",
+        "Financial Feasibility Report",
+        "Annual Growth Outlook"
+      ],
+      correctAnswer: 2,
+      chapter: "Predevelopment Intelligence Report"
+    },
+    {
+      id: 3,
+      question: "Who is accountable to appoint a Land Manager to lead Land Leasing and Evacuation Capacity Reservation activities?",
+      options: [
+        "Chief Land & Connectivity",
+        "Procurement Lead",
+        "Chief Land Officer"
+      ],
+      correctAnswer: 2,
+      chapter: "Land Leasing and Evacuation Capacity Reservation"
+    },
+    {
+      id: 4,
+      question: "Who is responsible for sharing the Substation Application List and Grid Study with the Procurement Lead?",
+      options: [
+        "Chief Land Officer",
+        "Chief Business Development",
+        "Land Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Land Leasing and Evacuation Capacity Reservation"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for preparing the Detailed Feasibility Report (DFR) for internal assessment of shortlisted land parcels?",
+      options: [
+        "Chief Land Officer",
+        "Engineering Manager",
+        "Land Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 6,
+      question: "Who is responsible for preparing the Financial Feasibility Report (FFR) for each technically feasible land parcel?",
+      options: [
+        "Chief Land Officer",
+        "Land Manager",
+        "Commercial Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 7,
+      question: "What document serves as an input for the Commercial Manager to prepare the Financial Feasibility Report (FFR)?",
+      options: [
+        "Annual Growth Outlook",
+        "Substation Shortlist",
+        "Detailed Feasibility Reports (DFRs)"
+      ],
+      correctAnswer: 2,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 8,
+      question: "What is the output of the process step where the Land Manager coordinates with the respective Land Aggregator to negotiate with landowners?",
+      options: [
+        "Substation Shortlist",
+        "Final Sanitized FFRs",
+        "List of Technically Feasible Land Parcels"
+      ],
+      correctAnswer: 1,
+      chapter: "Land Leasing and Evacuation Capacity Reservation"
+    },
+    {
+      id: 9,
+      question: "Who is responsible for securing Evacuation Capacity in the shortlisted substations?",
+      options: [
+        "Chief Land Officer",
+        "Land Manager",
+        "Procurement Lead"
+      ],
+      correctAnswer: 2,
+      chapter: "Land Leasing and Evacuation Capacity Reservation"
+    },
+    {
+      id: 10,
+      question: "Who is responsible for initiating the comprehensive Due Diligence process to verify land ownership?",
+      options: [
+        "Chief Land Officer",
+        "Procurement Lead",
+        "Land Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Feasibility Assessment and Due Diligence"
     }
   ];
 
@@ -504,6 +618,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
                                 isWindPlanning ? windPlanningQuestions : 
                                 isSolarEngineering ? solarEngineeringQuestions :
+                                isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +20,7 @@ const Dashboard = () => {
     window.open('/solar-planning.pdf', '_blank');
   };  
   const handleSolarPredevClick = () => {
-    window.open('/solar-predev.pdf', '_blank');
+    window.open('/solar-predevelopment.pdf', '_blank');
   };
   
   const handleSolarEngineeringClick = () => {
@@ -86,12 +85,6 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
-        {/* Welcome Section */}
-        {/* <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
-          <p className="text-gray-600">Solar and Wind Project Execution Playbooks </p>
-        </div> */}
-
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
@@ -159,7 +152,7 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/solar-planning" className="flex-1">
+                    <Link to="/solar-predevelopment" className="flex-1">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >
