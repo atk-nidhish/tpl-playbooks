@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -309,7 +308,7 @@ const Dashboard = () => {
             
             <div className="space-y-4">
               
-          {/* Wind - Planning Playbook */}
+              {/* Wind - Planning Playbook */}
             <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
@@ -497,7 +496,7 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/wind-planning" className="flex-1">
+                    <Link to="/wind-commissioning" className="flex-1">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >

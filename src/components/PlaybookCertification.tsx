@@ -49,6 +49,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isWindEngineering = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('engineering');
   const isWindCP = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('contracting');
   const isWindConstruction = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('construction');
+  const isWindCommissioning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('commissioning');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
@@ -1299,6 +1300,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const windCommissioningQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who directs the Site Manager (SM) to conduct the inspection of the completed construction?",
+      options: [
+        "Chief O&M",
+        "Site QHSSE",
+        "Project Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Construction Inspection and Compliance"
+    },
+    {
+      id: 2,
+      question: "What is the output document after the Site QHSSE leads the inspection and logs all the deviations?",
+      options: [
+        "Punch Point List",
+        "Compliance Report",
+        "Deviation Certificate"
+      ],
+      correctAnswer: 0,
+      chapter: "Construction Inspection and Compliance"
+    },
+    {
+      id: 3,
+      question: "What document is prepared by the Contractor SPOC after closing all the critical punch points?",
+      options: [
+        "Notice for Inspection",
+        "Compliance Report",
+        "Job Completion Certificate"
+      ],
+      correctAnswer: 1,
+      chapter: "Construction Inspection and Compliance"
+    },
+    {
+      id: 4,
+      question: "Who initiates the collection of documents required for RLDC User Registration?",
+      options: [
+        "Regulatory Approvals Head (RAH)",
+        "Chief Regulatory",
+        "OEM SPOC"
+      ],
+      correctAnswer: 0,
+      chapter: "RLDC User Registration"
+    },
+    {
+      id: 5,
+      question: "What document is required for RLDC User Registration along with technical and modelling data?",
+      options: [
+        "Grid Code Compliance Report",
+        "Inspection Results",
+        "Mechanical Clearance Certificate"
+      ],
+      correctAnswer: 0,
+      chapter: "RLDC User Registration"
+    },
+    {
+      id: 6,
+      question: "Who is responsible for notifying the CEIG to approve plant drawings and conduct an inspection for Electrical Safety Approval (ESA)?",
+      options: [
+        "Project Manager",
+        "Chief Regulatory",
+        "Regulatory Approvals Head (RAH)"
+      ],
+      correctAnswer: 2,
+      chapter: "Electrical Safety and Testing"
+    },
+    {
+      id: 7,
+      question: "Who directs the OEM SPOC to initiate the reliability run test of WTG?",
+      options: [
+        "Site QHSSE",
+        "Project Manager",
+        "Chief O&M"
+      ],
+      correctAnswer: 1,
+      chapter: "Electrical Safety and Testing"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for conducting the PCVT (Power Curve Validation Test) in the presence of TP Consultant, PM, and CPOC?",
+      options: [
+        "OEM SPOC",
+        "Site Manager",
+        "Commissioning POC"
+      ],
+      correctAnswer: 0,
+      chapter: "Electrical Safety and Testing"
+    },
+    {
+      id: 9,
+      question: "Who informs the Chief O&M to begin HOTO for Balance of Plant (BOP)?",
+      options: [
+        "Site Manager",
+        "Project Manager",
+        "Chief Wind"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Handover and Knowledge Transfer"
+    },
+    {
+      id: 10,
+      question: "Who conducts Knowledge Transfer (KT) sessions with the O&M team and provides the HOTO (including spares)?",
+      options: [
+        "Project Manager",
+        "Regulatory Approvals Head (RAH)",
+        "Site Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Project Handover and Knowledge Transfer"
+    }
+  ];
+
   const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -1419,6 +1533,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isWindEngineering ? windEngineeringQuestions :
                                 isWindCP ? windCPQuestions :
                                 isWindConstruction ? windConstructionQuestions :
+                                isWindCommissioning ? windCommissioningQuestions :
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
