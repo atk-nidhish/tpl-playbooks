@@ -28,7 +28,7 @@ const Dashboard = () => {
   };
 
   const handleSolarContractingClick = () => {
-    window.open('/solar-cp.pdf', '_blank');
+    window.open('/solar-contracting.pdf', '_blank');
   };
 
   const handleSolarConstructionClick = () => {
@@ -219,7 +219,7 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/solar-engineering" className="flex-1">
+                    <Link to="/solar-contracting" className="flex-1">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >

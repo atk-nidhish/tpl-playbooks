@@ -48,6 +48,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
+  const isSolarContracting = playbookName.toLowerCase().includes('contracting') && playbookName.toLowerCase().includes('solar');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -501,6 +502,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const solarContractingQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who requests the Solar Engineering Head (SEH) to share the Bill of Quantities (BoQ) and Bill of Services (BoS) with the Solar Procurement Head (SPH) for cost estimation?",
+      options: [
+        "Chief Business Development",
+        "Solar Procurement Head",
+        "Bid In-charge"
+      ],
+      correctAnswer: 2,
+      chapter: "Procurement Planning"
+    },
+    {
+      id: 2,
+      question: "Who is accountable for sharing the BoQ and BoS with the Solar Procurement Head (SPH)?",
+      options: [
+        "Chief Business Development",
+        "Solar Engineering Head",
+        "Procurement Lead"
+      ],
+      correctAnswer: 1,
+      chapter: "Procurement Planning"
+    },
+    {
+      id: 3,
+      question: "Who is responsible for aligning requirements based on market availability and finalizing the BoQ and BoS?",
+      options: [
+        "Solar Procurement Head",
+        "Procurement Lead",
+        "Chief Business Development"
+      ],
+      correctAnswer: 0,
+      chapter: "Procurement Planning"
+    },
+    {
+      id: 4,
+      question: "What document serves as the input for the Procurement Lead to create a Gap Assessment Summary?",
+      options: [
+        "Market availability report",
+        "List of Empaneled Vendors",
+        "Cost Estimate"
+      ],
+      correctAnswer: 1,
+      chapter: "Vendor Management"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for floating the RFI document and collating responses from all the vendors?",
+      options: [
+        "Solar Engineering Head",
+        "Procurement Lead",
+        "Chief Business Development"
+      ],
+      correctAnswer: 1,
+      chapter: "Vendor Management"
+    },
+    {
+      id: 6,
+      question: "What document serves as the input for the Procurement Lead to prepare the RFQ?",
+      options: [
+        "Market availability report",
+        "Purchase Requisition (PR)",
+        "Cost Estimate"
+      ],
+      correctAnswer: 1,
+      chapter: "Vendor Management"
+    },
+    {
+      id: 7,
+      question: "Who is responsible for performing the technical evaluation and shortlisting vendor proposals?",
+      options: [
+        "Procurement Lead",
+        "Solar Engineering Head",
+        "Chief Business Development"
+      ],
+      correctAnswer: 1,
+      chapter: "Vendor Management"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for issuing a Purchase Order (PO) to the vendor based on requirements outlined in the contract?",
+      options: [
+        "Procurement Lead",
+        "Solar Procurement Head",
+        "Chief Business Development"
+      ],
+      correctAnswer: 0,
+      chapter: "Contract Execution"
+    },
+    {
+      id: 9,
+      question: "What document does the Chief SCM provide to a third-party inspection agency sent to inspect goods at the manufacturing site?",
+      options: [
+        "Market availability report",
+        "Cost Estimate",
+        "Inspection Checklist"
+      ],
+      correctAnswer: 2,
+      chapter: "Contract Execution"
+    },
+    {
+      id: 10,
+      question: "Who is responsible for receiving the delivery on-site and informing the Chief SCM?",
+      options: [
+        "Procurement Lead",
+        "Chief Business Development",
+        "Store Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Contract Execution"
+    }
+  ];
+
   const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -619,6 +733,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isWindPlanning ? windPlanningQuestions : 
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
+                                isSolarContracting ? solarContractingQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {
