@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -364,7 +363,7 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/wind-planning" className="flex-1">
+                    <Link to="/wind-predevelopment" className="flex-1">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >

@@ -45,6 +45,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
 
   // Determine playbook type
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
+  const isWindPredevelopment = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('predevelopment');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
@@ -504,6 +505,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const windPredevelopmentQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for sharing the Annual Growth Outlook with the Chief Land & Connectivity?",
+      options: [
+        "BD Team",
+        "Chief Land Officer",
+        "Land Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Predevelopment Intelligence Report"
+    },
+    {
+      id: 2,
+      question: "What document is prepared by the Chief Land & Connectivity based on the Annual Growth Outlook?",
+      options: [
+        "Grid Study",
+        "Wind Resource Assessment Report",
+        "Pre-development Intelligence Report (PDIR)"
+      ],
+      correctAnswer: 2,
+      chapter: "Predevelopment Intelligence Report"
+    },
+    {
+      id: 3,
+      question: "Who appoints the Land Manager to lead Land Leasing and Evacuation Capacity Reservation related activities?",
+      options: [
+        "Chief Land Officer",
+        "Procurement Lead",
+        "Chief Business Development"
+      ],
+      correctAnswer: 0,
+      chapter: "Land Leasing and Evacuation Capacity"
+    },
+    {
+      id: 4,
+      question: "Who is responsible for analyzing the Grid Study to shortlist substations for reserving evacuation capacity?",
+      options: [
+        "Chief Land Officer",
+        "Land Manager",
+        "Chief Procurement"
+      ],
+      correctAnswer: 1,
+      chapter: "Land Leasing and Evacuation Capacity"
+    },
+    {
+      id: 5,
+      question: "Which document does the Chief Land & Connectivity prepare by reviewing the WRA Reports?",
+      options: [
+        "Substation Shortlist",
+        "Land Parcel Shortlist",
+        "Financial Feasibility Report"
+      ],
+      correctAnswer: 1,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 6,
+      question: "Who informs the Land Manager of the land parcels selected for detailed assessment?",
+      options: [
+        "Chief Land & Connectivity",
+        "Chief Land Officer",
+        "Procurement Lead"
+      ],
+      correctAnswer: 0,
+      chapter: "Technical Evaluation"
+    },
+    {
+      id: 7,
+      question: "What document is shared by the Land Manager with the Wind Engineering Head for technical evaluation of the land parcel?",
+      options: [
+        "Pre-development Intelligence Report",
+        "Financial Feasibility Report",
+        "Wind Resource Assessment Reports"
+      ],
+      correctAnswer: 2,
+      chapter: "Technical Evaluation"
+    },
+    {
+      id: 8,
+      question: "Who is responsible for preparing the Financial Feasibility Report for each technically feasible land parcel?",
+      options: [
+        "Land Manager",
+        "Chief Land Officer",
+        "Commercial Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 9,
+      question: "What document is shared by the Commercial Manager with the Land Manager after redacting sensitive data?",
+      options: [
+        "Pre-development Intelligence Report",
+        "Sanitized Financial Feasibility Reports",
+        "Wind Resource Assessment Report"
+      ],
+      correctAnswer: 1,
+      chapter: "Feasibility Assessment and Due Diligence"
+    },
+    {
+      id: 10,
+      question: "Who coordinates with the respective Land Aggregator to negotiate with landowners for parcels classified as 'Optimize Cost'?",
+      options: [
+        "Land Manager",
+        "Chief Land Officer",
+        "Procurement Lead"
+      ],
+      correctAnswer: 0,
+      chapter: "Land Leasing and Evacuation Capacity"
+    }
+  ];
+
   const solarContractingQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -959,6 +1073,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   // Select appropriate questions based on playbook type
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
                                 isWindPlanning ? windPlanningQuestions : 
+                                isWindPredevelopment ? windPredevelopmentQuestions :
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :

@@ -16,6 +16,7 @@ import SolarContractingDashboard from "./pages/SolarContractingDashboard";
 import SolarConstructionDashboard from "./pages/SolarConstructionDashboard";
 import SolarCommissioningDashboard from "./pages/SolarCommissioningDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
+import WindPredevelopmentDashboard from "./pages/WindPredevelopmentDashboard";
 import SolarEngineeringDashboard from "./pages/SolarEngineeringDashboard";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <WindPlanningDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/wind-predevelopment" 
+            element={
+              <ProtectedRoute>
+                <WindPredevelopmentDashboard />
               </ProtectedRoute>
             } 
           />
