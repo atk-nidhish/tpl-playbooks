@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,7 +16,7 @@ import SolarCommissioningDashboard from "./pages/SolarCommissioningDashboard";
 import WindPlanningDashboard from "./pages/WindPlanningDashboard";
 import WindPredevelopmentDashboard from "./pages/WindPredevelopmentDashboard";
 import WindEngineeringDashboard from "./pages/WindEngineeringDashboard";
-// import WindCPDashboard from "./pages/WindCPDashboard";
+import WindConstructionCertificationDashboard from "./pages/WindConstructionCertificationDashboard";
 import WindCPCertificationDashboard from "./pages/WindCPCertificationDashboard";
 import CommissioningDashboard from "./pages/CommissioningDashboard";
 import AuthPage from "./pages/AuthPage";
@@ -82,14 +81,14 @@ function App() {
                   <WindEngineeringDashboard />
                 </ProtectedRoute>
               } />
-              {/* <Route path="/wind-cp-dashboard" element={
-                <ProtectedRoute>
-                  <WindCPDashboard />
-                </ProtectedRoute>
-              } /> */}
               <Route path="/wind-cp" element={
                 <ProtectedRoute>
                   <WindCPCertificationDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/wind-construction" element={
+                <ProtectedRoute>
+                  <WindConstructionCertificationDashboard />
                 </ProtectedRoute>
               } />
               <Route path="/commissioning" element={

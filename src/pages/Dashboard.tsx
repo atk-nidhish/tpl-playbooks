@@ -464,7 +464,7 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/wind-planning" className="flex-1">
+                    <Link to="/wind-construction" className="flex-1">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >
