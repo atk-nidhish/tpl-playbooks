@@ -46,6 +46,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   // Determine playbook type
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isWindPredevelopment = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('predevelopment');
+  const isWindEngineering = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('engineering');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
@@ -618,6 +619,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const windEngineeringQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for sharing the Bid Summary with the Wind Engineering Head (WEH)?",
+      options: [
+        "Bid Incharge",
+        "Engineering Manager",
+        "Procurement Lead"
+      ],
+      correctAnswer: 0,
+      chapter: "Wind Engineering Process"
+    },
+    {
+      id: 2,
+      question: "What document serves as the input for developing the Guaranteed Technical Particulars (GTP)?",
+      options: [
+        "Preliminary Works Requirement Document",
+        "Basic Engineering Design",
+        "Land Demarcation Summary"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind Engineering Process"
+    },
+    {
+      id: 3,
+      question: "Who is accountable for notifying the Wind Engineering Head (WEH) about bids won?",
+      options: [
+        "Chief Business Development",
+        "Procurement Lead",
+        "Project Manager"
+      ],
+      correctAnswer: 0,
+      chapter: "Wind Engineering Process"
+    },
+    {
+      id: 4,
+      question: "What document serves as the input for preparing the Preliminary Works Requirement Document?",
+      options: [
+        "Detailed Feasibility Report",
+        "Basic Engineering Design Library",
+        "Land Demarcation Summary"
+      ],
+      correctAnswer: 2,
+      chapter: "Technical Requirements and Documentation"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for preparing the Preliminary Works Requirement Document?",
+      options: [
+        "Procurement Lead",
+        "Lead PEM",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Technical Requirements and Documentation"
+    },
+    {
+      id: 6,
+      question: "Who must conduct a meeting with the hired Site Survey Consultant to discuss detailed requirements and share input for conducting Preliminary Works?",
+      options: [
+        "Project Manager",
+        "WEH",
+        "Procurement Lead"
+      ],
+      correctAnswer: 0,
+      chapter: "Consultant Management and Coordination"
+    },
+    {
+      id: 7,
+      question: "Who is accountable for preparing the Technical Consultant Requirement Document?",
+      options: [
+        "Procurement Lead",
+        "Lead PEM",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Consultant Management and Coordination"
+    },
+    {
+      id: 8,
+      question: "What document serves as the input for preparing the Technical Consultant Requirement Document?",
+      options: [
+        "Preliminary Works Requirement Document",
+        "Detailed Feasibility Report",
+        "Engineering Execution Plan"
+      ],
+      correctAnswer: 2,
+      chapter: "Consultant Management and Coordination"
+    },
+    {
+      id: 9,
+      question: "Who must conduct a kick-off meeting with the Technical Consultant to align detailed requirements and timelines?",
+      options: [
+        "Procurement Lead",
+        "PEM",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "Consultant Management and Coordination"
+    },
+    {
+      id: 10,
+      question: "Who is responsible for notifying the Wind Engineering Head (WEH) about the finalized Land Parcels for the project?",
+      options: [
+        "Procurement Lead",
+        "Lead PEM",
+        "Project Manager"
+      ],
+      correctAnswer: 2,
+      chapter: "Project Coordination and Communication"
+    }
+  ];
+
   const solarContractingQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -1074,6 +1188,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const certificationQuestions = isSolarPlanning ? solarPlanningQuestions : 
                                 isWindPlanning ? windPlanningQuestions : 
                                 isWindPredevelopment ? windPredevelopmentQuestions :
+                                isWindEngineering ? windEngineeringQuestions :
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
