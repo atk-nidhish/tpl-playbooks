@@ -47,6 +47,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isWindPlanning = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('planning');
   const isWindPredevelopment = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('predevelopment');
   const isWindEngineering = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('engineering');
+  const isWindCP = playbookName.toLowerCase().includes('wind') && playbookName.toLowerCase().includes('contracting');
   const isSolarPlanning = playbookName.toLowerCase().includes('planning') && playbookName.toLowerCase().includes('solar');
   const isSolarEngineering = playbookName.toLowerCase().includes('engineering') && playbookName.toLowerCase().includes('solar');
   const isSolarPredevelopment = playbookName.toLowerCase().includes('predevelopment') && playbookName.toLowerCase().includes('solar');
@@ -732,6 +733,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const windCPQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for preparing the cost estimate report for bid submission?",
+      options: [
+        "Chief Business Development",
+        "Wind Procurement Head",
+        "Procurement Lead"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 2,
+      question: "Who shares the Bill of Quantities (BoQ) and Bill of Services (BoS) with the Wind Procurement Head (WPH) for cost estimation?",
+      options: [
+        "Bid In-charge",
+        "Chief Procurement",
+        "Wind Engineering Head"
+      ],
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 3,
+      question: "Who is accountable for assigning procurement packages to the Procurement Leads?",
+      options: [
+        "Procurement Lead",
+        "Chief Business Development",
+        "Wind Procurement Head"
+      ],
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 4,
+      question: "What document is shared by the Chief BD with the Wind Procurement Head for evaluating the need for vendor empanelment?",
+      options: [
+        "Growth Outlook",
+        "Market availability report",
+        "Cost Estimate report"
+      ],
+      correctAnswer: 0,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 5,
+      question: "Who is responsible for creating a Gap Assessment Summary for each package?",
+      options: [
+        "Wind Procurement Head",
+        "Procurement Lead",
+        "Wind Engineering Head"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 6,
+      question: "Who is responsible for performing the technical evaluation and preparing the list of feasible/shortlisted vendors?",
+      options: [
+        "Procurement Lead",
+        "Chief Business Development",
+        "Wind Engineering Head"
+      ],
+      correctAnswer: 2,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 7,
+      question: "Who is responsible for issuing a Purchase Order (PO) to the vendor?",
+      options: [
+        "Wind Procurement Head",
+        "Procurement Lead",
+        "Chief Procurement"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 8,
+      question: "What document does Chief SCM issue to grant approval for all components under evaluation?",
+      options: [
+        "Quality Release Note",
+        "No Deviation Certificate",
+        "Goods Received Note"
+      ],
+      correctAnswer: 0,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 9,
+      question: "What document is prepared by the Wind Engineering Head to capture any technical deviation in contractor scope change process?",
+      options: [
+        "Engineering Clearance Form",
+        "Technical Scope Change Note",
+        "Design Change Estimate"
+      ],
+      correctAnswer: 1,
+      chapter: "Wind C&P Process"
+    },
+    {
+      id: 10,
+      question: "What document is issued by the Chief SCM to the Order Manager after receiving the delivery on-site?",
+      options: [
+        "Goods Received Note",
+        "No Deviation Certificate",
+        "Delivery Completion Form"
+      ],
+      correctAnswer: 0,
+      chapter: "Wind C&P Process"
+    }
+  ];
+
   const solarContractingQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -1189,6 +1303,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isWindPlanning ? windPlanningQuestions : 
                                 isWindPredevelopment ? windPredevelopmentQuestions :
                                 isWindEngineering ? windEngineeringQuestions :
+                                isWindCP ? windCPQuestions :
                                 isSolarEngineering ? solarEngineeringQuestions :
                                 isSolarPredevelopment ? solarPredevelopmentQuestions :
                                 isSolarContracting ? solarContractingQuestions :
