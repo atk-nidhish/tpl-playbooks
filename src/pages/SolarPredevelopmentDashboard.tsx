@@ -1,8 +1,10 @@
 
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { PlaybookCertification } from "@/components/PlaybookCertification";
-import { FileText, Sun } from "lucide-react";
+import { FileText, Sun, Home } from "lucide-react";
 
 const SolarPredevelopmentDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,6 +61,12 @@ const SolarPredevelopmentDashboard = () => {
                 <p className="text-sm text-gray-600">Certification Exam</p>
               </div>
             </div>
+            <Link to="/">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                Return to Homepage
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
