@@ -57,7 +57,7 @@ const Dashboard = () => {
   };
 
   const handleWindConstructionClick = () => {
-    window.open('/wind-construction.pdf', '_blank');
+    window.open('/wind-construction-1.pdf', '_blank');
   };
 
   const handleWindCommissioningClick = () => {
