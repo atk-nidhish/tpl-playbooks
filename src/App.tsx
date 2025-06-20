@@ -38,66 +38,19 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/solar-planning" element={
-                <ProtectedRoute>
-                  <PlanningSolarDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/solar-predevelopment" element={
-                <ProtectedRoute>
-                  <SolarPredevelopmentDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/solar-engineering" element={
-                <ProtectedRoute>
-                  <SolarEngineeringDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/solar-contracting" element={
-                <ProtectedRoute>
-                  <SolarContractingDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/solar-construction" element={
-                <ProtectedRoute>
-                  <SolarConstructionDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/solar-commissioning" element={
-                <ProtectedRoute>
-                  <SolarCommissioningDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-planning" element={
-                <ProtectedRoute>
-                  <WindPlanningDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-predevelopment" element={
-                <ProtectedRoute>
-                  <WindPredevelopmentDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-engineering" element={
-                <ProtectedRoute>
-                  <WindEngineeringDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-cp" element={
-                <ProtectedRoute>
-                  <WindCPCertificationDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-construction" element={
-                <ProtectedRoute>
-                  <WindConstructionCertificationDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/wind-commissioning" element={
-                <ProtectedRoute>
-                  <WindCommissioningCertificationDashboard />
-                </ProtectedRoute>
-              } />
+              {/* Certification Quiz Routes - No Authentication Required */}
+              <Route path="/solar-planning" element={<PlanningSolarDashboard />} />
+              <Route path="/solar-predevelopment" element={<SolarPredevelopmentDashboard />} />
+              <Route path="/solar-engineering" element={<SolarEngineeringDashboard />} />
+              <Route path="/solar-contracting" element={<SolarContractingDashboard />} />
+              <Route path="/solar-construction" element={<SolarConstructionDashboard />} />
+              <Route path="/solar-commissioning" element={<SolarCommissioningDashboard />} />
+              <Route path="/wind-planning" element={<WindPlanningDashboard />} />
+              <Route path="/wind-predevelopment" element={<WindPredevelopmentDashboard />} />
+              <Route path="/wind-engineering" element={<WindEngineeringDashboard />} />
+              <Route path="/wind-cp" element={<WindCPCertificationDashboard />} />
+              <Route path="/wind-construction" element={<WindConstructionCertificationDashboard />} />
+              <Route path="/wind-commissioning" element={<WindCommissioningCertificationDashboard />} />
               <Route path="/commissioning" element={
                 <ProtectedRoute>
                   <CommissioningDashboard />
