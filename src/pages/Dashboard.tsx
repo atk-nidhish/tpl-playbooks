@@ -540,7 +540,7 @@ const Dashboard = () => {
                   <div className="flex gap-2">
                     <Button 
                       onClick={handleControlsClick}
-                      className="flex-1 bg-green-600 hover:bg-orange-600 text-white"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                     >
                       Access Playbook
                     </Button>
