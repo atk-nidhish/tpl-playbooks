@@ -523,8 +523,8 @@ const Dashboard = () => {
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
-                      <div className="bg-orange-500 p-2 rounded-lg">
-                        <Sun className="h-6 w-6 text-white" />
+                      <div className="bg-green-500 p-2 rounded-lg">
+                        <LayoutDashboard className="h-6 w-6 text-white" />
                       </div>
                       <Badge className="bg-green-100 text-green-800 border-green-300">Available</Badge>
                     </div>
@@ -536,13 +536,13 @@ const Dashboard = () => {
                   <div className="flex gap-2">
                     <Button 
                       onClick={handleSolarPlanningClick}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                      className="flex-1 bg-green-500 hover:bg-orange-600 text-white"
                     >
                       Access Playbook
                     </Button>
                     <Link to="/solar-planning" className="flex-1">
                       <Button 
-                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        className="w-full bg-blue-600 hover:bg-green-700 text-white"
                       >
                         Certification Quiz
                       </Button>
