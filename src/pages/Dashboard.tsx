@@ -20,7 +20,7 @@ const Dashboard = () => {
     window.open('/solar-planning.pdf', '_blank');
   };  
   const handleSolarPredevClick = () => {
-    window.open('/solar-predevelopment.pdf', '_blank');
+    window.open('/solar-predev.pdf', '_blank');
   };
   
   const handleSolarEngineeringClick = () => {
@@ -28,7 +28,7 @@ const Dashboard = () => {
   };
 
   const handleSolarContractingClick = () => {
-    window.open('/solar-contracting.pdf', '_blank');
+    window.open('/solar-cp.pdf', '_blank');
   };
 
   const handleSolarConstructionClick = () => {
