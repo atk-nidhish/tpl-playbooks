@@ -540,13 +540,13 @@ const Dashboard = () => {
                   <div className="flex gap-2">
                     <Button 
                       onClick={handleControlsClick}
-                      className="flex-1 bg-green-600 hover:bg-green-800 text-white"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                     >
                       Access Playbook
                     </Button>
                     <Link to="/solar-planning" className="flex-1">
                       <Button 
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                        className="w-full bg-blue-600 hover:bg-green-700 text-white"
                       >
                         Certification Quiz
                       </Button>
