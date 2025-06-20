@@ -64,6 +64,10 @@ const Dashboard = () => {
     window.open('/wind-commissioning.pdf', '_blank');
   };
 
+    // Controls Click Handling
+  const handleControlsClick = () => {
+    window.open('/project-controls.pdf', '_blank');
+  };  
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -535,7 +539,7 @@ const Dashboard = () => {
                 <CardContent className="pt-0">
                   <div className="flex gap-2">
                     <Button 
-                      onClick={handleSolarPlanningClick}
+                      onClick={handleControlsClick}
                       className="flex-1 bg-green-600 hover:bg-orange-600 text-white"
                     >
                       Access Playbook
