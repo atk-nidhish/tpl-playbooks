@@ -56,6 +56,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
   const isSolarContracting = playbookName.toLowerCase().includes('contracting') && playbookName.toLowerCase().includes('solar');
   const isSolarConstruction = playbookName.toLowerCase().includes('construction') && playbookName.toLowerCase().includes('solar');
   const isSolarCommissioning = playbookName.toLowerCase().includes('commissioning') && playbookName.toLowerCase().includes('solar');
+  const isProjectControls = playbookName.toLowerCase().includes('project') && playbookName.toLowerCase().includes('controls');
 
   const solarPlanningQuestions: CertificationQuestion[] = [
     {
@@ -1413,6 +1414,119 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
     }
   ];
 
+  const projectControlsQuestions: CertificationQuestion[] = [
+    {
+      id: 1,
+      question: "Who is responsible for providing direction and policies in the PMO team?",
+      options: [
+        "Chief PMO",
+        "Schedule Head",
+        "Cost Head"
+      ],
+      correctAnswer: 0,
+      chapter: "PMO Structure and Responsibilities"
+    },
+    {
+      id: 2,
+      question: "Who is responsible for tracking progress for different projects and consolidating for leadership?",
+      options: [
+        "Chief PMO",
+        "Schedule Head",
+        "Project Manager"
+      ],
+      correctAnswer: 1,
+      chapter: "PMO Structure and Responsibilities"
+    },
+    {
+      id: 3,
+      question: "What is the frequency of the Site Review meeting?",
+      options: [
+        "Weekly",
+        "Daily",
+        "Fortnightly"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Review Meetings"
+    },
+    {
+      id: 4,
+      question: "Who chairs the Site Review meeting?",
+      options: [
+        "Chief PMO",
+        "Project Manager",
+        "COO"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Review Meetings"
+    },
+    {
+      id: 5,
+      question: "What is the main objective of the Site Review meeting?",
+      options: [
+        "Ensure on-time delivery of the immediate tasks scheduled",
+        "Track progress & discuss risks for every project",
+        "Review overall performance for portfolio"
+      ],
+      correctAnswer: 0,
+      chapter: "Project Review Meetings"
+    },
+    {
+      id: 6,
+      question: "Who chairs the Project Review meeting?",
+      options: [
+        "Chief PMO",
+        "Chief Solar/ Wind/ BESS",
+        "Chief Projects"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Review Meetings"
+    },
+    {
+      id: 7,
+      question: "What is the main objective of the Project Review meeting?",
+      options: [
+        "Ensure on-time delivery of the immediate tasks scheduled",
+        "Track progress & discuss risks for every project and packages",
+        "Review overall performance for portfolio"
+      ],
+      correctAnswer: 1,
+      chapter: "Project Review Meetings"
+    },
+    {
+      id: 8,
+      question: "What is one of the risk management KPIs tracked?",
+      options: [
+        "Expected completion time variance (days)",
+        "Forecasted cost variance (from RBN)",
+        "Count of risks requiring management support"
+      ],
+      correctAnswer: 2,
+      chapter: "Risk Management"
+    },
+    {
+      id: 9,
+      question: "What is the escalation criteria for unresolved issues beyond target closure date at the Site Review level?",
+      options: [
+        "Escalated in Chief Projects review",
+        "Escalated in COO Review",
+        "Escalated in Project Review"
+      ],
+      correctAnswer: 0,
+      chapter: "Performance Tracking"
+    },
+    {
+      id: 10,
+      question: "What is one of the key responsibilities of the Chief PMO?",
+      options: [
+        "Track progress for different projects",
+        "Develop the unit by emphasizing knowledge transfer, coaching & feedback",
+        "Support establishing coordination between the project team and functional teams"
+      ],
+      correctAnswer: 1,
+      chapter: "Performance Tracking"
+    }
+  ];
+
   const defaultQuestions: CertificationQuestion[] = [
     {
       id: 1,
@@ -1539,6 +1653,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
                                 isSolarContracting ? solarContractingQuestions :
                                 isSolarConstruction ? solarConstructionQuestions :
                                 isSolarCommissioning ? solarCommissioningQuestions :
+                                isProjectControls ? projectControlsQuestions :
                                 defaultQuestions;
 
   const handleUserInfoSubmit = (submittedUserInfo: UserInfo) => {

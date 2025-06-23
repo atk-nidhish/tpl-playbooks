@@ -66,7 +66,7 @@ const Dashboard = () => {
 
     // Controls Click Handling
   const handleControlsClick = () => {
-    window.open('/controls-deck.pdf', '_blank');
+    window.open('/project-controls', '_blank');
   };  
   
   return (
@@ -544,9 +544,9 @@ const Dashboard = () => {
                     >
                       Access Playbook
                     </Button>
-                    <Link to="/solar-planning" className="flex-1">
+                    <Link to="/project-controls" className="flex-1">
                       <Button 
-                        className="w-full bg-blue-600 hover:bg-green-700 text-white"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                       >
                         Certification Quiz
                       </Button>

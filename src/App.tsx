@@ -20,6 +20,7 @@ import WindEngineeringDashboard from "./pages/WindEngineeringDashboard";
 import WindConstructionCertificationDashboard from "./pages/WindConstructionCertificationDashboard";
 import WindCommissioningCertificationDashboard from "./pages/WindCommissioningCertificationDashboard";
 import WindCPCertificationDashboard from "./pages/WindCPCertificationDashboard";
+import ProjectControlsDashboard from "./pages/ProjectControlsDashboard";
 import CommissioningDashboard from "./pages/CommissioningDashboard";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
@@ -51,6 +52,7 @@ function App() {
               <Route path="/wind-cp" element={<WindCPCertificationDashboard />} />
               <Route path="/wind-construction" element={<WindConstructionCertificationDashboard />} />
               <Route path="/wind-commissioning" element={<WindCommissioningCertificationDashboard />} />
+              <Route path="/project-controls" element={<ProjectControlsDashboard />} />
               <Route path="/commissioning" element={
                 <ProtectedRoute>
                   <CommissioningDashboard />
