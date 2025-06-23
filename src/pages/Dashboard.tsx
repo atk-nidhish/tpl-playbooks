@@ -66,7 +66,7 @@ const Dashboard = () => {
 
     // Controls Click Handling
   const handleControlsClick = () => {
-    window.open('/project-controls', '_blank');
+    window.open('/controls-deck', '_blank');
   };  
   
   return (
