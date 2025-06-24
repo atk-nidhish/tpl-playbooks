@@ -68,7 +68,7 @@ const Dashboard = () => {
 
     // Controls Click Handling
   const handleControlsClick = () => {
-    window.open('/controls-deck.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1BHVM2EPnwt8wq0nJSLt6570Kne3qjmrf/view?usp=drive_link', '_blank');
   };  
   
   return (
