@@ -16,9 +16,12 @@ const Dashboard = () => {
   }, []);
 
   // Solar Click Handling
+  // const handleSolarPlanningClick = () => {
+  //   window.open('/src/solar-planning-v1.pdf', '_blank');
+  // };  
   const handleSolarPlanningClick = () => {
-    window.open('/src/solar-planning-v1.pdf', '_blank');
-  };  
+  window.open('https://www.google.com', '_blank');
+};
   const handleSolarPredevClick = () => {
     window.open('/solar-predev.pdf', '_blank');
   };
