@@ -22,7 +22,6 @@ const Dashboard = () => {
   const handleSolarPredevClick = () => {
     window.open('/solar-predev.pdf', '_blank');
   };
-  
   const handleSolarEngineeringClick = () => {
     window.open('/solar-engineering.pdf', '_blank');
   };
