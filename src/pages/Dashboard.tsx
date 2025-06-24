@@ -20,7 +20,7 @@ const Dashboard = () => {
   //   window.open('/src/solar-planning-v1.pdf', '_blank');
   // };  
   const handleSolarPlanningClick = () => {
-  window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=sharing', '_blank');
+  window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=drive_link', '_blank');
 };
   const handleSolarPredevClick = () => {
     window.open('/solar-predev.pdf', '_blank');
