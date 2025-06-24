@@ -23,7 +23,7 @@ const Dashboard = () => {
   window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=drive_link', '_blank');
 };
   const handleSolarPredevClick = () => {
-    window.open('/solar-predev.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1fVSQdHks8-PxPtblWiX_MYxy6KWVqNUj/view?usp=drive_link', '_blank');
   };
   const handleSolarEngineeringClick = () => {
     window.open('/solar-engineering.pdf', '_blank');
