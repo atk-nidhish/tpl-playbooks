@@ -26,7 +26,7 @@ const Dashboard = () => {
     window.open('https://drive.google.com/file/d/1fVSQdHks8-PxPtblWiX_MYxy6KWVqNUj/view?usp=drive_link', '_blank');
   };
   const handleSolarEngineeringClick = () => {
-    window.open('/solar-engineering.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1NJ5K6rcqCht-kU7GD9G9rP8wKZN5iqSo/view?usp=drive_link', '_blank');
   };
 
   const handleSolarContractingClick = () => {
