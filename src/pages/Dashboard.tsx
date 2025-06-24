@@ -30,7 +30,7 @@ const Dashboard = () => {
   };
 
   const handleSolarContractingClick = () => {
-    window.open('/solar-cp.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1k8mnqb5h-3zEjF40tYx-BP6c1uXmFOIg/view?usp=drive_link', '_blank');
   };
 
   const handleSolarConstructionClick = () => {
