@@ -55,7 +55,7 @@ const Dashboard = () => {
   };
 
   const handleWindContractingClick = () => {
-    window.open('/wind-cp.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1fWsiD6lSU_-oO2KQ3MXuYggNmxqNW7gJ/view?usp=drive_link', '_blank');
   };
 
   const handleWindConstructionClick = () => {
