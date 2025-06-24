@@ -63,7 +63,7 @@ const Dashboard = () => {
   };
 
   const handleWindCommissioningClick = () => {
-    window.open('/wind-commissioning.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1kzgO4vuSzGai6rHf9u1pw6A07UvDnwWe/view?usp=drive_link', '_blank');
   };
 
     // Controls Click Handling
