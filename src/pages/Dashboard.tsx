@@ -34,7 +34,7 @@ const Dashboard = () => {
   };
 
   const handleSolarConstructionClick = () => {
-    window.open('/solar-construction.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1ZXa4FErYm_lc48Ho-r1RaFBeBCoaWres/view?usp=drive_link', '_blank');
   };
 
   const handleSolarCommissioningClick = () => {
