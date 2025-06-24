@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -210,7 +211,7 @@ export const PlaybookCertification = ({ playbookId, playbookName, chapters }: Pl
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UserInfoForm onSubmit={setUserInfo} />
+          <UserInfoForm onUserInfoSubmit={setUserInfo} playbookName={playbookName} />
         </CardContent>
       </Card>
     );
