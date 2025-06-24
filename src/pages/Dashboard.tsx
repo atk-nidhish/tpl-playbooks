@@ -38,7 +38,7 @@ const Dashboard = () => {
   };
 
   const handleSolarCommissioningClick = () => {
-    window.open('/solar-commissioning.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1AEkgClYRKApiJBTH_7kIVRyjkNG2QTUv/view?usp=drive_link', '_blank');
   };
   
   // Wind Click Handling
