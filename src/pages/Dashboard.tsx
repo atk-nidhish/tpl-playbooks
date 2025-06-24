@@ -43,7 +43,7 @@ const Dashboard = () => {
   
   // Wind Click Handling
   const handleWindPlanningClick = () => {
-    window.open('/wind-planning.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1-xIrvooIxha04GXsf65VVywsNXheEEfd/view?usp=drive_link', '_blank');
   };  
 
   const handleWindPredevClick = () => {
