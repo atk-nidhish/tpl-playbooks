@@ -51,7 +51,7 @@ const Dashboard = () => {
   };
   
   const handleWindEngineeringClick = () => {
-    window.open('/wind-engineering.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1RYclR6lkbmaJEjd7CaTU6b06bddaHCdV/view?usp=drive_link', '_blank');
   };
 
   const handleWindContractingClick = () => {
