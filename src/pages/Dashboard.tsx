@@ -59,7 +59,7 @@ const Dashboard = () => {
   };
 
   const handleWindConstructionClick = () => {
-    window.open('/wind-construction-1.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1QeCp1srUyPEgFQz6VbY0JTY4ICoH1DZo/view?usp=drive_link', '_blank');
   };
 
   const handleWindCommissioningClick = () => {
