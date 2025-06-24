@@ -47,7 +47,7 @@ const Dashboard = () => {
   };  
 
   const handleWindPredevClick = () => {
-    window.open('/wind-predev.pdf', '_blank');
+    window.open('https://drive.google.com/file/d/1az6z8QWZdPt0nn1NFHFW7RDdmgXKfZVc/view?usp=drive_link', '_blank');
   };
   
   const handleWindEngineeringClick = () => {
