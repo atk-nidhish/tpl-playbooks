@@ -21,6 +21,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const logSuccessfulLogin = async (userId: string, userEmail: string) => {
+    try {
+      const userAgent = navigator.userAgent;
+      const { error } = await supabase
+        .from('login_logs')
+        .insert({
+          user_id: userId,
+          user_email: userEmail,
+          user_agent: userAgent
+        });
+      
+      if (error) {
+        console.error('Failed to log login:', error);
+      }
+    } catch (error) {
+      console.error('Error logging login:', error);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -29,6 +48,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Log successful sign in events (but not initial session restoration)
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Use setTimeout to avoid potential deadlocks
+          setTimeout(() => {
+            logSuccessfulLogin(session.user.id, session.user.email!);
+          }, 0);
+        }
       }
     );
 

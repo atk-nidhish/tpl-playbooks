@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -27,7 +28,6 @@ const AuthPage = () => {
   const [registerPassword, setRegisterPassword] = useState("");
 
   useEffect(() => {
-    // Test connection on component mount
     const checkConnection = async () => {
       const isConnected = await testSupabaseConnection();
       setConnectionStatus(isConnected);
@@ -43,6 +43,26 @@ const AuthPage = () => {
     checkConnection();
   }, [toast]);
 
+  const logSuccessfulLogin = async (userId: string, userEmail: string) => {
+    try {
+      const userAgent = navigator.userAgent;
+      const { error } = await supabase
+        .from('login_logs')
+        .insert({
+          user_id: userId,
+          user_email: userEmail,
+          user_agent: userAgent
+        });
+      
+      if (error) {
+        console.error('Failed to log login:', error);
+        // Don't show error to user as this is internal logging
+      }
+    } catch (error) {
+      console.error('Error logging login:', error);
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -50,13 +70,9 @@ const AuthPage = () => {
     try {
       console.log('=== LOGIN ATTEMPT ===');
       console.log('Email:', loginEmail);
-      console.log('Current URL:', window.location.href);
-      console.log('Navigator online:', navigator.onLine);
       
-      // Clean up any corrupted auth state first
       cleanupAuthState();
       
-      // Attempt global sign out first to clear any existing sessions
       try {
         console.log('Attempting global sign out before login...');
         await supabase.auth.signOut({ scope: 'global' });
@@ -79,7 +95,6 @@ const AuthPage = () => {
           code: error.code || 'no-code'
         });
         
-        // Provide more specific error messages
         if (error.message.includes('Failed to fetch')) {
           throw new Error('Unable to connect to authentication service. Please check your internet connection and ensure your browser allows connections to Supabase.');
         } else if (error.message.includes('Invalid login credentials')) {
@@ -95,18 +110,19 @@ const AuthPage = () => {
         console.log('Login successful for user:', data.user.email);
         console.log('Session created:', !!data.session);
         
+        // Log the successful login
+        await logSuccessfulLogin(data.user.id, data.user.email!);
+        
         toast({
           title: "Login successful",
           description: "Welcome back!",
         });
         
-        // Force page reload for clean state
         console.log('Redirecting to home page...');
         window.location.href = "/";
       }
     } catch (error: any) {
       console.error('Login failed with error:', error);
-      console.error('Error stack:', error.stack);
       
       toast({
         title: "Login failed",
@@ -125,13 +141,9 @@ const AuthPage = () => {
     try {
       console.log('=== REGISTRATION ATTEMPT ===');
       console.log('Email:', registerEmail);
-      console.log('Current URL:', window.location.href);
-      console.log('Navigator online:', navigator.onLine);
       
-      // Clean up any corrupted auth state first
       cleanupAuthState();
       
-      // Set the redirect URL to current origin
       const redirectUrl = `${window.location.origin}/`;
       console.log('Using redirect URL:', redirectUrl);
       
@@ -158,7 +170,6 @@ const AuthPage = () => {
           code: error.code || 'no-code'
         });
         
-        // Provide more helpful error messages
         if (error.message.includes('Failed to fetch')) {
           throw new Error('Unable to connect to authentication service. Please check your internet connection and ensure your browser allows connections to Supabase.');
         } else if (error.message.includes('User already registered')) {
@@ -175,37 +186,35 @@ const AuthPage = () => {
         console.log('Session created:', !!data.session);
         console.log('Email confirmation required:', !data.session);
         
-        // Check if user needs email confirmation
         if (!data.session) {
           toast({
             title: "Registration successful",
             description: "Please check your email for a confirmation link, then try logging in.",
           });
         } else {
+          // Log the successful login if automatically signed in
+          await logSuccessfulLogin(data.user.id, data.user.email!);
+          
           toast({
             title: "Registration successful",
             description: "Your account has been created and you are now logged in!",
           });
-          // Force page reload for clean state
           console.log('Redirecting to home page...');
           window.location.href = "/";
           return;
         }
         
-        // Clear registration form
+        // Clear registration form and switch to login
         setRegisterName("");
         setRegisterDepartment("");
         setRegisterEmployeeId("");
         setRegisterEmail("");
         setRegisterPassword("");
-        
-        // Switch to login tab and prefill email
         setLoginEmail(registerEmail);
         setActiveTab("login");
       }
     } catch (error: any) {
       console.error('Registration failed with error:', error);
-      console.error('Error stack:', error.stack);
       
       toast({
         title: "Registration failed",
@@ -246,13 +255,13 @@ const AuthPage = () => {
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="login-email">Work Email</Label>
+                  <Label htmlFor="login-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       id="login-email"
                       type="email"
-                      placeholder="Enter your work email"
+                      placeholder="Enter your email"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="pl-10"
@@ -288,7 +297,7 @@ const AuthPage = () => {
             <TabsContent value="register">
               <form onSubmit={handleRegister} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-name">Full Name</Label>
+                  <Label htmlFor="register-name">Name</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
@@ -297,21 +306,6 @@ const AuthPage = () => {
                       placeholder="Enter your full name"
                       value={registerName}
                       onChange={(e) => setRegisterName(e.target.value)}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="register-department">Department</Label>
-                  <div className="relative">
-                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      id="register-department"
-                      type="text"
-                      placeholder="Enter your department"
-                      value={registerDepartment}
-                      onChange={(e) => setRegisterDepartment(e.target.value)}
                       className="pl-10"
                       required
                     />
@@ -333,13 +327,13 @@ const AuthPage = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Work Email</Label>
+                  <Label htmlFor="register-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       id="register-email"
                       type="email"
-                      placeholder="Enter your work email"
+                      placeholder="Enter your email"
                       value={registerEmail}
                       onChange={(e) => setRegisterEmail(e.target.value)}
                       className="pl-10"
@@ -354,7 +348,7 @@ const AuthPage = () => {
                     <Input
                       id="register-password"
                       type="password"
-                      placeholder="Create a password"
+                      placeholder="Create a password (min 6 characters)"
                       value={registerPassword}
                       onChange={(e) => setRegisterPassword(e.target.value)}
                       className="pl-10"

@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Wind, Sun, LayoutDashboard, MapPin, Download } from "lucide-react";
+import { FileText, Wind, Sun, LayoutDashboard, MapPin, Download, LogOut, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     // Simulate loading data
@@ -16,27 +18,21 @@ const Dashboard = () => {
   }, []);
 
   // Solar Click Handling
-  // const handleSolarPlanningClick = () => {
-  //   window.open('/src/solar-planning-v1.pdf', '_blank');
-  // };  
   const handleSolarPlanningClick = () => {
-  window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=drive_link', '_blank');
-};
+    window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=drive_link', '_blank');
+  };
   const handleSolarPredevClick = () => {
     window.open('https://drive.google.com/file/d/1fVSQdHks8-PxPtblWiX_MYxy6KWVqNUj/view?usp=drive_link', '_blank');
   };
   const handleSolarEngineeringClick = () => {
     window.open('https://drive.google.com/file/d/1NJ5K6rcqCht-kU7GD9G9rP8wKZN5iqSo/view?usp=drive_link', '_blank');
   };
-
   const handleSolarContractingClick = () => {
     window.open('https://drive.google.com/file/d/1k8mnqb5h-3zEjF40tYx-BP6c1uXmFOIg/view?usp=drive_link', '_blank');
   };
-
   const handleSolarConstructionClick = () => {
     window.open('https://drive.google.com/file/d/1ZXa4FErYm_lc48Ho-r1RaFBeBCoaWres/view?usp=drive_link', '_blank');
   };
-
   const handleSolarCommissioningClick = () => {
     window.open('https://drive.google.com/file/d/1AEkgClYRKApiJBTH_7kIVRyjkNG2QTUv/view?usp=drive_link', '_blank');
   };
@@ -45,28 +41,23 @@ const Dashboard = () => {
   const handleWindPlanningClick = () => {
     window.open('https://drive.google.com/file/d/1-xIrvooIxha04GXsf65VVywsNXheEEfd/view?usp=drive_link', '_blank');
   };  
-
   const handleWindPredevClick = () => {
     window.open('https://drive.google.com/file/d/1az6z8QWZdPt0nn1NFHFW7RDdmgXKfZVc/view?usp=drive_link', '_blank');
   };
-  
   const handleWindEngineeringClick = () => {
     window.open('https://drive.google.com/file/d/1RYclR6lkbmaJEjd7CaTU6b06bddaHCdV/view?usp=drive_link', '_blank');
   };
-
   const handleWindContractingClick = () => {
     window.open('https://drive.google.com/file/d/1fWsiD6lSU_-oO2KQ3MXuYggNmxqNW7gJ/view?usp=drive_link', '_blank');
   };
-
   const handleWindConstructionClick = () => {
     window.open('https://drive.google.com/file/d/1QeCp1srUyPEgFQz6VbY0JTY4ICoH1DZo/view?usp=drive_link', '_blank');
   };
-
   const handleWindCommissioningClick = () => {
     window.open('https://drive.google.com/file/d/1kzgO4vuSzGai6rHf9u1pw6A07UvDnwWe/view?usp=drive_link', '_blank');
   };
 
-    // Controls Click Handling
+  // Controls Click Handling
   const handleControlsClick = () => {
     window.open('https://drive.google.com/file/d/1BHVM2EPnwt8wq0nJSLt6570Kne3qjmrf/view?usp=drive_link', '_blank');
   };  
@@ -84,6 +75,23 @@ const Dashboard = () => {
               <h1 className="text-2xl font-semibold text-gray-900">Project NavSaksham Playbook Portal</h1>
             </div>
             <div className="flex items-center space-x-4">
+              {user && (
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 text-gray-600">
+                    <User className="h-4 w-4" />
+                    <span className="text-sm">{user.email}</span>
+                  </div>
+                  <Button
+                    onClick={signOut}
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center space-x-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign Out</span>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -314,7 +322,6 @@ const Dashboard = () => {
             
             <div className="space-y-4">
               
-              {/* Wind - Planning Playbook */}
             <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
@@ -515,7 +522,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-                   {/* Solar Playbooks Section */}
+          {/* Project Controls Section */}
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <FileText className="h-6 w-6 text-green-600" />
@@ -524,8 +531,7 @@ const Dashboard = () => {
             
             <div className="space-y-4">
 
-            {/* Project Controls Playbook */}
-              <Card className="bg-white border border-gray-200">
+            <Card className="bg-white border border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">

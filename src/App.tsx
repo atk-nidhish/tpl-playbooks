@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,8 +36,16 @@ function App() {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              {/* Protected Dashboard Route - Now requires authentication */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              
+              {/* Authentication Route */}
               <Route path="/auth" element={<AuthPage />} />
+              
               {/* Certification Quiz Routes - No Authentication Required */}
               <Route path="/solar-planning" element={<PlanningSolarDashboard />} />
               <Route path="/solar-predevelopment" element={<SolarPredevelopmentDashboard />} />
@@ -53,6 +60,8 @@ function App() {
               <Route path="/wind-construction" element={<WindConstructionCertificationDashboard />} />
               <Route path="/wind-commissioning" element={<WindCommissioningCertificationDashboard />} />
               <Route path="/project-controls" element={<ProjectControlsDashboard />} />
+              
+              {/* Other Protected Routes */}
               <Route path="/commissioning" element={
                 <ProtectedRoute>
                   <CommissioningDashboard />
@@ -63,6 +72,8 @@ function App() {
                   <Playbook />
                 </ProtectedRoute>
               } />
+              
+              {/* 404 Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
