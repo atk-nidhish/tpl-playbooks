@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   // Solar Click Handling
   const handleSolarPlanningClick = () => {
-    window.open('https://drive.google.com/file/d/1uDMfJcfmqJauPVVd1jO_XYrX8Ltshr3a/view?usp=drive_link', '_blank');
+    window.open('https://atkearney.sharepoint.com/:b:/s/TorrentRECapexExcellence/EQ86Zyy3DRJKvbo2OZG2mrYBj1Ujh6hBykIRgu-K1tAOqA?e=DI32XA', '_blank');
   };
   const handleSolarPredevClick = () => {
     window.open('https://drive.google.com/file/d/1fVSQdHks8-PxPtblWiX_MYxy6KWVqNUj/view?usp=drive_link', '_blank');
