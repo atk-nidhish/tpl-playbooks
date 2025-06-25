@@ -51,7 +51,7 @@ const Dashboard = () => {
     window.open('https://drive.google.com/file/d/1fWsiD6lSU_-oO2KQ3MXuYggNmxqNW7gJ/view?usp=drive_link', '_blank');
   };
   const handleWindConstructionClick = () => {
-    window.open('https://drive.google.com/file/d/1QeCp1srUyPEgFQz6VbY0JTY4ICoH1DZo/view?usp=drive_link', '_blank');
+    window.open('https://atkearney.sharepoint.com/:b:/s/TorrentRECapexExcellence/EQ3WPIZWetRMrYYg_d7FIy0BhXrqOyPzehtsox9gLy7jbA?e=a9Oy6B', '_blank');
   };
   const handleWindCommissioningClick = () => {
     window.open('https://drive.google.com/file/d/1kzgO4vuSzGai6rHf9u1pw6A07UvDnwWe/view?usp=drive_link', '_blank');
